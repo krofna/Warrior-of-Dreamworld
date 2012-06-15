@@ -1,25 +1,21 @@
-/*#include <SFML/Network.hpp>
-#include <iostream>
+/*
+Warrior of Dreamworld, 2D Massivly Mutiplayer Online Role-playing Game
+Copyright (C) 2012  Mislav Blazevic
 
-int main()
-{
-    // ----- The client -----
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
 
-    // Create a socket and connect it to 192.168.1.50 on port 55001
-    sf::TcpSocket socket;
-    socket.connect("127.0.0.1", 55001);
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    // Send a message to the connected host
-    std::string message = "Hi, I am a client";
-    socket.send(message.c_str(), message.size() + 1);
-
-    // Receive an answer from the server
-    char buffer[1024];
-    std::size_t received = 0;
-    socket.receive(buffer, sizeof(buffer), received);
-    std::cout << "The server said: " << buffer << std::endl;
-}*/
-
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
 #include "Game.h"
 #include <fstream>
 #include <iostream>
