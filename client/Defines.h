@@ -9,7 +9,7 @@ of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
@@ -20,9 +20,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define DEFINES_H
 
 #include <SFML/Graphics.hpp>
+
 using sf::Uint8;
 using sf::Uint16;
 using sf::Uint32;
+using sf::Uint64;
+using sf::Int8;
+using sf::Int16;
+using sf::Int32;
+using sf::Int64;
 
 #define TILE_SIZE 32
 #define WORLD_VIEW_OFFSET 0.3f
