@@ -18,10 +18,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Game.h"
 #include "Globals.h"
+#include <iostream>
+#include <fstream>
 
 Game::Game()
 {
-    Window.create(sf::VideoMode(5*TILE_SIZE, 2*TILE_SIZE, 32), "[PH]", sf::Style::Close);
+    std::ofstream ErrorLog("Error Log.txt");
+    std::cerr.rdbuf(ErrorLog.rdbuf());
+
+    Window.create(sf::VideoMode(40*TILE_SIZE, 32*TILE_SIZE, 32), "[PH]", sf::Style::Fullscreen);
 }
 
 void Game::Run()
@@ -32,10 +37,7 @@ void Game::Run()
     {
         while(Window.pollEvent(Event))
         {
-            if(Event.type == sf::Event::KeyPressed)
-            {
-                CurrentState->HandleEvent(Event);
-            }
+            CurrentState->HandleEvent(Event);
         }
         Window.clear();
         CurrentState->Draw();

@@ -17,14 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Game.h"
-#include <fstream>
-#include <iostream>
 
 int main()
 {
-    std::ofstream ErrorLog("Error Log.txt");
-    std::cerr.rdbuf(ErrorLog.rdbuf());
-
     Game* instance = new Game;
     World* world = new World;
     world->LoadTileMap(1);

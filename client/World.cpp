@@ -26,24 +26,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <iostream>
 
 World::World() : 
-TileMap     (sf::PrimitiveType::Quads)
+TileMap     (sf::PrimitiveType::Quads),
+WorldView   (sf::FloatRect(0, 0, 40 * TILE_SIZE, 32 * TILE_SIZE))
 {
+    //PH set view na center igraca
+    Window.setView(WorldView);
 }
 
 void World::LoadTileMap(uint8_t MapID)
 {
+    ResourceManager::RemoveTileset(TilesetFileName);
+
     std::string Path = "data/maps/map" + IntToString(MapID) + ".txt";
     std::ifstream File(Path);
     assert(File.good());
 
     float x, y, tx, ty;
-    uint16_t TileCount;
-    uint32_t index = 0;
-    std::string FileName;
+    int TileCount, index = 0;
 
-    File >> FileName >> TileCount;
+    File >> TilesetFileName >> TileCount;
     TileMap.resize(TileCount * 4);
-    MapStates.texture = ResourceManager::GetTileset(FileName);
+    MapStates.texture = ResourceManager::GetTileset(TilesetFileName);
 
     while(File >> x >> y >> tx >> ty)
     {
@@ -63,6 +66,22 @@ void World::LoadTileMap(uint8_t MapID)
 
 void World::Draw()
 {
+    if(MoveWorldView != MOVE_STOP)
+    {
+        if(MoveWorldView == MOVE_UP)
+            WorldView.move(0, -WORLD_VIEW_OFFSET);
+
+        else if(MoveWorldView == MOVE_DOWN)
+            WorldView.move(0, WORLD_VIEW_OFFSET);
+
+        else if(MoveWorldView == MOVE_RIGHT)
+            WorldView.move(WORLD_VIEW_OFFSET, 0);
+
+        else if(MoveWorldView == MOVE_LEFT)
+            WorldView.move(-WORLD_VIEW_OFFSET, 0);
+
+        Window.setView(WorldView);
+    }
     Window.draw(TileMap, MapStates);
 }
 
@@ -71,31 +90,38 @@ void World::HandleEvent(sf::Event Event)
     switch(Event.type)
     {
     case sf::Event::KeyPressed:
-        switch(Event.key.code)
+        switch(Event.key.code) // Player move [ph]
         {
         case sf::Keyboard::Right:
-            MapView.move(1, 0);
-            Window.setView(MapView);
             break;
 
         case sf::Keyboard::Left:
-            MapView.move(-1, 0);
-            Window.setView(MapView);
             break;
 
         case sf::Keyboard::Up:
-            MapView.move(0, -1);
-            Window.setView(MapView);
             break;
 
         case sf::Keyboard::Down:
-            MapView.move(0, 1);
-            Window.setView(MapView);
             break;
         }
         break;
 
-    case sf::Event::MouseButtonPressed:
+    case sf::Event::MouseMoved:
+        if(sf::Mouse::getPosition(Window).x >= 39 * TILE_SIZE) // PH
+            MoveWorldView = MOVE_RIGHT;
+
+        else if(sf::Mouse::getPosition().x < 1 * TILE_SIZE) // PH
+            MoveWorldView = MOVE_LEFT;
+
+        else if(sf::Mouse::getPosition(Window).y > 31 * TILE_SIZE) // PH
+            MoveWorldView = MOVE_DOWN;
+
+        else if(sf::Mouse::getPosition(Window).y < 1 * TILE_SIZE) // PH
+            MoveWorldView = MOVE_UP;
+
+        else
+            MoveWorldView = MOVE_STOP;
+
         break;
     }
 }

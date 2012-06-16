@@ -27,13 +27,16 @@ struct World : GameState
 {
     World();
     void LoadTileMap(uint8_t MapID);
-    virtual void Draw();
-    virtual void HandleEvent(sf::Event Event);
+    void Draw();
+    void HandleEvent(sf::Event Event);
 
-//private:
+private:
+    std::string TilesetFileName;
     sf::RenderStates MapStates;
     sf::VertexArray TileMap;
-    sf::View MapView;
+    sf::View WorldView;
+
+    uint8_t MoveWorldView;
 };
 
 #endif

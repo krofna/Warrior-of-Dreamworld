@@ -16,21 +16,16 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef DEFINES_H
-#define DEFINES_H
+#include <fstream>
 
-#include <SFML/Graphics.hpp>
-
-#define TILE_SIZE 32
-#define WORLD_VIEW_OFFSET 0.3f
-
-enum
+int main()
 {
-    MOVE_STOP   = 0,
-    MOVE_UP     = 1,
-    MOVE_DOWN   = 2,
-    MOVE_LEFT   = 4,
-    MOVE_RIGHT  = 8
-};
+    std::ofstream File("map1.txt");
 
-#endif
+    File << "dg_edging132.gif " << 256*256 << " ";
+
+
+    for(int y = 0; y < 255; ++y)
+        for(int x = 0; x < 255; ++x)
+            File << x << " " << y << " 1 15 ";
+}
