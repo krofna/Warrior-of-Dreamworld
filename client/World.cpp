@@ -68,16 +68,16 @@ void World::Draw()
 {
     if(MoveWorldView != MOVE_STOP)
     {
-        if(MoveWorldView == MOVE_UP)
+        if((MoveWorldView & MOVE_UP) == MOVE_UP)
             WorldView.move(0, -WORLD_VIEW_OFFSET);
 
-        else if(MoveWorldView == MOVE_DOWN)
+        else if((MoveWorldView & MOVE_DOWN) == MOVE_DOWN)
             WorldView.move(0, WORLD_VIEW_OFFSET);
 
-        else if(MoveWorldView == MOVE_RIGHT)
+        if((MoveWorldView & MOVE_RIGHT) == MOVE_RIGHT)
             WorldView.move(WORLD_VIEW_OFFSET, 0);
 
-        else if(MoveWorldView == MOVE_LEFT)
+        else if((MoveWorldView & MOVE_LEFT) == MOVE_LEFT)
             WorldView.move(-WORLD_VIEW_OFFSET, 0);
 
         Window.setView(WorldView);
@@ -107,20 +107,19 @@ void World::HandleEvent(sf::Event Event)
         break;
 
     case sf::Event::MouseMoved:
+        MoveWorldView = MOVE_STOP;
+
         if(sf::Mouse::getPosition(Window).x >= 39 * TILE_SIZE) // PH
-            MoveWorldView = MOVE_RIGHT;
+            MoveWorldView |= MOVE_RIGHT;
 
         else if(sf::Mouse::getPosition().x < 1 * TILE_SIZE) // PH
-            MoveWorldView = MOVE_LEFT;
+            MoveWorldView |= MOVE_LEFT;
 
-        else if(sf::Mouse::getPosition(Window).y > 31 * TILE_SIZE) // PH
-            MoveWorldView = MOVE_DOWN;
+        if(sf::Mouse::getPosition(Window).y > 31 * TILE_SIZE) // PH
+            MoveWorldView |= MOVE_DOWN;
 
         else if(sf::Mouse::getPosition(Window).y < 1 * TILE_SIZE) // PH
-            MoveWorldView = MOVE_UP;
-
-        else
-            MoveWorldView = MOVE_STOP;
+            MoveWorldView |= MOVE_UP;
 
         break;
     }
