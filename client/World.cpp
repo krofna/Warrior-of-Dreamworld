@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.h"
 #include "Utilities.h"
-#include "Defines.h"
 #include "Globals.h"
 #include "ResourceManager.h"
 #include <fstream>
@@ -27,13 +26,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 World::World() : 
 TileMap     (sf::PrimitiveType::Quads),
-WorldView   (sf::FloatRect(0, 0, 40 * TILE_SIZE, 32 * TILE_SIZE))
+WorldView   (sf::FloatRect(0, 0, 40 * TILE_SIZE, 32 * TILE_SIZE)) //ph
 {
-    //PH set view na center igraca
     Window.setView(WorldView);
 }
 
-void World::LoadTileMap(uint8_t MapID)
+void World::LoadTileMap(Uint8 MapID)
 {
     ResourceManager::RemoveTileset(TilesetFileName);
 
@@ -82,6 +80,10 @@ void World::Draw()
 
         Window.setView(WorldView);
     }
+
+    for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
+        i->second->Draw();
+
     Window.draw(TileMap, MapStates);
 }
 

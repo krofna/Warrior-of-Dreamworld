@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GAME_H
 
 #include "World.h"
+#include "Globals.h"
 
 class Game
 {
@@ -29,7 +30,12 @@ public:
     void Foo();
 
 //private:
-    std::vector<GameState*> States;
+    sf::Thread NetworkThread;
+    sf::Packet Packet;
+    sf::Mutex GlobalMutex;
+    void ListenNetwork();
+
+    std::vector<GameState*> States; // mozda map?
     GameState* CurrentState;
 };
 

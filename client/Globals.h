@@ -20,7 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GLOBALS_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
+#include <iostream>
+#include <fstream>
+#include "Player.h"
 
 extern sf::RenderWindow Window;
+extern sf::TcpSocket Socket;
+extern Player* pPlayer;
 
 #endif

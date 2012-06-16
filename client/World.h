@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "Defines.h"
 #include "GameState.h"
-#include <cstdint>
+#include "WorldObject.h"
 
 struct World : GameState
 {
     World();
-    void LoadTileMap(uint8_t MapID);
+    void LoadTileMap(Uint8 MapID);
     void Draw();
     void HandleEvent(sf::Event Event);
 
@@ -35,8 +35,9 @@ private:
     sf::RenderStates MapStates;
     sf::VertexArray TileMap;
     sf::View WorldView;
+    Uint8 MoveWorldView;
 
-    uint8_t MoveWorldView;
+    std::map<std::pair<Uint16, Uint16>, WorldObject*> WorldObjectMap;
 };
 
 #endif

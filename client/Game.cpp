@@ -17,20 +17,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Game.h"
-#include "Globals.h"
-#include <iostream>
-#include <fstream>
 
-Game::Game()
+Game::Game() :
+NetworkThread(&Game::ListenNetwork, this)
 {
-    std::ofstream ErrorLog("Error Log.txt");
-    std::cerr.rdbuf(ErrorLog.rdbuf());
-
     Window.create(sf::VideoMode(40*TILE_SIZE, 32*TILE_SIZE, 32), "[PH]", sf::Style::Fullscreen);
 }
 
 void Game::Run()
 {
+    NetworkThread.launch();
+
     sf::Event Event;
 
     while(Window.isOpen())
@@ -42,5 +39,25 @@ void Game::Run()
         Window.clear();
         CurrentState->Draw();
         Window.display();
+    }
+}
+
+void Game::ListenNetwork()
+{
+    while(true)
+    {
+        sf::Socket::Status Status;
+        do
+        {
+            Status = Socket.receive(Packet);
+        } while(Status != sf::Socket::Status::Done);
+
+        GlobalMutex.lock();
+
+        sf::Uint8 Opcode;
+        Packet >> Opcode;
+        std::cout << (int)Opcode << std::endl;
+
+        GlobalMutex.unlock();
     }
 }
