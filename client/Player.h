@@ -21,9 +21,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "WorldObject.h"
 
-struct Player : WorldObject
+class Player : public WorldObject
 {
+public:
+    Player(Uint16 x, Uint16 y);
     void Draw();
+
+private:
 };
 
 #endif

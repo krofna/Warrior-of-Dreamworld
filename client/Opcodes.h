@@ -16,13 +16,33 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-
 #ifndef OPCODES_H
 #define OPCODES_H
 
+#include "WorldSession.h"
+#include <SFML/Network.hpp>
+
+#define MSG_COUNT 1
+
+enum Opcodes
+{
+    MSG_LOGIN = 0x0
+};
+
 enum
 {
-    LOGIN_SUCCESS = 0x0
+    LOGIN_SUCCESS = 0x0,
+    LOGIN_FAIL_BAD_USERNAME,
+    LOGIN_FAIL_BAD_PASSWORD,
+    LOGIN_FAIL_SERVER_OFFLINE
 };
+
+struct OpcodeHandler
+{
+    char const* name;
+    void (WorldSession::*Handler)(sf::Packet& Packet);
+};
+
+extern OpcodeHandler OpcodeTable[MSG_COUNT];
 
 #endif

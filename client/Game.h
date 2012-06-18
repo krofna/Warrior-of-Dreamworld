@@ -27,15 +27,9 @@ class Game
 public:
     Game();
     void Run();
-    void Foo();
+    void ChangeState(GameState* NewState);
 
-//private:
-    sf::Thread NetworkThread;
-    sf::Packet Packet;
-    sf::Mutex GlobalMutex;
-    void ListenNetwork();
-
-    std::vector<GameState*> States; // mozda map?
+private:
     GameState* CurrentState;
 };
 

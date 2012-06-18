@@ -16,17 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include <SFML/Network.hpp>
-#include <vector>
-#include "../client/Opcodes.h"
+#include "WorldSession.h"
 
 int main()
 {
-    sf::TcpListener Listener;
-    sf::TcpSocket Socket;
-    Listener.listen(0xBEEF);
-    Listener.accept(Socket);
-    sf::Packet Packet;
-    Packet << sf::Uint8(LOGIN_SUCCESS);
-    Socket.send(Packet);
+    WorldSession Session;
+    Session.Run();
 }

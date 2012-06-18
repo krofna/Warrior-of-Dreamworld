@@ -16,13 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef MAP_H
+#define MAP_H
 
-#include <SFML/Graphics.hpp>
-extern sf::RenderWindow Window;
+#include "Player.h"
+#include "../client/Defines.h"
 
-#include <iostream>
-#include <fstream>
+struct Map
+{
+    std::vector<Player*> Players; // world object?
+};
 
 #endif

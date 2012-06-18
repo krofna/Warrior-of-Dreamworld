@@ -19,15 +19,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.h"
 
 Game::Game() :
-NetworkThread(&Game::ListenNetwork, this)
+CurrentState(NULL)
 {
-    Window.create(sf::VideoMode(40*TILE_SIZE, 32*TILE_SIZE, 32), "[PH]", sf::Style::Fullscreen);
+    Window.create(sf::VideoMode(40*TILE_SIZE, 32*TILE_SIZE, 32), "[PH]", sf::Style::Close);
+    Window.setFramerateLimit(60);
 }
 
 void Game::Run()
 {
-    NetworkThread.launch();
-
     sf::Event Event;
 
     while(Window.isOpen())
@@ -42,22 +41,8 @@ void Game::Run()
     }
 }
 
-void Game::ListenNetwork()
+void Game::ChangeState(GameState* NewState)
 {
-    while(true)
-    {
-        sf::Socket::Status Status;
-        do
-        {
-            Status = Socket.receive(Packet);
-        } while(Status != sf::Socket::Status::Done);
-
-        GlobalMutex.lock();
-
-        sf::Uint8 Opcode;
-        Packet >> Opcode;
-        std::cout << (int)Opcode << std::endl;
-
-        GlobalMutex.unlock();
-    }
+    delete CurrentState;
+    CurrentState = NewState;
 }

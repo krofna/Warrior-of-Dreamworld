@@ -16,13 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#include "Player.h"
 
-#include <SFML/Graphics.hpp>
-extern sf::RenderWindow Window;
+Player::Player(sf::Socket* Socket, const std::string& Username, const std::string& Password, Uint16 MapID, Uint16 x, Uint16 y) :
+Socket(Socket),
+Username(Username),
+Password(Password),
+MapID(MapID),
+WorldObject(x, y)
+{
+}
 
-#include <iostream>
-#include <fstream>
-
-#endif
+Player::~Player()
+{
+    delete Socket;
+}

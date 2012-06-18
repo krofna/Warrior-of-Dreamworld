@@ -20,18 +20,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Utilities.h"
 #include "Globals.h"
 #include "ResourceManager.h"
-#include <fstream>
 #include <cassert>
-#include <iostream>
 
-World::World() : 
+World::World(WorldSession* pWorldSession) :
+GameState   (pWorldSession),
 TileMap     (sf::PrimitiveType::Quads),
 WorldView   (sf::FloatRect(0, 0, 40 * TILE_SIZE, 32 * TILE_SIZE)) //ph
 {
     Window.setView(WorldView);
 }
 
-void World::LoadTileMap(Uint8 MapID)
+World::~World()
+{
+    delete pPlayer;
+}
+
+void World::LoadTileMap(Uint16 MapID)
 {
     ResourceManager::RemoveTileset(TilesetFileName);
 

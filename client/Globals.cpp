@@ -19,5 +19,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Globals.h"
 
 sf::RenderWindow Window;
-sf::TcpSocket Socket;
-Player* pPlayer;

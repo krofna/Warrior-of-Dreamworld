@@ -16,13 +16,33 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef WORLD_SESSION_H
+#define WORLD_SESSION_H
 
-#include <SFML/Graphics.hpp>
-extern sf::RenderWindow Window;
+#include <SFML/Network.hpp>
 
-#include <iostream>
-#include <fstream>
+class Game;
+
+class WorldSession
+{
+public:
+    WorldSession(Game* pGame);
+
+    void StartNetworkThread() { NetworkThread.launch(); }
+    void Disconnect() { Socket.disconnect(); }
+
+    void ConnectToServer();
+    void RecievePackets();
+    void SendPacket(sf::Packet& Packet);
+
+    void HandleLoginOpcode(sf::Packet& Packet);
+
+private:
+    sf::Thread NetworkThread;
+    sf::Mutex GlobalMutex;
+    sf::TcpSocket Socket;
+
+    Game* pGame;
+};
 
 #endif

@@ -20,11 +20,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GAME_STATE_H
 
 #include <SFML/Window.hpp>
+#include "WorldSession.h"
 
-struct GameState
+class GameState
 {
+public:
+    GameState(WorldSession* pWorldSession) : pWorldSession(pWorldSession) { }
+
     virtual void HandleEvent(sf::Event Event) = 0;
     virtual void Draw() = 0;
+
+protected:
+    WorldSession* pWorldSession;
 };
 
 #endif

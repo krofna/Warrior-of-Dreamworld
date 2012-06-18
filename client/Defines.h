@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <SFML/Graphics.hpp>
 
-using sf::Uint8;
 using sf::Uint16;
 using sf::Uint32;
 using sf::Uint64;
@@ -31,7 +30,8 @@ using sf::Int32;
 using sf::Int64;
 
 #define TILE_SIZE 32
-#define WORLD_VIEW_OFFSET 0.3f
+#define WORLD_VIEW_OFFSET 0.5f
+#define MAP_COUNT 1
 
 enum
 {
