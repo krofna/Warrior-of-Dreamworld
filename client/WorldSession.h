@@ -28,19 +28,16 @@ class WorldSession
 public:
     WorldSession(Game* pGame);
 
-    void StartNetworkThread() { NetworkThread.launch(); }
-    void Disconnect() { Socket.disconnect(); }
-
-    void ConnectToServer();
+    bool ConnectToServer();
     void RecievePackets();
     void SendPacket(sf::Packet& Packet);
 
     void HandleLoginOpcode(sf::Packet& Packet);
 
 private:
-    sf::Thread NetworkThread;
-    sf::Mutex GlobalMutex;
     sf::TcpSocket Socket;
+    sf::Uint16 Opcode;
+    sf::Packet Packet;
 
     Game* pGame;
 };

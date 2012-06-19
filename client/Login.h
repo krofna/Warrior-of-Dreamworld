@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Login : public GameState
 {
 public:
-    Login(WorldSession* pWorldSession);
+    Login();
     void HandleEvent(sf::Event Event);
     void Draw();
 

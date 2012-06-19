@@ -22,46 +22,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.h"
 #include <cassert>
 
-WorldSession::WorldSession(Game* pGame) : 
-NetworkThread(&WorldSession::RecievePackets, this),
+WorldSession::WorldSession(Game* pGame) :
 pGame(pGame)
 {
 }
 
-void WorldSession::ConnectToServer()
+bool WorldSession::ConnectToServer()
 {
-    assert(Socket.connect(sf::IpAddress::getLocalAddress(), 0xBEEF) == sf::Socket::Done);
+    sf::Socket::Status Status = Socket.connect(sf::IpAddress::getLocalAddress(), 0xBEEF);
+    Socket.setBlocking(false);
+    return Status == sf::Socket::Status::Done;
 }
 
 void WorldSession::RecievePackets()
 {
-    sf::Uint16 Opcode;
-    sf::Packet Packet;
-
-    while(true)
+    while(Socket.receive(Packet) == sf::Socket::Status::Done)
     {
-        sf::Socket::Status Status;
-        do
-        {
-            Status = Socket.receive(Packet);
-        } while(Status != sf::Socket::Status::Done);
-
         Packet >> Opcode;
         if(Opcode > MSG_COUNT)
+        {
             printf("Opcode > MSG_COUNT.\n");
-            
+            continue;
+        }
         (this->*OpcodeTable[Opcode].Handler)(Packet);
-        Packet.clear();
     }
 }
 
 void WorldSession::SendPacket(sf::Packet& Packet)
 {
-    GlobalMutex.lock();
-
     Socket.send(Packet);
-
-    GlobalMutex.unlock();
 }
 
 void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
@@ -81,7 +70,6 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
     Uint16 MapID, x, y;
     
     Packet >> MapID >> x >> y;
-    std::cout << MapID << " " << x << " " << y;
 
     if(!Packet.endOfPacket())
     {
@@ -91,8 +79,10 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
     }
 
     printf("Packet is good!\n");
-    World* pWorld = new World(this);
+
+    World* pWorld = new World();
     pWorld->pPlayer = new Player(x, y);
     pWorld->LoadTileMap(MapID);
-    pGame->ChangeState(pWorld);
+    delete pGame->CurrentState;
+    pGame->CurrentState = pWorld;
 }

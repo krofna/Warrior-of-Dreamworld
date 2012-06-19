@@ -28,7 +28,7 @@ class World : public GameState
     friend class WorldSession;
 
 public:
-    World(WorldSession* pWorldSession);
+    World();
     ~World();
     void LoadTileMap(Uint16 MapID);
     void Draw();
@@ -39,7 +39,7 @@ private:
     sf::RenderStates MapStates;
     sf::VertexArray TileMap;
     sf::View WorldView;
-    Uint16 MoveWorldView;
+    Uint8 MoveWorldView;
 
     std::map<std::pair<Uint16, Uint16>, WorldObject*> WorldObjectMap;
     Player* pPlayer;

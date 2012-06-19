@@ -21,8 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Opcodes.h"
 #include "Defines.h"
 
-Login::Login(WorldSession* pWorldSession) :
-GameState(pWorldSession),
+Login::Login() :
 InputFlag(true)
 {
 }
@@ -46,9 +45,8 @@ void Login::HandleEvent(sf::Event Event)
             {
                 sf::Packet Packet;
                 Packet << (Uint16)MSG_LOGIN << Username << Password;
-                pWorldSession->ConnectToServer();
-                pWorldSession->SendPacket(Packet);
-                pWorldSession->StartNetworkThread();
+                Session->ConnectToServer();
+                Session->SendPacket(Packet);
             }
         }
         else if(Event.key.code == sf::Keyboard::Back)

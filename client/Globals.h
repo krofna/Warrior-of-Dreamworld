@@ -25,4 +25,7 @@ extern sf::RenderWindow Window;
 #include <iostream>
 #include <fstream>
 
+#include "WorldSession.h"
+extern WorldSession* Session;
+
 #endif

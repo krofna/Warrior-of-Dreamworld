@@ -22,10 +22,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ResourceManager.h"
 #include <cassert>
 
-World::World(WorldSession* pWorldSession) :
-GameState   (pWorldSession),
+World::World() :
 TileMap     (sf::PrimitiveType::Quads),
-WorldView   (sf::FloatRect(0, 0, 40 * TILE_SIZE, 32 * TILE_SIZE)) //ph
+WorldView   (sf::FloatRect(0, 0, 40 * TILE_SIZE, 32 * TILE_SIZE)), //ph
+MoveWorldView(MOVE_STOP)
 {
     Window.setView(WorldView);
 }
@@ -84,7 +84,7 @@ void World::Draw()
 
         Window.setView(WorldView);
     }
-
+    
     for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
         i->second->Draw();
 

@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 int main()
 {
-    std::ofstream ErrorLog("Error Log.txt");
-    std::cerr.rdbuf(ErrorLog.rdbuf());
+    std::ofstream ErrorLog("Error Log.txt"), DebugLog("Debug Log.txt");
+    std::cerr.rdbuf(ErrorLog.rdbuf()); std::clog.rdbuf(DebugLog.rdbuf());
 
     Game* pGame = new Game;
-    WorldSession* pWorldSession = new WorldSession(pGame);
-    pGame->ChangeState(new Login(pWorldSession));
+    Session = new WorldSession(pGame);
+    pGame->CurrentState = new Login();
     pGame->Run();
 }

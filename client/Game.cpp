@@ -21,8 +21,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Game::Game() :
 CurrentState(NULL)
 {
-    Window.create(sf::VideoMode(40*TILE_SIZE, 32*TILE_SIZE, 32), "[PH]", sf::Style::Close);
-    Window.setFramerateLimit(60);
+    Window.create(sf::VideoMode(40*TILE_SIZE, 32*TILE_SIZE, 32), "[PH]", sf::Style::Fullscreen);
+    //Window.setFramerateLimit(60);
+}
+
+Game::~Game()
+{
+    delete CurrentState;
 }
 
 void Game::Run()
@@ -35,14 +40,9 @@ void Game::Run()
         {
             CurrentState->HandleEvent(Event);
         }
+        Session->RecievePackets();
         Window.clear();
         CurrentState->Draw();
         Window.display();
     }
-}
-
-void Game::ChangeState(GameState* NewState)
-{
-    delete CurrentState;
-    CurrentState = NewState;
 }
