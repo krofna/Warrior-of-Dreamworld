@@ -26,6 +26,7 @@ AuthSession::AuthSession()
     Listener.listen(0xBEEF);
     Listener.setBlocking(false);
     NewSocket = new sf::TcpSocket();
+    LoadOfflinePlayers();
 }
 
 AuthSession::~AuthSession()
@@ -51,7 +52,7 @@ void AuthSession::HandleAll()
         if(pSocket->receive(AuthPacket) == sf::Socket::Status::Done)
         {
             AuthPacket >> Opcode;
-            if(Opcode != MSG_LOGIN)
+            if(Opcode != (Uint16)MSG_LOGIN)
                 continue;
 
             AuthPacket >> Username;
@@ -59,7 +60,7 @@ void AuthSession::HandleAll()
             if(Iterator == OfflinePlayers.end())
             {
                 AuthPacket.clear();
-                AuthPacket << MSG_LOGIN << LOGIN_FAIL_BAD_USERNAME;
+                AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_FAIL_BAD_USERNAME;
                 pSocket->send(AuthPacket);
                 pSocket->disconnect();
                 delete pSocket;
@@ -72,7 +73,7 @@ void AuthSession::HandleAll()
             if(pPlayer->Password != Password)
             {
                 AuthPacket.clear();
-                AuthPacket << MSG_LOGIN << LOGIN_FAIL_BAD_PASSWORD;
+                AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_FAIL_BAD_PASSWORD;
                 pSocket->send(AuthPacket);
                 pSocket->disconnect();
                 delete pSocket;
@@ -81,7 +82,7 @@ void AuthSession::HandleAll()
             }
 
             AuthPacket.clear();
-            AuthPacket << MSG_LOGIN << LOGIN_SUCCESS << pPlayer->MapID << pPlayer->x << pPlayer->y;
+            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->MapID << pPlayer->x << pPlayer->y;
             pSocket->send(AuthPacket);
             pPlayer->Socket = pSocket;
             pWorld->Maps[pPlayer->MapID]->MapObjects.push_back(pPlayer);

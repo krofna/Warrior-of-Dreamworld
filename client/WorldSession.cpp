@@ -60,7 +60,7 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
 
     printf("Recieved MSG_LOGIN: ");
 
-    if(Status != LOGIN_SUCCESS)
+    if(Status != (Uint16)LOGIN_SUCCESS)
     {
         printf("Login fail!\n");
         Socket.disconnect();

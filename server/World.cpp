@@ -25,7 +25,10 @@ World* pWorld;
 
 World::World()
 {
-    Maps.reserve(MAP_COUNT);
+    for(int i=0; i < MAP_COUNT; ++i)
+    {
+        Maps.push_back(new Map);
+    }
 
     pWorldSession = new WorldSession();
     pAuthSession = new AuthSession();
