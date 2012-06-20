@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define AUTH_SESSION_H
 
 #include "WorldSession.h"
+#include "Opcodes.h"
 
 class AuthSession
 {

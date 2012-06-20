@@ -22,7 +22,7 @@ Game::Game() :
 CurrentState(NULL)
 {
     Window.create(sf::VideoMode(40*TILE_SIZE, 32*TILE_SIZE, 32), "[PH]", sf::Style::Fullscreen);
-    //Window.setFramerateLimit(60);
+    Window.setFramerateLimit(60);
 }
 
 Game::~Game()

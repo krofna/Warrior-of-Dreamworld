@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldSession.h"
-#include "../client/Opcodes.h"
+#include "Opcodes.h"
 #include "World.h"
 
 WorldSession::WorldSession()
@@ -31,7 +31,15 @@ void WorldSession::ReceivePackets()
         pSocket = (*SocketIterator);
         while(pSocket->receive(Packet) == sf::Socket::Status::Done)
         {
-            //Here we handle the packet
+            Packet >> Opcode;
+            (this->*OpcodeTable[Opcode].Handler)(Packet);
         }
     }
+}
+
+void WorldSession::HandleNULL(sf::Packet& Packet)
+{
+    // This is used as a placeholder for opcodes
+    // which are handled in a special way, such as
+    // MSG_LOGIN. (See: AuthSession, OpcodeHandler)
 }

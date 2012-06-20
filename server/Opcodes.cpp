@@ -16,28 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef WORLD_SESSION_H
-#define WORLD_SESSION_H
+#include "Opcodes.h"
+#include "AuthSession.h"
 
-#include "Map.h"
-#include "../client/Defines.h"
-
-class WorldSession
+OpcodeHandler OpcodeTable[MSG_COUNT] = 
 {
-    friend class AuthSession;
-public:
-    WorldSession();
-    void ReceivePackets();
-
-    // Opcode handlers
-    void HandleNULL(sf::Packet& Packet);
-
-private:
-    std::vector<sf::TcpSocket*> Sockets;
-
-    sf::TcpSocket* pSocket;
-    sf::Packet Packet;
-    Uint16 Opcode;
+    { "MSG_LOGIN", &WorldSession::HandleNULL}
 };
-
-#endif
