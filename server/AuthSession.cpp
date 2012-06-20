@@ -102,6 +102,8 @@ void AuthSession::LoadOfflinePlayers()
     std::ifstream File("PlayerDB.txt");
     Uint16 MapID, x, y;
 
-    File >> Username >> Password >> MapID >> x >> y;
-    OfflinePlayers[Username] = new Player(NULL, Username, Password, MapID, x, y);
+    while(File >> Username >> Password >> MapID >> x >> y)
+    {
+        OfflinePlayers[Username] = new Player(NULL, Username, Password, MapID, x, y);
+    }
 }
