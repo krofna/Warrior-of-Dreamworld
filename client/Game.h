@@ -24,12 +24,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Game
 {
-    friend class WorldSession;
 public:
     Game();
     ~Game();
     void Run();
 
+    void ChangeState(GameState* NewState);
+
+private:
     GameState* CurrentState;
 };
 

@@ -26,15 +26,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Player : public WorldObject
 {
-    friend class WorldSession;
+    friend class AuthSession;
 
 public:
-    Player(sf::Socket* Socket, const std::string& Username, const std::string& Password, Uint16 MapID, Uint16 x, Uint16 y);
+    Player(sf::TcpSocket* Socket, const std::string& Username, const std::string& Password, Uint16 MapID, Uint16 x, Uint16 y);
     ~Player();
-    void Load();
+
+    void Update(Int32 diff);
 
 private:
-    sf::Socket* Socket;
+    sf::TcpSocket* Socket;
 
     std::string Username;
     std::string Password;

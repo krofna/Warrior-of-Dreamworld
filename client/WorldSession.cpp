@@ -41,7 +41,7 @@ void WorldSession::RecievePackets()
         Packet >> Opcode;
         if(Opcode > MSG_COUNT)
         {
-            printf("Opcode > MSG_COUNT.\n");
+            printf("Recieved %u: Bad opcode!\n", Opcode);
             continue;
         }
         (this->*OpcodeTable[Opcode].Handler)(Packet);
@@ -58,11 +58,11 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
     Uint16 Status;
     Packet >> Status;
 
-    printf("Recieved: MSG_LOGIN: %u\n", Status);
+    printf("Recieved MSG_LOGIN: ");
 
     if(Status != LOGIN_SUCCESS)
     {
-        printf("Login fail\n");
+        printf("Login fail!\n");
         Socket.disconnect();
         return;
     }
@@ -73,8 +73,8 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
 
     if(!Packet.endOfPacket())
     {
+        printf("Packet is bad!\n");
         Socket.disconnect();
-        printf("Invalid packet: too big");
         return;
     }
 
@@ -83,6 +83,5 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
     World* pWorld = new World();
     pWorld->pPlayer = new Player(x, y);
     pWorld->LoadTileMap(MapID);
-    delete pGame->CurrentState;
-    pGame->CurrentState = pWorld;
+    pGame->ChangeState(pWorld);
 }

@@ -27,6 +27,6 @@ int main()
 
     Game* pGame = new Game;
     Session = new WorldSession(pGame);
-    pGame->CurrentState = new Login();
+    pGame->ChangeState(new Login());
     pGame->Run();
 }

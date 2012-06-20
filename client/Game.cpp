@@ -46,3 +46,9 @@ void Game::Run()
         Window.display();
     }
 }
+
+void Game::ChangeState(GameState* NewState)
+{
+    delete CurrentState;
+    CurrentState = NewState;
+}

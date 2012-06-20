@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Player.h"
 
-Player::Player(sf::Socket* Socket, const std::string& Username, const std::string& Password, Uint16 MapID, Uint16 x, Uint16 y) :
+Player::Player(sf::TcpSocket* Socket, const std::string& Username, const std::string& Password, Uint16 MapID, Uint16 x, Uint16 y) :
 Socket(Socket),
 Username(Username),
 Password(Password),
@@ -30,4 +30,8 @@ WorldObject(x, y)
 Player::~Player()
 {
     delete Socket;
+}
+
+void Player::Update(Int32 diff)
+{
 }

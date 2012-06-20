@@ -24,8 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class WorldObject
 {
-    friend class WorldSession;
-
 public:
     WorldObject(Uint16 x, Uint16 y);
     virtual void Draw() = 0;
