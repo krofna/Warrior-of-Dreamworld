@@ -16,9 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "Globals.h"
+#ifndef CONFIG_H
+#define CONFIG_H
 
-sf::RenderWindow Window;
-WorldSession* Session;
-Uint16 WindowWidth;
-Uint16 WindowHeight;
+#include "GameState.h"
+
+class Config : public GameState
+{
+public:
+    Config();
+    void HandleEvent(sf::Event Event);
+    void Draw();
+
+private:
+};
+
+#endif

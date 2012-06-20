@@ -19,13 +19,34 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Login.h"
 #include "Game.h"
 #include "WorldSession.h"
+#include "Config.h"
+#include <boost/filesystem.hpp>
 
 int main()
 {
     std::ofstream ErrorLog("Error Log.txt"), DebugLog("Debug Log.txt");
     std::cerr.rdbuf(ErrorLog.rdbuf()); std::clog.rdbuf(DebugLog.rdbuf());
 
-    Game* pGame = new Game;
+    Game* pGame;
+
+    if(boost::filesystem::exists("Config.txt"))
+    {
+        std::ifstream CfgFile("Config.txt");
+        bool FullScreen;
+
+        CfgFile >> WindowWidth >> WindowHeight >> FullScreen;
+        pGame = new Game(FullScreen);
+    }
+    else
+    {
+        std::cerr << "Cannot find Config.txt. Taking a wild guess... [FIXME]: Select configuration in game" << std::endl;
+        //pGame->ChangeState(new Config());
+        WindowWidth = (*sf::VideoMode::getFullscreenModes().begin()).width;
+        WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
+        std::cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << std::endl;
+        pGame = new Game(true);
+    }
+
     Session = new WorldSession(pGame);
     pGame->ChangeState(new Login());
     pGame->Run();

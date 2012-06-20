@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 World::World() :
 TileMap     (sf::PrimitiveType::Quads),
-WorldView   (sf::FloatRect(0, 0, 40 * TILE_SIZE, 32 * TILE_SIZE)), //ph
+WorldView   (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
 MoveWorldView(MOVE_STOP)
 {
     Window.setView(WorldView);
@@ -115,13 +115,13 @@ void World::HandleEvent(sf::Event Event)
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
 
-        if(sf::Mouse::getPosition(Window).x >= 39 * TILE_SIZE) // PH
+        if(sf::Mouse::getPosition(Window).x >= WindowWidth - TILE_SIZE) // PH
             MoveWorldView |= MOVE_RIGHT;
 
-        else if(sf::Mouse::getPosition().x < 1 * TILE_SIZE) // PH
+        else if(sf::Mouse::getPosition(Window).x < 1 * TILE_SIZE) // PH
             MoveWorldView |= MOVE_LEFT;
 
-        if(sf::Mouse::getPosition(Window).y > 31 * TILE_SIZE) // PH
+        if(sf::Mouse::getPosition(Window).y > WindowHeight - TILE_SIZE) // PH
             MoveWorldView |= MOVE_DOWN;
 
         else if(sf::Mouse::getPosition(Window).y < 1 * TILE_SIZE) // PH

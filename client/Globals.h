@@ -28,4 +28,8 @@ extern sf::RenderWindow Window;
 #include "WorldSession.h"
 extern WorldSession* Session;
 
+#include "Defines.h"
+extern Uint16 WindowWidth;
+extern Uint16 WindowHeight;
+
 #endif
