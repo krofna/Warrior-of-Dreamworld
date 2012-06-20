@@ -20,12 +20,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 int main()
 {
-    std::ofstream File("map1.txt");
+    std::ofstream File("map0.txt");
 
-    File << "dg_edging132.gif " << 256*256 << " ";
+    File << "dg_edging132.gif " << 100*100 << " ";
 
 
-    for(int y = 0; y < 255; ++y)
-        for(int x = 0; x < 255; ++x)
+    for(int y = 0; y < 100; ++y)
+        for(int x = 0; x < 100; ++x)
             File << x << " " << y << " 1 15 ";
 }
