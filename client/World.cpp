@@ -108,8 +108,11 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::Down:
             break;
+        default:
+			break;
         }
         break;
+        
 
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
@@ -127,5 +130,10 @@ void World::HandleEvent(sf::Event Event)
             MoveWorldView |= MOVE_UP;
 
         break;
+        
+    default:
+		break;
     }
+    
+ 
 }

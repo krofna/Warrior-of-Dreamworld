@@ -31,7 +31,7 @@ using sf::Int32;
 using sf::Int64;
 
 #define TILE_SIZE 32
-#define WORLD_VIEW_OFFSET TILE_SIZE.0f
+#define WORLD_VIEW_OFFSET 32
 #define MAP_COUNT 1
 
 enum

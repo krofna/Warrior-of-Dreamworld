@@ -49,15 +49,15 @@ void Login::HandleEvent(sf::Event Event)
                 Session->SendPacket(Packet);
             }
         }
-        else if(Event.key.code == sf::Keyboard::Back)
+        else if(Event.key.code == sf::Keyboard::BackSpace)
         {
             if(InputFlag)
             {
-                Username.pop_back();
+                Username.erase(Username.end()-1);
                 UsernameText.setString(Username);
             }
             else
-                Password.pop_back();
+                Password.erase(Password.end()-1);
         }
         else if(Event.key.code == sf::Keyboard::Escape)
             Window.close();
@@ -77,6 +77,8 @@ void Login::HandleEvent(sf::Event Event)
             if(Event.text.unicode > 64)
                 Password += static_cast<char>(Event.key.code);
         }
+    default:
+		break;
     }
 }
 
