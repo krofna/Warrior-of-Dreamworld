@@ -32,7 +32,6 @@ MoveWorldView(MOVE_STOP)
 
 World::~World()
 {
-    delete pPlayer;
 }
 
 void World::LoadTileMap(Uint16 MapID)
@@ -85,10 +84,10 @@ void World::Draw()
         Window.setView(WorldView);
     }
     
-    for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
-        i->second->Draw();
-
     Window.draw(TileMap, MapStates);
+
+    for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
+        (*i)->Draw();
 }
 
 void World::HandleEvent(sf::Event Event)
@@ -115,16 +114,16 @@ void World::HandleEvent(sf::Event Event)
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
 
-        if(sf::Mouse::getPosition(Window).x >= WindowWidth - TILE_SIZE) // PH
+        if(sf::Mouse::getPosition(Window).x >= WindowWidth - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_RIGHT;
 
-        else if(sf::Mouse::getPosition(Window).x < 1 * TILE_SIZE) // PH
+        else if(sf::Mouse::getPosition(Window).x < TILE_SIZE / 2)
             MoveWorldView |= MOVE_LEFT;
 
-        if(sf::Mouse::getPosition(Window).y > WindowHeight - TILE_SIZE) // PH
+        if(sf::Mouse::getPosition(Window).y > WindowHeight - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_DOWN;
 
-        else if(sf::Mouse::getPosition(Window).y < 1 * TILE_SIZE) // PH
+        else if(sf::Mouse::getPosition(Window).y < TILE_SIZE / 2)
             MoveWorldView |= MOVE_UP;
 
         break;

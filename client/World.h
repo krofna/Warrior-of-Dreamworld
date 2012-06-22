@@ -19,9 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef MAP_H
 #define MAP_H
 
-#include "Defines.h"
 #include "GameState.h"
-#include "Player.h"
+#include "Defines.h"
+#include "WorldObject.h"
+
+class GameState;
+class WorldObject;
 
 class World : public GameState
 {
@@ -41,8 +44,8 @@ private:
     sf::View WorldView;
     Uint8 MoveWorldView;
 
-    std::map<std::pair<Uint16, Uint16>, WorldObject*> WorldObjectMap;
-    Player* pPlayer;
+    //std::map<Uint32, WorldObject*> WorldObjectMap;
+    std::vector<WorldObject*> WorldObjectMap; //PH!! see above
 };
 
 #endif

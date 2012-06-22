@@ -19,11 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef GAME_H
 #define GAME_H
 
-#include "World.h"
+#include "GameState.h"
 #include "Globals.h"
 
 class Game
 {
+    friend class WorldSession;
 public:
     Game(bool FullScreen);
     ~Game();

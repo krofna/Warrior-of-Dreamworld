@@ -20,16 +20,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_OBJECT_H
 
 #include "../client/Defines.h"
+#include <SFML/Network.hpp>
 
 class WorldObject
 {
 public:
-    WorldObject(Uint16 x, Uint16 y);
+    WorldObject(std::string Tileset, Uint16 MapID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
+
     virtual void Update(Int32 diff) = 0;
+    virtual sf::Packet PackData() = 0;
 
 protected:
+    std::string Tileset;
+
+    Uint16 MapID;
     Uint16 x;
     Uint16 y;
+    Uint16 tx;
+    Uint16 ty;
 };
 
 #endif

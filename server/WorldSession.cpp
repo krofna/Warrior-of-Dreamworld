@@ -20,21 +20,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Opcodes.h"
 #include "World.h"
 
-WorldSession::WorldSession()
+WorldSession::WorldSession(sf::TcpSocket* pSocket, Player* pPlayer) :
+pSocket(pSocket),
+pPlayer(pPlayer)
 {
 }
 
 void WorldSession::ReceivePackets()
 {
-    for(auto SocketIterator = Sockets.begin(); SocketIterator != Sockets.end(); ++SocketIterator)
+    while(pSocket->receive(Packet) == sf::Socket::Status::Done)
     {
-        pSocket = (*SocketIterator);
-        while(pSocket->receive(Packet) == sf::Socket::Status::Done)
-        {
-            Packet >> Opcode;
-            (this->*OpcodeTable[Opcode].Handler)(Packet);
-        }
+        Packet >> Opcode;
+        (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
+}
+
+void WorldSession::SendPacket(sf::Packet& Packet)
+{
+    pSocket->send(Packet);
 }
 
 void WorldSession::HandleNULL(sf::Packet& Packet)

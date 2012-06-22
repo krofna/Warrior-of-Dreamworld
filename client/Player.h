@@ -18,16 +18,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #ifndef PLAYER_H
 #define PLAYER_H
-
+/*
 #include "WorldObject.h"
 
 class Player : public WorldObject
 {
 public:
-    Player(Uint16 x, Uint16 y);
     void Draw();
 
 private:
-};
+};*/
 
 #endif

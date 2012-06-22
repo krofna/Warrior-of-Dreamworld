@@ -20,8 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_SESSION_H
 
 #include <SFML/Network.hpp>
+#include "World.h"
 
 class Game;
+class World;
 
 class WorldSession
 {
@@ -33,6 +35,7 @@ public:
     void SendPacket(sf::Packet& Packet);
 
     void HandleLoginOpcode(sf::Packet& Packet);
+    void HandleAddObjectOpcode(sf::Packet& Packet);
 
 private:
     sf::TcpSocket Socket;
@@ -40,6 +43,7 @@ private:
     sf::Packet Packet;
 
     Game* pGame;
+    World* pWorld;
 };
 
 #endif

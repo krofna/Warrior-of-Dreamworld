@@ -22,16 +22,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class World
 {
-    friend class AuthSession;
     friend class WorldSession;
+    friend class AuthSession;
 public:
     World();
     int Run();
 
+    void AddSession(sf::TcpSocket* pSocket, Player* pPlayer, Uint16 MapID);
+
 private:
     std::vector<Map*> Maps;
+    std::vector<WorldSession*> Sessions;
 
-    WorldSession* pWorldSession;
     AuthSession* pAuthSession;
 
     void Update(Int32 diff);

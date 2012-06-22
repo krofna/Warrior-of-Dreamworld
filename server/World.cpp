@@ -30,7 +30,6 @@ World::World()
         Maps.push_back(new Map);
     }
 
-    pWorldSession = new WorldSession();
     pAuthSession = new AuthSession();
 }
 
@@ -43,7 +42,9 @@ int World::Run()
     while(true)
     {
         pAuthSession->HandleAll();
-        pWorldSession->ReceivePackets();
+
+        for(auto SessionIterator = Sessions.begin(); SessionIterator != Sessions.end(); ++SessionIterator)
+            (*SessionIterator)->ReceivePackets();
 
         if(Clock.getElapsedTime().asMilliseconds() < SERVER_HEARTHBEAT)
             sf::sleep(sf::milliseconds(SERVER_HEARTHBEAT - Clock.getElapsedTime().asMilliseconds()));
@@ -61,4 +62,12 @@ void World::Update(Int32 diff)
     {
         (*MapIterator)->Update(diff);
     }
+}
+
+void World::AddSession(sf::TcpSocket* pSocket, Player* pPlayer, Uint16 MapID)
+{
+    WorldSession* pWorldSession = new WorldSession(pSocket, pPlayer);
+    pPlayer->BindSession(pWorldSession);
+    Sessions.push_back(pWorldSession);
+    Maps[MapID]->AddPlayer(pPlayer);
 }

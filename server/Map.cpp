@@ -24,4 +24,32 @@ void Map::Update(Int32 diff)
     {
         (*ObjectIterator)->Update(diff);
     }
+
+    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
+    {
+        (*PlayerIterator)->Update(diff);
+    }
+}
+
+void Map::AddPlayer(Player* pPlayer)
+{
+    // Pack & send all data about world objects to new player
+    for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
+    {
+        pPlayer->SendPacket((*ObjectIterator)->PackData());
+    }
+
+    // Pack & send all data about players in map to new player
+    // and send data about the new player to all other players
+    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
+    {
+        pPlayer->SendPacket((*PlayerIterator)->PackData());
+        ((*PlayerIterator)->SendPacket(pPlayer->PackData()));
+    }
+
+    // Send the new player his data
+    pPlayer->SendPacket(pPlayer->PackData());
+
+    // Finally, we add the new player to the map
+    Players.push_back(pPlayer);
 }

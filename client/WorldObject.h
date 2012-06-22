@@ -19,14 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_OBJECT_H
 #define WORLD_OBJECT_H
 
-#include <SFML/Graphics.hpp>
 #include "Defines.h"
+#include "Globals.h"
+/*
+TODO: Maybe everything should be WorldObject as far as client is concerned?
+*/
 
 class WorldObject
 {
 public:
-    WorldObject(Uint16 x, Uint16 y);
-    virtual void Draw() = 0;
+    WorldObject(std::string Tileset, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
+    virtual void Draw() { Window.draw(ObjectSprite); };
 
 private:
     sf::Sprite ObjectSprite;

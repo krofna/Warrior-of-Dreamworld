@@ -17,21 +17,44 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Player.h"
+#include "Opcodes.h"
 
-Player::Player(sf::TcpSocket* Socket, const std::string& Username, const std::string& Password, Uint16 MapID, Uint16 x, Uint16 y) :
-Socket(Socket),
+Player::Player
+    (
+    const std::string& Username, 
+    const std::string& Password, 
+    const std::string& Tileset,
+    Uint16 MapID, 
+    Uint16 x, Uint16 y,
+    Uint16 tx, Uint16 ty
+    ) :
 Username(Username),
 Password(Password),
-MapID(MapID),
-WorldObject(x, y)
+WorldObject(Tileset, MapID, x, y, tx, ty)
 {
 }
 
 Player::~Player()
 {
-    delete Socket;
 }
 
 void Player::Update(Int32 diff)
 {
+}
+
+sf::Packet Player::PackData()
+{
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << x << y << tx << ty;
+    return Packet;
+}
+
+void Player::SendPacket(sf::Packet Packet)
+{
+    pWorldSession->SendPacket(Packet);
+}
+
+void Player::BindSession(WorldSession* pWorldSession)
+{
+    this->pWorldSession = pWorldSession;
 }

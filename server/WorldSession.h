@@ -19,22 +19,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_SESSION_H
 #define WORLD_SESSION_H
 
-#include "Map.h"
 #include "../client/Defines.h"
+#include "Player.h"
+
+class Player;
 
 class WorldSession
 {
     friend class AuthSession;
 public:
-    WorldSession();
+    WorldSession(sf::TcpSocket* pSocket, Player* pPlayer);
     void ReceivePackets();
+
+    void SendPacket(sf::Packet& Packet);
 
     // Opcode handlers
     void HandleNULL(sf::Packet& Packet);
 
 private:
-    std::vector<sf::TcpSocket*> Sockets;
-
+    Player* pPlayer;
     sf::TcpSocket* pSocket;
     sf::Packet Packet;
     Uint16 Opcode;

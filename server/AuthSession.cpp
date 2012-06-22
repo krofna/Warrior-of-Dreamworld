@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "AuthSession.h"
-#include "Opcodes.h"
 #include "World.h"
 #include <fstream>
 
@@ -82,12 +81,13 @@ void AuthSession::HandleAll()
             }
 
             AuthPacket.clear();
-            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->MapID << pPlayer->x << pPlayer->y;
-            pSocket->send(AuthPacket);
-            pPlayer->Socket = pSocket;
-            pWorld->Maps[pPlayer->MapID]->MapObjects.push_back(pPlayer);
-            pWorld->pWorldSession->Sockets.push_back(pSocket);
+            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->MapID;
 
+            pSocket->send(AuthPacket);
+
+            pWorld->AddSession(pSocket, pPlayer, pPlayer->MapID);
+
+            OfflinePlayers.erase(pPlayer->Username);
             SocketIterator = Sockets.erase(SocketIterator);
         }
         else
@@ -100,10 +100,11 @@ void AuthSession::HandleAll()
 void AuthSession::LoadOfflinePlayers()
 {
     std::ifstream File("PlayerDB.txt");
-    Uint16 MapID, x, y;
+    Uint16 MapID, x, y, tx, ty;
+    std::string Tileset;
 
-    while(File >> Username >> Password >> MapID >> x >> y)
+    while(File >> Username >> Password >> Tileset >> MapID >> x >> y >> tx >> ty)
     {
-        OfflinePlayers[Username] = new Player(NULL, Username, Password, MapID, x, y);
+        OfflinePlayers[Username] = new Player(Username, Password, Tileset, MapID, x, y, tx, ty);
     }
 }

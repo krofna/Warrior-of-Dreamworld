@@ -25,8 +25,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 struct Map
 {
     //std::map<Uint64, WorldObject*> MapObjects;
+    //std::map<Uint64, Player*> Players
     std::vector<WorldObject*> MapObjects; //TEMP: see above
+    std::vector<Player*> Players; //TEMP: see above
 
+    void AddPlayer(Player* pPlayer);
     virtual void Update(Int32 diff);
 };
 

@@ -19,28 +19,43 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <SFML/Network.hpp>
 #include <string>
 #include "../client/Defines.h"
 #include "WorldObject.h"
+#include "WorldSession.h"
+#include <SFML/Network.hpp>
+
+class WorldSession;
 
 class Player : public WorldObject
 {
     friend class AuthSession;
 
 public:
-    Player(sf::TcpSocket* Socket, const std::string& Username, const std::string& Password, Uint16 MapID, Uint16 x, Uint16 y);
+    Player
+        (
+        const std::string& Username, 
+        const std::string& Password, 
+        const std::string& Tileset,
+        Uint16 MapID, 
+        Uint16 x, Uint16 y,
+        Uint16 tx, Uint16 ty
+        );
+
     ~Player();
 
     void Update(Int32 diff);
 
+    void SendPacket(sf::Packet Packet);
+    sf::Packet PackData();
+
+    void BindSession(WorldSession* pWorldSession);
+
 private:
-    sf::TcpSocket* Socket;
+    WorldSession* pWorldSession;
 
     std::string Username;
     std::string Password;
-
-    Uint16 MapID;
 };
 
 #endif

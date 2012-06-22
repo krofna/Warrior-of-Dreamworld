@@ -23,7 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <cassert>
 
 WorldSession::WorldSession(Game* pGame) :
-pGame(pGame)
+pGame(pGame),
+pWorld(NULL)
 {
 }
 
@@ -44,6 +45,7 @@ void WorldSession::RecievePackets()
             printf("Recieved %u: Bad opcode!\n", Opcode);
             continue;
         }
+        printf("Recieved %u: ", Opcode);
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
 }
@@ -58,8 +60,6 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
     Uint16 Status;
     Packet >> Status;
 
-    printf("Recieved MSG_LOGIN: ");
-
     if(Status != (Uint16)LOGIN_SUCCESS)
     {
         printf("Login fail!\n");
@@ -67,13 +67,13 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
         return;
     }
 
-    Uint16 MapID, x, y;
+    Uint16 MapID;
     
-    Packet >> MapID >> x >> y;
+    Packet >> MapID;
 
     if(!Packet.endOfPacket())
     {
-        printf("Packet is bad!\n");
+        printf("Packet is too big!\n");
         Socket.disconnect();
         return;
     }
@@ -81,7 +81,17 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
     printf("Packet is good!\n");
 
     World* pWorld = new World();
-    pWorld->pPlayer = new Player(x, y);
+    this->pWorld = pWorld;
     pWorld->LoadTileMap(MapID);
     pGame->ChangeState(pWorld);
+}
+
+void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
+{
+    Uint16 x, y, tx, ty;
+    std::string Tileset;
+    Packet >> Tileset >> x >> y >> tx >> ty;
+
+    WorldObject* pNewObject = new WorldObject(Tileset, x, y, tx, ty);
+    pWorld->WorldObjectMap.push_back(pNewObject);
 }

@@ -20,7 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.h"
 #include "WorldSession.h"
 #include "Config.h"
+
+#ifdef USE_BOOST
 #include <boost/filesystem.hpp>
+#endif
 
 int main()
 {
@@ -28,7 +31,7 @@ int main()
     std::cerr.rdbuf(ErrorLog.rdbuf()); std::clog.rdbuf(DebugLog.rdbuf());
 
     Game* pGame;
-
+#ifdef USE_BOOST
     if(boost::filesystem::exists("Config.txt"))
     {
         std::ifstream CfgFile("Config.txt");
@@ -38,6 +41,7 @@ int main()
         pGame = new Game(FullScreen);
     }
     else
+#endif
     {
         std::cerr << "Cannot find Config.txt. Taking a wild guess... [FIXME]: Select configuration in game" << std::endl;
         //pGame->ChangeState(new Config());
