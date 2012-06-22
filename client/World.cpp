@@ -108,6 +108,10 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::Down:
             break;
+            
+        case sf::Keyboard::Escape:
+            Window.close();
+            
         default:
             break;
         }
