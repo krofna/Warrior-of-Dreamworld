@@ -18,12 +18,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #ifndef WORLD_H
 #define WORLD_H
+
 #include "Map.h"
+#include "AuthSession.h"
 
 class World
 {
     friend class WorldSession;
-    friend class AuthSession;
 public:
     World();
     int Run();
