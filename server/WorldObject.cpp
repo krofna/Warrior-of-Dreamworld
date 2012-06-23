@@ -18,9 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldObject.h"
 
-WorldObject::WorldObject(std::string Tileset, Uint16 MapID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty) :
+WorldObject::WorldObject(std::string Tileset, Uint16 MapID, Uint32 ObjID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty) :
 Tileset(Tileset),
 MapID(MapID),
+ObjID(ObjID),
 x(x),
 y(y),
 tx(tx),

@@ -24,8 +24,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class WorldObject
 {
+    const Uint32 ObjID;
 public:
-    WorldObject(std::string Tileset, Uint16 MapID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
+    WorldObject(std::string Tileset, Uint16 MapID, Uint32 ObjID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
 
     virtual void Update(Int32 diff) = 0;
     virtual sf::Packet PackData() = 0;

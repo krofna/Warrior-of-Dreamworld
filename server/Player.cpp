@@ -24,13 +24,13 @@ Player::Player
     const std::string& Username, 
     const std::string& Password, 
     const std::string& Tileset,
-    Uint16 MapID, 
+    Uint16 MapID, Uint32 ObjID,
     Uint16 x, Uint16 y,
     Uint16 tx, Uint16 ty
     ) :
 Username(Username),
 Password(Password),
-WorldObject(Tileset, MapID, x, y, tx, ty)
+WorldObject(Tileset, MapID, ObjID, x, y, tx, ty)
 {
 }
 

@@ -37,7 +37,7 @@ public:
         const std::string& Username, 
         const std::string& Password, 
         const std::string& Tileset,
-        Uint16 MapID, 
+        Uint16 MapID, Uint32 ObjID,
         Uint16 x, Uint16 y,
         Uint16 tx, Uint16 ty
         );
