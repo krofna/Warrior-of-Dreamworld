@@ -87,7 +87,7 @@ void World::Draw()
     Window.draw(TileMap, MapStates);
 
     for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
-        (*i)->Draw();
+        (*i).second->Draw();
 }
 
 void World::HandleEvent(sf::Event Event)

@@ -91,8 +91,9 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
 void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
 {
     Uint16 x, y, tx, ty;
+    Uint32 ObjID;
     std::string Tileset;
-    Packet >> Tileset >> x >> y >> tx >> ty;
+    Packet >> Tileset >> ObjID >> x >> y >> tx >> ty;
 
     if(!Packet.endOfPacket())
     {
@@ -101,7 +102,7 @@ void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
     }
 
     WorldObject* pNewObject = new WorldObject(Tileset, x, y, tx, ty);
-    pWorld->WorldObjectMap.push_back(pNewObject);
+    pWorld->WorldObjectMap[ObjID] = pNewObject;
     printf("Packet is good!\n");
 }
 

@@ -44,8 +44,8 @@ private:
     sf::View WorldView;
     Uint8 MoveWorldView;
 
-    //std::map<Uint32, WorldObject*> WorldObjectMap;
-    std::vector<WorldObject*> WorldObjectMap; //PH!! see above
+    std::map<Uint32, WorldObject*> WorldObjectMap;
+    //std::vector<WorldObject*> WorldObjectMap; //PH!! see above
 };
 
 #endif
