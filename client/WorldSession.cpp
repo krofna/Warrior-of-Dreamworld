@@ -113,5 +113,5 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
     
     Packet >> ObjID >> Direction;
     
-    
+    pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(Direction);
 }
