@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_SESSION_H
 #define WORLD_SESSION_H
 
-#include "../client/Defines.h"
 #include "Player.h"
 
 class Player;
