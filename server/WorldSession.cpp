@@ -28,8 +28,11 @@ pPlayer(pPlayer)
 
 void WorldSession::ReceivePackets()
 {
+    // Loop as long as there are packets to receive
     while(pSocket->receive(Packet) == sf::Socket::Status::Done)
     {
+        // Extract the opcode and call the handler
+        // function depending on the opcode recieved
         Packet >> Opcode;
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }

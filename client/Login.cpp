@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Login.h"
 #include "Globals.h"
 #include "Opcodes.h"
-#include "Defines.h"
 
 Login::Login() :
 InputFlag(true)

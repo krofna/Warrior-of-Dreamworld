@@ -92,6 +92,13 @@ void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
     std::string Tileset;
     Packet >> Tileset >> x >> y >> tx >> ty;
 
+    if(!Packet.endOfPacket())
+    {
+        printf("Packet is too big!\n");
+        return;
+    }
+
     WorldObject* pNewObject = new WorldObject(Tileset, x, y, tx, ty);
     pWorld->WorldObjectMap.push_back(pNewObject);
+    printf("Packet is good!\n");
 }

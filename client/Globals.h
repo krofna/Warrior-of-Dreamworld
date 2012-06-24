@@ -19,7 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <SFML/Graphics.hpp>
+#include "Defines.h"
+extern Uint16 WindowWidth;
+extern Uint16 WindowHeight;
 extern sf::RenderWindow Window;
 
 #include <iostream>
@@ -28,9 +30,5 @@ extern sf::RenderWindow Window;
 #include "WorldSession.h"
 class WorldSession;
 extern WorldSession* Session;
-
-#include "Defines.h"
-extern Uint16 WindowWidth;
-extern Uint16 WindowHeight;
 
 #endif

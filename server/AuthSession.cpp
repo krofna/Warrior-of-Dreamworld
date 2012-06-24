@@ -35,6 +35,9 @@ AuthSession::~AuthSession()
 
 void AuthSession::HandleAll()
 {
+    // As long as there are clients who want to connect
+    // add new socket and set the blocking to false to
+    // not pause server untill new packet is received
     while(Listener.accept(*NewSocket) == sf::Socket::Status::Done)
     {
         Sockets.push_back(NewSocket);
@@ -44,6 +47,8 @@ void AuthSession::HandleAll()
 
     sf::TcpSocket* pSocket;
 
+    // We iterate through sockets who are not yet logged in, but
+    // connected to the server to receive authentication requests
     for(auto SocketIterator = Sockets.begin(); SocketIterator != Sockets.end();)
     {
         pSocket = (*SocketIterator);
@@ -54,6 +59,7 @@ void AuthSession::HandleAll()
             if(Opcode != (Uint16)MSG_LOGIN)
                 continue;
 
+            // Check if username exists
             AuthPacket >> Username;
             auto Iterator = OfflinePlayers.find(Username);
             if(Iterator == OfflinePlayers.end())
@@ -67,6 +73,7 @@ void AuthSession::HandleAll()
                 continue;
             }
 
+            // Check if passwords match
             AuthPacket >> Password;
             Player* pPlayer = Iterator->second;
             if(pPlayer->Password != Password)
@@ -80,13 +87,17 @@ void AuthSession::HandleAll()
                 continue;
             }
 
+            // Clean the packet and tell the client
+            // that he logged in sucessfully
             AuthPacket.clear();
             AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->MapID;
-
             pSocket->send(AuthPacket);
 
+            // Create new WorldSession for the player
             pWorld->AddSession(pSocket, pPlayer, pPlayer->MapID);
 
+            // Remove the player and matching socket 
+            // from list of offline player list
             OfflinePlayers.erase(pPlayer->Username);
             SocketIterator = Sockets.erase(SocketIterator);
         }
