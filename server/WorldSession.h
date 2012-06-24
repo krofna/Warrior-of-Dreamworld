@@ -34,6 +34,8 @@ public:
 
     // Opcode handlers
     void HandleNULL(sf::Packet& Packet);
+    void HandleMovement(sf::Packet& Packet);
+    
 
 private:
     Player* pPlayer;

@@ -31,6 +31,8 @@ public:
     virtual void Update(Int32 diff) = 0;
     virtual sf::Packet PackData() = 0;
 
+    void UpdateCoordinates(Uint8 Direction);
+
 protected:
     std::string Tileset;
 

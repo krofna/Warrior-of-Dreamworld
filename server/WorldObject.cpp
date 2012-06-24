@@ -28,3 +28,22 @@ tx(tx),
 ty(ty)
 {
 }
+
+void WorldObject::UpdateCoordinates(Uint8 Direction)
+{
+    switch(Direction)
+    {
+      case MOVE_UP:
+        y--;
+        break;
+      case MOVE_DOWN:
+        y++;
+        break;
+      case MOVE_LEFT:
+        x--;
+        break;
+      case MOVE_RIGHT:
+        x++;
+        break;        
+    }
+}
