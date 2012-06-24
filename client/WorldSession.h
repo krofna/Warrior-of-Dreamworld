@@ -36,6 +36,7 @@ public:
 
     void HandleLoginOpcode(sf::Packet& Packet);
     void HandleAddObjectOpcode(sf::Packet& Packet);
+    void HandleMoveObjectOpcode(sf::Packet& Packet);
 
 private:
     sf::TcpSocket Socket;

@@ -60,6 +60,10 @@ void WorldSession::HandleMovement(sf::Packet& Packet)
 {
     Uint8 Direction;
     Packet >> Direction;
+    Packet.clear();
 
     pPlayer->UpdateCoordinates(Direction);
+    
+    Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << Direction;
+    pPlayer->SendPacket(Packet);
 }

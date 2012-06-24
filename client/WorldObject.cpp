@@ -25,3 +25,22 @@ WorldObject::WorldObject(std::string Tileset, Uint16 x, Uint16 y, Uint16 tx, Uin
     ObjectSprite.setTextureRect(sf::IntRect(tx * TILE_SIZE, ty * TILE_SIZE, TILE_SIZE, TILE_SIZE));
     ObjectSprite.setPosition((float)x * TILE_SIZE, (float)y * TILE_SIZE);
 }
+
+void WorldObject::UpdateCoordinates(Uint8 Direction)
+{
+    switch(Direction)
+    {
+     case MOVE_UP:
+        ObjectSprite.move(0, -1 * TILE_SIZE);
+        break;
+     case MOVE_DOWN:
+        ObjectSprite.move(0, 1 * TILE_SIZE);
+        break;
+     case MOVE_LEFT:
+        ObjectSprite.move(-1 * TILE_SIZE, 0);
+        break;
+     case MOVE_RIGHT:
+        ObjectSprite.move(1 * TILE_SIZE, 0);
+        break;
+    }
+}

@@ -33,6 +33,11 @@ public:
 
     void UpdateCoordinates(Uint8 Direction);
 
+    Uint32 GetObjectID() const
+    {
+        return ObjID;
+    }
+
 protected:
     std::string Tileset;
 

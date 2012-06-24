@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.h"
 
-#define SERVER_HEARTHBEAT 50
+#define SERVER_HEARTBEAT 50
 
 World* pWorld;
 
@@ -48,8 +48,8 @@ int World::Run()
             (*SessionIterator)->ReceivePackets();
 
         // If time between updates was less than 50ms, sleep
-        if(Clock.getElapsedTime().asMilliseconds() < SERVER_HEARTHBEAT)
-            sf::sleep(sf::milliseconds(SERVER_HEARTHBEAT - Clock.getElapsedTime().asMilliseconds()));
+        if(Clock.getElapsedTime().asMilliseconds() < SERVER_HEARTBEAT)
+            sf::sleep(sf::milliseconds(SERVER_HEARTBEAT - Clock.getElapsedTime().asMilliseconds()));
 
         // Call the world update
         Update(Clock.getElapsedTime().asMilliseconds());

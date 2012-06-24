@@ -53,3 +53,11 @@ void Map::AddPlayer(Player* pPlayer)
     // Finally, we add the new player to the map
     Players.push_back(pPlayer);
 }
+
+void Map::SendToPlayers(sf::Packet& Packet)
+{
+    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
+    {
+        (*PlayerIterator)->SendPacket(Packet);
+    }
+}

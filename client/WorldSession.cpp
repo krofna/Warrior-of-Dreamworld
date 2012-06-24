@@ -104,3 +104,13 @@ void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
     pWorld->WorldObjectMap.push_back(pNewObject);
     printf("Packet is good!\n");
 }
+
+void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
+{
+    Uint32 ObjID;
+    Uint8 Direction;
+    
+    Packet >> ObjID >> Direction;
+    
+    
+}

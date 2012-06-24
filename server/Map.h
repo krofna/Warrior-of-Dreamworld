@@ -30,6 +30,8 @@ struct Map
 
     void AddPlayer(Player* pPlayer);
     virtual void Update(Int32 diff);
+
+    void SendToPlayers(sf::Packet& Packet);
 };
 
 #endif

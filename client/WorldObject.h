@@ -31,6 +31,8 @@ public:
     WorldObject(std::string Tileset, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
     virtual void Draw() { Window.draw(ObjectSprite); };
 
+    void UpdateCoordinates(Uint8 Direction);
+
 private:
     sf::Sprite ObjectSprite;
 };
