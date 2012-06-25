@@ -34,6 +34,11 @@ void WorldSession::ReceivePackets()
         // Extract the opcode and call the handler
         // function depending on the opcode recieved
         Packet >> Opcode;
+        if(Opcode >= MSG_COUNT)
+        {
+            printf("Received %u: Bad opcode!\n", Opcode);
+        }
+        printf("Received %s: ", OpcodeTable[Opcode].name);
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
 }

@@ -38,16 +38,20 @@ int World::Run()
 
     //TODO: Load all
 
+    // Server main loop
     while(true)
     {
         pAuthSession->HandleAll();
 
+        // Receive packets from all clients
         for(auto SessionIterator = Sessions.begin(); SessionIterator != Sessions.end(); ++SessionIterator)
             (*SessionIterator)->ReceivePackets();
 
+        // If time between updates was less than 50ms, sleep
         if(Clock.getElapsedTime().asMilliseconds() < SERVER_HEARTHBEAT)
             sf::sleep(sf::milliseconds(SERVER_HEARTHBEAT - Clock.getElapsedTime().asMilliseconds()));
 
+        // Call the world update
         Update(Clock.getElapsedTime().asMilliseconds());
         Clock.restart();
     }

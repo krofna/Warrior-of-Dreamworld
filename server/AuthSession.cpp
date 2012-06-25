@@ -64,6 +64,7 @@ void AuthSession::HandleAll()
             auto Iterator = OfflinePlayers.find(Username);
             if(Iterator == OfflinePlayers.end())
             {
+                // Invalid username, send response
                 AuthPacket.clear();
                 AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_FAIL_BAD_USERNAME;
                 pSocket->send(AuthPacket);
@@ -78,6 +79,7 @@ void AuthSession::HandleAll()
             Player* pPlayer = Iterator->second;
             if(pPlayer->Password != Password)
             {
+                // Invalid password, send response
                 AuthPacket.clear();
                 AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_FAIL_BAD_PASSWORD;
                 pSocket->send(AuthPacket);

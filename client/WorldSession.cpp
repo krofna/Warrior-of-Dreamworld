@@ -37,6 +37,7 @@ bool WorldSession::ConnectToServer()
 
 void WorldSession::RecievePackets()
 {
+    // Loop as long as there are packets to receive from server
     while(Socket.receive(Packet) == sf::Socket::Status::Done)
     {
         Packet >> Opcode;
@@ -45,7 +46,8 @@ void WorldSession::RecievePackets()
             printf("Recieved %u: Bad opcode!\n", Opcode);
             continue;
         }
-        printf("Recieved %u: ", Opcode);
+        printf("Recieved %s: ", OpcodeTable[Opcode].name);
+        // Handle the packet
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
 }
