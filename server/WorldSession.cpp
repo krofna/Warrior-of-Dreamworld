@@ -54,3 +54,11 @@ void WorldSession::HandleNULL(sf::Packet& Packet)
     // which are handled in a special way, such as
     // MSG_LOGIN. (See: AuthSession, OpcodeHandler)
 }
+
+void WorldSession::HandleMovement(sf::Packet& Packet)
+{
+    Uint8 Direction;
+    Packet >> Direction;
+
+    pPlayer->UpdateCoordinates(Direction);
+}
