@@ -37,6 +37,7 @@ void WorldSession::ReceivePackets()
         if(Opcode >= MSG_COUNT)
         {
             printf("Received %u: Bad opcode!\n", Opcode);
+            continue;
         }
         printf("Received %s: ", OpcodeTable[Opcode].name);
         (this->*OpcodeTable[Opcode].Handler)(Packet);
