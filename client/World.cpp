@@ -138,6 +138,4 @@ void World::HandleEvent(sf::Event Event)
     default:
         break;
     }
-    
- 
 }

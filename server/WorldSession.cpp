@@ -64,6 +64,7 @@ void WorldSession::HandleMovement(sf::Packet& Packet)
 
     pPlayer->UpdateCoordinates(Direction);
     
+    // Send movement update to all players in the map
     Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << Direction;
-    pPlayer->SendPacket(Packet);
+    pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }

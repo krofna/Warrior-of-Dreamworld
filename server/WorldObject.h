@@ -38,6 +38,11 @@ public:
         return ObjID;
     }
 
+    Uint16 GetMapID() const
+    {
+        return MapID;
+    }
+
 protected:
     std::string Tileset;
 

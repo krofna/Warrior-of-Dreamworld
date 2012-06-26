@@ -45,7 +45,6 @@ private:
     Uint8 MoveWorldView;
 
     std::map<Uint32, WorldObject*> WorldObjectMap;
-    //std::vector<WorldObject*> WorldObjectMap; //PH!! see above
 };
 
 #endif

@@ -41,7 +41,7 @@ void WorldSession::RecievePackets()
     while(Socket.receive(Packet) == sf::Socket::Status::Done)
     {
         Packet >> Opcode;
-        if(Opcode > MSG_COUNT)
+        if(Opcode >= MSG_COUNT)
         {
             printf("Recieved %u: Bad opcode!\n", Opcode);
             continue;
