@@ -46,7 +46,7 @@ void WorldSession::RecievePackets()
             printf("Recieved %u: Bad opcode!\n", Opcode);
             continue;
         }
-        printf("Recieved %s: ", OpcodeTable[Opcode].name);
+        printf("Recieved: %s\n", OpcodeTable[Opcode].name);
         // Handle the packet
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
@@ -114,4 +114,12 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
     Packet >> ObjID >> Direction;
     
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(Direction);
+}
+
+void WorldSession::SendMovementRequest(Uint8 Direction)
+{
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_MOVE_OBJECT << Direction;
+    
+    SendPacket(Packet);
 }

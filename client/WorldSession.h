@@ -38,6 +38,8 @@ public:
     void HandleAddObjectOpcode(sf::Packet& Packet);
     void HandleMoveObjectOpcode(sf::Packet& Packet);
 
+    void SendMovementRequest(Uint8 Direction);
+
 private:
     sf::TcpSocket Socket;
     sf::Uint16 Opcode;

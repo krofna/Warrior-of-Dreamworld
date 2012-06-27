@@ -97,16 +97,20 @@ void World::HandleEvent(sf::Event Event)
     case sf::Event::KeyPressed:
         switch(Event.key.code) // Player move [ph]
         {
-        case sf::Keyboard::Right:
+        case sf::Keyboard::D:
+            Session->SendMovementRequest(MOVE_RIGHT);
             break;
 
-        case sf::Keyboard::Left:
+        case sf::Keyboard::A:
+            Session->SendMovementRequest(MOVE_LEFT);
             break;
 
-        case sf::Keyboard::Up:
+        case sf::Keyboard::W:
+            Session->SendMovementRequest(MOVE_UP);
             break;
 
-        case sf::Keyboard::Down:
+        case sf::Keyboard::S:
+            Session->SendMovementRequest(MOVE_DOWN);
             break;
             
         case sf::Keyboard::Escape:

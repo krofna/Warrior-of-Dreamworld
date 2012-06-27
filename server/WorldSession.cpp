@@ -39,7 +39,7 @@ void WorldSession::ReceivePackets()
             printf("Received %u: Bad opcode!\n", Opcode);
             continue;
         }
-        printf("Received %s: ", OpcodeTable[Opcode].name);
+        printf("Received: %s\n", OpcodeTable[Opcode].name);
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
 }
