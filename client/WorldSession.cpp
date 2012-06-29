@@ -126,6 +126,16 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
     pWorld->CreateSpellEffect(ObjectID, Direction, DisplayID, Effect);
 }
 
+void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
+{
+    Uint32 ObjID;
+    std::string Message;
+    Packet >> ObjID >> Message;
+
+    // TODO Player Username
+    printf("%i: %s\n", ObjID, Message);
+}
+
 void WorldSession::SendMovementRequest(Uint8 Direction)
 {
     sf::Packet Packet;
@@ -140,4 +150,12 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
     Packet << (Uint16)MSG_LOGIN << Username << Password;
     Session->ConnectToServer();
     Session->SendPacket(Packet);
+}
+
+void WorldSession::SendTextMessage(std::string Message)
+{
+    sf::Packet Packet;
+    
+    Packet << (Uint16)MSG_SEND_TEXT << Message;
+    SendPacket(Packet);
 }

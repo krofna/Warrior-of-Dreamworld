@@ -42,6 +42,8 @@ public:
 
     Uint16 GetMapID() const;
 
+    Map* GetMap();
+
 protected:
     std::string Tileset;
 
