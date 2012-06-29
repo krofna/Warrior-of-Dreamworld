@@ -18,24 +18,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Player.h"
 #include "Opcodes.h"
+#include "World.h"
 
 Player::Player
     (
     const std::string& Username, 
     const std::string& Password, 
     const std::string& Tileset,
-    Uint16 MapID, Uint32 ObjID,
+    Map* pMap, Uint32 ObjID,
     Uint16 x, Uint16 y,
     Uint16 tx, Uint16 ty
     ) :
 Username(Username),
 Password(Password),
-WorldObject(Tileset, MapID, ObjID, x, y, tx, ty)
+WorldObject(Tileset, pMap, ObjID, x, y, tx, ty)
 {
 }
 
 Player::~Player()
 {
+}
+
+bool Player::CanCastSpell(Uint8 ID)
+{
+    // TODO: Power checks etc etc
+    for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
+    {
+        if(*SpellIter == ID)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Player::Update(Int32 diff)

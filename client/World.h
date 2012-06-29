@@ -37,6 +37,8 @@ public:
     void Draw();
     void HandleEvent(sf::Event Event);
 
+    void CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint8 DisplayID, Uint8 Effect);
+
 private:
     std::string TilesetFileName;
     sf::RenderStates MapStates;

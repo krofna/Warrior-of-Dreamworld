@@ -32,6 +32,8 @@ struct Map
     virtual void Update(Int32 diff);
 
     void SendToPlayers(sf::Packet& Packet);
+
+    Uint16 MapID;
 };
 
 #endif

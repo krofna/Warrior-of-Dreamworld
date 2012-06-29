@@ -23,5 +23,6 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
 {
     { "MSG_LOGIN", &WorldSession::HandleLoginOpcode },
     { "MSG_ADD_OBJECT", &WorldSession::HandleAddObjectOpcode },
-    { "MSG_MOVE_OBJECT", &WorldSession::HandleMoveObjectOpcode }
+    { "MSG_MOVE_OBJECT", &WorldSession::HandleMoveObjectOpcode },
+    { "MSG_CAST_SPELL", &WorldSession::HandleCastSpellOpcode }
 };

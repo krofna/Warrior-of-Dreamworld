@@ -25,14 +25,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class World
 {
     friend class WorldSession;
+    friend class AuthSession; // Not needed, really.
 public:
     World();
     int Run();
 
-    void AddSession(sf::TcpSocket* pSocket, Player* pPlayer, Uint16 MapID);
+    void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
+
+    Spell* GetSpell(Uint8 ID)
+    {
+        for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
+        {
+            if((*SpellIter)->ID == ID)
+                return (*SpellIter);
+        }
+        return NULL;
+    }
 
 private:
     std::vector<Map*> Maps;
+    std::vector<Spell*> Spells;
     std::vector<WorldSession*> Sessions;
 
     AuthSession* pAuthSession;

@@ -67,10 +67,10 @@ void World::Update(Int32 diff)
     }
 }
 
-void World::AddSession(sf::TcpSocket* pSocket, Player* pPlayer, Uint16 MapID)
+void World::AddSession(sf::TcpSocket* pSocket, Player* pPlayer)
 {
     WorldSession* pWorldSession = new WorldSession(pSocket, pPlayer);
     pPlayer->BindSession(pWorldSession);
     Sessions.push_back(pWorldSession);
-    Maps[MapID]->AddPlayer(pPlayer);
+    Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
 }

@@ -42,10 +42,7 @@ void Login::HandleEvent(sf::Event Event)
             }
             else
             {
-                sf::Packet Packet;
-                Packet << (Uint16)MSG_LOGIN << Username << Password;
-                Session->ConnectToServer();
-                Session->SendPacket(Packet);
+                Session->SendAuthRequest(Username, Password);
             }
         }
         else if(Event.key.code == sf::Keyboard::BackSpace)

@@ -34,7 +34,8 @@ public:
 
     // Opcode handlers
     void HandleNULL(sf::Packet& Packet);
-    void HandleMovement(sf::Packet& Packet);
+    void HandleMoveObjectOpcode(sf::Packet& Packet);
+    void HandleCastSpellOpcode(sf::Packet& Packet);
     
 
 private:

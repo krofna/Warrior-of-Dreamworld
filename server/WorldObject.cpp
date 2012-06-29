@@ -18,16 +18,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldObject.h"
 #include "Opcodes.h"
+#include "Map.h"
 
-WorldObject::WorldObject(std::string Tileset, Uint16 MapID, Uint32 ObjID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty) :
+WorldObject::WorldObject(std::string Tileset, Map* pMap, Uint32 ObjID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty) :
 Tileset(Tileset),
-MapID(MapID),
+pMap(pMap),
 ObjID(ObjID),
 x(x),
 y(y),
 tx(tx),
 ty(ty)
 {
+}
+
+Uint16 WorldObject::GetMapID() const
+{
+    return pMap->MapID;
 }
 
 void WorldObject::UpdateCoordinates(Uint8 Direction)

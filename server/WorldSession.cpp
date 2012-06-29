@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.h"
 #include "Opcodes.h"
 #include "World.h"
+#include "../client/Defines.h"
 
 WorldSession::WorldSession(sf::TcpSocket* pSocket, Player* pPlayer) :
 pSocket(pSocket),
@@ -56,15 +57,36 @@ void WorldSession::HandleNULL(sf::Packet& Packet)
     // MSG_LOGIN. (See: AuthSession, OpcodeHandler)
 }
 
-void WorldSession::HandleMovement(sf::Packet& Packet)
+void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
 {
     Uint8 Direction;
     Packet >> Direction;
     Packet.clear();
+
+    // Todo: Collision
 
     pPlayer->UpdateCoordinates(Direction);
     
     // Send movement update to all players in the map
     Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << Direction;
     pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
+}
+
+void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
+{
+    Uint8 ID, Direction;
+    Packet >> ID >> Direction;
+
+    if(pPlayer->CanCastSpell(ID))
+    {
+        Packet.clear();
+
+        switch(pWorld->GetSpell(ID)->Effect)
+        {
+        case SPELL_BOLT:
+            Packet << (Uint16)MSG_CAST_SPELL << (Uint8)SPELL_BOLT << pPlayer->GetObjectID() << pWorld->GetSpell(ID)->DisplayID << Direction;
+            pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
+            break;
+        }
+    }
 }

@@ -116,10 +116,28 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(Direction);
 }
 
+void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
+{
+    Uint8 Effect, DisplayID, Direction;
+    Uint32 ObjectID; // Caster
+
+    Packet >> Effect >> ObjectID >> DisplayID >> Direction;
+
+    pWorld->CreateSpellEffect(ObjectID, Direction, DisplayID, Effect);
+}
+
 void WorldSession::SendMovementRequest(Uint8 Direction)
 {
     sf::Packet Packet;
     Packet << (Uint16)MSG_MOVE_OBJECT << Direction;
-    
+
     SendPacket(Packet);
+}
+
+void WorldSession::SendAuthRequest(std::string Username, std::string Password)
+{
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_LOGIN << Username << Password;
+    Session->ConnectToServer();
+    Session->SendPacket(Packet);
 }

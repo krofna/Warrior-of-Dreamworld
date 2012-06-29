@@ -34,11 +34,15 @@ public:
     void RecievePackets();
     void SendPacket(sf::Packet& Packet);
 
+    // Opcode handlers
     void HandleLoginOpcode(sf::Packet& Packet);
     void HandleAddObjectOpcode(sf::Packet& Packet);
     void HandleMoveObjectOpcode(sf::Packet& Packet);
+    void HandleCastSpellOpcode(sf::Packet& Packet);
 
+    // Requests
     void SendMovementRequest(Uint8 Direction);
+    void SendAuthRequest(std::string Username, std::string Password);
 
 private:
     sf::TcpSocket Socket;

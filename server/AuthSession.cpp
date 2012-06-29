@@ -92,11 +92,11 @@ void AuthSession::HandleAll()
             // Clean the packet and tell the client
             // that he logged in sucessfully
             AuthPacket.clear();
-            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->MapID;
+            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->GetMapID();
             pSocket->send(AuthPacket);
 
             // Create new WorldSession for the player
-            pWorld->AddSession(pSocket, pPlayer, pPlayer->MapID);
+            pWorld->AddSession(pSocket, pPlayer);
 
             // Remove the player and matching socket 
             // from list of offline player list
@@ -119,6 +119,6 @@ void AuthSession::LoadOfflinePlayers()
 
     while(File >> Username >> Password >> Tileset >> MapID >> ObjID >> x >> y >> tx >> ty)
     {
-        OfflinePlayers[Username] = new Player(Username, Password, Tileset, MapID, ObjID, x, y, tx, ty);
+        OfflinePlayers[Username] = new Player(Username, Password, Tileset, pWorld->Maps[MapID], ObjID, x, y, tx, ty);
     }
 }

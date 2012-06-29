@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldObject.h"
 #include "WorldSession.h"
 #include <SFML/Network.hpp>
+#include "Spell.h"
 
 class WorldSession;
 
@@ -37,18 +38,19 @@ public:
         const std::string& Username, 
         const std::string& Password, 
         const std::string& Tileset,
-        Uint16 MapID, Uint32 ObjID,
+        Map* pMap, Uint32 ObjID,
         Uint16 x, Uint16 y,
         Uint16 tx, Uint16 ty
         );
 
     ~Player();
 
+    bool CanCastSpell(Uint8 ID);
+
     void Update(Int32 diff);
 
     void SendPacket(sf::Packet Packet);
     sf::Packet PackData();
-
     void BindSession(WorldSession* pWorldSession);
 
 private:
@@ -56,6 +58,8 @@ private:
 
     std::string Username;
     std::string Password;
+
+    std::vector<Uint8> Spells;
 };
 
 #endif

@@ -143,3 +143,8 @@ void World::HandleEvent(sf::Event Event)
         break;
     }
 }
+
+void World::CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint8 DisplayID, Uint8 Effect)
+{
+    //NYI
+}
