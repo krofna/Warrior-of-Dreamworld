@@ -26,14 +26,14 @@ World::World()
 {
     for(int i=0; i < MAP_COUNT; ++i)
     {
-        Maps.push_back(new Map);
+        Maps.push_back(new Map());
     }
-
-    pAuthSession = new AuthSession();
 }
 
 int World::Run()
 {    
+    pAuthSession = new AuthSession();
+
     sf::Clock Clock;
 
     //TODO: Load all

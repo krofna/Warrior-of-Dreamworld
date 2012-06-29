@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.h"
 #include "Opcodes.h"
 #include "World.h"
-#include "../client/Defines.h"
 
 WorldSession::WorldSession(sf::TcpSocket* pSocket, Player* pPlayer) :
 pSocket(pSocket),
