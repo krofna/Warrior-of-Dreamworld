@@ -23,6 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 struct Map
 {
+    Map(const Uint16 MapID);
+
     //std::map<Uint64, WorldObject*> MapObjects;
     //std::map<Uint64, Player*> Players
     std::vector<WorldObject*> MapObjects; //TEMP: see above
@@ -33,7 +35,7 @@ struct Map
 
     void SendToPlayers(sf::Packet& Packet);
 
-    Uint16 MapID;
+    const Uint16 MapID;
 };
 
 #endif

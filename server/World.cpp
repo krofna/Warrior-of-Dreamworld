@@ -26,7 +26,7 @@ World::World()
 {
     for(int i=0; i < MAP_COUNT; ++i)
     {
-        Maps.push_back(new Map());
+        Maps.push_back(new Map(i));
     }
 }
 

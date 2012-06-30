@@ -18,6 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Map.h"
 
+Map::Map(const Uint16 MapID) : MapID(MapID)
+{
+}
+
 void Map::Update(Int32 diff)
 {
     for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
