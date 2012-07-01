@@ -44,8 +44,11 @@ private:
     sf::RenderStates MapStates;
     sf::VertexArray TileMap;
     sf::View WorldView;
+    std::string Message;
     Uint8 MoveWorldView;
+    bool typing;
 
+    std::vector<sf::Text> TextMessages;
     std::map<Uint32, WorldObject*> WorldObjectMap;
 };
 

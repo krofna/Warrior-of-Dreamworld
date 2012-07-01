@@ -28,6 +28,7 @@ WorldView   (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
 MoveWorldView(MOVE_STOP)
 {
     Window.setView(WorldView);
+    typing = false;
 }
 
 World::~World()
@@ -95,32 +96,78 @@ void World::HandleEvent(sf::Event Event)
     switch(Event.type)
     {
     case sf::Event::KeyPressed:
-        switch(Event.key.code) // Player move [ph]
+
+        if(typing)
+        {   
+        if(Event.key.code == sf::Keyboard::Return)
+            {
+                typing = false;
+                if(!Message.empty())
+                    Session->SendTextMessage(Message);
+                std::cout << Message << std::endl;
+                Message.clear();
+                break;
+            }
+            else if(Event.key.code == sf::Keyboard::BackSpace)
+            {
+                if(!Message.empty())
+                    Message.erase(Message.end() - 1);
+            }
+              
+         /*  switch(Event.key.code)
+            {
+                case sf::Keyboard::BackSpace:
+                    if(!Message.empty())
+                        Message.erase(Message.end() - 1);
+                    break;
+
+                case sf::Keyboard::Return:
+                    typing = false;
+                    if(!Message.empty())
+                        Session->SendTextMessage(Message);
+                    Message.clear();
+                    break;
+            } */
+            // not the main problem but this switch seems to mess it up completely  
+        }
+        else
         {
-        case sf::Keyboard::D:
-            Session->SendMovementRequest(MOVE_RIGHT);
-            break;
+            switch(Event.key.code) // Player move [ph]
+            {
+            case sf::Keyboard::Return:
+                typing = true;
+                break;
 
-        case sf::Keyboard::A:
-            Session->SendMovementRequest(MOVE_LEFT);
-            break;
+            case sf::Keyboard::D:
+                Session->SendMovementRequest(MOVE_RIGHT);
+                break;
 
-        case sf::Keyboard::W:
-            Session->SendMovementRequest(MOVE_UP);
-            break;
+            case sf::Keyboard::A:
+                Session->SendMovementRequest(MOVE_LEFT);
+                break;
 
-        case sf::Keyboard::S:
-            Session->SendMovementRequest(MOVE_DOWN);
-            break;
+            case sf::Keyboard::W:
+                Session->SendMovementRequest(MOVE_UP);
+                break;
+
+            case sf::Keyboard::S:
+                Session->SendMovementRequest(MOVE_DOWN);
+                break;
             
-        case sf::Keyboard::Escape:
-            Window.close();
+            case sf::Keyboard::Escape:
+                Window.close();
             
-        default:
+            default:
+                break;
+            }
+
             break;
         }
-        break;
         
+    case sf::Event::TextEntered:
+        if(typing)
+            Message += static_cast<char>(Event.key.code);
+        break;
 
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
