@@ -29,6 +29,8 @@ MoveWorldView(MOVE_STOP)
 {
     Window.setView(WorldView);
     typing = false;
+    ChatOffsetX = -(WindowWidth / 2 - 5);
+    ChatOffsetY = 20;
 }
 
 World::~World()
@@ -89,6 +91,16 @@ void World::Draw()
 
     for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
         (*i).second->Draw();
+
+    // Draw Text Messages
+    for(auto i = Session->TextMessages.begin(); i != Session->TextMessages.end(); i++)
+    {
+        int currentmessage = std::distance(Session->TextMessages.begin(), i);
+
+        (*i).setPosition(WorldView.getCenter().x + ChatOffsetX, WorldView.getCenter().y + ChatOffsetY + currentmessage * 20);
+        Window.draw((*i));
+    }
+        
 }
 
 void World::HandleEvent(sf::Event Event)
@@ -97,75 +109,58 @@ void World::HandleEvent(sf::Event Event)
     {
     case sf::Event::KeyPressed:
 
-        if(typing)
-        {   
-        if(Event.key.code == sf::Keyboard::Return)
+        switch(Event.key.code) // Player move [ph]
+        {
+
+        case sf::Keyboard::Return:
+
+            if(!typing)
+                typing = true;
+            else
             {
                 typing = false;
                 if(!Message.empty())
                     Session->SendTextMessage(Message);
-                std::cout << Message << std::endl;
                 Message.clear();
-                break;
             }
-            else if(Event.key.code == sf::Keyboard::BackSpace)
-            {
-                if(!Message.empty())
-                    Message.erase(Message.end() - 1);
-            }
-              
-         /*  switch(Event.key.code)
-            {
-                case sf::Keyboard::BackSpace:
-                    if(!Message.empty())
-                        Message.erase(Message.end() - 1);
-                    break;
+            break;
 
-                case sf::Keyboard::Return:
-                    typing = false;
-                    if(!Message.empty())
-                        Session->SendTextMessage(Message);
-                    Message.clear();
-                    break;
-            } */
-            // not the main problem but this switch seems to mess it up completely  
-        }
-        else
-        {
-            switch(Event.key.code) // Player move [ph]
-            {
-            case sf::Keyboard::Return:
-                typing = true;
-                break;
-
-            case sf::Keyboard::D:
+        case sf::Keyboard::D:
+            if(!typing)
                 Session->SendMovementRequest(MOVE_RIGHT);
-                break;
+            break;
 
-            case sf::Keyboard::A:
+        case sf::Keyboard::A:
+            if(!typing)
                 Session->SendMovementRequest(MOVE_LEFT);
-                break;
+            break;
 
-            case sf::Keyboard::W:
+        case sf::Keyboard::W:
+            if(!typing)
                 Session->SendMovementRequest(MOVE_UP);
-                break;
+            break;
 
-            case sf::Keyboard::S:
+        case sf::Keyboard::S:
+            if(!typing)
                 Session->SendMovementRequest(MOVE_DOWN);
-                break;
+            break;
             
-            case sf::Keyboard::Escape:
-                Window.close();
-            
-            default:
-                break;
-            }
+        case sf::Keyboard::Space:
+           // if(typing)
+           //     Message += " ";
+            break;
 
+        case sf::Keyboard::Escape:
+            Window.close();
+          
+        default:
             break;
         }
+
+            break;
         
     case sf::Event::TextEntered:
-        if(typing)
+        if(typing && Event.text.unicode < 128) // >64 doesnt allow things like spacebar or special characters(for emoticons)
             Message += static_cast<char>(Event.key.code);
         break;
 

@@ -46,6 +46,8 @@ public:
     void SendAuthRequest(std::string Username, std::string Password);
     void SendTextMessage(std::string Message);
 
+    std::vector<sf::Text> TextMessages;
+
 private:
     sf::TcpSocket Socket;
     sf::Uint16 Opcode;

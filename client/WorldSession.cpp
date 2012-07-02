@@ -129,11 +129,18 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
 void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
 {
     Uint32 ObjID;
+    sf::Text textMessage;
     std::string Message;
     Packet >> ObjID >> Message;
 
     // TODO Player Username
-    printf("%i: %s\n", ObjID, Message);
+    std::cout << ObjID << ": " << Message << std::endl;
+
+    textMessage.setString(Message);
+    textMessage.setCharacterSize(18);
+    textMessage.setColor(sf::Color::Magenta);
+
+    TextMessages.push_back(textMessage);
 }
 
 void WorldSession::SendMovementRequest(Uint8 Direction)

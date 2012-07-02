@@ -36,11 +36,6 @@ Uint16 WorldObject::GetMapID() const
     return pMap->MapID;
 }
 
-Map* WorldObject::GetMap()
-{
-    return pMap;
-}
-
 void WorldObject::UpdateCoordinates(Uint8 Direction)
 {
     switch(Direction)

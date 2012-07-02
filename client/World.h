@@ -44,11 +44,14 @@ private:
     sf::RenderStates MapStates;
     sf::VertexArray TileMap;
     sf::View WorldView;
-    std::string Message;
     Uint8 MoveWorldView;
+
+    // Chat Members
+    std::string Message;
+    float ChatOffsetX;
+    float ChatOffsetY;
     bool typing;
 
-    std::vector<sf::Text> TextMessages;
     std::map<Uint32, WorldObject*> WorldObjectMap;
 };
 
