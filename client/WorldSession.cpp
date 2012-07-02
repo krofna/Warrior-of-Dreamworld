@@ -94,8 +94,8 @@ void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
 {
     Uint16 x, y, tx, ty;
     Uint32 ObjID;
-    std::string Tileset;
-    Packet >> Tileset >> ObjID >> x >> y >> tx >> ty;
+    std::string Tileset, Username;
+    Packet >> Tileset >> ObjID >> Username >> x >> y >> tx >> ty;
 
     if(!Packet.endOfPacket())
     {
@@ -103,7 +103,7 @@ void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
         return;
     }
 
-    WorldObject* pNewObject = new WorldObject(Tileset, x, y, tx, ty);
+    WorldObject* pNewObject = new WorldObject(Tileset, Username, x, y, tx, ty);
     pWorld->WorldObjectMap[ObjID] = pNewObject;
     printf("Packet is good!\n");
 }
@@ -145,16 +145,14 @@ void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
 {
     Uint32 ObjID;
     sf::Text textMessage;
-    std::string Message;
+    std::string Message, Username;
     Packet >> ObjID >> Message;
 
-    // TODO Player Username
-    std::cout << ObjID << ": " << Message << std::endl;
+    Username = pWorld->WorldObjectMap[ObjID]->GetObjectName();
 
-    textMessage.setString(Message);
+    textMessage.setString(Username + ": " + Message);
     textMessage.setCharacterSize(18);
     textMessage.setColor(sf::Color::Magenta);
-
     TextMessages.push_back(textMessage);
 }
 
@@ -180,7 +178,6 @@ void WorldSession::SendCastSpellRequest()
 
     Packet << (Uint16)MSG_CAST_SPELL << (Uint16)0 << (Uint8)MOVE_RIGHT;
 
-    Session->ConnectToServer();
     Session->SendPacket(Packet);
 }
 
