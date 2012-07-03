@@ -16,42 +16,37 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef MAP_H
-#define MAP_H
+#include "ObjectMgr.h"
+#include "Spell.h"
+#include <fstream>
 
-#include "GameState.h"
-#include "Defines.h"
-#include "WorldObject.h"
-#include "Animation.h"
+ObjectMgr* sObjectMgr;
 
-class GameState;
-class WorldObject;
-
-class World : public GameState
+Spell* ObjectMgr::GetSpell(Uint16 ID)
 {
-    friend class WorldSession;
+    for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
+    {
+        printf("Comparing: %u, %u\n", ID, (*SpellIter)->ID);
+        if((*SpellIter)->ID == ID)
+            return (*SpellIter);
+    }
+    printf("oshit returning null, %u", Spells.size());
+    return NULL;
+}
 
-public:
-    World();
-    ~World();
-    void LoadTileMap(Uint16 MapID);
-    void Draw();
-    void HandleEvent(sf::Event Event);
+void ObjectMgr::LoadSpells()
+{
+    std::ifstream File("SpellDB.txt");
 
-    void CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect);
+    Uint16 ID;
+    Uint16 DisplayID;
+    Uint16 Effect;
+    Uint16 Value;
+    Uint16 Cost;
+    std::string Name;
 
-private:
-
-    // TODO: Map?
-    std::string TilesetFileName;
-    sf::RenderStates MapStates;
-    sf::VertexArray TileMap;
-    sf::View WorldView;
-    Uint8 MoveWorldView;
-    // END TODO
-
-    std::map<Uint32, WorldObject*> WorldObjectMap;
-    std::vector<Animation> Animations;
-};
-
-#endif
+    while(File >> ID >> DisplayID >> Effect >> Value >> Cost >> Name)
+    {
+        Spells.push_back(new Spell(ID, DisplayID, Effect, Value, Cost, Name));
+    }
+}

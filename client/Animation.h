@@ -16,42 +16,22 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef WORLD_SESSION_H
-#define WORLD_SESSION_H
+#ifndef ANIMATION_H
+#define ANIMATION_H
 
-#include <SFML/Network.hpp>
-#include "World.h"
+#include "Defines.h"
 
-class Game;
-class World;
-
-class WorldSession
+class Animation
 {
 public:
-    WorldSession(Game* pGame);
+    Animation(float x, float y, Uint8 Direction);
+    void Update();
 
-    bool ConnectToServer();
-    void RecievePackets();
-    void SendPacket(sf::Packet& Packet);
-
-    // Opcode handlers
-    void HandleLoginOpcode(sf::Packet& Packet);
-    void HandleAddObjectOpcode(sf::Packet& Packet);
-    void HandleMoveObjectOpcode(sf::Packet& Packet);
-    void HandleCastSpellOpcode(sf::Packet& Packet);
-
-    // Requests
-    void SendAuthRequest(std::string Username, std::string Password);
-    void SendMovementRequest(Uint8 Direction);
-    void SendCastSpellRequest();
-
-private:
-    sf::TcpSocket Socket;
-    sf::Uint16 Opcode;
-    sf::Packet Packet;
-
-    Game* pGame;
-    World* pWorld;
+protected:
+    sf::Texture t; // this shouldnt be here
+    sf::Clock Clock;
+    std::vector<sf::Sprite*> Sprites;
+    Uint8 Direction;
 };
 
 #endif

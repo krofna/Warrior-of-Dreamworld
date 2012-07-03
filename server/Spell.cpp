@@ -16,42 +16,14 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef MAP_H
-#define MAP_H
+#include "Spell.h"
 
-#include "GameState.h"
-#include "Defines.h"
-#include "WorldObject.h"
-#include "Animation.h"
-
-class GameState;
-class WorldObject;
-
-class World : public GameState
+Spell::Spell(Uint16 ID, Uint16 DisplayID, Uint16 Effect, Uint16 Value, Uint16 Cost, std::string Name) :
+ID          (ID),
+DisplayID   (DisplayID),
+Effect      (Effect),
+Value       (Value),
+Cost        (Cost),
+Name        (Name)
 {
-    friend class WorldSession;
-
-public:
-    World();
-    ~World();
-    void LoadTileMap(Uint16 MapID);
-    void Draw();
-    void HandleEvent(sf::Event Event);
-
-    void CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect);
-
-private:
-
-    // TODO: Map?
-    std::string TilesetFileName;
-    sf::RenderStates MapStates;
-    sf::VertexArray TileMap;
-    sf::View WorldView;
-    Uint8 MoveWorldView;
-    // END TODO
-
-    std::map<Uint32, WorldObject*> WorldObjectMap;
-    std::vector<Animation> Animations;
-};
-
-#endif
+}

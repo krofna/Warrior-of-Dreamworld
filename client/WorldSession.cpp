@@ -26,6 +26,7 @@ WorldSession::WorldSession(Game* pGame) :
 pGame(pGame),
 pWorld(NULL)
 {
+    ConnectToServer();
 }
 
 bool WorldSession::ConnectToServer()
@@ -46,7 +47,7 @@ void WorldSession::RecievePackets()
             printf("Recieved %u: Bad opcode!\n", Opcode);
             continue;
         }
-        printf("Recieved: %s\n", OpcodeTable[Opcode].name);
+        printf("Recieved: %s, ", OpcodeTable[Opcode].name);
         // Handle the packet
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
@@ -54,6 +55,8 @@ void WorldSession::RecievePackets()
 
 void WorldSession::SendPacket(sf::Packet& Packet)
 {
+    Packet >> Opcode;
+    printf("Sent: %s\n", OpcodeTable[Opcode].name);
     Socket.send(Packet);
 }
 
@@ -80,12 +83,11 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
         return;
     }
 
-    printf("Packet is good!\n");
-
     World* pWorld = new World();
     this->pWorld = pWorld;
     pWorld->LoadTileMap(MapID);
     pGame->ChangeState(pWorld);
+    printf("Packet is good!\n");
 }
 
 void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
@@ -110,20 +112,33 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
 {
     Uint32 ObjID;
     Uint8 Direction;
-    
     Packet >> ObjID >> Direction;
-    
+
+    if(!Packet.endOfPacket())
+    {
+        printf("Packet is too big!\n");
+        return;
+    }
+
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(Direction);
+    printf("Packet is good!\n");
 }
 
 void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
 {
-    Uint8 Effect, DisplayID, Direction;
+    Uint8 Direction;
+    Uint16 Effect, DisplayID;
     Uint32 ObjectID; // Caster
-
     Packet >> Effect >> ObjectID >> DisplayID >> Direction;
 
+    if(!Packet.endOfPacket())
+    {
+        printf("Packet is too big!\n");
+        return;
+    }
+
     pWorld->CreateSpellEffect(ObjectID, Direction, DisplayID, Effect);
+    printf("Packet is good!\n");
 }
 
 void WorldSession::SendMovementRequest(Uint8 Direction)
@@ -138,6 +153,14 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
     sf::Packet Packet;
     Packet << (Uint16)MSG_LOGIN << Username << Password;
-    Session->ConnectToServer();
-    Session->SendPacket(Packet);
+    SendPacket(Packet);
+}
+
+// TODO: [PH]
+void WorldSession::SendCastSpellRequest()
+{
+    sf::Packet Packet;
+
+    Packet << (Uint16)MSG_CAST_SPELL << (Uint16)0 << (Uint8)MOVE_RIGHT;
+    SendPacket(Packet);
 }

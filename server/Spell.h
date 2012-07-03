@@ -20,11 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 struct Spell
 {
-    Uint8 ID;
-    Uint8 DisplayID;
-    Uint8 Effect; // TODO: Enum
+    Spell(Uint16 ID, Uint16 DisplayID, Uint16 Effect, Uint16 Value, Uint16 Cost, std::string Name);
+
+    std::string Name;
+
+    Uint16 ID;
+    Uint16 DisplayID;
+    Uint16 Effect;
     Uint16 Value;
     Uint16 Cost;
-
-    char const* Name;
 };

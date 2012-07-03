@@ -88,6 +88,11 @@ void World::Draw()
 
     for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
         (*i).second->Draw();
+
+    for(auto i = Animations.begin(); i != Animations.end(); ++i)
+    {
+        i->Update();
+    }
 }
 
 void World::HandleEvent(sf::Event Event)
@@ -111,6 +116,9 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::S:
             Session->SendMovementRequest(MOVE_DOWN);
+            break;
+        case sf::Keyboard::T:
+            Session->SendCastSpellRequest();
             break;
             
         case sf::Keyboard::Escape:
@@ -144,7 +152,8 @@ void World::HandleEvent(sf::Event Event)
     }
 }
 
-void World::CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint8 DisplayID, Uint8 Effect)
+// TODO [PH]
+void World::CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect)
 {
-    //NYI
+    Animations.push_back(Animation(200, 200, Direction));
 }

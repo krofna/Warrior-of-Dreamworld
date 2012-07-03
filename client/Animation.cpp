@@ -16,42 +16,35 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef MAP_H
-#define MAP_H
-
-#include "GameState.h"
-#include "Defines.h"
-#include "WorldObject.h"
 #include "Animation.h"
+#include "Globals.h"
 
-class GameState;
-class WorldObject;
-
-class World : public GameState
+// TODO: [PH]
+Animation::Animation(float x, float y, Uint8 Direction) :
+Direction           (Direction)
 {
-    friend class WorldSession;
+    t.loadFromFile("testspell.png");
+    sf::Sprite* pSprite = new sf::Sprite();
+    pSprite->setTexture(t);
+    pSprite->setPosition(x, y);
+    Sprites.push_back(pSprite);
+}
 
-public:
-    World();
-    ~World();
-    void LoadTileMap(Uint16 MapID);
-    void Draw();
-    void HandleEvent(sf::Event Event);
+// TODO: [PH]
+void Animation::Update()
+{
+    if(Clock.getElapsedTime() > sf::seconds(1))
+    {
+        switch(Direction)
+        {
+        case MOVE_UP:
+        case MOVE_DOWN:
+        case MOVE_LEFT:
+        case MOVE_RIGHT:
+            (**Sprites.begin()).move(32, 0);
+        }
+        Clock.restart();
+    }
 
-    void CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect);
-
-private:
-
-    // TODO: Map?
-    std::string TilesetFileName;
-    sf::RenderStates MapStates;
-    sf::VertexArray TileMap;
-    sf::View WorldView;
-    Uint8 MoveWorldView;
-    // END TODO
-
-    std::map<Uint32, WorldObject*> WorldObjectMap;
-    std::vector<Animation> Animations;
-};
-
-#endif
+    Window.draw(**Sprites.begin());
+}

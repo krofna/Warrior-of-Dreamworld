@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.h"
 #include "Opcodes.h"
 #include "World.h"
+#include "ObjectMgr.h"
 
 WorldSession::WorldSession(sf::TcpSocket* pSocket, Player* pPlayer) :
 pSocket(pSocket),
@@ -39,13 +40,15 @@ void WorldSession::ReceivePackets()
             printf("Received %u: Bad opcode!\n", Opcode);
             continue;
         }
-        printf("Received: %s\n", OpcodeTable[Opcode].name);
+        printf("Received: %s, ", OpcodeTable[Opcode].name);
         (this->*OpcodeTable[Opcode].Handler)(Packet);
     }
 }
 
 void WorldSession::SendPacket(sf::Packet& Packet)
 {
+    Packet >> Opcode;
+    printf("Sent: %s\n", OpcodeTable[Opcode].name);
     pSocket->send(Packet);
 }
 
@@ -60,7 +63,15 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
 {
     Uint8 Direction;
     Packet >> Direction;
+
+    if(!Packet.endOfPacket())
+    {
+        printf("Packet is too big!\n");
+        return;
+    }
     Packet.clear();
+
+    printf("Packet is good!\n");
 
     // Todo: Collision
 
@@ -73,17 +84,27 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
 
 void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
 {
-    Uint8 ID, Direction;
-    Packet >> ID >> Direction;
+    Uint16 SpellID;
+    Uint8 Direction;
+    Packet >> SpellID >> Direction;
 
-    if(pPlayer->CanCastSpell(ID))
+    if(!Packet.endOfPacket())
+    {
+        printf("Packet is too big!\n");
+        return;
+    }
+    printf("Packet is good!\n");
+
+    //if(pPlayer->CanCastSpell(SpellID))
     {
         Packet.clear();
-
-        switch(pWorld->GetSpell(ID)->Effect)
+        printf("switching");
+        switch(sObjectMgr->GetSpell(SpellID)->Effect)
         {
         case SPELL_BOLT:
-            Packet << (Uint16)MSG_CAST_SPELL << (Uint8)SPELL_BOLT << pPlayer->GetObjectID() << pWorld->GetSpell(ID)->DisplayID << Direction;
+            printf("packing");
+            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << sObjectMgr->GetSpell(SpellID)->DisplayID << Direction;
+            printf("sending");
             pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
             break;
         }

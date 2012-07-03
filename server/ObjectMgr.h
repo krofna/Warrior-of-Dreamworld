@@ -16,42 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef WORLD_SESSION_H
-#define WORLD_SESSION_H
+#ifndef OBJECT_MGR_H
+#define OBJECT_MGR_H
 
-#include <SFML/Network.hpp>
-#include "World.h"
+#include "../client/Defines.h"
 
-class Game;
-class World;
+struct Spell;
 
-class WorldSession
+class ObjectMgr
 {
 public:
-    WorldSession(Game* pGame);
+    Spell* GetSpell(Uint16 ID);
 
-    bool ConnectToServer();
-    void RecievePackets();
-    void SendPacket(sf::Packet& Packet);
-
-    // Opcode handlers
-    void HandleLoginOpcode(sf::Packet& Packet);
-    void HandleAddObjectOpcode(sf::Packet& Packet);
-    void HandleMoveObjectOpcode(sf::Packet& Packet);
-    void HandleCastSpellOpcode(sf::Packet& Packet);
-
-    // Requests
-    void SendAuthRequest(std::string Username, std::string Password);
-    void SendMovementRequest(Uint8 Direction);
-    void SendCastSpellRequest();
+    void LoadSpells();
 
 private:
-    sf::TcpSocket Socket;
-    sf::Uint16 Opcode;
-    sf::Packet Packet;
-
-    Game* pGame;
-    World* pWorld;
+    std::vector<Spell*> Spells;
 };
+
+extern ObjectMgr* sObjectMgr;
 
 #endif
