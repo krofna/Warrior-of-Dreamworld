@@ -110,3 +110,14 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
         }
     }
 }
+
+void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
+{
+    std::string Message;
+    Packet >> Message;
+    Packet.clear();
+  
+    Packet << (Uint16)MSG_SEND_TEXT << pPlayer->GetObjectID() << Message;
+    
+    pPlayer->GetMap()->SendToPlayers(Packet);
+}

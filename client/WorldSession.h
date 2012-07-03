@@ -39,11 +39,15 @@ public:
     void HandleAddObjectOpcode(sf::Packet& Packet);
     void HandleMoveObjectOpcode(sf::Packet& Packet);
     void HandleCastSpellOpcode(sf::Packet& Packet);
+    void HandleTextMessageOpcode(sf::Packet& Packet);
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);
     void SendMovementRequest(Uint8 Direction);
     void SendCastSpellRequest();
+    void SendTextMessage(std::string Message);
+
+    std::vector<sf::Text> TextMessages;
 
 private:
     sf::TcpSocket Socket;

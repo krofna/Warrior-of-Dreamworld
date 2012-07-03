@@ -50,6 +50,12 @@ private:
     Uint8 MoveWorldView;
     // END TODO
 
+    // Chat Members
+    std::string Message;
+    float ChatOffsetX;
+    float ChatOffsetY;
+    bool typing;
+
     std::map<Uint32, WorldObject*> WorldObjectMap;
     std::vector<Animation> Animations;
 };

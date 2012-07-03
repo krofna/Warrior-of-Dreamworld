@@ -36,6 +36,7 @@ public:
     void HandleNULL(sf::Packet& Packet);
     void HandleMoveObjectOpcode(sf::Packet& Packet);
     void HandleCastSpellOpcode(sf::Packet& Packet);
+    void HandleTextMessageOpcode(sf::Packet& Packet);
     
 
 private:

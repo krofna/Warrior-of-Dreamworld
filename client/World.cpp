@@ -28,6 +28,9 @@ WorldView   (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
 MoveWorldView(MOVE_STOP)
 {
     Window.setView(WorldView);
+    typing = false;
+    ChatOffsetX = -(WindowWidth / 2 - 5);
+    ChatOffsetY = 20;
 }
 
 World::~World()
@@ -93,6 +96,15 @@ void World::Draw()
     {
         i->Update();
     }
+
+    // Draw Text Messages
+    for(auto i = Session->TextMessages.begin(); i != Session->TextMessages.end(); i++)
+    {
+        int currentmessage = std::distance(Session->TextMessages.begin(), i);
+
+        (*i).setPosition(WorldView.getCenter().x + ChatOffsetX, WorldView.getCenter().y + ChatOffsetY + currentmessage * 20);
+        Window.draw((*i));
+    }
 }
 
 void World::HandleEvent(sf::Event Event)
@@ -100,35 +112,64 @@ void World::HandleEvent(sf::Event Event)
     switch(Event.type)
     {
     case sf::Event::KeyPressed:
+
         switch(Event.key.code) // Player move [ph]
         {
+
+        case sf::Keyboard::Return:
+
+            if(!typing)
+                typing = true;
+            else
+            {
+                typing = false;
+                if(!Message.empty())
+                    Session->SendTextMessage(Message);
+                Message.clear();
+            }
+            break;
+
         case sf::Keyboard::D:
-            Session->SendMovementRequest(MOVE_RIGHT);
+            if(!typing)
+                Session->SendMovementRequest(MOVE_RIGHT);
             break;
 
         case sf::Keyboard::A:
-            Session->SendMovementRequest(MOVE_LEFT);
+            if(!typing)
+                Session->SendMovementRequest(MOVE_LEFT);
             break;
 
         case sf::Keyboard::W:
-            Session->SendMovementRequest(MOVE_UP);
+            if(!typing)
+                Session->SendMovementRequest(MOVE_UP);
             break;
 
         case sf::Keyboard::S:
-            Session->SendMovementRequest(MOVE_DOWN);
+            if(!typing)
+                Session->SendMovementRequest(MOVE_DOWN);
             break;
         case sf::Keyboard::T:
             Session->SendCastSpellRequest();
             break;
             
+        case sf::Keyboard::Space:
+           // if(typing)
+           //     Message += " ";
+            break;
+
         case sf::Keyboard::Escape:
             Window.close();
-            
+          
         default:
             break;
         }
-        break;
+
+            break;
         
+    case sf::Event::TextEntered:
+        if(typing && Event.text.unicode < 128) // >64 doesnt allow things like spacebar or special characters(for emoticons)
+            Message += static_cast<char>(Event.key.code);
+        break;
 
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;

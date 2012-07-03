@@ -21,14 +21,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "WorldSession.h"
 
-#define MSG_COUNT 4
+#define MSG_COUNT 5
 
 enum Opcodes
 {
     MSG_LOGIN = 0x0,
     MSG_ADD_OBJECT,
     MSG_MOVE_OBJECT,
-    MSG_CAST_SPELL
+    MSG_CAST_SPELL,
+    MSG_SEND_TEXT
 };
 
 enum
