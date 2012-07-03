@@ -113,7 +113,7 @@ void World::HandleEvent(sf::Event Event)
     {
     case sf::Event::KeyPressed:
 
-        switch(Event.key.code) // Player move [ph]
+        switch(Event.key.code)
         {
 
         case sf::Keyboard::Return:

@@ -30,7 +30,7 @@ public:
 protected:
     sf::Texture t; // this shouldnt be here
     sf::Clock Clock;
-    std::vector<sf::Sprite*> Sprites;
+    std::vector<sf::Sprite> Sprites;
     Uint8 Direction;
 };
 

@@ -26,11 +26,10 @@ Spell* ObjectMgr::GetSpell(Uint16 ID)
 {
     for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
     {
-        printf("Comparing: %u, %u\n", ID, (*SpellIter)->ID);
         if((*SpellIter)->ID == ID)
             return (*SpellIter);
     }
-    printf("oshit returning null, %u", Spells.size());
+
     return NULL;
 }
 

@@ -23,17 +23,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Animation::Animation(float x, float y, Uint8 Direction) :
 Direction           (Direction)
 {
-    t.loadFromFile("testspell.png");
-    sf::Sprite* pSprite = new sf::Sprite();
-    pSprite->setTexture(t);
-    pSprite->setPosition(x, y);
-    Sprites.push_back(pSprite);
+    t.loadFromFile("t.png");
+    Sprites.push_back(sf::Sprite(t));
+    Sprites.begin()->setPosition(x, y);
 }
 
 // TODO: [PH]
 void Animation::Update()
 {
-    if(Clock.getElapsedTime() > sf::seconds(1))
+    if(Clock.getElapsedTime() > sf::milliseconds(10))
     {
         switch(Direction)
         {
@@ -41,10 +39,10 @@ void Animation::Update()
         case MOVE_DOWN:
         case MOVE_LEFT:
         case MOVE_RIGHT:
-            (**Sprites.begin()).move(32, 0);
+            (*Sprites.begin()).move(1, 0);
         }
         Clock.restart();
     }
-
-    Window.draw(**Sprites.begin());
+    Sprites.begin()->setTexture(t);
+    Window.draw(*Sprites.begin());
 }

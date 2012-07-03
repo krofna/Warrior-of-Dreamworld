@@ -98,13 +98,10 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
     //if(pPlayer->CanCastSpell(SpellID))
     {
         Packet.clear();
-        printf("switching");
         switch(sObjectMgr->GetSpell(SpellID)->Effect)
         {
         case SPELL_BOLT:
-            printf("packing");
             Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << sObjectMgr->GetSpell(SpellID)->DisplayID << Direction;
-            printf("sending");
             pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
             break;
         }
