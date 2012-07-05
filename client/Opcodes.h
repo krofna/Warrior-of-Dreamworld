@@ -22,15 +22,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.h"
 #include <SFML/Network.hpp>
 
-#define MSG_COUNT 5
+#define MSG_COUNT 7
 
 enum Opcodes
 {
-    MSG_LOGIN = 0x0,
+    MSG_NULL,
+    MSG_LOGIN,
     MSG_ADD_OBJECT,
     MSG_MOVE_OBJECT,
     MSG_CAST_SPELL,
-    MSG_SEND_TEXT
+    MSG_SEND_TEXT,
+    MSG_LOG_OUT
 };
 
 enum
@@ -44,7 +46,7 @@ enum
 struct OpcodeHandler
 {
     char const* name;
-    void (WorldSession::*Handler)(sf::Packet& Packet);
+    void (WorldSession::*Handler)();
 };
 
 extern OpcodeHandler OpcodeTable[MSG_COUNT];

@@ -28,9 +28,11 @@ class World
     friend class AuthSession; // Not needed, really.
 public:
     World();
+    void Load();
     int Run();
 
     void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
+    Map* GetMap(Uint8 MapID);
 
 private:
     std::vector<Map*> Maps;

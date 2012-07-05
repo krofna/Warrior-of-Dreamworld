@@ -26,33 +26,33 @@ World* sWorld;
 
 World::World()
 {
+}
+
+void World::Load()
+{
     for(int i=0; i < MAP_COUNT; ++i)
     {
         Maps.push_back(new Map(i));
+    }
+
+    pAuthSession = new AuthSession();
+    sObjectMgr = new ObjectMgr();
+
+    try
+    {
+        sDatabase.Connect();
+        sObjectMgr->LoadPlayers();
+        sObjectMgr->LoadSpells();
+    }
+    catch (sql::SQLException &e) 
+    {
+        std::cout << "SQL Exception: " << e.what();
+        abort();
     }
 }
 
 int World::Run()
 {
-    using std::cout;
-    using std::endl;
-
-    pAuthSession = new AuthSession();
-    sObjectMgr = new ObjectMgr();
-
-    sObjectMgr->LoadSpells();
-
-    try
-    {
-        sDatabase.Connect();
-        pAuthSession->LoadOfflinePlayers();
-    }
-    catch (sql::SQLException &e) 
-    {
-        cout << "SQL Exception: " << e.what();
-        abort();
-    }
-
     sf::Clock Clock;
 
     // Server main loop
@@ -86,8 +86,16 @@ void World::Update(Int32 diff)
 
 void World::AddSession(sf::TcpSocket* pSocket, Player* pPlayer)
 {
-    WorldSession* sWorldSession = new WorldSession(pSocket, pPlayer);
-    pPlayer->BindSession(sWorldSession);
-    Sessions.push_back(sWorldSession);
+    WorldSession* pWorldSession = new WorldSession(pSocket, pPlayer);
+    pPlayer->BindSession(pWorldSession);
+    Sessions.push_back(pWorldSession);
     Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
+}
+
+Map* World::GetMap(Uint8 MapID)
+{
+    if(MapID < Maps.size())
+        return Maps[MapID];
+
+    return nullptr;
 }

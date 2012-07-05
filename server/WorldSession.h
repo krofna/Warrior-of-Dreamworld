@@ -28,15 +28,17 @@ class WorldSession
     friend class AuthSession;
 public:
     WorldSession(sf::TcpSocket* pSocket, Player* pPlayer);
-    void ReceivePackets();
+    ~WorldSession();
 
+    void ReceivePackets();
     void SendPacket(sf::Packet& Packet);
 
     // Opcode handlers
-    void HandleNULL(sf::Packet& Packet);
-    void HandleMoveObjectOpcode(sf::Packet& Packet);
-    void HandleCastSpellOpcode(sf::Packet& Packet);
-    void HandleTextMessageOpcode(sf::Packet& Packet);
+    void HandleNULL();
+    void HandleMoveObjectOpcode();
+    void HandleCastSpellOpcode();
+    void HandleTextMessageOpcode();
+    void HandleLogOutOpcode();
     
 
 private:

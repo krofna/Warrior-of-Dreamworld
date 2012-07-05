@@ -22,16 +22,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../client/Defines.h"
 
 struct Spell;
+class Player;
 
 class ObjectMgr
 {
 public:
     Spell* GetSpell(Uint16 ID);
+    Player* GetPlayer(std::string Name);
 
     void LoadSpells();
+    void LoadPlayers();
 
 private:
     std::vector<Spell*> Spells;
+    std::map<std::string, Player*> Players;
 };
 
 extern ObjectMgr* sObjectMgr;

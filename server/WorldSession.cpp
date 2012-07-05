@@ -28,6 +28,11 @@ pPlayer(pPlayer)
 {
 }
 
+WorldSession::~WorldSession()
+{
+    delete pSocket;
+}
+
 void WorldSession::ReceivePackets()
 {
     // Loop as long as there are packets to receive
@@ -42,7 +47,7 @@ void WorldSession::ReceivePackets()
             continue;
         }
         printf("Received: %s, ", OpcodeTable[Opcode].name);
-        (this->*OpcodeTable[Opcode].Handler)(Packet);
+        (this->*OpcodeTable[Opcode].Handler)();
     }
 }
 
@@ -53,14 +58,14 @@ void WorldSession::SendPacket(sf::Packet& Packet)
     pSocket->send(Packet);
 }
 
-void WorldSession::HandleNULL(sf::Packet& Packet)
+void WorldSession::HandleNULL()
 {
     // This is used as a placeholder for opcodes
     // which are handled in a special way, such as
     // MSG_LOGIN. (See: AuthSession, OpcodeHandler)
 }
 
-void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
+void WorldSession::HandleMoveObjectOpcode()
 {
     Uint8 Direction;
     Packet >> Direction;
@@ -83,7 +88,7 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
     sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
 
-void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
+void WorldSession::HandleCastSpellOpcode()
 {
     Uint16 SpellID;
     Uint8 Direction;
@@ -97,7 +102,7 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
 
     Spell* pSpell = sObjectMgr->GetSpell(SpellID);
 
-    if(pSpell == NULL)
+    if(pSpell == nullptr)
     {
         printf("Invalid Spell ID!\n");
         return;
@@ -118,7 +123,7 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
     }
 }
 
-void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
+void WorldSession::HandleTextMessageOpcode()
 {
     std::string Message;
     Packet >> Message;
@@ -127,4 +132,9 @@ void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
     Packet << (Uint16)MSG_SEND_TEXT << pPlayer->GetObjectID() << Message;
     
     pPlayer->GetMap()->SendToPlayers(Packet);
+}
+
+void WorldSession::HandleLogOutOpcode()
+{
+    pPlayer->LogOut();
 }

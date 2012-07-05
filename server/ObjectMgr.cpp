@@ -18,6 +18,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "ObjectMgr.h"
 #include "Spell.h"
+#include "Database.h"
+#include "Player.h"
+#include "World.h"
 #include <fstream>
 
 ObjectMgr* sObjectMgr;
@@ -30,7 +33,17 @@ Spell* ObjectMgr::GetSpell(Uint16 ID)
             return (*SpellIter);
     }
 
-    return NULL;
+    return nullptr;
+}
+
+Player* ObjectMgr::GetPlayer(std::string Name)
+{
+    auto Iter = Players.find(Name);
+
+    if(Iter != Players.end())
+        return Iter->second;
+
+    return nullptr;
 }
 
 void ObjectMgr::LoadSpells()
@@ -47,5 +60,26 @@ void ObjectMgr::LoadSpells()
     while(File >> ID >> DisplayID >> Effect >> Value >> Cost >> Name)
     {
         Spells.push_back(new Spell(ID, DisplayID, Effect, Value, Cost, Name));
+    }
+}
+
+void ObjectMgr::LoadPlayers()
+{
+    QueryResult Result(sDatabase.Query("SELECT * FROM `players`;"));
+
+    while(Result->next())
+    {
+        Players[Result->getString(2)] = new Player
+            (
+            Result->getString(2), 
+            Result->getString(3),
+            Result->getString(4),
+            sWorld->GetMap(Result->getInt(7)),
+            Result->getInt(1),
+            Result->getInt(8),
+            Result->getInt(9),
+            Result->getInt(5),
+            Result->getInt(6)
+            );
     }
 }

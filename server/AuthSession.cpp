@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "AuthSession.h"
 #include "World.h"
-#include "Database.h"
+#include "ObjectMgr.h"
 #include <fstream>
 
 AuthSession::AuthSession()
@@ -61,8 +61,9 @@ void AuthSession::HandleAll()
 
             // Check if username exists
             AuthPacket >> Username;
-            auto Iterator = OfflinePlayers.find(Username);
-            if(Iterator == OfflinePlayers.end())
+            Player* pPlayer = sObjectMgr->GetPlayer(Username);
+
+            if(pPlayer == nullptr)
             {
                 // Invalid username, send response
                 AuthPacket.clear();
@@ -76,7 +77,6 @@ void AuthSession::HandleAll()
 
             // Check if passwords match
             AuthPacket >> Password;
-            Player* pPlayer = Iterator->second;
             if(pPlayer->Password != Password)
             {
                 // Invalid password, send response
@@ -89,8 +89,13 @@ void AuthSession::HandleAll()
                 continue;
             }
 
-            // Clean the packet and tell the client
-            // that he logged in sucessfully
+            // If player is online, kick him
+            if(pPlayer->IsInWorld())
+            {
+                pPlayer->LogOut();
+            }
+
+            // Tell the client that he logged in sucessfully
             AuthPacket.clear();
             AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->GetMapID();
             pSocket->send(AuthPacket);
@@ -98,35 +103,12 @@ void AuthSession::HandleAll()
             // Create new WorldSession for the player
             sWorld->AddSession(pSocket, pPlayer);
 
-            // Remove the player and matching socket 
-            // from list of offline player list
-            OfflinePlayers.erase(pPlayer->Username);
+            // Remove pointer to socket
             SocketIterator = Sockets.erase(SocketIterator);
         }
         else
         {
             ++SocketIterator;
         }
-    }
-}
-
-void AuthSession::LoadOfflinePlayers()
-{
-    QueryResult Result(sDatabase.Query("SELECT * FROM `players`;"));
-
-    while(Result->next())
-    {
-        OfflinePlayers[Result->getString(2)] = new Player
-            (
-            Result->getString(2), 
-            Result->getString(3),
-            Result->getString(4),
-            sWorld->Maps[Result->getInt(7)],
-            Result->getInt(1),
-            Result->getInt(8),
-            Result->getInt(9),
-            Result->getInt(5),
-            Result->getInt(6)
-            );
     }
 }

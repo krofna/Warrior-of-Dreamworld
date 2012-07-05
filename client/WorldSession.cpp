@@ -49,7 +49,7 @@ void WorldSession::RecievePackets()
         }
         printf("Recieved: %s, ", OpcodeTable[Opcode].name);
         // Handle the packet
-        (this->*OpcodeTable[Opcode].Handler)(Packet);
+        (this->*OpcodeTable[Opcode].Handler)();
     }
 }
 
@@ -60,7 +60,7 @@ void WorldSession::SendPacket(sf::Packet& Packet)
     Socket.send(Packet);
 }
 
-void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
+void WorldSession::HandleLoginOpcode()
 {
     Uint16 Status;
     Packet >> Status;
@@ -90,7 +90,7 @@ void WorldSession::HandleLoginOpcode(sf::Packet& Packet)
     printf("Packet is good!\n");
 }
 
-void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
+void WorldSession::HandleAddObjectOpcode()
 {
     Uint16 x, y, tx, ty;
     Uint32 ObjID;
@@ -108,7 +108,11 @@ void WorldSession::HandleAddObjectOpcode(sf::Packet& Packet)
     printf("Packet is good!\n");
 }
 
-void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
+void WorldSession::HandleNULL()
+{
+}
+
+void WorldSession::HandleMoveObjectOpcode()
 {
     Uint32 ObjID;
     Uint8 Direction;
@@ -124,7 +128,7 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
     printf("Packet is good!\n");
 }
 
-void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
+void WorldSession::HandleCastSpellOpcode()
 {
     Uint8 Direction;
     Uint16 Effect, DisplayID;
@@ -141,15 +145,12 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
     printf("Packet is good!\n");
 }
 
-void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
+void WorldSession::HandleTextMessageOpcode()
 {
     Uint32 ObjID;
     sf::Text textMessage;
     std::string Message;
     Packet >> ObjID >> Message;
-
-    // TODO Player Username
-    std::cout << ObjID << ": " << Message << std::endl;
 
     textMessage.setString(Message);
     textMessage.setCharacterSize(18);
@@ -158,17 +159,20 @@ void WorldSession::HandleTextMessageOpcode(sf::Packet& Packet)
     TextMessages.push_back(textMessage);
 }
 
+void WorldSession::HandleLogOutOpcode()
+{
+    // [PH] TODO: Back to login screen, this is pretty nasty
+    abort();
+}
+
 void WorldSession::SendMovementRequest(Uint8 Direction)
 {
-    sf::Packet Packet;
     Packet << (Uint16)MSG_MOVE_OBJECT << Direction;
-
     SendPacket(Packet);
 }
 
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
-    sf::Packet Packet;
     Packet << (Uint16)MSG_LOGIN << Username << Password;
     SendPacket(Packet);
 }
@@ -176,18 +180,18 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 // TODO: [PH]
 void WorldSession::SendCastSpellRequest(Uint16 SpellID, Uint8 Direction)
 {
-    sf::Packet Packet;
-
     Packet << (Uint16)MSG_CAST_SPELL << SpellID << Direction;
-
-    Session->ConnectToServer();
-    Session->SendPacket(Packet);
+    SendPacket(Packet);
 }
 
 void WorldSession::SendTextMessage(std::string Message)
 {
-    sf::Packet Packet;
-    
     Packet << (Uint16)MSG_SEND_TEXT << Message;
+    SendPacket(Packet);
+}
+
+void WorldSession::SendLogOutRequest()
+{
+    Packet << (Uint16)MSG_LOG_OUT;
     SendPacket(Packet);
 }

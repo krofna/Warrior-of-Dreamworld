@@ -27,7 +27,6 @@ public:
     AuthSession();
     ~AuthSession();
 
-    void LoadOfflinePlayers();
     void HandleAll();
 
 private:
@@ -39,7 +38,6 @@ private:
     Uint16 Opcode;
 
     std::vector<sf::TcpSocket*> Sockets;
-    std::map<std::string, Player*> OfflinePlayers;
 };
 
 #endif

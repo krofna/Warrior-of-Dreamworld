@@ -35,17 +35,20 @@ public:
     void SendPacket(sf::Packet& Packet);
 
     // Opcode handlers
-    void HandleLoginOpcode(sf::Packet& Packet);
-    void HandleAddObjectOpcode(sf::Packet& Packet);
-    void HandleMoveObjectOpcode(sf::Packet& Packet);
-    void HandleCastSpellOpcode(sf::Packet& Packet);
-    void HandleTextMessageOpcode(sf::Packet& Packet);
+    void HandleNULL();
+    void HandleLoginOpcode();
+    void HandleAddObjectOpcode();
+    void HandleMoveObjectOpcode();
+    void HandleCastSpellOpcode();
+    void HandleTextMessageOpcode();
+    void HandleLogOutOpcode();
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);
     void SendMovementRequest(Uint8 Direction);
     void SendCastSpellRequest(Uint16 SpellID, Uint8 Direction);
     void SendTextMessage(std::string Message);
+    void SendLogOutRequest();
 
     std::vector<sf::Text> TextMessages;
 

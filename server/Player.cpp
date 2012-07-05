@@ -31,7 +31,8 @@ Player::Player
     ) :
 Username(Username),
 Password(Password),
-WorldObject(Tileset, pMap, ObjID, x, y, tx, ty)
+WorldObject(Tileset, pMap, ObjID, x, y, tx, ty),
+pWorldSession(nullptr)
 {
 }
 
@@ -65,10 +66,24 @@ sf::Packet Player::PackData()
 
 void Player::SendPacket(sf::Packet Packet)
 {
-    sWorldSession->SendPacket(Packet);
+    pWorldSession->SendPacket(Packet);
 }
 
-void Player::BindSession(WorldSession* sWorldSession)
+void Player::BindSession(WorldSession* pWorldSession)
 {
-    this->sWorldSession = sWorldSession;
+    this->pWorldSession = pWorldSession;
+}
+
+bool Player::IsInWorld()
+{
+    return pWorldSession != nullptr;
+}
+
+void Player::LogOut()
+{
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_LOG_OUT;
+    SendPacket(Packet);
+    delete pWorldSession;
+    // TODO: Save all stuff to DB
 }
