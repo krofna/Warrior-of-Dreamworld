@@ -65,10 +65,10 @@ sf::Packet Player::PackData()
 
 void Player::SendPacket(sf::Packet Packet)
 {
-    pWorldSession->SendPacket(Packet);
+    sWorldSession->SendPacket(Packet);
 }
 
-void Player::BindSession(WorldSession* pWorldSession)
+void Player::BindSession(WorldSession* sWorldSession)
 {
-    this->pWorldSession = pWorldSession;
+    this->sWorldSession = sWorldSession;
 }

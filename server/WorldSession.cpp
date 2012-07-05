@@ -80,7 +80,7 @@ void WorldSession::HandleMoveObjectOpcode(sf::Packet& Packet)
     
     // Send movement update to all players in the map
     Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << Direction;
-    pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
+    sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
 
 void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
@@ -112,7 +112,7 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
         {
         case SPELL_BOLT:
             Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << pSpell->DisplayID << Direction;
-            pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
+            sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
             break;
         }
     }

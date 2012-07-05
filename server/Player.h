@@ -51,10 +51,10 @@ public:
 
     void SendPacket(sf::Packet Packet);
     sf::Packet PackData();
-    void BindSession(WorldSession* pWorldSession);
+    void BindSession(WorldSession* sWorldSession);
 
 private:
-    WorldSession* pWorldSession;
+    WorldSession* sWorldSession;
 
     std::string Username;
     std::string Password;

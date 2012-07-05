@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #define SERVER_HEARTBEAT 50
 
-World* pWorld;
+World* sWorld;
 
 World::World()
 {
@@ -49,11 +49,8 @@ int World::Run()
     }
     catch (sql::SQLException &e) 
     {
-        cout << "# ERR: SQLException in " << __FILE__;
-        cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
-        cout << "# ERR: " << e.what();
-        cout << " (MySQL error code: " << e.getErrorCode();
-        cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+        cout << "SQL Exception: " << e.what();
+        abort();
     }
 
     sf::Clock Clock;
@@ -89,8 +86,8 @@ void World::Update(Int32 diff)
 
 void World::AddSession(sf::TcpSocket* pSocket, Player* pPlayer)
 {
-    WorldSession* pWorldSession = new WorldSession(pSocket, pPlayer);
-    pPlayer->BindSession(pWorldSession);
-    Sessions.push_back(pWorldSession);
+    WorldSession* sWorldSession = new WorldSession(pSocket, pPlayer);
+    pPlayer->BindSession(sWorldSession);
+    Sessions.push_back(sWorldSession);
     Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
 }

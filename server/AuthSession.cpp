@@ -96,7 +96,7 @@ void AuthSession::HandleAll()
             pSocket->send(AuthPacket);
 
             // Create new WorldSession for the player
-            pWorld->AddSession(pSocket, pPlayer);
+            sWorld->AddSession(pSocket, pPlayer);
 
             // Remove the player and matching socket 
             // from list of offline player list
@@ -121,7 +121,7 @@ void AuthSession::LoadOfflinePlayers()
             Result->getString(2), 
             Result->getString(3),
             Result->getString(4),
-            pWorld->Maps[Result->getInt(7)],
+            sWorld->Maps[Result->getInt(7)],
             Result->getInt(1),
             Result->getInt(8),
             Result->getInt(9),

@@ -20,6 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 int main()
 {
-    pWorld = new World();
-    return pWorld->Run();
+    sWorld = new World();
+    return sWorld->Run();
 }

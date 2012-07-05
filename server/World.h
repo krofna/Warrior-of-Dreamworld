@@ -41,6 +41,6 @@ private:
     void Update(Int32 diff);
 };
 
-extern World* pWorld;
+extern World* sWorld;
 
 #endif
