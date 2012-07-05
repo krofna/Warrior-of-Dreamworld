@@ -30,6 +30,7 @@ struct Map
     std::vector<WorldObject*> MapObjects; //TEMP: see above
     std::vector<Player*> Players; //TEMP: see above
 
+    void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
     virtual void Update(Int32 diff);
 

@@ -81,9 +81,7 @@ bool Player::IsInWorld()
 
 void Player::LogOut()
 {
-    sf::Packet Packet;
-    Packet << (Uint16)MSG_LOG_OUT;
-    SendPacket(Packet);
+    pMap->RemovePlayer(this);
     delete pWorldSession;
     // TODO: Save all stuff to DB
 }

@@ -65,3 +65,15 @@ void Map::SendToPlayers(sf::Packet& Packet)
         (*PlayerIterator)->SendPacket(Packet);
     }
 }
+
+void Map::RemovePlayer(Player* pPlayer)
+{
+    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
+    {
+        if((*PlayerIterator) == pPlayer)
+        {
+            Players.erase(PlayerIterator);
+            return;
+        }
+    }
+}
