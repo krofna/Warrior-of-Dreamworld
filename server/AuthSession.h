@@ -26,11 +26,11 @@ class AuthSession
 public:
     AuthSession();
     ~AuthSession();
+
+    void LoadOfflinePlayers();
     void HandleAll();
 
 private:
-    void LoadOfflinePlayers();
-
     sf::TcpListener Listener;
     sf::TcpSocket* NewSocket;
 

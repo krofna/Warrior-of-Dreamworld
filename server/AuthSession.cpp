@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "AuthSession.h"
 #include "World.h"
+#include "Database.h"
 #include <fstream>
 
 AuthSession::AuthSession()
@@ -25,7 +26,6 @@ AuthSession::AuthSession()
     Listener.listen(0xBEEF);
     Listener.setBlocking(false);
     NewSocket = new sf::TcpSocket();
-    LoadOfflinePlayers();
 }
 
 AuthSession::~AuthSession()
@@ -112,13 +112,21 @@ void AuthSession::HandleAll()
 
 void AuthSession::LoadOfflinePlayers()
 {
-    std::ifstream File("PlayerDB.txt");
-    Uint16 MapID, x, y, tx, ty;
-	Uint32 ObjID;
-    std::string Tileset;
+    QueryResult Result(sDatabase.Query("SELECT * FROM `players`;"));
 
-    while(File >> Username >> Password >> Tileset >> MapID >> ObjID >> x >> y >> tx >> ty)
+    while(Result->next())
     {
-        OfflinePlayers[Username] = new Player(Username, Password, Tileset, pWorld->Maps[MapID], ObjID, x, y, tx, ty);
+        OfflinePlayers[Result->getString(2)] = new Player
+            (
+            Result->getString(2), 
+            Result->getString(3),
+            Result->getString(4),
+            pWorld->Maps[Result->getInt(7)],
+            Result->getInt(1),
+            Result->getInt(8),
+            Result->getInt(9),
+            Result->getInt(5),
+            Result->getInt(6)
+            );
     }
 }

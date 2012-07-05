@@ -29,9 +29,10 @@ class WorldObject
 {
 public:
     WorldObject(std::string Tileset, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
-    virtual void Draw() { Window.draw(ObjectSprite); };
+    virtual void Draw();
 
     void UpdateCoordinates(Uint8 Direction);
+    sf::Vector2f GetPosition();
 
 private:
     sf::Sprite ObjectSprite;

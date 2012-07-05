@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.h"
 #include "ObjectMgr.h"
+#include "Database.h"
 
 #define SERVER_HEARTBEAT 50
 
@@ -32,15 +33,30 @@ World::World()
 }
 
 int World::Run()
-{    
+{
+    using std::cout;
+    using std::endl;
+
     pAuthSession = new AuthSession();
     sObjectMgr = new ObjectMgr();
 
     sObjectMgr->LoadSpells();
 
-    sf::Clock Clock;
+    try
+    {
+        sDatabase.Connect();
+        pAuthSession->LoadOfflinePlayers();
+    }
+    catch (sql::SQLException &e) 
+    {
+        cout << "# ERR: SQLException in " << __FILE__;
+        cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+        cout << "# ERR: " << e.what();
+        cout << " (MySQL error code: " << e.getErrorCode();
+        cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+    }
 
-    //TODO: Load all
+    sf::Clock Clock;
 
     // Server main loop
     while(true)

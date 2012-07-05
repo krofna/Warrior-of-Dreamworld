@@ -1,2 +1,0 @@
-admin password dg_classm32.gif 0 0 5 5 0 0
-test test dg_classm32.gif 0 1 5 6 1 0

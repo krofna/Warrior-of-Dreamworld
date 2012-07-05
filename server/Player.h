@@ -59,7 +59,7 @@ private:
     std::string Username;
     std::string Password;
 
-    std::vector<Uint8> Spells;
+    std::vector<Uint16> Spells;
 };
 
 #endif

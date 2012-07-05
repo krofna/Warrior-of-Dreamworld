@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Opcodes.h"
 #include "World.h"
 #include "ObjectMgr.h"
+#include <iostream>
 
 WorldSession::WorldSession(sf::TcpSocket* pSocket, Player* pPlayer) :
 pSocket(pSocket),
@@ -93,15 +94,24 @@ void WorldSession::HandleCastSpellOpcode(sf::Packet& Packet)
         printf("Packet is too big!\n");
         return;
     }
+
+    Spell* pSpell = sObjectMgr->GetSpell(SpellID);
+
+    if(pSpell == NULL)
+    {
+        printf("Invalid Spell ID!\n");
+        return;
+    }
+
     printf("Packet is good!\n");
 
     //if(pPlayer->CanCastSpell(SpellID))
     {
         Packet.clear();
-        switch(sObjectMgr->GetSpell(SpellID)->Effect)
+        switch(pSpell->Effect)
         {
         case SPELL_BOLT:
-            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << sObjectMgr->GetSpell(SpellID)->DisplayID << Direction;
+            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << pSpell->DisplayID << Direction;
             pWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
             break;
         }

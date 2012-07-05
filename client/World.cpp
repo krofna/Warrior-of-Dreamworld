@@ -149,7 +149,7 @@ void World::HandleEvent(sf::Event Event)
                 Session->SendMovementRequest(MOVE_DOWN);
             break;
         case sf::Keyboard::T:
-            Session->SendCastSpellRequest();
+            Session->SendCastSpellRequest(0, MOVE_UP);
             break;
             
         case sf::Keyboard::Space:
@@ -167,7 +167,7 @@ void World::HandleEvent(sf::Event Event)
             break;
         
     case sf::Event::TextEntered:
-        if(typing && Event.text.unicode < 128) // >64 doesnt allow things like spacebar or special characters(for emoticons)
+        if(typing && Event.text.unicode < 128)
             Message += static_cast<char>(Event.key.code);
         break;
 
@@ -196,5 +196,6 @@ void World::HandleEvent(sf::Event Event)
 // TODO [PH]
 void World::CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect)
 {
-    Animations.push_back(Animation(200, 200, Direction));
+    WorldObject* pCaster = WorldObjectMap[Caster];
+    Animations.push_back(Animation(pCaster->GetPosition(), Direction));
 }

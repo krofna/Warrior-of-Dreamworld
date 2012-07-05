@@ -174,11 +174,11 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 }
 
 // TODO: [PH]
-void WorldSession::SendCastSpellRequest()
+void WorldSession::SendCastSpellRequest(Uint16 SpellID, Uint8 Direction)
 {
     sf::Packet Packet;
 
-    Packet << (Uint16)MSG_CAST_SPELL << (Uint16)0 << (Uint8)MOVE_RIGHT;
+    Packet << (Uint16)MSG_CAST_SPELL << SpellID << Direction;
 
     Session->ConnectToServer();
     Session->SendPacket(Packet);

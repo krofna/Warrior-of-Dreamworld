@@ -44,7 +44,7 @@ public:
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);
     void SendMovementRequest(Uint8 Direction);
-    void SendCastSpellRequest();
+    void SendCastSpellRequest(Uint16 SpellID, Uint8 Direction);
     void SendTextMessage(std::string Message);
 
     std::vector<sf::Text> TextMessages;

@@ -44,3 +44,13 @@ void WorldObject::UpdateCoordinates(Uint8 Direction)
         break;
     }
 }
+
+void WorldObject::Draw() 
+{ 
+    Window.draw(ObjectSprite); 
+}
+
+sf::Vector2f WorldObject::GetPosition() 
+{ 
+    return ObjectSprite.getPosition(); 
+}

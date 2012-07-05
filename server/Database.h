@@ -16,23 +16,38 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#ifndef DATABASE_H
+#define DATABASE_H
 
-#include "Defines.h"
+#include "mysql_connection.h"
 
-class Animation
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+#include <cppconn/prepared_statement.h>
+
+#include <memory>
+
+typedef std::auto_ptr<sql::ResultSet> QueryResult;
+
+class Database
 {
 public:
-    Animation(sf::Vector2f Position, Uint8 Direction);
-    void Update();
+    Database();
+    ~Database();
 
-protected:
-    sf::Texture t; // this shouldnt be here
-    sf::Clock Clock;
-    std::vector<sf::Sprite> Sprites;
-    Uint8 Index;
-    Uint8 Direction;
+    void Connect();
+    void PExecute(const char* sql, ...);
+    void Execute(const char* sql);
+    QueryResult Query(const char* sql);
+
+private:
+    sql::Driver* Driver;
+    sql::Connection* Connection;
+    sql::Statement* Statement;
 };
+
+extern Database sDatabase;
 
 #endif
