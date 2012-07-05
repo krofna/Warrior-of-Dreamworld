@@ -94,8 +94,8 @@ void WorldSession::HandleAddObjectOpcode()
 {
     Uint16 x, y, tx, ty;
     Uint32 ObjID;
-    std::string Tileset;
-    Packet >> Tileset >> ObjID >> x >> y >> tx >> ty;
+    std::string Tileset, Username;
+    Packet >> Tileset >> ObjID >> Username >> x >> y >> tx >> ty;
 
     if(!Packet.endOfPacket())
     {
@@ -103,7 +103,7 @@ void WorldSession::HandleAddObjectOpcode()
         return;
     }
 
-    WorldObject* pNewObject = new WorldObject(Tileset, x, y, tx, ty);
+    WorldObject* pNewObject = new WorldObject(Tileset, Username, x, y, tx, ty);
     pWorld->WorldObjectMap[ObjID] = pNewObject;
     printf("Packet is good!\n");
 }
@@ -149,13 +149,12 @@ void WorldSession::HandleTextMessageOpcode()
 {
     Uint32 ObjID;
     sf::Text textMessage;
-    std::string Message;
+    std::string Message, Username;
     Packet >> ObjID >> Message;
 
-    textMessage.setString(Message);
+    textMessage.setString(Username + ": " + Message);
     textMessage.setCharacterSize(18);
     textMessage.setColor(sf::Color::Magenta);
-
     TextMessages.push_back(textMessage);
 }
 

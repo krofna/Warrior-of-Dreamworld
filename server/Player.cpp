@@ -60,7 +60,7 @@ void Player::Update(Int32 diff)
 sf::Packet Player::PackData()
 {
     sf::Packet Packet;
-    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << GetObjectID() << x << y << tx << ty;
+    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << GetObjectID() << Username << x << y << tx << ty;
     return Packet;
 }
 
