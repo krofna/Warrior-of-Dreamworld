@@ -31,7 +31,7 @@ ty(ty)
 {
 }
 
-Uint16 WorldObject::GetMapID() const
+const Uint16 WorldObject::GetMapID() const
 {
     return pMap->MapID;
 }

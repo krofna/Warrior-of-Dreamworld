@@ -24,8 +24,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 World* sWorld;
 
-World::World()
+World::World() :
+IsRunning   (true),
+ConsoleInputThread(&World::ConsoleInput, this)
 {
+}
+
+World::~World()
+{
+    delete sObjectMgr;
 }
 
 void World::Load()
@@ -53,10 +60,13 @@ void World::Load()
 
 int World::Run()
 {
+    ConsoleInputThread.launch();
+
     sf::Clock Clock;
 
     // Server main loop
-    while(true)
+    // TODO: Take into consideration that update(diff) took time
+    while(IsRunning)
     {
         pAuthSession->HandleAll();
 
@@ -73,7 +83,19 @@ int World::Run()
         Clock.restart();
     }
 
-    //TODO: Save all
+    return 0;
+}
+
+// [PH], needs extra work
+void World::ConsoleInput()
+{
+    std::string Input;
+
+    while(Input != "stop")
+    {
+        std::cin >> Input;
+    }
+    IsRunning = false;
 }
 
 void World::Update(Int32 diff)

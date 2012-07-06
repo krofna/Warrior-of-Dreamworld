@@ -161,7 +161,7 @@ void WorldSession::HandleTextMessageOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     // [PH] TODO: Back to login screen, this is pretty nasty
-    abort();
+    Window.close();
 }
 
 void WorldSession::SendMovementRequest(Uint8 Direction)

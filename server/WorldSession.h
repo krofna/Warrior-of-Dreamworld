@@ -33,13 +33,14 @@ public:
     void ReceivePackets();
     void SendPacket(sf::Packet& Packet);
 
+    void SendLogOutPacket();
+
     // Opcode handlers
     void HandleNULL();
     void HandleMoveObjectOpcode();
     void HandleCastSpellOpcode();
     void HandleTextMessageOpcode();
     void HandleLogOutOpcode();
-    
 
 private:
     Player* pPlayer;

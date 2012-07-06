@@ -32,17 +32,18 @@ public:
 
     virtual void Update(Int32 diff) = 0;
     virtual sf::Packet PackData() = 0;
+    virtual void SaveToDB() = 0;
 
     void UpdateCoordinates(Uint8 Direction);
 
-    Uint32 GetObjectID() const
+    const Uint32 GetObjectID() const
     {
         return ObjID;
     }
 
-    Uint16 GetMapID() const;
+    const Uint16 GetMapID() const;
 
-    Map* GetMap()
+    Map* GetMap() const
     {
         return pMap;
     }

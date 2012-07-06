@@ -22,5 +22,7 @@ int main()
 {
     sWorld = new World();
     sWorld->Load();
-    return sWorld->Run();
+    int ReturnValue = sWorld->Run();
+    delete sWorld;
+    return ReturnValue;
 }

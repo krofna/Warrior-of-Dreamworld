@@ -158,6 +158,7 @@ void World::HandleEvent(sf::Event Event)
             break;
 
         case sf::Keyboard::Escape:
+            Session->SendLogOutRequest();
             Window.close();
           
         default:

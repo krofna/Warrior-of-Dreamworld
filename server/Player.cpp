@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Player.h"
 #include "Opcodes.h"
+#include "Database.h"
 #include "World.h"
 
 Player::Player
@@ -57,6 +58,11 @@ void Player::Update(Int32 diff)
 {
 }
 
+void Player::SaveToDB()
+{
+    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, map=%u WHERE id=%u", x, y, pMap->MapID, GetObjectID());
+}
+
 sf::Packet Player::PackData()
 {
     sf::Packet Packet;
@@ -74,14 +80,15 @@ void Player::BindSession(WorldSession* pWorldSession)
     this->pWorldSession = pWorldSession;
 }
 
-bool Player::IsInWorld()
-{
-    return pWorldSession != nullptr;
-}
-
 void Player::LogOut()
 {
+    if(pWorldSession)
+    {
+        pWorldSession->SendLogOutPacket();
+        delete pWorldSession;
+        pWorldSession = nullptr;
+    }
+
     pMap->RemovePlayer(this);
-    delete pWorldSession;
-    // TODO: Save all stuff to DB
+    this->SaveToDB();
 }

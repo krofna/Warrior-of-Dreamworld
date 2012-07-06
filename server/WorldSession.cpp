@@ -138,3 +138,10 @@ void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
 }
+
+void WorldSession::SendLogOutPacket()
+{
+    Packet.clear();
+    Packet << (Uint16)MSG_LOG_OUT;
+    SendPacket(Packet);
+}

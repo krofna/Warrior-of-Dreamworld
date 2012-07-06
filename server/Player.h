@@ -48,12 +48,12 @@ public:
     bool CanCastSpell(Uint8 ID);
 
     void Update(Int32 diff);
+    void SaveToDB();
 
     void SendPacket(sf::Packet Packet);
     sf::Packet PackData();
     void BindSession(WorldSession* pWorldSession);
 
-    bool IsInWorld();
     void LogOut();
 
 private:

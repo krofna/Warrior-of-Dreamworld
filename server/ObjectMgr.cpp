@@ -25,6 +25,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ObjectMgr* sObjectMgr;
 
+ObjectMgr::~ObjectMgr()
+{
+    for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
+    {
+        delete (*SpellIter);
+    }
+
+    // Kick all players if they are online
+    for(auto PlayerIter = Players.begin(); PlayerIter != Players.end(); ++PlayerIter)
+    {
+        (*PlayerIter).second->LogOut();
+        delete (*PlayerIter).second;
+    }
+}
+
 Spell* ObjectMgr::GetSpell(Uint16 ID)
 {
     for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
@@ -65,7 +80,7 @@ void ObjectMgr::LoadSpells()
 
 void ObjectMgr::LoadPlayers()
 {
-    QueryResult Result(sDatabase.Query("SELECT * FROM `players`;"));
+    QueryResult Result(sDatabase.Query("SELECT * FROM `players`"));
 
     while(Result->next())
     {

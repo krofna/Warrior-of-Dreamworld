@@ -27,6 +27,8 @@ class Player;
 class ObjectMgr
 {
 public:
+    ~ObjectMgr();
+
     Spell* GetSpell(Uint16 ID);
     Player* GetPlayer(std::string Name);
 

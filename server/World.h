@@ -25,9 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class World
 {
     friend class WorldSession;
-    friend class AuthSession; // Not needed, really.
 public:
     World();
+    ~World();
     void Load();
     int Run();
 
@@ -35,12 +35,15 @@ public:
     Map* GetMap(Uint8 MapID);
 
 private:
+    void Update(Int32 diff);
+    void ConsoleInput();
+
+    AuthSession* pAuthSession;
     std::vector<Map*> Maps;
     std::vector<WorldSession*> Sessions;
 
-    AuthSession* pAuthSession;
-
-    void Update(Int32 diff);
+    volatile bool IsRunning;
+    sf::Thread ConsoleInputThread;
 };
 
 extern World* sWorld;
