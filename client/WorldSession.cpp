@@ -152,6 +152,7 @@ void WorldSession::HandleTextMessageOpcode()
     std::string Message, Username;
     Packet >> ObjID >> Message;
 
+    Username = pWorld->WorldObjectMap[ObjID]->GetObjectName();
     textMessage.setString(Username + ": " + Message);
     textMessage.setCharacterSize(18);
     textMessage.setColor(sf::Color::Magenta);

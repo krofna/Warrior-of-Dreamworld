@@ -28,7 +28,7 @@ WorldView   (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
 MoveWorldView(MOVE_STOP)
 {
     Window.setView(WorldView);
-    typing = false;
+    Typing = false;
     ChatOffsetX = -(WindowWidth / 2 - 5);
     ChatOffsetY = 20;
 }
@@ -109,67 +109,48 @@ void World::Draw()
 
 void World::HandleEvent(sf::Event Event)
 {
+    if(Typing)
+    {
+        HandleTyping(Event);
+        return;
+    }
+
     switch(Event.type)
     {
     case sf::Event::KeyPressed:
-
         switch(Event.key.code)
         {
-
         case sf::Keyboard::Return:
-
-            if(!typing)
-                typing = true;
-            else
-            {
-                typing = false;
-                if(!Message.empty())
-                    Session->SendTextMessage(Message);
-                Message.clear();
-            }
+            Typing = true;
             break;
 
         case sf::Keyboard::D:
-            if(!typing)
-                Session->SendMovementRequest(MOVE_RIGHT);
+            Session->SendMovementRequest(MOVE_RIGHT);
             break;
 
         case sf::Keyboard::A:
-            if(!typing)
-                Session->SendMovementRequest(MOVE_LEFT);
+            Session->SendMovementRequest(MOVE_LEFT);
             break;
 
         case sf::Keyboard::W:
-            if(!typing)
-                Session->SendMovementRequest(MOVE_UP);
+            Session->SendMovementRequest(MOVE_UP);
             break;
 
         case sf::Keyboard::S:
-            if(!typing)
-                Session->SendMovementRequest(MOVE_DOWN);
+            Session->SendMovementRequest(MOVE_DOWN);
             break;
+
         case sf::Keyboard::T:
             Session->SendCastSpellRequest(0, MOVE_UP);
-            break;
-            
-        case sf::Keyboard::Space:
-           // if(typing)
-           //     Message += " ";
             break;
 
         case sf::Keyboard::Escape:
             Session->SendLogOutRequest();
             Window.close();
-          
+
         default:
             break;
         }
-
-            break;
-        
-    case sf::Event::TextEntered:
-        if(typing && Event.text.unicode < 128)
-            Message += static_cast<char>(Event.key.code);
         break;
 
     case sf::Event::MouseMoved:
@@ -194,6 +175,40 @@ void World::HandleEvent(sf::Event Event)
     }
 }
 
+void World::HandleTyping(sf::Event Event)
+{
+    switch(Event.type)
+    {
+    case sf::Event::KeyPressed:
+        switch(Event.key.code)
+        {
+        case sf::Keyboard::Return:
+            Typing = false;
+            if(!Message.empty())
+                Session->SendTextMessage(Message);
+            Message.clear();
+            break;
+
+        case sf::Keyboard::Space:
+            //     Message += " ";
+            break;
+
+        default:
+            break;
+        }
+        break;
+
+    case sf::Event::TextEntered:
+        // TODO: Make a function if key is valid
+        // In chat handler (later)
+        if(Typing && Event.text.unicode < 128)
+            Message += static_cast<char>(Event.key.code);
+        break;
+
+    default:
+        break;
+    }
+}
 // TODO [PH]
 void World::CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect)
 {

@@ -41,6 +41,7 @@ public:
     void CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect);
 
 private:
+    void HandleTyping(sf::Event Event);
 
     // TODO: Map?
     std::string TilesetFileName;
@@ -54,7 +55,7 @@ private:
     std::string Message;
     float ChatOffsetX;
     float ChatOffsetY;
-    bool typing;
+    bool Typing;
 
     std::map<Uint32, WorldObject*> WorldObjectMap;
     std::vector<Animation> Animations;
