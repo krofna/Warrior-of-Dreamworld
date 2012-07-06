@@ -80,15 +80,16 @@ void Player::BindSession(WorldSession* pWorldSession)
     this->pWorldSession = pWorldSession;
 }
 
+void Player::Kick()
+{
+    pWorldSession->SendLogOutPacket();
+    LogOut();
+}
+
 void Player::LogOut()
 {
-    if(pWorldSession)
-    {
-        pWorldSession->SendLogOutPacket();
-        delete pWorldSession;
-        pWorldSession = nullptr;
-    }
-
+    delete pWorldSession;
+    pWorldSession = nullptr;
     pMap->RemovePlayer(this);
     this->SaveToDB();
 }

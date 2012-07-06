@@ -35,7 +35,7 @@ ObjectMgr::~ObjectMgr()
     // Kick all players if they are online
     for(auto PlayerIter = Players.begin(); PlayerIter != Players.end(); ++PlayerIter)
     {
-        (*PlayerIter).second->LogOut();
+        (*PlayerIter).second->Kick();
         delete (*PlayerIter).second;
     }
 }

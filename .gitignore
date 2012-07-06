@@ -2,6 +2,7 @@
 *.slo
 *.lo
 *.o
+*.obj
 
 # Compiled Dynamic libraries
 *.so
@@ -13,6 +14,9 @@
 *.a
 *.lib
 
+# Compiled executables
+*.exe
+
 # Microsoft Visual C++ files
 *.suo
 *.vcxproj
@@ -21,3 +25,9 @@
 *.ipch
 *.tlog
 *.pdb
+*.user
+*.filters
+*.manifest
+*.lastbuildstate
+*.log
+*.txt

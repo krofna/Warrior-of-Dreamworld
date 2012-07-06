@@ -35,7 +35,7 @@ Database::~Database()
 // TODO: Allow #comments in cfg file
 void Database::Connect()
 {
-    std::ifstream CfgFile("WorldServerConfig.txt");
+    std::ifstream CfgFile("WorldServerConfig.conf");
     std::string Address, Username, Password, DatabaseName;
 
     CfgFile >> Address >> Username >> Password >> DatabaseName;

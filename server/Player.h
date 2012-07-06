@@ -55,6 +55,7 @@ public:
     void BindSession(WorldSession* pWorldSession);
 
     void LogOut();
+    void Kick();
 
 private:
     WorldSession* pWorldSession;
