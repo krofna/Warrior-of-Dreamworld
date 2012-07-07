@@ -1,0 +1,16 @@
+What is this?
+- This is 2D Massively Multiplayer Online Role-Playing Game
+
+What do I need to compile and run this?
+
+(client and server):
+- SFML: https://github.com/LaurentGomila/SFML
+
+(server only):
+- boost: http://www.boost.org/
+- MySQL C connector: http://dev.mysql.com/downloads/connector/c/
+- MySQL C++ connector (NOTE: You should compile from source): http://dev.mysql.com/downloads/connector/cpp/
+- MySQL server: http://dev.mysql.com/downloads/mysql/
+
+(optional):
+- SQLyog MySQL GUI: http://www.webyog.com/en/downloads.php

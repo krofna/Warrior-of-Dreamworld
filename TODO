@@ -1,6 +1,7 @@
-- MySQL database
 - Some data may/should be Uint8 instead of Uint16
 - Cleanup Includes/forward declares...
 - Give tilesets IDs instead of std::strings
-- 1 player 1 world session
-- basic movement implementation
+- world_edit (N working on it)
+- movement animations
+- finish basic spell_bolt impl
+- site to register accounts (RenaissanceinCroatia working on it)
