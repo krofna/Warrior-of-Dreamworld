@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 struct Map
 {
     Map(const Uint16 MapID);
+    ~Map();
 
     //std::map<Uint64, WorldObject*> MapObjects;
     //std::map<Uint64, Player*> Players

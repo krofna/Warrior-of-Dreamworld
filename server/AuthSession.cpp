@@ -90,7 +90,8 @@ void AuthSession::HandleAll()
             }
 
             // If player is online, kick him
-            pPlayer->LogOut();
+            if(pPlayer->IsOnline())
+                pPlayer->Kick();
 
             // Tell the client that he logged in sucessfully
             AuthPacket.clear();

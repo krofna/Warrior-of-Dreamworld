@@ -20,9 +20,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 int main()
 {
-    sWorld = new World();
+    sWorld = new World;
     sWorld->Load();
+
+    sf::Thread ConsoleInputThread(&World::ConsoleInput, sWorld);
+
+    ConsoleInputThread.launch();
     int ReturnValue = sWorld->Run();
+
     delete sWorld;
+
     return ReturnValue;
 }

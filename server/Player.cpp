@@ -80,9 +80,15 @@ void Player::BindSession(WorldSession* pWorldSession)
     this->pWorldSession = pWorldSession;
 }
 
+bool Player::IsOnline()
+{
+    return pWorldSession != nullptr;
+}
+
 void Player::Kick()
 {
-    pWorldSession->SendLogOutPacket();
+    if(pWorldSession)
+        pWorldSession->SendLogOutPacket();
     LogOut();
 }
 

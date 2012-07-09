@@ -22,7 +22,8 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
 {
     { "MSG_NULL", &WorldSession::HandleNULL },
     { "MSG_LOGIN", &WorldSession::HandleNULL },
-    { "MSG_ADD_OBJECT", &WorldSession::HandleNULL },
+    { "MSG_ADD_OBJECT", &WorldSession::HandleNULL }, // SMSG
+    { "MSG_REMOVE_OBJECT", &WorldSession::HandleNULL }, // SMSG
     { "MSG_MOVE_OBJECT", &WorldSession::HandleMoveObjectOpcode },
     { "MSG_CAST_SPELL", &WorldSession::HandleCastSpellOpcode },
     { "MSG_SEND_TEXT", &WorldSession::HandleTextMessageOpcode },

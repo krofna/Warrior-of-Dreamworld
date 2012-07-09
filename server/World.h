@@ -29,21 +29,21 @@ public:
     World();
     ~World();
     void Load();
+
     int Run();
+    void ConsoleInput();
 
     void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
     Map* GetMap(Uint8 MapID);
 
 private:
     void Update(Int32 diff);
-    void ConsoleInput();
 
     AuthSession* pAuthSession;
     std::vector<Map*> Maps;
     std::vector<WorldSession*> Sessions;
 
     volatile bool IsRunning;
-    sf::Thread ConsoleInputThread;
 };
 
 extern World* sWorld;

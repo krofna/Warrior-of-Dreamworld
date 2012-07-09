@@ -35,6 +35,10 @@ MoveWorldView(MOVE_STOP)
 
 World::~World()
 {
+    for(auto ObjIter = WorldObjectMap.begin(); ObjIter != WorldObjectMap.end(); ++ObjIter)
+    {
+        delete ObjIter->second;
+    }
 }
 
 void World::LoadTileMap(Uint16 MapID)
@@ -72,7 +76,7 @@ void World::Draw()
 {
     if(MoveWorldView != MOVE_STOP)
     {
-        if((MoveWorldView & MOVE_UP) == MOVE_UP)
+        if((MoveWorldView & MOVE_UP) == MOVE_UP && WorldView.getCenter().y >= (WindowHeight/2))
             WorldView.move(0, -WORLD_VIEW_OFFSET);
 
         else if((MoveWorldView & MOVE_DOWN) == MOVE_DOWN)
@@ -87,11 +91,14 @@ void World::Draw()
         Window.setView(WorldView);
     }
     
+    // Draw tile map
     Window.draw(TileMap, MapStates);
 
+    // Draw static objects
     for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
         (*i).second->Draw();
 
+    // Update animations
     for(auto i = Animations.begin(); i != Animations.end(); ++i)
     {
         i->Update();
@@ -147,6 +154,7 @@ void World::HandleEvent(sf::Event Event)
         case sf::Keyboard::Escape:
             Session->SendLogOutRequest();
             Window.close();
+            return;
 
         default:
             break;
@@ -214,4 +222,13 @@ void World::CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, 
 {
     WorldObject* pCaster = WorldObjectMap[Caster];
     Animations.push_back(Animation(pCaster->GetPosition(), Direction));
+}
+
+void World::RemoveObject(Uint32 ObjectID)
+{
+    if(WorldObjectMap.find(ObjectID) == WorldObjectMap.end())
+        return;
+
+    delete WorldObjectMap[ObjectID];
+    WorldObjectMap.erase(ObjectID);
 }

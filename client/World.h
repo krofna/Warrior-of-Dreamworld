@@ -34,11 +34,14 @@ class World : public GameState
 public:
     World();
     ~World();
+
     void LoadTileMap(Uint16 MapID);
     void Draw();
     void HandleEvent(sf::Event Event);
 
     void CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect);
+
+    void RemoveObject(Uint32 ObjectID);
 
 private:
     void HandleTyping(sf::Event Event);

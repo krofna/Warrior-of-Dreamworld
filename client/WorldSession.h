@@ -38,6 +38,7 @@ public:
     void HandleNULL();
     void HandleLoginOpcode();
     void HandleAddObjectOpcode();
+    void HandleRemoveObjectOpcode();
     void HandleMoveObjectOpcode();
     void HandleCastSpellOpcode();
     void HandleTextMessageOpcode();

@@ -20,13 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Opcodes.h"
 #include "Defines.h"
 #include "Game.h"
+#include "Login.h"
 #include <cassert>
 
 WorldSession::WorldSession(Game* pGame) :
 pGame(pGame),
 pWorld(NULL)
 {
-    ConnectToServer();
 }
 
 bool WorldSession::ConnectToServer()
@@ -58,6 +58,10 @@ void WorldSession::SendPacket(sf::Packet& Packet)
     Packet >> Opcode;
     printf("Sent: %s\n", OpcodeTable[Opcode].name);
     Socket.send(Packet);
+}
+
+void WorldSession::HandleNULL()
+{
 }
 
 void WorldSession::HandleLoginOpcode()
@@ -108,8 +112,11 @@ void WorldSession::HandleAddObjectOpcode()
     printf("Packet is good!\n");
 }
 
-void WorldSession::HandleNULL()
+void WorldSession::HandleRemoveObjectOpcode()
 {
+    Uint32 ObjID;
+    Packet >> ObjID;
+    pWorld->RemoveObject(ObjID);
 }
 
 void WorldSession::HandleMoveObjectOpcode()
@@ -177,7 +184,6 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
     SendPacket(Packet);
 }
 
-// TODO: [PH]
 void WorldSession::SendCastSpellRequest(Uint16 SpellID, Uint8 Direction)
 {
     Packet << (Uint16)MSG_CAST_SPELL << SpellID << Direction;
@@ -194,4 +200,8 @@ void WorldSession::SendLogOutRequest()
 {
     Packet << (Uint16)MSG_LOG_OUT;
     SendPacket(Packet);
+
+    // Back to login screen
+    //pGame->ChangeState(new Login());
+    //Window.setView(Window.getDefaultView());
 }

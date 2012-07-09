@@ -56,6 +56,7 @@ public:
 
     void LogOut();
     void Kick();
+    bool IsOnline();
 
 private:
     WorldSession* pWorldSession;

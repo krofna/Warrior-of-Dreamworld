@@ -17,9 +17,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Map.h"
+#include "Opcodes.h"
 
 Map::Map(const Uint16 MapID) : MapID(MapID)
 {
+}
+
+Map::~Map()
+{
+    for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
+    {
+        delete (*ObjectIterator);
+    }
 }
 
 void Map::Update(Int32 diff)
@@ -68,12 +77,22 @@ void Map::SendToPlayers(sf::Packet& Packet)
 
 void Map::RemovePlayer(Player* pPlayer)
 {
-    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_REMOVE_OBJECT << pPlayer->GetObjectID();
+    printf("Size: %u\n", Players.size());
+    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)
     {
         if((*PlayerIterator) == pPlayer)
         {
-            Players.erase(PlayerIterator);
-            return;
+            printf("erasing");
+            PlayerIterator = Players.erase(PlayerIterator);
+        }
+        else
+        {
+            printf("sending\n");
+            (*PlayerIterator)->SendPacket(Packet);
+            ++PlayerIterator;
         }
     }
+    printf("done");
 }

@@ -22,13 +22,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.h"
 #include <SFML/Network.hpp>
 
-#define MSG_COUNT 7
+#define MSG_COUNT 8
 
 enum Opcodes
 {
     MSG_NULL,
     MSG_LOGIN,
     MSG_ADD_OBJECT,
+    MSG_REMOVE_OBJECT,
     MSG_MOVE_OBJECT,
     MSG_CAST_SPELL,
     MSG_SEND_TEXT,

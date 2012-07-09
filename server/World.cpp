@@ -25,8 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 World* sWorld;
 
 World::World() :
-IsRunning   (true),
-ConsoleInputThread(&World::ConsoleInput, this)
+IsRunning   (true)
 {
 }
 
@@ -60,8 +59,6 @@ void World::Load()
 
 int World::Run()
 {
-    ConsoleInputThread.launch();
-
     sf::Clock Clock;
 
     // Server main loop
@@ -91,7 +88,7 @@ void World::ConsoleInput()
 {
     std::string Input;
 
-    while(Input != "stop")
+    while(Input != "shutdown")
     {
         std::cin >> Input;
     }
