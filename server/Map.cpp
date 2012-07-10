@@ -84,15 +84,12 @@ void Map::RemovePlayer(Player* pPlayer)
     {
         if((*PlayerIterator) == pPlayer)
         {
-            printf("erasing");
             PlayerIterator = Players.erase(PlayerIterator);
         }
         else
         {
-            printf("sending\n");
             (*PlayerIterator)->SendPacket(Packet);
             ++PlayerIterator;
         }
     }
-    printf("done");
 }
