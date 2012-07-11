@@ -52,6 +52,14 @@ private:
     sf::VertexArray TileMap;
     sf::View WorldView;
     Uint8 MoveWorldView;
+    
+    int MapWidth;
+    int MapHeight;
+
+    int CameraLeft;
+    int CameraRight;
+    int CameraBottom;
+    int CameraTop;
     // END TODO
 
     // Chat Members

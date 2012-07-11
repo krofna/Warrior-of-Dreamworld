@@ -22,10 +22,10 @@ int main()
 {
     std::ofstream File("map0.txt");
 
-    File << "dg_edging132.gif " << 100*100 << " ";
+    File << "dg_edging132.gif 50 50 ";
 
 
-    for(int y = 0; y < 100; ++y)
-        for(int x = 0; x < 100; ++x)
+    for(int y = 0; y < 50; ++y)
+        for(int x = 0; x < 50; ++x)
             File << x << " " << y << " 1 15 ";
 }

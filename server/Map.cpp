@@ -79,7 +79,6 @@ void Map::RemovePlayer(Player* pPlayer)
 {
     sf::Packet Packet;
     Packet << (Uint16)MSG_REMOVE_OBJECT << pPlayer->GetObjectID();
-    printf("Size: %u\n", Players.size());
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)
     {
         if((*PlayerIterator) == pPlayer)

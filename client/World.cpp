@@ -23,9 +23,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <cassert>
 
 World::World() :
-TileMap     (sf::PrimitiveType::Quads),
-WorldView   (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
-MoveWorldView(MOVE_STOP)
+TileMap      (sf::PrimitiveType::Quads),
+WorldView    (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
+MoveWorldView(MOVE_STOP),
+CameraLeft   (WorldView.getCenter().x - WindowWidth / 2),
+CameraTop    (WorldView.getCenter().y - WindowHeight / 2),
+CameraRight  (WindowWidth),
+CameraBottom (WindowHeight)
 {
     Window.setView(WorldView);
     Typing = false;
@@ -50,10 +54,12 @@ void World::LoadTileMap(Uint16 MapID)
     assert(File.good());
 
     float x, y, tx, ty;
-    int TileCount, index = 0;
+    int index = 0;
 
-    File >> TilesetFileName >> TileCount;
-    TileMap.resize(TileCount * 4);
+    File >> TilesetFileName >> MapWidth >> MapHeight;
+    TileMap.resize(MapWidth * MapHeight * 4);
+    MapWidth *= TILE_SIZE;
+    MapHeight *= TILE_SIZE;
     MapStates.texture = ResourceManager::GetTileset(TilesetFileName);
 
     while(File >> x >> y >> tx >> ty)
@@ -76,17 +82,33 @@ void World::Draw()
 {
     if(MoveWorldView != MOVE_STOP)
     {
-        if((MoveWorldView & MOVE_UP) == MOVE_UP && WorldView.getCenter().y >= (WindowHeight/2))
-            WorldView.move(0, -WORLD_VIEW_OFFSET);
+        if((MoveWorldView & MOVE_UP) == MOVE_UP && CameraTop > 0)
+        {
+            CameraTop -= TILE_SIZE;
+            CameraBottom -= TILE_SIZE;
+            WorldView.move(0, -TILE_SIZE);
+        }
 
-        else if((MoveWorldView & MOVE_DOWN) == MOVE_DOWN)
-            WorldView.move(0, WORLD_VIEW_OFFSET);
+        else if((MoveWorldView & MOVE_DOWN) == MOVE_DOWN && CameraBottom < MapHeight)
+        {
+            CameraTop += TILE_SIZE;
+            CameraBottom += TILE_SIZE;
+            WorldView.move(0, TILE_SIZE);
+        }
 
-        if((MoveWorldView & MOVE_RIGHT) == MOVE_RIGHT)
-            WorldView.move(WORLD_VIEW_OFFSET, 0);
+        if((MoveWorldView & MOVE_RIGHT) == MOVE_RIGHT && CameraRight < MapWidth)
+        {
+            CameraLeft += TILE_SIZE;
+            CameraRight += TILE_SIZE;
+            WorldView.move(TILE_SIZE, 0);
+        }
 
-        else if((MoveWorldView & MOVE_LEFT) == MOVE_LEFT)
-            WorldView.move(-WORLD_VIEW_OFFSET, 0);
+        else if((MoveWorldView & MOVE_LEFT) == MOVE_LEFT && CameraLeft > 0)
+        {
+            CameraLeft -= TILE_SIZE;
+            CameraRight -= TILE_SIZE;
+            WorldView.move(-TILE_SIZE, 0);
+        }
 
         Window.setView(WorldView);
     }
