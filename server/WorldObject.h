@@ -26,15 +26,14 @@ struct Map;
 
 class WorldObject
 {
-    const Uint32 ObjID;
 public:
-    WorldObject(std::string Tileset, Map* pMap, Uint32 ObjID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
+    WorldObject(Uint32 ObjID);
 
     virtual void Update(Int32 diff) = 0;
     virtual sf::Packet PackData() = 0;
     virtual void SaveToDB() = 0;
 
-    void UpdateCoordinates(Uint8 Direction);
+    bool UpdateCoordinates(Uint8 Direction);
 
     const Uint32 GetObjectID() const
     {
@@ -56,6 +55,8 @@ protected:
     Uint16 y;
     Uint16 tx;
     Uint16 ty;
+
+    const Uint32 ObjID;
 };
 
 #endif

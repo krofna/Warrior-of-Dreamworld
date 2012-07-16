@@ -21,15 +21,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "Player.h"
 
+struct Tile
+{
+    Tile() : pWorldObject(nullptr), pSpell(nullptr) { }
+
+    WorldObject* pWorldObject;
+    Spell* pSpell;
+};
+
 struct Map
 {
     Map(const Uint16 MapID);
     ~Map();
 
-    //std::map<Uint64, WorldObject*> MapObjects;
-    //std::map<Uint64, Player*> Players
-    std::vector<WorldObject*> MapObjects; //TEMP: see above
-    std::vector<Player*> Players; //TEMP: see above
+    std::vector<WorldObject*> MapObjects;
+    std::vector<Player*> Players;
+
+    std::vector<std::vector<Tile> > TileGrid;
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);

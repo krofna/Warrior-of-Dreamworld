@@ -67,9 +67,20 @@ void Database::Execute(const char* sql)
 
 QueryResult Database::Query(const char* sql)
 {
-    sql::PreparedStatement* PStatement = Connection->prepareStatement(sql);
+    std::auto_ptr<sql::PreparedStatement> PStatement(Connection->prepareStatement(sql));
     QueryResult Result(PStatement->executeQuery());
 
-    delete PStatement;
     return Result;
+}
+
+QueryResult Database::PQuery(const char* sql, ...)
+{
+    va_list ArgList;
+    char Query[MAX_QUERY_LEN];
+
+    va_start(ArgList, sql);
+    vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
+    va_end(ArgList);
+
+    return this->Query(Query);
 }

@@ -47,8 +47,8 @@ void World::Load()
     try
     {
         sDatabase.Connect();
-        sObjectMgr->LoadPlayers();
         sObjectMgr->LoadSpells();
+        pAuthSession->LoadPlayersLoginInfo();
     }
     catch (sql::SQLException &e) 
     {

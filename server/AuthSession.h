@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define AUTH_SESSION_H
 
 #include "Opcodes.h"
+#include "boost/tuple/tuple.hpp"
 
 class AuthSession
 {
@@ -27,6 +28,7 @@ public:
     AuthSession();
     ~AuthSession();
 
+    void LoadPlayersLoginInfo();
     void HandleAll();
 
 private:
@@ -37,7 +39,16 @@ private:
     std::string Username, Password;
     Uint16 Opcode;
 
+    std::vector<Player*> Players;
     std::vector<sf::TcpSocket*> Sockets;
+
+    Player* GetPlayer();
+    void SendLoginFailPacket(Uint16 Reason);
+
+    // Iterators 
+    std::vector<sf::TcpSocket*>::iterator SocketIterator;
+    sf::TcpSocket* pSocket;
+    Player* pPlayer;
 };
 
 #endif

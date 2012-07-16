@@ -41,6 +41,7 @@ public:
     void PExecute(const char* sql, ...);
     void Execute(const char* sql);
     QueryResult Query(const char* sql);
+    QueryResult PQuery(const char* sql, ...);
 
 private:
     sql::Driver* Driver;

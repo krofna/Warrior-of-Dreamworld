@@ -79,9 +79,9 @@ void WorldSession::HandleMoveObjectOpcode()
 
     printf("Packet is good!\n");
 
-    // Todo: Collision
-
-    pPlayer->UpdateCoordinates(Direction);
+    // If player colided, return
+    if(!pPlayer->UpdateCoordinates(Direction))
+        return;
     
     // Send movement update to all players in the map
     Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << Direction;

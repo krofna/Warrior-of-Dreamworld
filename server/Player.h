@@ -33,22 +33,20 @@ class Player : public WorldObject
     friend class AuthSession;
 
 public:
-    Player
-        (
-        const std::string& Username, 
-        const std::string& Password, 
-        const std::string& Tileset,
-        Map* pMap, Uint32 ObjID,
-        Uint16 x, Uint16 y,
-        Uint16 tx, Uint16 ty
-        );
-
+    Player(std::string Username, std::string Password, Uint32 ObjID);
     ~Player();
+
+    // TODO
+    void AddToWorld();
+    void RemoveFromWorld();
+
+    void LoadFromDB();
+    void SaveToDB();
+    bool IsLoaded();
 
     bool CanCastSpell(Uint8 ID);
 
     void Update(Int32 diff);
-    void SaveToDB();
 
     void SendPacket(sf::Packet Packet);
     sf::Packet PackData();
@@ -56,7 +54,7 @@ public:
 
     void LogOut();
     void Kick();
-    bool IsOnline();
+    bool IsInWorld();
 
 private:
     WorldSession* pWorldSession;
@@ -65,6 +63,8 @@ private:
     std::string Password;
 
     std::vector<Uint16> Spells;
+
+    bool LoadedFromDB;
 };
 
 #endif

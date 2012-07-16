@@ -18,7 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "AuthSession.h"
 #include "World.h"
-#include "ObjectMgr.h"
+#include "Database.h"
+#include "boost/foreach.hpp"
 #include <fstream>
 
 AuthSession::AuthSession()
@@ -45,11 +46,9 @@ void AuthSession::HandleAll()
         NewSocket = new sf::TcpSocket();
     }
 
-    sf::TcpSocket* pSocket;
-
     // We iterate through sockets who are not yet logged in, but
     // connected to the server to receive authentication requests
-    for(auto SocketIterator = Sockets.begin(); SocketIterator != Sockets.end();)
+    for(SocketIterator = Sockets.begin(); SocketIterator != Sockets.end();)
     {
         pSocket = (*SocketIterator);
 
@@ -61,17 +60,11 @@ void AuthSession::HandleAll()
 
             // Check if username exists
             AuthPacket >> Username;
-            Player* pPlayer = sObjectMgr->GetPlayer(Username);
-
+            pPlayer = GetPlayer();
             if(pPlayer == nullptr)
             {
                 // Invalid username, send response
-                AuthPacket.clear();
-                AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_FAIL_BAD_USERNAME;
-                pSocket->send(AuthPacket);
-                pSocket->disconnect();
-                delete pSocket;
-                SocketIterator = Sockets.erase(SocketIterator);
+                SendLoginFailPacket((Uint16)LOGIN_FAIL_BAD_USERNAME);
                 continue;
             }
 
@@ -80,18 +73,15 @@ void AuthSession::HandleAll()
             if(pPlayer->Password != Password)
             {
                 // Invalid password, send response
-                AuthPacket.clear();
-                AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_FAIL_BAD_PASSWORD;
-                pSocket->send(AuthPacket);
-                pSocket->disconnect();
-                delete pSocket;
-                SocketIterator = Sockets.erase(SocketIterator);
+                SendLoginFailPacket((Uint16)LOGIN_FAIL_BAD_PASSWORD);
                 continue;
             }
 
             // If player is online, kick him
-            if(pPlayer->IsOnline())
+            if(pPlayer->IsInWorld())
                 pPlayer->Kick();
+            else if(!pPlayer->IsLoaded())
+                pPlayer->LoadFromDB();
 
             // Tell the client that he logged in sucessfully
             AuthPacket.clear();
@@ -109,4 +99,38 @@ void AuthSession::HandleAll()
             ++SocketIterator;
         }
     }
+}
+
+void AuthSession::SendLoginFailPacket(Uint16 Reason)
+{
+    AuthPacket.clear();
+    AuthPacket << (Uint16)MSG_LOGIN << Reason;
+    pSocket->send(AuthPacket);
+    pSocket->disconnect();
+    delete pSocket;
+    SocketIterator = Sockets.erase(SocketIterator);
+    delete pPlayer;
+}
+
+void AuthSession::LoadPlayersLoginInfo()
+{
+    QueryResult Result(sDatabase.Query("SELECT name, password, id FROM `players`"));
+
+    while(Result->next())
+    {
+        Players.push_back(new Player(Result->getString(1), Result->getString(2), Result->getUInt(3)));
+    }
+}
+
+Player* AuthSession::GetPlayer()
+{
+    for(auto iter = Players.begin(); iter != Players.end(); ++iter)
+    {
+        if((*iter)->Username == Username)
+        {
+            return *iter;
+        }
+    }
+
+    return nullptr;
 }

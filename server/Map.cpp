@@ -19,7 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.h"
 #include "Opcodes.h"
 
-Map::Map(const Uint16 MapID) : MapID(MapID)
+Map::Map(const Uint16 MapID) : 
+MapID(MapID),
+// [PH] This only works for map0, cause its size is 50x50 tiles
+TileGrid(50, std::vector<Tile>(50))
 {
 }
 
@@ -28,6 +31,14 @@ Map::~Map()
     for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
     {
         delete (*ObjectIterator);
+    }
+
+    // Kick all players if they are online
+    for(auto PlayerIter = Players.begin(); PlayerIter != Players.end(); ++PlayerIter)
+    {
+        if((*PlayerIter)->IsInWorld())
+            (*PlayerIter)->Kick();
+        delete (*PlayerIter);
     }
 }
 

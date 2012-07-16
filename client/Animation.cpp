@@ -32,7 +32,7 @@ Index               (0)
 // TODO: [PH]
 void Animation::Update()
 {
-    if(Clock.getElapsedTime() > sf::milliseconds(10))
+    if(Clock.getElapsedTime() > sf::milliseconds(1))
     {
         switch(Direction)
         {

@@ -15,6 +15,7 @@ Code:
 - Combat stats (health, mana..)
 - Fix camera bounds
 - comments in .conf
+- ObjID => GUID
 
 Art:
 - Terrain

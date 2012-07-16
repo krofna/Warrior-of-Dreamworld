@@ -20,14 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Opcodes.h"
 #include "Map.h"
 
-WorldObject::WorldObject(std::string Tileset, Map* pMap, Uint32 ObjID, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty) :
-Tileset(Tileset),
-pMap(pMap),
-ObjID(ObjID),
-x(x),
-y(y),
-tx(tx),
-ty(ty)
+WorldObject::WorldObject(Uint32 ObjID) :
+ObjID(ObjID)
 {
 }
 
@@ -36,21 +30,36 @@ const Uint16 WorldObject::GetMapID() const
     return pMap->MapID;
 }
 
-void WorldObject::UpdateCoordinates(Uint8 Direction)
+bool WorldObject::UpdateCoordinates(Uint8 Direction)
 {
+    Uint16 OldX = x, OldY = y;
+
     switch(Direction)
     {
-      case MOVE_UP:
+    case MOVE_UP:
+        if(pMap->TileGrid[y-1][x].pWorldObject)
+            return false;
         y--;
         break;
-      case MOVE_DOWN:
+    case MOVE_DOWN:
+        if(pMap->TileGrid[y+1][x].pWorldObject)
+            return false;
         y++;
         break;
-      case MOVE_LEFT:
+    case MOVE_LEFT:
+        if(pMap->TileGrid[y][x-1].pWorldObject)
+            return false;
         x--;
         break;
-      case MOVE_RIGHT:
+    case MOVE_RIGHT:
+        if(pMap->TileGrid[y][x+1].pWorldObject)
+            return false;
         x++;
         break;        
     }
+
+    pMap->TileGrid[OldY][OldX].pWorldObject = nullptr;
+    pMap->TileGrid[y][x].pWorldObject = this;
+
+    return true;
 }

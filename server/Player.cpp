@@ -21,24 +21,49 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.h"
 #include "World.h"
 
-Player::Player
-    (
-    const std::string& Username, 
-    const std::string& Password, 
-    const std::string& Tileset,
-    Map* pMap, Uint32 ObjID,
-    Uint16 x, Uint16 y,
-    Uint16 tx, Uint16 ty
-    ) :
-Username(Username),
-Password(Password),
-WorldObject(Tileset, pMap, ObjID, x, y, tx, ty),
-pWorldSession(nullptr)
+Player::Player(std::string Username, std::string Password, Uint32 ObjID) :
+Username     (Username),
+Password     (Password),
+WorldObject  (ObjID),
+pWorldSession(nullptr),
+LoadedFromDB (false)
 {
 }
 
 Player::~Player()
 {
+}
+
+// This is bugged cause there may someone already be on the tile player wants to spawn on
+void Player::AddToWorld()
+{
+    pMap->TileGrid[y][x].pWorldObject = this;
+}
+
+// PH: needs more work
+void Player::RemoveFromWorld()
+{
+    pMap->TileGrid[y][x].pWorldObject = nullptr;
+    pMap->RemovePlayer(this);
+}
+
+void Player::LoadFromDB()
+{
+    // TODO: Not all columns.
+    QueryResult Result(sDatabase.PQuery("SELECT * FROM `players` WHERE id='%u'", ObjID));
+    Result->next();
+
+    //ObjID       = Result->getInt(1);
+    //Username    = Result->getString(2);
+    //Password    = Result->getString(3);
+    Tileset     = Result->getString(4);
+    tx          = Result->getInt(5);
+    ty          = Result->getInt(6);
+    pMap        = sWorld->GetMap(Result->getInt(7));
+    x           = Result->getInt(8);
+    y           = Result->getInt(9);
+
+    LoadedFromDB = true;
 }
 
 bool Player::CanCastSpell(Uint8 ID)
@@ -80,15 +105,14 @@ void Player::BindSession(WorldSession* pWorldSession)
     this->pWorldSession = pWorldSession;
 }
 
-bool Player::IsOnline()
+bool Player::IsInWorld()
 {
     return pWorldSession != nullptr;
 }
 
 void Player::Kick()
 {
-    if(pWorldSession)
-        pWorldSession->SendLogOutPacket();
+    pWorldSession->SendLogOutPacket();
     LogOut();
 }
 
@@ -96,6 +120,6 @@ void Player::LogOut()
 {
     delete pWorldSession;
     pWorldSession = nullptr;
-    pMap->RemovePlayer(this);
+    this->RemoveFromWorld();
     this->SaveToDB();
 }
