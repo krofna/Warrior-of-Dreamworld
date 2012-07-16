@@ -66,6 +66,11 @@ void Player::LoadFromDB()
     LoadedFromDB = true;
 }
 
+bool Player::IsLoaded()
+{
+    return LoadedFromDB;
+}
+
 bool Player::CanCastSpell(Uint8 ID)
 {
     // TODO: Power checks etc etc
