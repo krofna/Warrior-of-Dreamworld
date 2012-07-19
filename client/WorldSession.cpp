@@ -31,7 +31,7 @@ pWorld(NULL)
 
 bool WorldSession::ConnectToServer()
 {
-    sf::Socket::Status Status = Socket.connect(sf::IpAddress::getLocalAddress(), 0xBEEF);
+    sf::Socket::Status Status = Socket.connect(sf::IpAddress("192.168.1.30"), 0xBEEF);
     Socket.setBlocking(false);
     return Status == sf::Socket::Status::Done;
 }

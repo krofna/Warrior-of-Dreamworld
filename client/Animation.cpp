@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Animation.h"
 #include "Globals.h"
 #include <cmath>
+#include "Math.h"
 
 // TODO: [PH]
 Animation::Animation(sf::Vector2f Position, float Angle) :
