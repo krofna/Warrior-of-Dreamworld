@@ -91,8 +91,8 @@ void WorldSession::HandleMoveObjectOpcode()
 void WorldSession::HandleCastSpellOpcode()
 {
     Uint16 SpellID;
-    Uint8 Direction;
-    Packet >> SpellID >> Direction;
+    float Angle;
+    Packet >> SpellID >> Angle;
 
     if(!Packet.endOfPacket())
     {
@@ -116,7 +116,7 @@ void WorldSession::HandleCastSpellOpcode()
         switch(pSpell->Effect)
         {
         case SPELL_BOLT:
-            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << pSpell->DisplayID << Direction;
+            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << pSpell->DisplayID << Angle;
             sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
             break;
         }

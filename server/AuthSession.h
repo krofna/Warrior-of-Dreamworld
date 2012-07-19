@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define AUTH_SESSION_H
 
 #include "Opcodes.h"
-#include "boost/tuple/tuple.hpp"
 
 class AuthSession
 {

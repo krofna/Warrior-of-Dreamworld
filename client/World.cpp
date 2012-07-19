@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Utilities.h"
 #include "Globals.h"
 #include "ResourceManager.h"
+#include "Math.h"
 #include <cassert>
 
 World::World() :
@@ -169,10 +170,6 @@ void World::HandleEvent(sf::Event Event)
             Session->SendMovementRequest(MOVE_DOWN);
             break;
 
-        case sf::Keyboard::T:
-            Session->SendCastSpellRequest(0, MOVE_UP);
-            break;
-
         case sf::Keyboard::Escape:
             Session->SendLogOutRequest();
             Window.close();
@@ -198,6 +195,11 @@ void World::HandleEvent(sf::Event Event)
         else if(sf::Mouse::getPosition(Window).y < TILE_SIZE / 2)
             MoveWorldView |= MOVE_UP;
 
+        break;
+
+    case sf::Event::MouseButtonPressed:
+        // PH
+        Session->SendCastSpellRequest(0, math::GetAngle(/*PH*/WorldObjectMap.begin()->second->GetPosition()/*PH*/, sf::Mouse::getPosition(Window)));
         break;
         
     default:
@@ -240,10 +242,10 @@ void World::HandleTyping(sf::Event Event)
     }
 }
 // TODO [PH]
-void World::CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect)
+void World::CreateSpellEffect(Uint32 Caster, float Angle, Uint16 DisplayID, Uint16 Effect)
 {
     WorldObject* pCaster = WorldObjectMap[Caster];
-    Animations.push_back(Animation(pCaster->GetPosition(), Direction));
+    Animations.push_back(Animation(pCaster->GetPosition(), Angle));
 }
 
 void World::RemoveObject(Uint32 ObjectID)

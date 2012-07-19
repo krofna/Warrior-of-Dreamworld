@@ -39,7 +39,7 @@ public:
     void Draw();
     void HandleEvent(sf::Event Event);
 
-    void CreateSpellEffect(Uint32 Caster, Uint8 Direction, Uint16 DisplayID, Uint16 Effect);
+    void CreateSpellEffect(Uint32 Caster, float Angle, Uint16 DisplayID, Uint16 Effect);
 
     void RemoveObject(Uint32 ObjectID);
 

@@ -137,10 +137,10 @@ void WorldSession::HandleMoveObjectOpcode()
 
 void WorldSession::HandleCastSpellOpcode()
 {
-    Uint8 Direction;
+    float Angle;
     Uint16 Effect, DisplayID;
     Uint32 ObjectID; // Caster
-    Packet >> Effect >> ObjectID >> DisplayID >> Direction;
+    Packet >> Effect >> ObjectID >> DisplayID >> Angle;
 
     if(!Packet.endOfPacket())
     {
@@ -148,7 +148,7 @@ void WorldSession::HandleCastSpellOpcode()
         return;
     }
 
-    pWorld->CreateSpellEffect(ObjectID, Direction, DisplayID, Effect);
+    pWorld->CreateSpellEffect(ObjectID, Angle, DisplayID, Effect);
     printf("Packet is good!\n");
 }
 
@@ -184,9 +184,9 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
     SendPacket(Packet);
 }
 
-void WorldSession::SendCastSpellRequest(Uint16 SpellID, Uint8 Direction)
+void WorldSession::SendCastSpellRequest(Uint16 SpellID, float Angle)
 {
-    Packet << (Uint16)MSG_CAST_SPELL << SpellID << Direction;
+    Packet << (Uint16)MSG_CAST_SPELL << SpellID << Angle;
     SendPacket(Packet);
 }
 
@@ -201,7 +201,7 @@ void WorldSession::SendLogOutRequest()
     Packet << (Uint16)MSG_LOG_OUT;
     SendPacket(Packet);
 
-    // Back to login screen
+    // Back to login screen?
     //pGame->ChangeState(new Login());
     //Window.setView(Window.getDefaultView());
 }

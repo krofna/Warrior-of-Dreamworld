@@ -18,11 +18,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Animation.h"
 #include "Globals.h"
+#include <cmath>
 
 // TODO: [PH]
-Animation::Animation(sf::Vector2f Position, Uint8 Direction) :
-Direction           (Direction),
-Index               (0)
+Animation::Animation(sf::Vector2f Position, float Angle) :
+Angle               (Angle),
+Index               (0),
+Position            (Position)
 {
     t.loadFromFile("t.png");
     Sprites.push_back(sf::Sprite(t));
@@ -34,22 +36,10 @@ void Animation::Update()
 {
     if(Clock.getElapsedTime() > sf::milliseconds(1))
     {
-        switch(Direction)
-        {
-        case MOVE_UP:
-            Sprites[Index].move(0, -1);
-            break;
-        case MOVE_DOWN:
-            Sprites[Index].move(0, 1);
-            break;
-        case MOVE_LEFT:
-            Sprites[Index].move(-1, 0);
-            break;
-        case MOVE_RIGHT:
-            Sprites[Index].move(1, 0);
-        case MOVE_STOP:
-            break;
-        }
+        // PH, implement Animation speed
+        Position.x += std::sin(this->Angle);
+        Position.y += std::cos(this->Angle);
+        Sprites.begin()->setPosition(this->Position);
         Clock.restart();
     }
     Sprites.begin()->setTexture(t); // hack
