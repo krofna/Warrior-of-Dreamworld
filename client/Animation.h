@@ -24,11 +24,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Animation
 {
 public:
-    Animation(sf::Vector2f Position, float Angle);
+    Animation(Uint16 DisplayID, sf::Vector2f Position, float Angle);
     void Update();
 
-protected:
-    sf::Texture t; // this shouldnt be here
+private:
     sf::Clock Clock;
     std::vector<sf::Sprite> Sprites;
     sf::Vector2f Position;

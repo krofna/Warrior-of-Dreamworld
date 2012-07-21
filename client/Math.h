@@ -22,5 +22,5 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 namespace math
 {
-    float GetAngle(sf::Vector2f Origin, sf::Vector2i Target);
+    float GetAngle(sf::Vector2f Origin, sf::Vector2f Target);
 }

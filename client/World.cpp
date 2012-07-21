@@ -83,28 +83,28 @@ void World::Draw()
 {
     if(MoveWorldView != MOVE_STOP)
     {
-        if((MoveWorldView & MOVE_UP) == MOVE_UP && CameraTop > 0)
+        if(MoveWorldView & MOVE_UP && CameraTop > 0)
         {
             CameraTop -= TILE_SIZE;
             CameraBottom -= TILE_SIZE;
             WorldView.move(0, -TILE_SIZE);
         }
 
-        else if((MoveWorldView & MOVE_DOWN) == MOVE_DOWN && CameraBottom < MapHeight)
+        else if(MoveWorldView & MOVE_DOWN && CameraBottom < MapHeight)
         {
             CameraTop += TILE_SIZE;
             CameraBottom += TILE_SIZE;
             WorldView.move(0, TILE_SIZE);
         }
 
-        if((MoveWorldView & MOVE_RIGHT) == MOVE_RIGHT && CameraRight < MapWidth)
+        if(MoveWorldView & MOVE_RIGHT && CameraRight < MapWidth)
         {
             CameraLeft += TILE_SIZE;
             CameraRight += TILE_SIZE;
             WorldView.move(TILE_SIZE, 0);
         }
 
-        else if((MoveWorldView & MOVE_LEFT) == MOVE_LEFT && CameraLeft > 0)
+        else if(MoveWorldView & MOVE_LEFT && CameraLeft > 0)
         {
             CameraLeft -= TILE_SIZE;
             CameraRight -= TILE_SIZE;
@@ -199,7 +199,7 @@ void World::HandleEvent(sf::Event Event)
 
     case sf::Event::MouseButtonPressed:
         // PH
-        Session->SendCastSpellRequest(0, math::GetAngle(/*PH*/WorldObjectMap.begin()->second->GetPosition()/*PH*/, sf::Mouse::getPosition(Window)));
+        Session->SendCastSpellRequest(0, math::GetAngle(/*PH*/WorldObjectMap.begin()->second->GetPosition()/*PH*/, Window.convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:
@@ -245,7 +245,7 @@ void World::HandleTyping(sf::Event Event)
 void World::CreateSpellEffect(Uint32 Caster, float Angle, Uint16 DisplayID, Uint16 Effect)
 {
     WorldObject* pCaster = WorldObjectMap[Caster];
-    Animations.push_back(Animation(pCaster->GetPosition(), Angle));
+    Animations.push_back(Animation(DisplayID, pCaster->GetPosition(), Angle));
 }
 
 void World::RemoveObject(Uint32 ObjectID)
