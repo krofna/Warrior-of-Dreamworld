@@ -77,8 +77,8 @@ void WorldSession::HandleLoginOpcode()
     }
 
     Uint16 MapID;
-    
-    Packet >> MapID;
+    Uint32 MeID;
+    Packet >> MapID >> MeID;
 
     if(!Packet.endOfPacket())
     {
@@ -87,7 +87,7 @@ void WorldSession::HandleLoginOpcode()
         return;
     }
 
-    World* pWorld = new World();
+    World* pWorld = new World(MeID);
     this->pWorld = pWorld;
     pWorld->LoadTileMap(MapID);
     pGame->ChangeState(pWorld);
@@ -101,11 +101,7 @@ void WorldSession::HandleAddObjectOpcode()
     std::string Tileset, Username;
     Packet >> Tileset >> ObjID >> Username >> x >> y >> tx >> ty;
 
-    if(!Packet.endOfPacket())
-    {
-        printf("Packet is too big!\n");
-        return;
-    }
+    RETURN_IF_PACKET_TOO_BIG
 
     WorldObject* pNewObject = new WorldObject(Tileset, Username, x, y, tx, ty);
     pWorld->WorldObjectMap[ObjID] = pNewObject;
@@ -125,11 +121,7 @@ void WorldSession::HandleMoveObjectOpcode()
     Uint8 Direction;
     Packet >> ObjID >> Direction;
 
-    if(!Packet.endOfPacket())
-    {
-        printf("Packet is too big!\n");
-        return;
-    }
+    RETURN_IF_PACKET_TOO_BIG
 
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(Direction);
     printf("Packet is good!\n");
@@ -139,16 +131,15 @@ void WorldSession::HandleCastSpellOpcode()
 {
     float Angle;
     Uint16 Effect, DisplayID;
-    Uint32 ObjectID; // Caster
-    Packet >> Effect >> ObjectID >> DisplayID >> Angle;
+    Uint32 CasterID;
+    Uint32 SpellBoxID;
+    Packet >> Effect >> CasterID >> DisplayID >> Angle >> SpellBoxID;
 
-    if(!Packet.endOfPacket())
-    {
-        printf("Packet is too big!\n");
-        return;
-    }
+    RETURN_IF_PACKET_TOO_BIG
 
-    pWorld->CreateSpellEffect(ObjectID, Angle, DisplayID, Effect);
+    WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
+    pWorld->Animations.push_back(Animation(DisplayID, pCaster->GetPosition(), Angle, SpellBoxID));
+
     printf("Packet is good!\n");
 }
 
@@ -159,17 +150,43 @@ void WorldSession::HandleTextMessageOpcode()
     std::string Message, Username;
     Packet >> ObjID >> Message;
 
+    RETURN_IF_PACKET_TOO_BIG
+
     Username = pWorld->WorldObjectMap[ObjID]->GetObjectName();
     textMessage.setString(Username + ": " + Message);
     textMessage.setCharacterSize(18);
     textMessage.setColor(sf::Color::Magenta);
     TextMessages.push_back(textMessage);
+
+    printf("Packet is good!\n");
 }
 
 void WorldSession::HandleLogOutOpcode()
 {
     // [PH] TODO: Back to login screen, this is pretty nasty
     Window.close();
+}
+
+void WorldSession::HandleSpellHitOpcode()
+{
+    Uint32 SpellBoxID, VictimID;
+    Packet >> SpellBoxID >> VictimID;
+
+    RETURN_IF_PACKET_TOO_BIG
+
+    for(auto SpellBoxIter = pWorld->Animations.begin(); SpellBoxIter != pWorld->Animations.end(); ++SpellBoxIter)
+    {
+        if(SpellBoxIter->GetID() == SpellBoxID)
+        {
+            pWorld->Animations.erase(SpellBoxIter);
+            break;
+        }
+    }
+
+    //PH, dont delete, instead, die
+    delete pWorld->WorldObjectMap[VictimID];
+    pWorld->WorldObjectMap.erase(VictimID);
+    printf("Packet is good!\n");
 }
 
 void WorldSession::SendMovementRequest(Uint8 Direction)

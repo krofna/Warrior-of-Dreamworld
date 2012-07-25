@@ -20,15 +20,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 int main()
 {
-    sWorld = new World;
-    sWorld->Load();
+    int ReturnValue = 0;
 
-    sf::Thread ConsoleInputThread(&World::ConsoleInput, sWorld);
+    try
+    {
+        sWorld = new World;
+        sWorld->Load();
 
-    ConsoleInputThread.launch();
-    int ReturnValue = sWorld->Run();
+        sf::Thread ConsoleInputThread(&World::ConsoleInput, sWorld);
+        ConsoleInputThread.launch();
+
+        ReturnValue = sWorld->Run();
+    }
+    catch(...)
+    {
+        printf("Unhandled exception");
+    }
 
     delete sWorld;
-
     return ReturnValue;
 }

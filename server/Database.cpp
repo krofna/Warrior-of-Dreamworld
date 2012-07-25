@@ -54,7 +54,7 @@ void Database::PExecute(const char* sql, ...)
     char Query[MAX_QUERY_LEN];
 
     va_start(ArgList, sql);
-    vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
+    vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
     va_end(ArgList);
 
     Execute(Query);
@@ -79,7 +79,7 @@ QueryResult Database::PQuery(const char* sql, ...)
     char Query[MAX_QUERY_LEN];
 
     va_start(ArgList, sql);
-    vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
+    vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
     va_end(ArgList);
 
     return this->Query(Query);

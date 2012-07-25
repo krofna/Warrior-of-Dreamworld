@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <SFML/Graphics.hpp>
 
+#define RETURN_IF_PACKET_TOO_BIG if(!Packet.endOfPacket()) { printf("Packet is too big!\n"); return; }
+
 using sf::Uint8;
 using sf::Uint16;
 using sf::Uint32;

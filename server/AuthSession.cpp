@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "AuthSession.h"
 #include "World.h"
 #include "Database.h"
-#include "boost/foreach.hpp"
 #include <fstream>
 
 AuthSession::AuthSession()
@@ -85,7 +84,7 @@ void AuthSession::HandleAll()
 
             // Tell the client that he logged in sucessfully
             AuthPacket.clear();
-            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->GetMapID();
+            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
             pSocket->send(AuthPacket);
 
             // Create new WorldSession for the player

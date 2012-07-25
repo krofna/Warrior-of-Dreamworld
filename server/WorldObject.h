@@ -28,6 +28,7 @@ class WorldObject
 {
 public:
     WorldObject(Uint32 ObjID);
+    virtual ~WorldObject() {}
 
     virtual void Update(Int32 diff) = 0;
     virtual sf::Packet PackData() = 0;
@@ -45,6 +46,16 @@ public:
     Map* GetMap() const
     {
         return pMap;
+    }
+
+    Uint16 GetX() const
+    {
+        return x;
+    }
+
+    Uint16 GetY() const
+    {
+        return y;
     }
 
 protected:

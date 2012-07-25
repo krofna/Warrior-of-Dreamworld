@@ -23,14 +23,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Math.h"
 #include <cassert>
 
-World::World() :
+World::World (Uint32 MeID) :
 TileMap      (sf::PrimitiveType::Quads),
 WorldView    (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
 MoveWorldView(MOVE_STOP),
 CameraLeft   (WorldView.getCenter().x - WindowWidth / 2),
 CameraTop    (WorldView.getCenter().y - WindowHeight / 2),
 CameraRight  (WindowWidth),
-CameraBottom (WindowHeight)
+CameraBottom (WindowHeight),
+MeID         (MeID)
 {
     Window.setView(WorldView);
     Typing = false;
@@ -199,7 +200,7 @@ void World::HandleEvent(sf::Event Event)
 
     case sf::Event::MouseButtonPressed:
         // PH
-        Session->SendCastSpellRequest(0, math::GetAngle(/*PH*/WorldObjectMap.begin()->second->GetPosition()/*PH*/, Window.convertCoords(sf::Mouse::getPosition())));
+        Session->SendCastSpellRequest(0, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window.convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:
@@ -241,18 +242,13 @@ void World::HandleTyping(sf::Event Event)
         break;
     }
 }
-// TODO [PH]
-void World::CreateSpellEffect(Uint32 Caster, float Angle, Uint16 DisplayID, Uint16 Effect)
-{
-    WorldObject* pCaster = WorldObjectMap[Caster];
-    Animations.push_back(Animation(DisplayID, pCaster->GetPosition(), Angle));
-}
 
 void World::RemoveObject(Uint32 ObjectID)
 {
-    if(WorldObjectMap.find(ObjectID) == WorldObjectMap.end())
+    auto Iter = WorldObjectMap.find(ObjectID);
+    if(Iter == WorldObjectMap.end())
         return;
 
-    delete WorldObjectMap[ObjectID];
-    WorldObjectMap.erase(ObjectID);
+    delete Iter->second;
+    WorldObjectMap.erase(Iter);
 }

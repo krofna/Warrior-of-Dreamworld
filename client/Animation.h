@@ -20,19 +20,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define ANIMATION_H
 
 #include "Defines.h"
-
+// TODO: SpellAnimation? SpellBox?
 class Animation
 {
 public:
-    Animation(Uint16 DisplayID, sf::Vector2f Position, float Angle);
+    Animation(Uint16 DisplayID, sf::Vector2f Position, float Angle, Uint32 ID);
     void Update();
+    Uint32 GetID() const
+    {
+        return ID;
+    }
 
 private:
+    sf::Time Time;
     sf::Clock Clock;
-    std::vector<sf::Sprite> Sprites;
-    sf::Vector2f Position;
-    Uint8 Index;
+    sf::Sprite Sprite;
     float Angle;
+    Uint32 ID;
 };
 
 #endif

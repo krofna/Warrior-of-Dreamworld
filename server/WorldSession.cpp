@@ -70,12 +70,7 @@ void WorldSession::HandleMoveObjectOpcode()
     Uint8 Direction;
     Packet >> Direction;
 
-    if(!Packet.endOfPacket())
-    {
-        printf("Packet is too big!\n");
-        return;
-    }
-    Packet.clear();
+    RETURN_IF_PACKET_TOO_BIG
 
     printf("Packet is good!\n");
 
@@ -84,6 +79,7 @@ void WorldSession::HandleMoveObjectOpcode()
         return;
     
     // Send movement update to all players in the map
+    Packet.clear();
     Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << Direction;
     sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
@@ -94,11 +90,7 @@ void WorldSession::HandleCastSpellOpcode()
     float Angle;
     Packet >> SpellID >> Angle;
 
-    if(!Packet.endOfPacket())
-    {
-        printf("Packet is too big!\n");
-        return;
-    }
+    RETURN_IF_PACKET_TOO_BIG
 
     Spell* pSpell = sObjectMgr->GetSpell(SpellID);
 
@@ -116,8 +108,9 @@ void WorldSession::HandleCastSpellOpcode()
         switch(pSpell->Effect)
         {
         case SPELL_BOLT:
-            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << pSpell->DisplayID << Angle;
-            sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
+            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << pSpell->DisplayID << Angle << pPlayer->GetMap()->NewSpellBoxID;
+            pPlayer->GetMap()->SendToPlayers(Packet);
+            pPlayer->GetMap()->AddSpell(pPlayer, pSpell, Angle);
             break;
         }
     }
@@ -127,10 +120,11 @@ void WorldSession::HandleTextMessageOpcode()
 {
     std::string Message;
     Packet >> Message;
+
+    RETURN_IF_PACKET_TOO_BIG
+
     Packet.clear();
-  
     Packet << (Uint16)MSG_SEND_TEXT << pPlayer->GetObjectID() << Message;
-    
     pPlayer->GetMap()->SendToPlayers(Packet);
 }
 

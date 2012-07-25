@@ -20,13 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define MAP_H
 
 #include "Player.h"
+#include "SpellBox.h"
 
-struct Tile
+struct Tile // Delete me
 {
-    Tile() : pWorldObject(nullptr), pSpell(nullptr) { }
+    Tile() : pWorldObject(nullptr) { }
 
     WorldObject* pWorldObject;
-    Spell* pSpell;
 };
 
 struct Map
@@ -36,16 +36,19 @@ struct Map
 
     std::vector<WorldObject*> MapObjects;
     std::vector<Player*> Players;
+    std::vector<SpellBox> Spells;
 
     std::vector<std::vector<Tile> > TileGrid;
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
+    void AddSpell(WorldObject* pCaster, Spell* pSpell, float Angle); // Unit* pCaster
     virtual void Update(Int32 diff);
 
     void SendToPlayers(sf::Packet& Packet);
 
     const Uint16 MapID;
+    Uint32 NewSpellBoxID;
 };
 
 #endif

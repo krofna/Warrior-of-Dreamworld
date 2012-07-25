@@ -53,7 +53,7 @@ void World::Load()
     catch (sql::SQLException &e) 
     {
         std::cout << "SQL Exception: " << e.what();
-        abort();
+        throw;
     }
 }
 

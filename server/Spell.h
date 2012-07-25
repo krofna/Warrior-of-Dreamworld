@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "../client/Defines.h"
 
-struct Spell
+struct Spell//Template
 {
     Spell(Uint16 ID, Uint16 DisplayID, Uint16 Effect, Uint16 Value, Uint16 Cost, std::string Name);
 
@@ -32,6 +32,7 @@ struct Spell
     Uint16 Effect;
     Uint16 Value;
     Uint16 Cost;
+    //Speed?
 };
 
 #endif

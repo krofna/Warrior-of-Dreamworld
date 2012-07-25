@@ -43,6 +43,7 @@ public:
     void HandleCastSpellOpcode();
     void HandleTextMessageOpcode();
     void HandleLogOutOpcode();
+    void HandleSpellHitOpcode();
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);

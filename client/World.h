@@ -32,14 +32,12 @@ class World : public GameState
     friend class WorldSession;
 
 public:
-    World();
+    World(Uint32 MeID);
     ~World();
 
     void LoadTileMap(Uint16 MapID);
     void Draw();
     void HandleEvent(sf::Event Event);
-
-    void CreateSpellEffect(Uint32 Caster, float Angle, Uint16 DisplayID, Uint16 Effect);
 
     void RemoveObject(Uint32 ObjectID);
 
@@ -69,7 +67,8 @@ private:
     bool Typing;
 
     std::map<Uint32, WorldObject*> WorldObjectMap;
-    std::vector<Animation> Animations;
+    std::vector<Animation> Animations; // TODO; Only for spells SpellAnimations w/e
+    const Uint32 MeID;
 };
 
 #endif

@@ -54,4 +54,9 @@ int main()
     Session = new WorldSession(pGame);
     pGame->ChangeState(new Login());
     pGame->Run();
+
+    delete Session;
+    delete pGame;
+
+    return 0;
 }

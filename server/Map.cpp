@@ -18,11 +18,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Map.h"
 #include "Opcodes.h"
+#include "../client/ResourceManager.h"
 
-Map::Map(const Uint16 MapID) : 
-MapID(MapID),
+Map::Map     (const Uint16 MapID) : 
+MapID        (MapID),
+NewSpellBoxID(0),
 // [PH] This only works for map0, cause its size is 50x50 tiles
-TileGrid(50, std::vector<Tile>(50))
+TileGrid     (50, std::vector<Tile>(50))
 {
 }
 
@@ -44,14 +46,41 @@ Map::~Map()
 
 void Map::Update(Int32 diff)
 {
+    Player* pPlayer;
+
     for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
     {
         (*ObjectIterator)->Update(diff);
     }
 
+    // Update spell box positions
+    for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end(); ++SpellBoxIter)
+    {
+        SpellBoxIter->Update(diff);
+    }
+
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
     {
-        (*PlayerIterator)->Update(diff);
+        // Temp pointer for less indirection
+        pPlayer = (*PlayerIterator);
+
+        // Check if someone got hit by a spell
+        for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)
+        {
+            if(SpellBoxIter->pCaster() != pPlayer && SpellBoxIter->CollidesWith(pPlayer))
+            {
+                sf::Packet Packet;
+                Packet << (Uint16)MSG_SPELL_HIT << SpellBoxIter->SpellBoxID() << pPlayer->GetObjectID();
+                SendToPlayers(Packet);
+
+                SpellBoxIter = Spells.erase(SpellBoxIter);
+            }
+            else
+            {
+                ++SpellBoxIter;
+            }
+        }
+        pPlayer->Update(diff);
     }
 }
 
@@ -76,6 +105,13 @@ void Map::AddPlayer(Player* pPlayer)
 
     // Finally, we add the new player to the map
     Players.push_back(pPlayer);
+}
+
+void Map::AddSpell(WorldObject* pCaster, Spell* pSpell, float Angle) // Unit* pCaster
+{
+    // PLACEHOLDER
+    Spells.push_back(SpellBox(pSpell, pCaster, sf::FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));
+    ++NewSpellBoxID;
 }
 
 void Map::SendToPlayers(sf::Packet& Packet)
