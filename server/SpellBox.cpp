@@ -39,11 +39,9 @@ bool SpellBox::CollidesWith(WorldObject* pObject)
 void SpellBox::Update(Int32 diff)
 {
     diff += _Diff;
-    while(diff >= 15)
-    {
-        Hitbox.left += std::sin(this->Angle) / TILE_SIZE;
-        Hitbox.top += std::cos(this->Angle) / TILE_SIZE;
-        diff -= 15;
-    }
-    _Diff = diff;
+    int Multiplier = diff / 15;
+    _Diff = diff - Multiplier * 15;
+
+    Hitbox.left += (std::sin(this->Angle) / TILE_SIZE) * Multiplier;
+    Hitbox.top += (std::cos(this->Angle) / TILE_SIZE) * Multiplier;
 }

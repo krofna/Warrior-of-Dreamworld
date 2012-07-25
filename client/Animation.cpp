@@ -37,12 +37,9 @@ void Animation::Update()
 {
     Time += Clock.getElapsedTime();
     Clock.restart();
-    
-    while(Time > sf::milliseconds(15))
-    {
-        Sprite.move(std::sin(this->Angle), std::cos(this->Angle));
-        Time -= sf::milliseconds(15);
-    }
+    int Multiplier = Time.asMilliseconds() / 15;
+    Time -= sf::milliseconds(15 * Multiplier);
 
+    Sprite.move(std::sin(this->Angle) * Multiplier, std::cos(this->Angle) * Multiplier);
     Window.draw(Sprite);
 }
