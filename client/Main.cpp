@@ -20,43 +20,50 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.h"
 #include "WorldSession.h"
 #include "Config.h"
-
-#ifdef USE_BOOST
-#include <boost/filesystem.hpp>
-#endif
+#include "boost/scoped_ptr.hpp"
 
 int main()
 {
-    std::ofstream ErrorLog("Error Log.txt"), DebugLog("Debug Log.txt");
-    std::cerr.rdbuf(ErrorLog.rdbuf()); std::clog.rdbuf(DebugLog.rdbuf());
+    using namespace std;
 
-    Game* pGame;
-#ifdef USE_BOOST
-    if(boost::filesystem::exists("Config.txt"))
-    {
-        std::ifstream CfgFile("Config.txt");
-        bool FullScreen;
+    ofstream ErrorLog("Error Log.txt");
+    cerr.rdbuf(ErrorLog.rdbuf());
 
-        CfgFile >> WindowWidth >> WindowHeight >> FullScreen;
-        pGame = new Game(FullScreen);
-    }
-    else
-#endif
+    try
     {
-        std::cerr << "Cannot find Config.txt. Taking a wild guess... [FIXME]: Select configuration in game" << std::endl;
-        //pGame->ChangeState(new Config());
+        cerr << "Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf" << endl;
         WindowWidth = (*sf::VideoMode::getFullscreenModes().begin()).width;
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
-        std::cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << std::endl;
-        pGame = new Game(true);
+        cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << endl;
+
+        boost::scoped_ptr<Game> pGame(new Game(true));
+        Session = new WorldSession(pGame.get());
+        {
+            ifstream ConfigFile("Config.conf");
+
+            if(!ConfigFile)
+                throw std::exception("Cannot open Config.conf");
+
+            std::string Ip;
+            ConfigFile >> Ip;
+
+            if(!Session->ConnectToServer(Ip.c_str()))
+                throw std::exception("Cannot connect to server");
+
+            pGame->ChangeState(new Login());
+        }
+        pGame->Run();
+    }
+    catch(std::exception& e)
+    {
+        cerr << e.what();
+    }
+    catch(...)
+    {
+        cerr << "Unhandled exception";
     }
 
-    Session = new WorldSession(pGame);
-    pGame->ChangeState(new Login());
-    pGame->Run();
-
     delete Session;
-    delete pGame;
 
     return 0;
 }

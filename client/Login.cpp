@@ -24,8 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Login::Login() :
 InputFlag(true)
 {
-    // Ugly [PH]
-    assert(Session->ConnectToServer());
 }
 
 void Login::HandleEvent(sf::Event Event)

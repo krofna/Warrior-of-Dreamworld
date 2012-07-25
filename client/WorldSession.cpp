@@ -29,9 +29,9 @@ pWorld(NULL)
 {
 }
 
-bool WorldSession::ConnectToServer()
+bool WorldSession::ConnectToServer(const char* Ip)
 {
-    sf::Socket::Status Status = Socket.connect(sf::IpAddress("192.168.1.30"), 0xBEEF);
+    sf::Socket::Status Status = Socket.connect(sf::IpAddress(Ip), 0xBEEF);
     Socket.setBlocking(false);
     return Status == sf::Socket::Status::Done;
 }

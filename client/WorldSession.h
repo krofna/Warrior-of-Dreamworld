@@ -30,7 +30,7 @@ class WorldSession
 public:
     WorldSession(Game* pGame);
 
-    bool ConnectToServer();
+    bool ConnectToServer(const char* Ip);
     void RecievePackets();
     void SendPacket(sf::Packet& Packet);
 
