@@ -60,11 +60,12 @@ void World::Load()
 int World::Run()
 {
     sf::Clock Clock;
+    Int32 Diff;
 
     // Server main loop
-    // TODO: Take into consideration that update(diff) took time
     while(IsRunning)
     {
+        // Handle Auth requests
         pAuthSession->HandleAll();
 
         // Receive packets from all clients
@@ -75,9 +76,11 @@ int World::Run()
         if(Clock.getElapsedTime().asMilliseconds() < SERVER_HEARTBEAT)
             sf::sleep(sf::milliseconds(SERVER_HEARTBEAT - Clock.getElapsedTime().asMilliseconds()));
 
-        // Call the world update
-        Update(Clock.getElapsedTime().asMilliseconds());
+        Diff = Clock.getElapsedTime().asMilliseconds();
         Clock.restart();
+
+        // Call the world update
+        Update(Diff);
     }
 
     return 0;
