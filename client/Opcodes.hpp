@@ -16,24 +16,40 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef GAME_H
-#define GAME_H
+#ifndef OPCODES_H
+#define OPCODES_H
 
-#include "GameState.h"
-#include "Globals.h"
+#include "WorldSession.hpp"
 
-class Game
+#define MSG_COUNT 9
+
+enum Opcodes
 {
-    friend class WorldSession;
-public:
-    Game(bool FullScreen);
-    ~Game();
-    void Run();
-
-    void ChangeState(GameState* NewState);
-
-private:
-    GameState* CurrentState;
+    MSG_NULL,
+    MSG_LOGIN,
+    MSG_ADD_OBJECT,
+    MSG_REMOVE_OBJECT,
+    MSG_MOVE_OBJECT,
+    MSG_CAST_SPELL,
+    MSG_SEND_TEXT,
+    MSG_LOG_OUT,
+    MSG_SPELL_HIT
 };
+
+enum
+{
+    LOGIN_SUCCESS = 0x0,
+    LOGIN_FAIL_BAD_USERNAME,
+    LOGIN_FAIL_BAD_PASSWORD,
+    LOGIN_FAIL_SERVER_OFFLINE
+};
+
+struct OpcodeHandler
+{
+    char const* name;
+    void (WorldSession::*Handler)();
+};
+
+extern OpcodeHandler OpcodeTable[MSG_COUNT];
 
 #endif

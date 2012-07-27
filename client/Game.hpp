@@ -16,17 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef PLAYER_H
-#define PLAYER_H
-/*
-#include "WorldObject.h"
+#ifndef GAME_H
+#define GAME_H
 
-class Player : public WorldObject
+#include "GameState.hpp"
+#include "Globals.hpp"
+
+class Game
 {
+    friend class WorldSession;
 public:
-    void Draw();
+    Game(bool FullScreen);
+    ~Game();
+    void Run();
+
+    void ChangeState(GameState* NewState);
 
 private:
-};*/
+    GameState* CurrentState;
+};
 
 #endif

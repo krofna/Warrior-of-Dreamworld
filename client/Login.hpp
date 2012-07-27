@@ -16,27 +16,25 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#ifndef LOGIN_H
+#define LOGIN_H
 
-#include "Defines.h"
-// TODO: SpellAnimation? SpellBox?
-class Animation
+#include "GameState.hpp"
+#include <SFML/Graphics.hpp>
+
+class Login : public GameState
 {
 public:
-    Animation(Uint16 DisplayID, sf::Vector2f Position, float Angle, Uint32 ID);
-    void Update();
-    Uint32 GetID() const
-    {
-        return ID;
-    }
+    Login();
+    void HandleEvent(sf::Event Event);
+    void Draw();
 
 private:
-    sf::Time Time;
-    sf::Clock Clock;
-    sf::Sprite Sprite;
-    float Angle;
-    Uint32 ID;
+    sf::Text UsernameText;
+
+    std::string Username;
+    std::string Password;
+    bool InputFlag;
 };
 
 #endif

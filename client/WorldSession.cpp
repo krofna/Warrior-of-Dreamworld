@@ -16,11 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "WorldSession.h"
-#include "Opcodes.h"
-#include "Defines.h"
-#include "Game.h"
-#include "Login.h"
+#include "WorldSession.hpp"
+#include "Opcodes.hpp"
+#include "Defines.hpp"
+#include "Game.hpp"
+#include "Login.hpp"
 #include <cassert>
 
 WorldSession::WorldSession(Game* pGame) :

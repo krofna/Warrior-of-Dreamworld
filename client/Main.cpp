@@ -16,10 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "Login.h"
-#include "Game.h"
-#include "WorldSession.h"
-#include "Config.h"
+#include "Login.hpp"
+#include "Game.hpp"
+#include "WorldSession.hpp"
+#include "Config.hpp"
 #include "boost/scoped_ptr.hpp"
 
 int main()

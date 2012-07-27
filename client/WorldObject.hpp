@@ -16,19 +16,32 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef WORLD_OBJECT_H
+#define WORLD_OBJECT_H
 
-#include "Defines.h"
-extern Uint16 WindowWidth;
-extern Uint16 WindowHeight;
-extern sf::RenderWindow Window;
+#include "Defines.hpp"
+#include "Globals.hpp"
+/*
+TODO: Maybe everything should be WorldObject as far as client is concerned?
+*/
 
-#include <iostream>
-#include <fstream>
+class WorldObject
+{
+public:
+    WorldObject(std::string Tileset, std::string Name, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
+    virtual void Draw();
 
-#include "WorldSession.h"
-class WorldSession;
-extern WorldSession* Session;
+    void UpdateCoordinates(Uint8 Direction);
+    sf::Vector2f GetPosition();
+
+    std::string GetObjectName()
+    {
+        return ObjectName;
+    }
+
+private:
+    sf::Sprite ObjectSprite;
+    std::string ObjectName;
+};
 
 #endif

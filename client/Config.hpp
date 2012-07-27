@@ -16,25 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef LOGIN_H
-#define LOGIN_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
-#include "GameState.h"
-#include <SFML/Graphics.hpp>
+#include "GameState.hpp"
 
-class Login : public GameState
+class Config : public GameState
 {
 public:
-    Login();
+    Config();
     void HandleEvent(sf::Event Event);
     void Draw();
 
 private:
-    sf::Text UsernameText;
-
-    std::string Username;
-    std::string Password;
-    bool InputFlag;
 };
 
 #endif

@@ -19,10 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef MAP_H
 #define MAP_H
 
-#include "GameState.h"
-#include "Defines.h"
-#include "WorldObject.h"
-#include "Animation.h"
+#include "GameState.hpp"
+#include "Defines.hpp"
+#include "WorldObject.hpp"
+#include "Animation.hpp"
 
 class GameState;
 class WorldObject;

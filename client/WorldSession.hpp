@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_SESSION_H
 
 #include <SFML/Network.hpp>
-#include "World.h"
+#include "World.hpp"
 
 class Game;
 class World;

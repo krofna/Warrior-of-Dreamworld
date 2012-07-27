@@ -16,32 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef WORLD_OBJECT_H
-#define WORLD_OBJECT_H
-
-#include "Defines.h"
-#include "Globals.h"
+#ifndef PLAYER_H
+#define PLAYER_H
 /*
-TODO: Maybe everything should be WorldObject as far as client is concerned?
-*/
+#include "WorldObject.hpp"
 
-class WorldObject
+class Player : public WorldObject
 {
 public:
-    WorldObject(std::string Tileset, std::string Name, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
-    virtual void Draw();
-
-    void UpdateCoordinates(Uint8 Direction);
-    sf::Vector2f GetPosition();
-
-    std::string GetObjectName()
-    {
-        return ObjectName;
-    }
+    void Draw();
 
 private:
-    sf::Sprite ObjectSprite;
-    std::string ObjectName;
-};
+};*/
 
 #endif
