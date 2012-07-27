@@ -16,55 +16,27 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef PLAYER_H
-#define PLAYER_H
+#include "../client/Defines.hpp"
 
-#include <string>
-#include "../client/Defines.h"
-#include "WorldObject.h"
-#include "WorldSession.h"
-#include <SFML/Network.hpp>
-#include "Spell.h"
+struct Spell;
+class WorldObject;
 
-class WorldSession;
-
-class Player : public WorldObject
+class SpellBox
 {
-    friend class AuthSession;
-
 public:
-    Player(std::string Username, std::string Password, Uint32 ObjID);
-    ~Player();
+    SpellBox(Spell* pSpell, WorldObject* pCaster, sf::FloatRect Hitbox, float Angle, Uint32 SpellBoxID);
 
-    // TODO
-    void AddToWorld();
-    void RemoveFromWorld();
-
-    void LoadFromDB();
-    void SaveToDB();
-    bool IsLoaded();
-
-    bool CanCastSpell(Uint8 ID);
-
+    bool CollidesWith(WorldObject* pObject);
     void Update(Int32 diff);
 
-    void SendPacket(sf::Packet Packet);
-    sf::Packet PackData();
-    void BindSession(WorldSession* pWorldSession);
-
-    void LogOut();
-    void Kick();
-    bool IsInWorld();
+    WorldObject* pCaster() { return _pCaster; }
+    Uint32 SpellBoxID()    { return _SpellBoxID; }
 
 private:
-    WorldSession* pWorldSession;
-
-    std::string Username;
-    std::string Password;
-
-    std::vector<Uint16> Spells;
-
-    bool LoadedFromDB;
+    Spell* pSpell;
+    WorldObject* _pCaster; // Unit* pCaster
+    sf::FloatRect Hitbox;
+    float Angle;
+    Uint32 _SpellBoxID;
+    Int32 _Diff;
 };
-
-#endif

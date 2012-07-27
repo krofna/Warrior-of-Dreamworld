@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(Game* pGame) :
 pGame(pGame),
-pWorld(NULL)
+pWorld(nullptr)
 {
 }
 

@@ -16,40 +16,27 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef OPCODES_H
-#define OPCODES_H
+#ifndef OBJECT_MGR_H
+#define OBJECT_MGR_H
 
-#include "WorldSession.h"
+#include "../client/Defines.hpp"
 
-#define MSG_COUNT 9
+struct Spell;
 
-enum Opcodes
+// TODO: Use this for spell/gameobject/creature templates
+class ObjectMgr
 {
-    MSG_NULL,
-    MSG_LOGIN,
-    MSG_ADD_OBJECT,
-    MSG_REMOVE_OBJECT,
-    MSG_MOVE_OBJECT,
-    MSG_CAST_SPELL,
-    MSG_SEND_TEXT,
-    MSG_LOG_OUT,
-    MSG_SPELL_HIT
+public:
+    ~ObjectMgr();
+
+    Spell* GetSpell(Uint16 ID);
+
+    void LoadSpells();
+
+private:
+    std::vector<Spell*> Spells;
 };
 
-enum
-{
-    LOGIN_SUCCESS = 0x0,
-    LOGIN_FAIL_BAD_USERNAME,
-    LOGIN_FAIL_BAD_PASSWORD,
-    LOGIN_FAIL_SERVER_OFFLINE
-};
-
-struct OpcodeHandler
-{
-    char const* name;
-    void (WorldSession::*Handler)();
-};
-
-extern OpcodeHandler OpcodeTable[MSG_COUNT];
+extern ObjectMgr* sObjectMgr;
 
 #endif

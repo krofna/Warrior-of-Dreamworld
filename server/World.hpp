@@ -16,23 +16,36 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef SPELL_H
-#define SPELL_H
+#ifndef WORLD_H
+#define WORLD_H
 
-#include "../client/Defines.h"
+#include "Map.hpp"
+#include "AuthSession.hpp"
 
-struct Spell//Template
+class World
 {
-    Spell(Uint16 ID, Uint16 DisplayID, Uint16 Effect, Uint16 Value, Uint16 Cost, std::string Name);
+    friend class WorldSession;
+public:
+    World();
+    ~World();
+    void Load();
 
-    std::string Name;
+    int Run();
+    void ConsoleInput();
 
-    Uint16 ID;
-    Uint16 DisplayID;
-    Uint16 Effect;
-    Uint16 Value;
-    Uint16 Cost;
-    //Speed?
+    void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
+    Map* GetMap(Uint8 MapID);
+
+private:
+    void Update(Int32 diff);
+
+    AuthSession* pAuthSession;
+    std::vector<Map*> Maps;
+    std::vector<WorldSession*> Sessions;
+
+    volatile bool IsRunning;
 };
+
+extern World* sWorld;
 
 #endif

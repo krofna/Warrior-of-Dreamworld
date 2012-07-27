@@ -16,36 +16,37 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef WORLD_SESSION_H
+#define WORLD_SESSION_H
 
-#include "Map.h"
-#include "AuthSession.h"
+#include "Player.hpp"
 
-class World
+class Player;
+
+class WorldSession
 {
-    friend class WorldSession;
+    friend class AuthSession;
 public:
-    World();
-    ~World();
-    void Load();
+    WorldSession(sf::TcpSocket* pSocket, Player* pPlayer);
+    ~WorldSession();
 
-    int Run();
-    void ConsoleInput();
+    void ReceivePackets();
+    void SendPacket(sf::Packet& Packet);
 
-    void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
-    Map* GetMap(Uint8 MapID);
+    void SendLogOutPacket();
+
+    // Opcode handlers
+    void HandleNULL();
+    void HandleMoveObjectOpcode();
+    void HandleCastSpellOpcode();
+    void HandleTextMessageOpcode();
+    void HandleLogOutOpcode();
 
 private:
-    void Update(Int32 diff);
-
-    AuthSession* pAuthSession;
-    std::vector<Map*> Maps;
-    std::vector<WorldSession*> Sessions;
-
-    volatile bool IsRunning;
+    Player* pPlayer;
+    sf::TcpSocket* pSocket;
+    sf::Packet Packet;
+    Uint16 Opcode;
 };
-
-extern World* sWorld;
 
 #endif

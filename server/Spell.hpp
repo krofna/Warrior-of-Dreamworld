@@ -16,27 +16,23 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef OBJECT_MGR_H
-#define OBJECT_MGR_H
+#ifndef SPELL_H
+#define SPELL_H
 
-#include "../client/Defines.h"
+#include "../client/Defines.hpp"
 
-struct Spell;
-
-// TODO: Use this for spell/gameobject/creature templates
-class ObjectMgr
+struct Spell//Template
 {
-public:
-    ~ObjectMgr();
+    Spell(Uint16 ID, Uint16 DisplayID, Uint16 Effect, Uint16 Value, Uint16 Cost, std::string Name);
 
-    Spell* GetSpell(Uint16 ID);
+    std::string Name;
 
-    void LoadSpells();
-
-private:
-    std::vector<Spell*> Spells;
+    Uint16 ID;
+    Uint16 DisplayID;
+    Uint16 Effect;
+    Uint16 Value;
+    Uint16 Cost;
+    //Speed?
 };
-
-extern ObjectMgr* sObjectMgr;
 
 #endif

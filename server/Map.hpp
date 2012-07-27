@@ -16,58 +16,39 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef WORLD_OBJECT_H
-#define WORLD_OBJECT_H
+#ifndef MAP_H
+#define MAP_H
 
-#include "../client/Defines.h"
-#include <SFML/Network.hpp>
+#include "Player.hpp"
+#include "SpellBox.hpp"
 
-struct Map;
-
-class WorldObject
+struct Tile // Delete me
 {
-public:
-    WorldObject(Uint32 ObjID);
-    virtual ~WorldObject() {}
+    Tile() : pWorldObject(nullptr) { }
 
-    virtual void Update(Int32 diff) = 0;
-    virtual sf::Packet PackData() = 0;
-    virtual void SaveToDB() = 0;
+    WorldObject* pWorldObject;
+};
 
-    bool UpdateCoordinates(Uint8 Direction);
+struct Map
+{
+    Map(const Uint16 MapID);
+    ~Map();
 
-    const Uint32 GetObjectID() const
-    {
-        return ObjID;
-    }
+    std::vector<WorldObject*> MapObjects;
+    std::vector<Player*> Players;
+    std::vector<SpellBox> Spells;
 
-    const Uint16 GetMapID() const;
+    std::vector<std::vector<Tile> > TileGrid;
 
-    Map* GetMap() const
-    {
-        return pMap;
-    }
+    void RemovePlayer(Player* pPlayer);
+    void AddPlayer(Player* pPlayer);
+    void AddSpell(WorldObject* pCaster, Spell* pSpell, float Angle); // Unit* pCaster
+    virtual void Update(Int32 diff);
 
-    Uint16 GetX() const
-    {
-        return x;
-    }
+    void SendToPlayers(sf::Packet& Packet);
 
-    Uint16 GetY() const
-    {
-        return y;
-    }
-
-protected:
-    std::string Tileset;
-
-    Map* pMap;
-    Uint16 x;
-    Uint16 y;
-    Uint16 tx;
-    Uint16 ty;
-
-    const Uint32 ObjID;
+    const Uint16 MapID;
+    Uint32 NewSpellBoxID;
 };
 
 #endif

@@ -16,9 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "WorldObject.h"
-#include "Opcodes.h"
-#include "Map.h"
+#include "WorldObject.hpp"
+#include "Opcodes.hpp"
+#include "Map.hpp"
 
 WorldObject::WorldObject(Uint32 ObjID) :
 ObjID(ObjID)

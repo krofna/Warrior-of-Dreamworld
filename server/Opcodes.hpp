@@ -16,37 +16,40 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef WORLD_SESSION_H
-#define WORLD_SESSION_H
+#ifndef OPCODES_H
+#define OPCODES_H
 
-#include "Player.h"
+#include "WorldSession.hpp"
 
-class Player;
+#define MSG_COUNT 9
 
-class WorldSession
+enum Opcodes
 {
-    friend class AuthSession;
-public:
-    WorldSession(sf::TcpSocket* pSocket, Player* pPlayer);
-    ~WorldSession();
-
-    void ReceivePackets();
-    void SendPacket(sf::Packet& Packet);
-
-    void SendLogOutPacket();
-
-    // Opcode handlers
-    void HandleNULL();
-    void HandleMoveObjectOpcode();
-    void HandleCastSpellOpcode();
-    void HandleTextMessageOpcode();
-    void HandleLogOutOpcode();
-
-private:
-    Player* pPlayer;
-    sf::TcpSocket* pSocket;
-    sf::Packet Packet;
-    Uint16 Opcode;
+    MSG_NULL,
+    MSG_LOGIN,
+    MSG_ADD_OBJECT,
+    MSG_REMOVE_OBJECT,
+    MSG_MOVE_OBJECT,
+    MSG_CAST_SPELL,
+    MSG_SEND_TEXT,
+    MSG_LOG_OUT,
+    MSG_SPELL_HIT
 };
+
+enum
+{
+    LOGIN_SUCCESS = 0x0,
+    LOGIN_FAIL_BAD_USERNAME,
+    LOGIN_FAIL_BAD_PASSWORD,
+    LOGIN_FAIL_SERVER_OFFLINE
+};
+
+struct OpcodeHandler
+{
+    char const* name;
+    void (WorldSession::*Handler)();
+};
+
+extern OpcodeHandler OpcodeTable[MSG_COUNT];
 
 #endif

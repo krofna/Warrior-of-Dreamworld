@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef AUTH_SESSION_H
 #define AUTH_SESSION_H
 
-#include "Opcodes.h"
+#include "Opcodes.hpp"
 
 class AuthSession
 {
