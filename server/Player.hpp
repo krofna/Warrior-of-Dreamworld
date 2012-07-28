@@ -20,15 +20,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define PLAYER_H
 
 #include <string>
-#include "../client/Defines.hpp"
-#include "WorldObject.hpp"
+#include "Unit.hpp"
 #include "WorldSession.hpp"
 #include <SFML/Network.hpp>
 #include "Spell.hpp"
 
 class WorldSession;
 
-class Player : public WorldObject
+class Player : public Unit
 {
     friend class AuthSession;
 
@@ -44,7 +43,9 @@ public:
     void SaveToDB();
     bool IsLoaded();
 
-    bool CanCastSpell(Uint8 ID);
+    void SpellHit(SpellBox* pSpellBox);
+
+    void CastSpell(Spell* pSpell, float Angle);
 
     void Update(Int32 diff);
 
@@ -63,6 +64,8 @@ private:
     std::string Password;
 
     std::vector<Uint16> Spells;
+
+    bool LearnedSpell(Uint8 ID);
 
     bool LoadedFromDB;
 };

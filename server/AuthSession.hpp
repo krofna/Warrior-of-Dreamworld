@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef AUTH_SESSION_H
 #define AUTH_SESSION_H
 
-#include "Opcodes.hpp"
+#include "../shared/Opcodes.hpp"
 
 class AuthSession
 {
@@ -41,10 +41,10 @@ private:
     std::vector<Player*> Players;
     std::vector<sf::TcpSocket*> Sockets;
 
-    Player* GetPlayer();
+    Player* GetPlayer(); // ?? private
     void SendLoginFailPacket(Uint16 Reason);
 
-    // Iterators 
+    // Iterators ?? not needed
     std::vector<sf::TcpSocket*>::iterator SocketIterator;
     sf::TcpSocket* pSocket;
     Player* pPlayer;

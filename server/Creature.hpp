@@ -16,17 +16,25 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "../shared/Opcodes.hpp"
+#ifndef CREATURE_H
+#define CREATURE_H
 
-OpcodeHandler OpcodeTable[MSG_COUNT] = 
+#include "Unit.hpp"
+
+class CreatureAI;
+
+class Creature : public Unit
 {
-    { "MSG_NULL", &WorldSession::HandleNULL },
-    { "MSG_LOGIN", &WorldSession::HandleNULL }, // AMSG
-    { "MSG_ADD_OBJECT", &WorldSession::HandleNULL }, // SMSG
-    { "MSG_REMOVE_OBJECT", &WorldSession::HandleNULL }, // SMSG
-    { "MSG_MOVE_OBJECT", &WorldSession::HandleMoveObjectOpcode },
-    { "MSG_CAST_SPELL", &WorldSession::HandleCastSpellOpcode },
-    { "MSG_SEND_TEXT", &WorldSession::HandleTextMessageOpcode },
-    { "MSG_LOG_OUT", &WorldSession::HandleLogOutOpcode },
-    { "MSG_SPELL_HIT", &WorldSession::HandleNULL } // SMSG
+public:
+    Creature(Uint32 ObjID);
+
+    void Update(Int32 diff);
+
+    virtual void SpellHit(SpellBox* pSpellBox);
+
+    CreatureAI* GetAI();
+private:
+    CreatureAI* pAI;
 };
+
+#endif

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_OBJECT_H
 #define WORLD_OBJECT_H
 
-#include "../client/Defines.hpp"
+#include "../shared/Defines.hpp"
 #include <SFML/Network.hpp>
 
 struct Map;
@@ -32,7 +32,7 @@ public:
 
     virtual void Update(Int32 diff) = 0;
     virtual sf::Packet PackData() = 0;
-    virtual void SaveToDB() = 0;
+    virtual void SaveToDB() = 0; // TODO: world objects need not to be saved? only players
 
     bool UpdateCoordinates(Uint8 Direction);
 

@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldSession.hpp"
-#include "Opcodes.hpp"
+#include "../shared/Opcodes.hpp"
 #include "World.hpp"
 #include "ObjectMgr.hpp"
 #include <iostream>
@@ -102,18 +102,7 @@ void WorldSession::HandleCastSpellOpcode()
 
     printf("Packet is good!\n");
 
-    //if(pPlayer->CanCastSpell(SpellID))
-    {
-        Packet.clear();
-        switch(pSpell->Effect)
-        {
-        case SPELL_BOLT:
-            Packet << (Uint16)MSG_CAST_SPELL << (Uint16)SPELL_BOLT << pPlayer->GetObjectID() << pSpell->DisplayID << Angle << pPlayer->GetMap()->NewSpellBoxID;
-            pPlayer->GetMap()->SendToPlayers(Packet);
-            pPlayer->GetMap()->AddSpell(pPlayer, pSpell, Angle);
-            break;
-        }
-    }
+    pPlayer->CastSpell(pSpell, Angle);
 }
 
 void WorldSession::HandleTextMessageOpcode()

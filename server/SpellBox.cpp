@@ -17,10 +17,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "SpellBox.hpp"
-#include "WorldObject.hpp"
+#include "Unit.hpp"
+#include "../shared/Opcodes.hpp"
 
-SpellBox::SpellBox(Spell* pSpell, WorldObject* pCaster, sf::FloatRect Hitbox, float Angle, Uint32 SpellBoxID) : 
-pSpell            (pSpell),
+SpellBox::SpellBox(Spell* pSpell, Unit* pCaster, sf::FloatRect Hitbox, float Angle, Uint32 SpellBoxID) : 
+_pSpell           (pSpell),
 _pCaster          (pCaster), 
 Hitbox            (Hitbox),
 Angle             (Angle),
@@ -29,7 +30,7 @@ _Diff             (0)
 {
 }
 
-bool SpellBox::CollidesWith(WorldObject* pObject)
+bool SpellBox::CollidesWith(Unit* pObject)
 {
     // TODO: Adjust hitbox, dont construct new objects too much
     sf::FloatRect Obj(pObject->GetX(), pObject->GetY(), 1.0f, 1.0f);

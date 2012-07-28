@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef SPELL_H
 #define SPELL_H
 
-#include "../client/Defines.hpp"
+#include "../shared/Defines.hpp"
 
 struct Spell//Template
 {

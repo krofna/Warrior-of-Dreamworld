@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Utilities.hpp"
 #include "Globals.hpp"
 #include "ResourceManager.hpp"
-#include "Math.hpp"
+#include "../shared/Math.hpp"
 #include <cassert>
 
 World::World (Uint32 MeID) :

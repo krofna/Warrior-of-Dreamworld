@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_OBJECT_H
 #define WORLD_OBJECT_H
 
-#include "Defines.hpp"
+#include "../shared/Defines.hpp"
 #include "Globals.hpp"
 /*
 TODO: Maybe everything should be WorldObject as far as client is concerned?

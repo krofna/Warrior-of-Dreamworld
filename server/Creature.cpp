@@ -16,40 +16,27 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef OPCODES_H
-#define OPCODES_H
+#include "Creature.hpp"
+#include "CreatureAI.hpp"
+#include "SpellBox.hpp"
 
-#include "WorldSession.hpp"
-
-#define MSG_COUNT 9
-
-enum Opcodes
+Creature::Creature(Uint32 ObjID) :
+Unit              (ObjID)
 {
-    MSG_NULL,
-    MSG_LOGIN,
-    MSG_ADD_OBJECT,
-    MSG_REMOVE_OBJECT,
-    MSG_MOVE_OBJECT,
-    MSG_CAST_SPELL,
-    MSG_SEND_TEXT,
-    MSG_LOG_OUT,
-    MSG_SPELL_HIT
-};
+}
 
-enum
+void Creature::Update(Int32 diff)
 {
-    LOGIN_SUCCESS = 0x0,
-    LOGIN_FAIL_BAD_USERNAME,
-    LOGIN_FAIL_BAD_PASSWORD,
-    LOGIN_FAIL_SERVER_OFFLINE
-};
+    pAI->UpdateAI(diff);
+}
 
-struct OpcodeHandler
+void Creature::SpellHit(SpellBox* pSpellBox)
 {
-    char const* name;
-    void (WorldSession::*Handler)();
-};
+    Unit::SpellHit(pSpellBox);
+    pAI->SpellHit(pSpellBox->pCaster(), pSpellBox->pSpell());
+}
 
-extern OpcodeHandler OpcodeTable[MSG_COUNT];
-
-#endif
+CreatureAI* Creature::GetAI()
+{
+    return pAI;
+}

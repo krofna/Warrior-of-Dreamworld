@@ -16,25 +16,26 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "../client/Defines.hpp"
+#include "../shared/Defines.hpp"
 
 struct Spell;
-class WorldObject;
+class Unit;
 
 class SpellBox
 {
 public:
-    SpellBox(Spell* pSpell, WorldObject* pCaster, sf::FloatRect Hitbox, float Angle, Uint32 SpellBoxID);
+    SpellBox(Spell* pSpell, Unit* pCaster, sf::FloatRect Hitbox, float Angle, Uint32 SpellBoxID);
 
-    bool CollidesWith(WorldObject* pObject);
+    bool CollidesWith(Unit* pObject);
     void Update(Int32 diff);
 
-    WorldObject* pCaster() { return _pCaster; }
-    Uint32 SpellBoxID()    { return _SpellBoxID; }
+    Spell* pSpell()     { return _pSpell;     }
+    Unit* pCaster()     { return _pCaster;    }
+    Uint32 SpellBoxID() { return _SpellBoxID; }
 
 private:
-    Spell* pSpell;
-    WorldObject* _pCaster; // Unit* pCaster
+    Spell* _pSpell;
+    Unit* _pCaster;
     sf::FloatRect Hitbox;
     float Angle;
     Uint32 _SpellBoxID;

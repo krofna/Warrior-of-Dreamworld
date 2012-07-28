@@ -17,14 +17,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Player.hpp"
-#include "Opcodes.hpp"
+#include "../shared/Opcodes.hpp"
 #include "Database.hpp"
 #include "World.hpp"
 
 Player::Player(std::string Username, std::string Password, Uint32 ObjID) :
 Username     (Username),
 Password     (Password),
-WorldObject  (ObjID),
+Unit         (ObjID),
 pWorldSession(nullptr),
 LoadedFromDB (false)
 {
@@ -71,9 +71,23 @@ bool Player::IsLoaded()
     return LoadedFromDB;
 }
 
-bool Player::CanCastSpell(Uint8 ID)
+void Player::SpellHit(SpellBox* pSpellBox)
 {
-    // TODO: Power checks etc etc
+    // PH, TODO: do player specific stuff
+    Unit::SpellHit(pSpellBox);
+}
+
+void Player::CastSpell(Spell* pSpell, float Angle)
+{
+    // TODO: Uncomment this when player actually learns spells xD
+    //if(!LearnedSpell(pSpell->ID))
+        //return;
+
+    Unit::CastSpell(pSpell, Angle);
+}
+
+bool Player::LearnedSpell(Uint8 ID)
+{
     for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
     {
         if(*SpellIter == ID)

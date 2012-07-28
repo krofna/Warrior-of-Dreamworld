@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "Player.hpp"
 #include "SpellBox.hpp"
+#include "Creature.hpp"
 
 struct Tile // Delete me
 {
@@ -34,7 +35,7 @@ struct Map
     Map(const Uint16 MapID);
     ~Map();
 
-    std::vector<WorldObject*> MapObjects;
+    std::vector<Creature*> Creatures;
     std::vector<Player*> Players;
     std::vector<SpellBox> Spells;
 
@@ -42,13 +43,15 @@ struct Map
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
-    void AddSpell(WorldObject* pCaster, Spell* pSpell, float Angle); // Unit* pCaster
+    void AddSpell(Unit* pCaster, Spell* pSpell, float Angle);
     virtual void Update(Int32 diff);
+    void UnitUpdate(Unit* pVictim);
 
     void SendToPlayers(sf::Packet& Packet);
 
     const Uint16 MapID;
     Uint32 NewSpellBoxID;
+    Int32 diff;
 };
 
 #endif

@@ -17,8 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Map.hpp"
-#include "Opcodes.hpp"
+#include "../shared/Opcodes.hpp"
 #include "../client/ResourceManager.hpp"
+#include <algorithm>
 
 Map::Map     (const Uint16 MapID) : 
 MapID        (MapID),
@@ -30,9 +31,9 @@ TileGrid     (50, std::vector<Tile>(50))
 
 Map::~Map()
 {
-    for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
+    for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
     {
-        delete (*ObjectIterator);
+        delete (*CreatureIterator);
     }
 
     // Kick all players if they are online
@@ -46,11 +47,11 @@ Map::~Map()
 
 void Map::Update(Int32 diff)
 {
-    Player* pPlayer;
+    this->diff = diff;
 
-    for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
+    for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
     {
-        (*ObjectIterator)->Update(diff);
+        (*CreatureIterator)->Update(diff);
     }
 
     // Update spell box positions
@@ -59,37 +60,34 @@ void Map::Update(Int32 diff)
         SpellBoxIter->Update(diff);
     }
 
-    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
+    std::for_each(Players.begin(), Players.end(), std::bind1st(std::mem_fun(&Map::UnitUpdate), this));
+    std::for_each(Creatures.begin(), Creatures.end(), std::bind1st(std::mem_fun(&Map::UnitUpdate), this));
+}
+
+void Map::UnitUpdate(Unit* pUnit)
+{
+    // Check if unit got hit by spell
+    for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)
     {
-        // Temp pointer for less indirection
-        pPlayer = (*PlayerIterator);
-
-        // Check if someone got hit by a spell
-        for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)
+        if(SpellBoxIter->pCaster() != pUnit/*Is friendly? Healing?*/ && SpellBoxIter->CollidesWith(pUnit))
         {
-            if(SpellBoxIter->pCaster() != pPlayer && SpellBoxIter->CollidesWith(pPlayer))
-            {
-                sf::Packet Packet;
-                Packet << (Uint16)MSG_SPELL_HIT << SpellBoxIter->SpellBoxID() << pPlayer->GetObjectID();
-                SendToPlayers(Packet);
-
-                SpellBoxIter = Spells.erase(SpellBoxIter);
-            }
-            else
-            {
-                ++SpellBoxIter;
-            }
+            pUnit->SpellHit(&(*SpellBoxIter));
+            SpellBoxIter = Spells.erase(SpellBoxIter);
         }
-        pPlayer->Update(diff);
+        else
+        {
+            ++SpellBoxIter;
+        }
     }
+    pUnit->Update(diff);
 }
 
 void Map::AddPlayer(Player* pPlayer)
 {
     // Pack & send all data about world objects to new player
-    for(auto ObjectIterator = MapObjects.begin(); ObjectIterator != MapObjects.end(); ++ObjectIterator)
+    for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
     {
-        pPlayer->SendPacket((*ObjectIterator)->PackData());
+        pPlayer->SendPacket((*CreatureIterator)->PackData());
     }
 
     // Pack & send all data about players in map to new player
@@ -107,7 +105,7 @@ void Map::AddPlayer(Player* pPlayer)
     Players.push_back(pPlayer);
 }
 
-void Map::AddSpell(WorldObject* pCaster, Spell* pSpell, float Angle) // Unit* pCaster
+void Map::AddSpell(Unit* pCaster, Spell* pSpell, float Angle) // Unit* pCaster
 {
     // PLACEHOLDER
     Spells.push_back(SpellBox(pSpell, pCaster, sf::FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));

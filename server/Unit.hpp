@@ -16,17 +16,28 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "../shared/Opcodes.hpp"
+#ifndef UNIT_H
+#define UNIT_H
 
-OpcodeHandler OpcodeTable[MSG_COUNT] = 
+#include "WorldObject.hpp"
+
+struct Spell;
+class SpellBox;
+
+class Unit : public WorldObject
 {
-    { "MSG_NULL", &WorldSession::HandleNULL },
-    { "MSG_LOGIN", &WorldSession::HandleNULL }, // AMSG
-    { "MSG_ADD_OBJECT", &WorldSession::HandleNULL }, // SMSG
-    { "MSG_REMOVE_OBJECT", &WorldSession::HandleNULL }, // SMSG
-    { "MSG_MOVE_OBJECT", &WorldSession::HandleMoveObjectOpcode },
-    { "MSG_CAST_SPELL", &WorldSession::HandleCastSpellOpcode },
-    { "MSG_SEND_TEXT", &WorldSession::HandleTextMessageOpcode },
-    { "MSG_LOG_OUT", &WorldSession::HandleLogOutOpcode },
-    { "MSG_SPELL_HIT", &WorldSession::HandleNULL } // SMSG
+public:
+    Unit(Uint32 ObjID);
+    virtual ~Unit() { } 
+
+    virtual void Update(Int32 diff) = 0;
+
+    virtual void SpellHit(SpellBox* pSpellBox);
+    virtual void CastSpell(Spell* pSpell, float Angle);
+
+private:
+    Uint32 Health;
+    Uint32 Power;
 };
+
+#endif

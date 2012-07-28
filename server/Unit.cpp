@@ -16,17 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+#include "Unit.hpp"
+#include "Spell.hpp"
+#include "Map.hpp"
 #include "../shared/Opcodes.hpp"
 
-OpcodeHandler OpcodeTable[MSG_COUNT] = 
+Unit::Unit (Uint32 ObjID) :
+WorldObject(ObjID)
 {
-    { "MSG_NULL", &WorldSession::HandleNULL },
-    { "MSG_LOGIN", &WorldSession::HandleNULL }, // AMSG
-    { "MSG_ADD_OBJECT", &WorldSession::HandleNULL }, // SMSG
-    { "MSG_REMOVE_OBJECT", &WorldSession::HandleNULL }, // SMSG
-    { "MSG_MOVE_OBJECT", &WorldSession::HandleMoveObjectOpcode },
-    { "MSG_CAST_SPELL", &WorldSession::HandleCastSpellOpcode },
-    { "MSG_SEND_TEXT", &WorldSession::HandleTextMessageOpcode },
-    { "MSG_LOG_OUT", &WorldSession::HandleLogOutOpcode },
-    { "MSG_SPELL_HIT", &WorldSession::HandleNULL } // SMSG
-};
+}
+
+void Unit::SpellHit(SpellBox* pSpellBox)
+{
+    // PH - reduce health and do shit
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID() << ObjID;
+    pMap->SendToPlayers(Packet);
+}
+
+void Unit::CastSpell(Spell* pSpell, float Angle)
+{
+    // TODO: Reduce mana etc etc
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_CAST_SPELL << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
+    GetMap()->SendToPlayers(Packet);
+    GetMap()->AddSpell(this, pSpell, Angle);
+}

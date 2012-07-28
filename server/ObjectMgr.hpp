@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef OBJECT_MGR_H
 #define OBJECT_MGR_H
 
-#include "../client/Defines.hpp"
+#include "../shared/Defines.hpp"
 
 struct Spell;
 
