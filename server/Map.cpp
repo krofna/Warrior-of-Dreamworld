@@ -49,11 +49,6 @@ void Map::Update(Int32 diff)
 {
     this->diff = diff;
 
-    for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
-    {
-        (*CreatureIterator)->Update(diff);
-    }
-
     // Update spell box positions
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end(); ++SpellBoxIter)
     {
