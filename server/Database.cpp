@@ -19,6 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include <fstream>
 #include <cstdarg>
+#include <sstream>
+#include <algorithm>
+#include <cctype>
 
 Database sDatabase;
 
@@ -32,17 +35,28 @@ Database::~Database()
     delete Connection;
 }
 
-// TODO: Allow #comments in cfg file
 void Database::Connect()
 {
     std::ifstream CfgFile("WorldServerConfig.conf");
-    std::string Address, Username, Password, DatabaseName;
+    std::string Data[4], Buffer;
+    int i = 0;
 
-    CfgFile >> Address >> Username >> Password >> DatabaseName;
-    
+    while(std::getline(CfgFile, Buffer)) 
+    {
+        Buffer.erase(Buffer.begin(), find_if(Buffer.begin(), Buffer.end(), std::not1(std::ptr_fun<int, int>(std::isspace)))); 
+
+        if(!std::isalpha(Buffer[0]))
+        {
+            continue;
+        }
+
+        std::stringstream(Buffer) >> Data[i];
+        ++i;
+    }
+
     Driver = get_driver_instance();
-    Connection = Driver->connect(Address, Username, Password);
-    Connection->setSchema(DatabaseName);
+    Connection = Driver->connect(Data[0], Data[1], Data[2]);
+    Connection->setSchema(Data[3]);
     Statement = Connection->createStatement();
 }
 
@@ -70,7 +84,7 @@ QueryResult Database::Query(const char* sql)
     std::auto_ptr<sql::PreparedStatement> PStatement(Connection->prepareStatement(sql));
     QueryResult Result(PStatement->executeQuery());
 
-    return Result;
+    return std::move(Result);
 }
 
 QueryResult Database::PQuery(const char* sql, ...)
@@ -82,5 +96,5 @@ QueryResult Database::PQuery(const char* sql, ...)
     vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
     va_end(ArgList);
 
-    return this->Query(Query);
+    return std::move(this->Query(Query));
 }

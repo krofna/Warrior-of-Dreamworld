@@ -3,18 +3,13 @@ Code:
 - Cleanup Includes/forward declares...
 - Give tilesets IDs instead of std::strings
 - world_edit
-- finish basic spell impl
 - site to register accounts (RenaissanceinCroatia working on it)
-- Collision (N working on it)
 - Investigate server crashes (Krofna working on it)
 - Melee attack
 - Finish animations
 - Move spells to DB
 - Items
-- Creatures
 - Combat stats (health, mana..)
-- Fix camera bounds
-- comments in .conf
 - ObjID => GUID
 
 Art:
