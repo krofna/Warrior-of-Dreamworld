@@ -32,7 +32,7 @@ void Unit::SpellHit(SpellBox* pSpellBox)
     // PH - reduce health and do shit
     // Threat checks etc?
     sf::Packet Packet;
-    Packet << (Uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID() << ObjID;
+    Packet << (Uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID << ObjID;
     pMap->SendToPlayers(Packet);
 }
 

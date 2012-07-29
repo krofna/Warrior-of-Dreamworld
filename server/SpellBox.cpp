@@ -18,14 +18,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "SpellBox.hpp"
 #include "Unit.hpp"
+#include "Spell.hpp"
 #include "../shared/Opcodes.hpp"
 
 SpellBox::SpellBox(Spell* pSpell, Unit* pCaster, sf::FloatRect Hitbox, float Angle, Uint32 SpellBoxID) : 
-_pSpell           (pSpell),
-_pCaster          (pCaster), 
+pSpell            (pSpell),
+pCaster           (pCaster), 
 Hitbox            (Hitbox),
 Angle             (Angle),
-_SpellBoxID       (SpellBoxID),
+SpellBoxID        (SpellBoxID),
 _Diff             (0)
 {
 }

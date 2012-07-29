@@ -19,10 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef MAP_H
 #define MAP_H
 
-#include "Player.hpp"
 #include "SpellBox.hpp"
 #include "Creature.hpp"
-#include "Pathfinding.h"
+
+class Player;
+struct PathfinderNode;
 
 struct Map
 {
@@ -34,7 +35,7 @@ struct Map
     std::vector<SpellBox> Spells;
 
     std::vector<std::vector<WorldObject*> > TileGrid;
-    pathfinding::Node** PathfindingGrid;
+    PathfinderNode** PathfindingGrid;
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);

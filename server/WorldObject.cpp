@@ -32,34 +32,34 @@ const Uint16 WorldObject::GetMapID() const
 
 bool WorldObject::UpdateCoordinates(Uint8 Direction)
 {
-    Uint16 OldX = x, OldY = y;
+    Uint16 OldX = Position.x, OldY = Position.y;
 
     switch(Direction)
     {
     case MOVE_UP:
-        if(pMap->TileGrid[y-1][x])
+        if(pMap->TileGrid[Position.y-1][Position.x])
             return false;
-        y--;
+        Position.y--;
         break;
     case MOVE_DOWN:
-        if(pMap->TileGrid[y+1][x])
+        if(pMap->TileGrid[Position.y+1][Position.x])
             return false;
-        y++;
+        Position.y++;
         break;
     case MOVE_LEFT:
-        if(pMap->TileGrid[y][x-1])
+        if(pMap->TileGrid[Position.y][Position.x-1])
             return false;
-        x--;
+        Position.x--;
         break;
     case MOVE_RIGHT:
-        if(pMap->TileGrid[y][x+1])
+        if(pMap->TileGrid[Position.y][Position.x+1])
             return false;
-        x++;
+        Position.x++;
         break;        
     }
 
     pMap->TileGrid[OldY][OldX] = nullptr;
-    pMap->TileGrid[y][x] = this;
+    pMap->TileGrid[Position.y][Position.x] = this;
 
     return true;
 }

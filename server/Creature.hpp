@@ -20,8 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define CREATURE_H
 
 #include "Unit.hpp"
-#include "Pathfinding.hpp"
 
+class Pathfinder;
 class CreatureAI;
 
 class Creature : public Unit
@@ -34,11 +34,10 @@ public:
     virtual void SpellHit(SpellBox* pSpellBox);
     void StartAttack(Unit* pVictim);
 
-    pathfinding::Path Path;
-
     CreatureAI* GetAI();
 private:
     CreatureAI* pAI;
+    Pathfinder* MovementGenerator;
 };
 
 #endif

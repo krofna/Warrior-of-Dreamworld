@@ -19,28 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Creature.hpp"
 #include "CreatureAI.hpp"
 #include "SpellBox.hpp"
+#include "Pathfinder.hpp"
 
 Creature::Creature(Uint32 ObjID) :
 Unit              (ObjID)
 {
+    MovementGenerator = new Pathfinder(nullptr);
 }
 
 void Creature::Update(Int32 diff)
 {
-    // TODO: recalculate path if victim moved
-    if(!Path->empty() && MovementCooldown <= diff)
-    {
-        sf::Vector2i NewPos = Path->top();
-        Path->pop();
-        x = NewPos.x;
-        y = NewPos.y;
-        MovementCooldown = 1000;
-    }
-    else
-    {
-        MovementCooldown -= diff;
-    }
-
+    MovementGenerator->Update(diff);
     pAI->UpdateAI(diff);
 }
 
@@ -50,11 +39,10 @@ void Creature::SpellHit(SpellBox* pSpellBox)
     
     if(!pVictim)
     {
-        pVictim = pSpellBox->pCaster();
-        Path = pathfinding::GeneratePath(pMap, sf::Vector2i(x, y), sf::Vector2i(pVictim->GetX(), pVictim->GetY()));
+        MovementGenerator->UpdateTarget(pVictim);
         pAI->EnterCombat(pVictim);
     }
-    pAI->SpellHit(pSpellBox->pCaster(), pSpellBox->pSpell());
+    pAI->SpellHit(pSpellBox->pCaster, pSpellBox->pSpell);
 }
 
 CreatureAI* Creature::GetAI()

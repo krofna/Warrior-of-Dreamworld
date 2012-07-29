@@ -37,13 +37,13 @@ Player::~Player()
 // This is bugged cause there may someone already be on the tile player wants to spawn on
 void Player::AddToWorld()
 {
-    pMap->TileGrid[y][x] = this;
+    pMap->TileGrid[Position.y][Position.x] = this;
 }
 
 // PH: needs more work
 void Player::RemoveFromWorld()
 {
-    pMap->TileGrid[y][x] = nullptr;
+    pMap->TileGrid[Position.y][Position.x] = nullptr;
     pMap->RemovePlayer(this);
 }
 
@@ -60,8 +60,8 @@ void Player::LoadFromDB()
     tx          = Result->getInt(5);
     ty          = Result->getInt(6);
     pMap        = sWorld->GetMap(Result->getInt(7));
-    x           = Result->getInt(8);
-    y           = Result->getInt(9);
+    Position.x  = Result->getInt(8);
+    Position.y  = Result->getInt(9);
 
     LoadedFromDB = true;
 }
@@ -104,13 +104,13 @@ void Player::Update(Int32 diff)
 
 void Player::SaveToDB()
 {
-    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, map=%u WHERE id=%u", x, y, pMap->MapID, GetObjectID());
+    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, map=%u WHERE id=%u", Position.x, Position.y, pMap->MapID, GetObjectID());
 }
 
 sf::Packet Player::PackData()
 {
     sf::Packet Packet;
-    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << GetObjectID() << Username << x << y << tx << ty;
+    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << GetObjectID() << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }
 

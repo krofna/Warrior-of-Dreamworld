@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+#ifndef SPELL_BOX_H
+#define SPELL_BOX_H
+
 #include "../shared/Defines.hpp"
 
 struct Spell;
@@ -29,15 +32,14 @@ public:
     bool CollidesWith(Unit* pObject);
     void Update(Int32 diff);
 
-    Spell* pSpell()     { return _pSpell;     }
-    Unit* pCaster()     { return _pCaster;    }
-    Uint32 SpellBoxID() { return _SpellBoxID; }
+    Spell* pSpell;
+    Unit* pCaster;
+    Uint32 SpellBoxID;
 
 private:
-    Spell* _pSpell;
-    Unit* _pCaster;
     sf::FloatRect Hitbox;
     float Angle;
-    Uint32 _SpellBoxID;
     Int32 _Diff;
 };
+
+#endif

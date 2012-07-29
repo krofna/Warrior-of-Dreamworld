@@ -23,9 +23,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <SFML/Network.hpp>
 
 struct Map;
+class Pathfinder;
 
 class WorldObject
 {
+    friend class Pathfinder;
 public:
     WorldObject(Uint32 ObjID);
     virtual ~WorldObject() {}
@@ -50,20 +52,19 @@ public:
 
     Uint16 GetX() const
     {
-        return x;
+        return Position.x;
     }
 
     Uint16 GetY() const
     {
-        return y;
+        return Position.y;
     }
 
 protected:
     std::string Tileset;
 
     Map* pMap;
-    Uint16 x;
-    Uint16 y;
+    sf::Vector2i Position;
     Uint16 tx;
     Uint16 ty;
 

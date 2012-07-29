@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "../shared/Opcodes.hpp"
 #include "../client/ResourceManager.hpp"
+#include "Player.hpp"
+#include "Pathfinder.hpp"
 #include <algorithm>
 
 Map::Map     (const Uint16 MapID) : 
@@ -27,11 +29,11 @@ NewSpellBoxID(0),
 // [PH] This only works for map0, cause its size is 50x50 tiles
 TileGrid     (50, std::vector<WorldObject*>(50))
 {
-    PathfindingGrid  = new pathfinding::Node*[50];
+    PathfindingGrid  = new PathfinderNode*[50];
 
     for(int i = 0; i < 50; ++i)
     {
-        PathfindingGrid[i] = new pathfinding::Node[50];
+        PathfindingGrid[i] = new PathfinderNode[50];
     }
 }
 
@@ -70,7 +72,7 @@ void Map::UnitUpdate(Unit* pUnit)
     // Check if unit got hit by spell
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)
     {
-        if(SpellBoxIter->pCaster() != pUnit/*Is friendly? Healing?*/ && SpellBoxIter->CollidesWith(pUnit))
+        if(SpellBoxIter->pCaster != pUnit/*Is friendly? Healing?*/ && SpellBoxIter->CollidesWith(pUnit))
         {
             pUnit->SpellHit(&(*SpellBoxIter));
             SpellBoxIter = Spells.erase(SpellBoxIter);
