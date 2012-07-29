@@ -37,13 +37,13 @@ Player::~Player()
 // This is bugged cause there may someone already be on the tile player wants to spawn on
 void Player::AddToWorld()
 {
-    pMap->TileGrid[y][x].pWorldObject = this;
+    pMap->TileGrid[y][x] = this;
 }
 
 // PH: needs more work
 void Player::RemoveFromWorld()
 {
-    pMap->TileGrid[y][x].pWorldObject = nullptr;
+    pMap->TileGrid[y][x] = nullptr;
     pMap->RemovePlayer(this);
 }
 

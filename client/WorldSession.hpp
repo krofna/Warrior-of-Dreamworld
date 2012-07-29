@@ -49,7 +49,7 @@ public:
     void SendAuthRequest(std::string Username, std::string Password);
     void SendMovementRequest(Uint8 Direction);
     void SendCastSpellRequest(Uint16 SpellID, float Angle);
-    void SendTextMessage(std::string Message);
+    void SendTextMessage(std::string& Message);
     void SendLogOutRequest();
 
     std::vector<sf::Text> TextMessages;

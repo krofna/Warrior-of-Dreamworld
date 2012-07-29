@@ -22,13 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Player.hpp"
 #include "SpellBox.hpp"
 #include "Creature.hpp"
-
-struct Tile // Delete me
-{
-    Tile() : pWorldObject(nullptr) { }
-
-    WorldObject* pWorldObject;
-};
+#include "Pathfinding.h"
 
 struct Map
 {
@@ -39,7 +33,8 @@ struct Map
     std::vector<Player*> Players;
     std::vector<SpellBox> Spells;
 
-    std::vector<std::vector<Tile> > TileGrid;
+    std::vector<std::vector<WorldObject*> > TileGrid;
+    pathfinding::Node** PathfindingGrid;
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);

@@ -33,4 +33,14 @@ namespace math
         // Calculate angle
         return std::atan2((float)Target.x, (float)Target.y);
     }
+
+    float GetDistance(sf::Vector2i First, sf::Vector2f Second)
+    {
+        return std::sqrt((First.x - Second.x) * (First.x - Second.x) + (First.y - Second.y) * (First.y - Second.y));
+    }
+
+    int GetManhattanDistance(sf::Vector2i First, sf::Vector2i Second)
+    {
+        return std::abs(First.x - Second.x) + std::abs(First.y - Second.y);
+    }
 };

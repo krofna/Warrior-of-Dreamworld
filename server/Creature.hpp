@@ -31,6 +31,7 @@ public:
     void Update(Int32 diff);
 
     virtual void SpellHit(SpellBox* pSpellBox);
+    void StartAttack(Unit* pVictim);
 
     CreatureAI* GetAI();
 private:

@@ -112,6 +112,9 @@ void WorldSession::HandleRemoveObjectOpcode()
 {
     Uint32 ObjID;
     Packet >> ObjID;
+
+    RETURN_IF_PACKET_TOO_BIG
+
     pWorld->RemoveObject(ObjID);
 }
 
@@ -207,7 +210,7 @@ void WorldSession::SendCastSpellRequest(Uint16 SpellID, float Angle)
     SendPacket(Packet);
 }
 
-void WorldSession::SendTextMessage(std::string Message)
+void WorldSession::SendTextMessage(std::string& Message)
 {
     Packet << (Uint16)MSG_SEND_TEXT << Message;
     SendPacket(Packet);

@@ -25,8 +25,14 @@ Map::Map     (const Uint16 MapID) :
 MapID        (MapID),
 NewSpellBoxID(0),
 // [PH] This only works for map0, cause its size is 50x50 tiles
-TileGrid     (50, std::vector<Tile>(50))
+TileGrid     (50, std::vector<WorldObject*>(50))
 {
+    PathfindingGrid  = new pathfinding::Node*[50];
+
+    for(int i = 0; i < 50; ++i)
+    {
+        PathfindingGrid[i] = new pathfinding::Node[50];
+    }
 }
 
 Map::~Map()

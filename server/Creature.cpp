@@ -33,7 +33,13 @@ void Creature::Update(Int32 diff)
 void Creature::SpellHit(SpellBox* pSpellBox)
 {
     Unit::SpellHit(pSpellBox);
+    this->StartAttack(pSpellBox->pCaster());
     pAI->SpellHit(pSpellBox->pCaster(), pSpellBox->pSpell());
+}
+
+void Creature::StartAttack(Unit* pVictim)
+{
+
 }
 
 CreatureAI* Creature::GetAI()

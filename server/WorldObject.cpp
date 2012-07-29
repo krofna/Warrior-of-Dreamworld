@@ -37,29 +37,29 @@ bool WorldObject::UpdateCoordinates(Uint8 Direction)
     switch(Direction)
     {
     case MOVE_UP:
-        if(pMap->TileGrid[y-1][x].pWorldObject)
+        if(pMap->TileGrid[y-1][x])
             return false;
         y--;
         break;
     case MOVE_DOWN:
-        if(pMap->TileGrid[y+1][x].pWorldObject)
+        if(pMap->TileGrid[y+1][x])
             return false;
         y++;
         break;
     case MOVE_LEFT:
-        if(pMap->TileGrid[y][x-1].pWorldObject)
+        if(pMap->TileGrid[y][x-1])
             return false;
         x--;
         break;
     case MOVE_RIGHT:
-        if(pMap->TileGrid[y][x+1].pWorldObject)
+        if(pMap->TileGrid[y][x+1])
             return false;
         x++;
         break;        
     }
 
-    pMap->TileGrid[OldY][OldX].pWorldObject = nullptr;
-    pMap->TileGrid[y][x].pWorldObject = this;
+    pMap->TileGrid[OldY][OldX] = nullptr;
+    pMap->TileGrid[y][x] = this;
 
     return true;
 }
