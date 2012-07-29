@@ -35,7 +35,7 @@ public:
     virtual void UpdateAI(Int32 diff);
 
     // Called when creature enters combat
-    virtual void EnterCombat(Unit* pEnemy); // -- NYI
+    virtual void EnterCombat(Unit* pEnemy);
 
     // Called when creature starts running home
     virtual void RunHome(); // -- NYI

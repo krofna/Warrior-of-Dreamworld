@@ -27,19 +27,34 @@ Unit              (ObjID)
 
 void Creature::Update(Int32 diff)
 {
+    // TODO: recalculate path if victim moved
+    if(!Path->empty() && MovementCooldown <= diff)
+    {
+        sf::Vector2i NewPos = Path->top();
+        Path->pop();
+        x = NewPos.x;
+        y = NewPos.y;
+        MovementCooldown = 1000;
+    }
+    else
+    {
+        MovementCooldown -= diff;
+    }
+
     pAI->UpdateAI(diff);
 }
 
 void Creature::SpellHit(SpellBox* pSpellBox)
 {
     Unit::SpellHit(pSpellBox);
-    this->StartAttack(pSpellBox->pCaster());
+    
+    if(!pVictim)
+    {
+        pVictim = pSpellBox->pCaster();
+        Path = pathfinding::GeneratePath(pMap, sf::Vector2i(x, y), sf::Vector2i(pVictim->GetX(), pVictim->GetY()));
+        pAI->EnterCombat(pVictim);
+    }
     pAI->SpellHit(pSpellBox->pCaster(), pSpellBox->pSpell());
-}
-
-void Creature::StartAttack(Unit* pVictim)
-{
-
 }
 
 CreatureAI* Creature::GetAI()

@@ -22,13 +22,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 
 Unit::Unit (Uint32 ObjID) :
-WorldObject(ObjID)
+WorldObject(ObjID),
+MovementCooldown(0)
 {
 }
 
 void Unit::SpellHit(SpellBox* pSpellBox)
 {
     // PH - reduce health and do shit
+    // Threat checks etc?
     sf::Packet Packet;
     Packet << (Uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID() << ObjID;
     pMap->SendToPlayers(Packet);

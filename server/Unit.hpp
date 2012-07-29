@@ -35,9 +35,14 @@ public:
     virtual void SpellHit(SpellBox* pSpellBox);
     virtual void CastSpell(Spell* pSpell, float Angle);
 
-private:
+    Unit* GetVictim();
+
+protected:
     Uint32 Health;
     Uint32 Power;
+    Uint16 MovementCooldown;
+
+    Unit* pVictim;
 };
 
 #endif
