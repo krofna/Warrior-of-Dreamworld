@@ -21,10 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "../shared/Opcodes.hpp"
 
-Unit::Unit (Uint32 ObjID) :
-WorldObject(ObjID),
-MovementCooldown(0),
-pVictim    (nullptr)
+Unit::Unit      (Uint32 ObjID) :
+WorldObject     (ObjID),
+pVictim         (nullptr)
 {
 }
 

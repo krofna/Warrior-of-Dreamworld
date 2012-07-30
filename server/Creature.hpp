@@ -37,8 +37,6 @@ public:
     void SpellHit(SpellBox* pSpellBox);
     void StartAttack(Unit* pVictim); //?
 
-    void BindAI(CreatureAI* pAI);
-
     CreatureAI* GetAI();
 private:
     CreatureAI* pAI;

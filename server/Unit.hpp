@@ -42,7 +42,6 @@ public:
 protected:
     Uint32 Health;
     Uint32 Power;
-    Uint16 MovementCooldown;
 
     Unit* pVictim;
 };

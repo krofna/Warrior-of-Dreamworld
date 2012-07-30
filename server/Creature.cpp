@@ -40,12 +40,6 @@ void Creature::Update(Int32 diff)
     pAI->UpdateAI(diff);
 }
 
-void Creature::BindAI(CreatureAI* pAI)
-{
-    delete this->pAI;
-    this->pAI = pAI;
-}
-
 sf::Packet Creature::PackData()
 {
     sf::Packet Packet;
@@ -59,6 +53,7 @@ void Creature::SpellHit(SpellBox* pSpellBox)
     
     if(!pVictim)
     {
+        pVictim = pSpellBox->pCaster;
         MovementGenerator->UpdateTarget(pVictim);
         pAI->EnterCombat(pVictim);
     }
