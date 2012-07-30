@@ -29,7 +29,7 @@ pAI               (nullptr)
     Position = sf::Vector2i(x, y);
     this->pMap = pMap;
     this->pAI = pAI;
-    MovementGenerator = new Pathfinder(nullptr);
+    MovementGenerator = new Pathfinder(this);
 }
 
 void Creature::Update(Int32 diff)

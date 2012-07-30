@@ -36,18 +36,21 @@ World::~World()
 
 void World::Load()
 {
-    for(int i=0; i < MAP_COUNT; ++i)
-    {
-        Maps.push_back(new Map(i));
-    }
-
-    pAuthSession = new AuthSession();
-
     try
     {
         sDatabase.Connect();
-        sObjectMgr.LoadSpells();
         sObjectMgr.LoadCreatureTemplates();
+
+        for(int i=0; i < MAP_COUNT; ++i)
+        {
+            Map* pMap = new Map(i);
+            pMap->LoadCreatures();
+            Maps.push_back(pMap);
+        }
+
+        pAuthSession = new AuthSession();
+
+        sObjectMgr.LoadSpells();
         pAuthSession->LoadPlayersLoginInfo();
         LoadScripts();
     }

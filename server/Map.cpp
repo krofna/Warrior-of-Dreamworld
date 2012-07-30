@@ -59,8 +59,7 @@ Map::~Map()
 
 void Map::LoadCreatures()
 {
-    QueryResult Result(sDatabase.PQuery("SELECT * FROM `creature` WHERE map=%u", MapID));
-
+    QueryResult Result(sDatabase.PQuery("SELECT * FROM `creature` WHERE map='%u'", MapID));
     Creature* pCreature;
 
     while(Result->next())
