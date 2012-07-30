@@ -62,4 +62,6 @@ public:
     Creature* pCreature;
 };
 
+WOD_DLL_DECL void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
+
 #endif

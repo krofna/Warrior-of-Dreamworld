@@ -16,26 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef CREATURE_AI_FACTORY_H
-#define CREATURE_AI_FACTORY_H
+#include "CreatureAIFactory.hpp"
+#include "CreatureAI.hpp"
+#include "Creature.hpp"
 
-#include <map>
-#include <string>
-#include "../shared/Config.hpp"
+CreatureAIFactory AIFactory;
 
-class CreatureAI;
-class Creature;
-
-class WOD_DLL_DECL CreatureAIFactory
+void CreatureAIFactory::RegisterAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature))
 {
-public:
-    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
-    CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature);
+    Registry.insert(std::make_pair(AIName, Creator));
+}
 
-private:
-    std::map<std::string, CreatureAI*(*)(Creature* pCreature)> Registry;
-};
+CreatureAI* CreatureAIFactory::CreateAI(const std::string& AIName, Creature* pCreature)
+{
+    if(AIName.empty() || (Registry.find(AIName) == Registry.end()))
+        return new CreatureAI(pCreature);
 
-extern WOD_DLL_DECL CreatureAIFactory AIFactory;
-
-#endif
+    return Registry[AIName](pCreature);
+}

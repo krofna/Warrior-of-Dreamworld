@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "../shared/Config.hpp"
 
-WOD_DLL_DECL
-void LoadScripts();
+WOD_DLL_DECL void LoadScripts();
 
 #endif

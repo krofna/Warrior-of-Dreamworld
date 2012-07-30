@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "../server/CreatureAI.hpp"
 #include "../server/Creature.hpp"
-#include "CreatureAIFactory.hpp"
 
 class WOD_DLL_DECL npc_krofnicaAI : public CreatureAI
 {
@@ -39,5 +38,5 @@ CreatureAI* GetAI_npc_krofnica(Creature* pCreature)
 
 void LoadScript_npc_krofnica()
 {
-    AIFactory.RegisterAI("npc_krofnica", &GetAI_npc_krofnica);
+    RegisterAI("npc_krofnica", &GetAI_npc_krofnica);
 }

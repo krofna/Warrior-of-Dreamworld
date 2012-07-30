@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include "../client/ResourceManager.hpp"
 #include "../shared/Config.hpp"
-#include "../scripts/CreatureAIFactory.hpp"
+#include "CreatureAIFactory.hpp"
 #include "Player.hpp"
 #include "Database.hpp"
 #include "Pathfinder.hpp"
