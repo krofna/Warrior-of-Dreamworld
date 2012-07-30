@@ -17,4 +17,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "CreatureAI.hpp"
+#include "Creature.hpp"
 
+void CreatureAI::UpdateAI(Int32 diff)
+{
+    if(!pCreature->GetVictim())
+        return;
+
+    DoMeleeAttackIfReady();
+}
+
+void CreatureAI::DoMeleeAttackIfReady()
+{
+    //pCreature->Attack
+}

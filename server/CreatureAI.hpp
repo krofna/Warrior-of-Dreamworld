@@ -20,40 +20,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define CREATURE_AI_H
 
 #include "../shared/Defines.hpp"
+#include "../shared/Config.hpp"
 
 class Unit;
 class Creature;
 struct Spell;
 
-class CreatureAI
+class WOD_DLL_DECL CreatureAI
 {
 public:
     explicit CreatureAI(Creature* pCreature) : pCreature(pCreature) {}
-    virtual ~CreatureAI();
+    virtual ~CreatureAI() {};
 
     // Called on World::Update
     virtual void UpdateAI(Int32 diff);
 
     // Called when creature enters combat
-    virtual void EnterCombat(Unit* pEnemy);
+    virtual void EnterCombat(Unit* pEnemy){};
 
     // Called when creature starts running home
-    virtual void RunHome(); // -- NYI
+    virtual void RunHome(){}; // -- NYI
 
     // Called when creature reaches home
-    virtual void ReachedHome(); // -- NYI
+    virtual void ReachedHome(){}; // -- NYI
 
     //Called when creature dies
-    virtual void JustDied(Unit* pKiller); // -- NYI
+    virtual void JustDied(Unit* pKiller){}; // -- NYI
 
     // Called when creature kills unit
-    virtual void KilledUnit(Unit* pVictim); // -- NYI
+    virtual void KilledUnit(Unit* pVictim){}; // -- NYI
 
     // Called when creature is hit by melee attack
-    virtual void Hit(Unit* pAttacker, Uint32& Damage); // -- NYI
+    virtual void Hit(Unit* pAttacker, Uint32& Damage){}; // -- NYI
 
     // Called when creature is hit by spell
-    virtual void SpellHit(Unit* pCaster, const Spell* pSpell);
+    virtual void SpellHit(Unit* pCaster, const Spell* pSpell){};
 
     void DoMeleeAttackIfReady(); // -- NYI
 

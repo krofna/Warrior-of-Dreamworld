@@ -50,7 +50,7 @@ void Player::RemoveFromWorld()
 void Player::LoadFromDB()
 {
     // TODO: Not all columns.
-    QueryResult Result(sDatabase.PQuery("SELECT * FROM `players` WHERE id='%u'", ObjID));
+    QueryResult Result(sDatabase.PQuery("SELECT * FROM `players` WHERE guid='%u'", ObjID));
     Result->next();
 
     //ObjID       = Result->getInt(1);

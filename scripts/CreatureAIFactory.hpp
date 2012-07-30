@@ -23,15 +23,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <string>
 
 class CreatureAI;
+class Creature;
 
 class CreatureAIFactory
 {
 public:
-    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)());
-    CreatureAI* CreateAI(const std::string& AIName);
+    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
+    CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature);
 
 private:
-    std::map<std::string, CreatureAI*(*)()> Registry;
+    std::map<std::string, CreatureAI*(*)(Creature* pCreature)> Registry;
 };
+
+extern CreatureAIFactory AIFactory;
 
 #endif

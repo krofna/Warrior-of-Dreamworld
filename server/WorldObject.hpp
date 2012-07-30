@@ -20,12 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_OBJECT_H
 
 #include "../shared/Defines.hpp"
+#include "../shared/Config.hpp"
 #include <SFML/Network.hpp>
 
 struct Map;
 class Pathfinder;
 
-class WorldObject
+class WOD_DLL_DECL WorldObject
 {
     friend class Pathfinder;
 public:

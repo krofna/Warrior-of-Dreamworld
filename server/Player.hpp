@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class WorldSession;
 
-class Player : public Unit
+class WOD_DLL_DECL Player : public Unit
 {
     friend class AuthSession;
 

@@ -23,7 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Unit::Unit (Uint32 ObjID) :
 WorldObject(ObjID),
-MovementCooldown(0)
+MovementCooldown(0),
+pVictim    (nullptr)
 {
 }
 
@@ -43,4 +44,9 @@ void Unit::CastSpell(Spell* pSpell, float Angle)
     Packet << (Uint16)MSG_CAST_SPELL << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     GetMap()->SendToPlayers(Packet);
     GetMap()->AddSpell(this, pSpell, Angle);
+}
+
+Unit* Unit::GetVictim()
+{
+    return pVictim;
 }

@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 struct Spell;
 class SpellBox;
 
-class Unit : public WorldObject
+class WOD_DLL_DECL Unit : public WorldObject
 {
 public:
     Unit(Uint32 ObjID);

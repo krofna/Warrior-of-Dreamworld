@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
+#include "../scripts/ScriptLoader.hpp"
 
 #define SERVER_HEARTBEAT 50
 
@@ -49,6 +50,7 @@ void World::Load()
         sDatabase.Connect();
         sObjectMgr->LoadSpells();
         pAuthSession->LoadPlayersLoginInfo();
+        LoadScripts();
     }
     catch (sql::SQLException &e) 
     {

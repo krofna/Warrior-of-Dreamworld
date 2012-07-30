@@ -113,7 +113,7 @@ void AuthSession::SendLoginFailPacket(Uint16 Reason)
 
 void AuthSession::LoadPlayersLoginInfo()
 {
-    QueryResult Result(sDatabase.Query("SELECT name, password, id FROM `players`"));
+    QueryResult Result(sDatabase.Query("SELECT name, password, guid FROM `players`"));
 
     while(Result->next())
     {

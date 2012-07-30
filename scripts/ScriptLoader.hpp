@@ -16,28 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef CREATURE_H
-#define CREATURE_H
+#ifndef SCRIPT_LOADER_H
+#define SCRIPT_LOADER_H
 
-#include "Unit.hpp"
+#include "../shared/Config.hpp"
 
-class Pathfinder;
-class CreatureAI;
-
-class WOD_DLL_DECL Creature : public Unit
-{
-public:
-    Creature(Uint32 ObjID);
-
-    void Update(Int32 diff);
-
-    virtual void SpellHit(SpellBox* pSpellBox);
-    void StartAttack(Unit* pVictim);
-
-    CreatureAI* GetAI();
-private:
-    CreatureAI* pAI;
-    Pathfinder* MovementGenerator;
-};
+WOD_DLL_DECL
+void LoadScripts();
 
 #endif

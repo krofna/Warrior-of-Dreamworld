@@ -16,15 +16,17 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "CreatureAIFactory.hpp"
-#include "CreatureAI.hpp"
+#ifndef CONFIG_H
+#define CONFIG_H
 
-void CreatureAIFactory::RegisterAI(const std::string& AIName, CreatureAI*(*Creator)())
-{
-    Registry.insert(std::make_pair(AIName, Creator));
-}
+#if defined(WIN32) || defined(_WIN32)
+  #define WOD_DLL_DECL __declspec(dllexport)
 
-CreatureAI* CreatureAIFactory::CreateAI(const std::string& AIName)
-{
-    return Registry[AIName]();
-}
+#elif defined( __GNUC__ )
+  #define WOD_DLL_DECL
+
+#else
+  #define WOD_DLL_DECL export
+#endif
+
+#endif

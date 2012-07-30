@@ -16,28 +16,28 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef CREATURE_H
-#define CREATURE_H
+#include "../server/CreatureAI.hpp"
+#include "../server/Creature.hpp"
+#include "CreatureAIFactory.hpp"
 
-#include "Unit.hpp"
-
-class Pathfinder;
-class CreatureAI;
-
-class WOD_DLL_DECL Creature : public Unit
+class WOD_DLL_DECL npc_krofnicaAI : public CreatureAI
 {
 public:
-    Creature(Uint32 ObjID);
+    npc_krofnicaAI(Creature* pCreature) : CreatureAI(pCreature) { }
 
-    void Update(Int32 diff);
-
-    virtual void SpellHit(SpellBox* pSpellBox);
-    void StartAttack(Unit* pVictim);
-
-    CreatureAI* GetAI();
-private:
-    CreatureAI* pAI;
-    Pathfinder* MovementGenerator;
+    void UpdateAI(Int32 diff) override
+    {
+        if(!pCreature->GetVictim())
+            return;
+    }
 };
 
-#endif
+CreatureAI* GetAI_npc_krofnica(Creature* pCreature)
+{
+    return new npc_krofnicaAI(pCreature);
+}
+
+void LoadScript_npc_krofnica()
+{
+    AIFactory.RegisterAI("npc_krofnica", &GetAI_npc_krofnica);
+}

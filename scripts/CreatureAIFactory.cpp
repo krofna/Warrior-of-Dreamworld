@@ -16,28 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef CREATURE_H
-#define CREATURE_H
+#include "ScriptConfig.hpp"
+#include "CreatureAIFactory.hpp"
+#include "../server/CreatureAI.hpp"
+#include "../server/Creature.hpp"
 
-#include "Unit.hpp"
+CreatureAIFactory AIFactory;
 
-class Pathfinder;
-class CreatureAI;
-
-class WOD_DLL_DECL Creature : public Unit
+void CreatureAIFactory::RegisterAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature))
 {
-public:
-    Creature(Uint32 ObjID);
+    Registry.insert(std::make_pair(AIName, Creator));
+}
 
-    void Update(Int32 diff);
-
-    virtual void SpellHit(SpellBox* pSpellBox);
-    void StartAttack(Unit* pVictim);
-
-    CreatureAI* GetAI();
-private:
-    CreatureAI* pAI;
-    Pathfinder* MovementGenerator;
-};
-
-#endif
+CreatureAI* CreatureAIFactory::CreateAI(const std::string& AIName, Creature* pCreature)
+{
+    return Registry[AIName](pCreature);
+}
