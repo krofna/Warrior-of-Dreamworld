@@ -37,7 +37,8 @@ struct Map
     std::vector<SpellBox> Spells;
 
     std::vector<std::vector<WorldObject*> > TileGrid;
-    PathfinderNode** PathfindingGrid;
+    PathfinderNode* PathfindingGrid; // 2D
+    Uint8* PathfindingStatusGrid; // 2D
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);

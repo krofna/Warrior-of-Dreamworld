@@ -121,12 +121,12 @@ void WorldSession::HandleRemoveObjectOpcode()
 void WorldSession::HandleMoveObjectOpcode()
 {
     Uint32 ObjID;
-    Uint8 Direction;
-    Packet >> ObjID >> Direction;
+    Uint16 x, y;
+    Packet >> ObjID >> x >> y;
 
     RETURN_IF_PACKET_TOO_BIG
 
-    pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(Direction);
+    pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
     printf("Packet is good!\n");
 }
 
@@ -171,7 +171,7 @@ void WorldSession::HandleLogOutOpcode()
 }
 
 void WorldSession::HandleSpellHitOpcode()
-{
+{/*
     Uint32 SpellBoxID, VictimID;
     Packet >> SpellBoxID >> VictimID;
 
@@ -189,7 +189,7 @@ void WorldSession::HandleSpellHitOpcode()
     //PH, dont delete, instead, die
     delete pWorld->WorldObjectMap[VictimID];
     pWorld->WorldObjectMap.erase(VictimID);
-    printf("Packet is good!\n");
+    printf("Packet is good!\n");*/
 }
 
 void WorldSession::SendMovementRequest(Uint8 Direction)

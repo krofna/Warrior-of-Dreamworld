@@ -80,7 +80,7 @@ void WorldSession::HandleMoveObjectOpcode()
     
     // Send movement update to all players in the map
     Packet.clear();
-    Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << Direction;
+    Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
     sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
 

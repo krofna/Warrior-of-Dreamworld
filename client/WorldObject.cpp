@@ -28,8 +28,8 @@ WorldObject::WorldObject(std::string Tileset, std::string Name, Uint16 x, Uint16
     ObjectName = Name; 
 }
 
-void WorldObject::UpdateCoordinates(Uint8 Direction)
-{
+void WorldObject::UpdateCoordinates(Uint16 x, Uint16 y)
+{/*
     switch(Direction)
     {
      case MOVE_UP:
@@ -44,7 +44,8 @@ void WorldObject::UpdateCoordinates(Uint8 Direction)
      case MOVE_RIGHT:
         ObjectSprite.move(1 * TILE_SIZE, 0);
         break;
-    }
+    }*/
+    ObjectSprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
 }
 
 void WorldObject::Draw() 

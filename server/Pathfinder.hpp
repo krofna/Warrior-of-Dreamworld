@@ -26,22 +26,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 struct Map;
 class WorldObject;
 
+/*
+TODO: Instead of *50 use map width: see Map.cpp Map::{ctor}
+*/
+
 struct PathfinderNode
 {
-    PathfinderNode() 
-    {
-        G = H = 0;
-    }
-
     PathfinderNode* pParent;
     sf::Vector2i Position;
-    int G, H;
-    int Status;
+    unsigned G, H;
+};
 
-    bool operator < (const PathfinderNode& first) const
-    {
-        return((this->G + this->H) < (first.G + first.H));
-    }
+struct CompareNode : public std::binary_function<PathfinderNode*, PathfinderNode*, bool>                                                                                     
+{
+  bool operator()(const PathfinderNode* first, const PathfinderNode* second) const
+  {
+    return((first->G + first->H) > (second->G + second->H));
+  }
 };
 
 class Pathfinder
@@ -55,9 +56,9 @@ public:
 private:
     enum TileStatus
     {
-        OPEN    = 0,
-        CLOSED  = 1,
-        UNKNOWN = 2
+        UNKNOWN = 0,
+        OPEN    = 1,
+        CLOSED  = 2
     };
 
     void GeneratePath();
@@ -71,7 +72,7 @@ private:
     WorldObject* pOrigin;
     WorldObject* pTarget;
     Map* pMap;
-    Uint32 MovementCooldown;
+    Int32 MovementCooldown;
 };
 
 #endif

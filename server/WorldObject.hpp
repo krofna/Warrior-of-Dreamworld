@@ -37,6 +37,7 @@ public:
     virtual sf::Packet PackData() = 0;
 
     bool UpdateCoordinates(Uint8 Direction);
+    void UpdatePosition(sf::Vector2i Position);
 
     const Uint32 GetObjectID() const
     {

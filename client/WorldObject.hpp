@@ -31,7 +31,7 @@ public:
     WorldObject(std::string Tileset, std::string Name, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
     virtual void Draw();
 
-    void UpdateCoordinates(Uint8 Direction);
+    void UpdateCoordinates(Uint16 x, Uint16 y);
     sf::Vector2f GetPosition();
 
     std::string GetObjectName()

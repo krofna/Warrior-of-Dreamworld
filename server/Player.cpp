@@ -37,7 +37,7 @@ Player::~Player()
 // This is bugged cause there may someone already be on the tile player wants to spawn on
 void Player::AddToWorld()
 {
-    pMap->TileGrid[Position.y][Position.x] = this;
+    //pMap->TileGrid[Position.y][Position.x] = this;
 }
 
 // PH: needs more work
@@ -62,7 +62,7 @@ void Player::LoadFromDB()
     pMap        = sWorld->GetMap(Result->getUInt(7));
     Position.x  = Result->getUInt(8);
     Position.y  = Result->getUInt(9);
-
+    
     LoadedFromDB = true;
 }
 

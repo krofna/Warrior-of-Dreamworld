@@ -29,15 +29,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Map::Map     (const Uint16 MapID) : 
 MapID        (MapID),
 NewSpellBoxID(0),
-// [PH] This only works for map0, cause its size is 50x50 tiles
-TileGrid     (50, std::vector<WorldObject*>(50))
+// [PH] This only works for map0, cause its size is 50x50 tiles 
+TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 {
-    PathfindingGrid  = new PathfinderNode*[50];
+    PathfindingGrid = new PathfinderNode[50 * 50];
+    memset(PathfindingGrid, 0, 50 * 50);
 
-    for(int i = 0; i < 50; ++i)
+    for(int y = 0; y < 50; ++y)
     {
-        PathfindingGrid[i] = new PathfinderNode[50];
+        for(int x = 0; x < 50; ++x)
+        {
+            PathfindingGrid[50 * y + x].Position = std::move(sf::Vector2i(x, y));
+        }
     }
+
+    PathfindingStatusGrid = new Uint8[50 * 50];
 }
 
 Map::~Map()
@@ -54,6 +60,9 @@ Map::~Map()
             (*PlayerIter)->Kick();
         delete (*PlayerIter);
     }
+
+    delete[] PathfindingGrid;
+    delete[] PathfindingStatusGrid;
 }
 
 void Map::LoadCreatures()

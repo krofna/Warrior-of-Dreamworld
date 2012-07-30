@@ -31,18 +31,25 @@ TODO:
 
 Pathfinder::Pathfinder(WorldObject* pOrigin) :
 pOrigin               (pOrigin),
-pMap                  (pOrigin->GetMap())
+pMap                  (pOrigin->GetMap()),
+pTarget               (nullptr)
 {
-    MovementCooldown = 0;
+    MovementCooldown = 1000;
 }
 
 void Pathfinder::Update(Int32 diff)
 {
-    if(!Path.empty() && MovementCooldown <= diff)
+    if(pTarget && pTarget->Position != Target)
     {
-        pOrigin->Position = Path.top();
+        this->Target = sf::Vector2i(pTarget->GetX(), pTarget->GetY());
+        GeneratePath();
+    }
+    if(!Path.empty() && (MovementCooldown <= diff))
+    {
+        printf("left: %u\n", Path.size());
+        pOrigin->UpdatePosition(Path.top());
         Path.pop();
-        MovementCooldown = 1000;
+        MovementCooldown = 500;
     }
     else
     {
@@ -59,42 +66,67 @@ void Pathfinder::UpdateTarget(WorldObject* pNewTarget)
 
 void Pathfinder::GeneratePath()
 {
+    // Destroy old path if it exists
     while(!Path.empty())
     {
         Path.pop();
     }
+
+    // Zero out status grid
     ResetPathfindingGrid();
 
-    PathfinderNode** PathfindingGrid = pMap->PathfindingGrid;
-    PathfinderNode* pOriginPathfinderNode = &PathfindingGrid[pOrigin->Position.y][pOrigin->Position.x];
-    pOriginPathfinderNode->Status = OPEN;
-    pOriginPathfinderNode->pParent = nullptr;
-    pOriginPathfinderNode->Position = Target;
+    // Get pointer to 2D grid of pathfinding nodes in a map
+    PathfinderNode* PathfindingGrid = pMap->PathfindingGrid;
 
-    std::priority_queue<PathfinderNode*> OpenList;
-    OpenList.push(pOriginPathfinderNode);
+    // Get Node with same position as creature in pathfinding grid
+    PathfinderNode* pOriginNode = &PathfindingGrid[50 * pOrigin->GetY() + pOrigin->GetX()];
 
+    // Origin node does not have parent node
+    pOriginNode->pParent = nullptr;
+
+    // Origin node does not have G cost
+    pOriginNode->G = 0;
+    pOriginNode->H = 10 * math::GetManhattanDistance(sf::Vector2i(pOriginNode->Position.x, pOriginNode->Position.y), Target);
+
+    // Priority queue of nodes : Lower cost, higher priority
+    std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode> OpenList;
+
+    // Add origin node to queue
+    OpenList.push(pOriginNode);
+
+    // Get a pointer to WorldObject grid to check for collision
     std::vector<std::vector<WorldObject*> >* pTileGrid = &pMap->TileGrid;
 
     do
     {
+        // Grab node with highest priority
         PathfinderNode* pCurrent = OpenList.top();
         OpenList.pop();
-        pCurrent->Status = CLOSED;
 
+        // Move it to "closed" list
+        pMap->PathfindingStatusGrid[50 * pCurrent->Position.y + pCurrent->Position.x] = CLOSED;
+
+        // If current node has same coordinates as target, we found our path
         if(pCurrent->Position == Target)
         {
+            // Create path using parents to track down origin
             while(pCurrent->pParent != nullptr)
             {
-                Path.push(std::move(pCurrent->Position));
+                Path.push(pCurrent->Position);
                 pCurrent = pCurrent->pParent;
             }
+            return;
         }
 
+        // For each of adjacent nodes
+        // if it is not out of bounds
+        // and if tile is 'walkable', 
+        // check its status
+
         // Upper
-        if((*pTileGrid)[pCurrent->Position.y-1][pCurrent->Position.x] == nullptr)
+        if(pCurrent->Position.y != 0 && (*pTileGrid)[pCurrent->Position.y-1][pCurrent->Position.x] == nullptr)
         {
-            PathfinderNode* pAdjacent = &PathfindingGrid[pCurrent->Position.y-1][pCurrent->Position.x];
+            PathfinderNode* pAdjacent = &PathfindingGrid[50 * (pCurrent->Position.y-1) + pCurrent->Position.x];
             if(CheckOrthogonalPathfinderNode(pCurrent, pAdjacent))
             {
                 OpenList.push(pAdjacent);
@@ -102,9 +134,9 @@ void Pathfinder::GeneratePath()
         }
 
         // Lower
-        if((*pTileGrid)[pCurrent->Position.y+1][pCurrent->Position.x] == nullptr)
+        if(pCurrent->Position.y != 49 && (*pTileGrid)[pCurrent->Position.y+1][pCurrent->Position.x] == nullptr)
         {
-            PathfinderNode* pAdjacent = &PathfindingGrid[pCurrent->Position.y-1][pCurrent->Position.x];
+            PathfinderNode* pAdjacent = &PathfindingGrid[50 * (pCurrent->Position.y+1) + pCurrent->Position.x];
             if(CheckOrthogonalPathfinderNode(pCurrent, pAdjacent))
             {
                 OpenList.push(pAdjacent);
@@ -112,9 +144,9 @@ void Pathfinder::GeneratePath()
         }
 
         // Right
-        if((*pTileGrid)[pCurrent->Position.y][pCurrent->Position.x+1] == nullptr)
+        if(pCurrent->Position.x != 49 && (*pTileGrid)[pCurrent->Position.y][pCurrent->Position.x+1] == nullptr)
         {
-            PathfinderNode* pAdjacent = &PathfindingGrid[pCurrent->Position.y-1][pCurrent->Position.x];
+            PathfinderNode* pAdjacent = &PathfindingGrid[50 * pCurrent->Position.y + pCurrent->Position.x+1];
             if(CheckOrthogonalPathfinderNode(pCurrent, pAdjacent))
             {
                 OpenList.push(pAdjacent);
@@ -122,39 +154,56 @@ void Pathfinder::GeneratePath()
         }
 
         // Left
-        if((*pTileGrid)[pCurrent->Position.y-1][pCurrent->Position.x] == nullptr)
+        if(pCurrent->Position.x != 0 && (*pTileGrid)[pCurrent->Position.y][pCurrent->Position.x-1] == nullptr)
         {
-            PathfinderNode* pAdjacent = &PathfindingGrid[pCurrent->Position.y-1][pCurrent->Position.x];
+            PathfinderNode* pAdjacent = &PathfindingGrid[50 * pCurrent->Position.y + pCurrent->Position.x-1];
             if(CheckOrthogonalPathfinderNode(pCurrent, pAdjacent))
             {
                 OpenList.push(pAdjacent);
             }
         }
     } while(!OpenList.empty());
+
+    printf("Could not generate path");
 }
 
 bool Pathfinder::CheckOrthogonalPathfinderNode(PathfinderNode* pCurrent, PathfinderNode* pAdjacent)
 {
-    switch(pAdjacent->Status)
+    // Check status
+    switch(pMap->PathfindingStatusGrid[50 * pAdjacent->Position.y + pAdjacent->Position.x])
     {
-    case UNKNOWN:
+        // If there is no status yet
+    case (Uint8)UNKNOWN:
+        // Make the current node parent
         pAdjacent->pParent = pCurrent;
+
+        // Calculate costs
         pAdjacent->G = pCurrent->G + 10;
-        pAdjacent->H = math::GetManhattanDistance(sf::Vector2i(pAdjacent->Position.y, pAdjacent->Position.x), Target);
-        pAdjacent->Status = OPEN;
+        pAdjacent->H = 10 * math::GetManhattanDistance(sf::Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
+
+        // Add it to open list
+        pMap->PathfindingStatusGrid[50 * pAdjacent->Position.y + pAdjacent->Position.x] = OPEN;
+        printf("adding new to open list: costs: %u, %u\n", pAdjacent->G, pAdjacent->H);
         return true;
-        break;
 
-    case OPEN:
-        if((pCurrent->G + 10) < pAdjacent->G)
+        // If it is already on open list
+    case (Uint8)OPEN:
+        // Check if G path of pCurrent is better than G path of pAdjacent
+        /*if((pCurrent->G + 10) < pAdjacent->G)
         {
+            // Make pCurrent parent of pAdjacent
             pAdjacent->pParent = pCurrent;
-            pAdjacent->G = pCurrent->G + 10;
-            return true;
-        }
-        break;
 
-    case CLOSED:
+            // Recalculate distance
+            pAdjacent->G = pCurrent->G + 10;
+            pAdjacent->H = 10 * math::GetManhattanDistance(sf::Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
+
+            // Do not add on open list
+            return false;
+        }*/
+
+        // If its closed, ignore it
+    case (Uint8)CLOSED:
         break;
     }
 
@@ -163,5 +212,5 @@ bool Pathfinder::CheckOrthogonalPathfinderNode(PathfinderNode* pCurrent, Pathfin
 
 void Pathfinder::ResetPathfindingGrid()
 {
-    std::memset(pMap->PathfindingGrid, UNKNOWN, 50 * 50 * sizeof(pMap->PathfindingGrid[0][0]));
+    std::memset(pMap->PathfindingStatusGrid, 0, 50 * 50 * sizeof(pMap->PathfindingStatusGrid[0]));
 }
