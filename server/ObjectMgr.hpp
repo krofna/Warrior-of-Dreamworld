@@ -30,7 +30,7 @@ class ObjectMgr
 public:
     ~ObjectMgr();
 
-    std::string GetCreatureScriptName(Uint32 Entry);
+    CreatureTemplate* GetCreatureTemplate(Uint32 Entry);
     Spell* GetSpell(Uint16 ID);
 
     void LoadSpells();

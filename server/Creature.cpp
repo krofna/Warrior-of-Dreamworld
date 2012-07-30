@@ -20,15 +20,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "CreatureAI.hpp"
 #include "SpellBox.hpp"
 #include "Pathfinder.hpp"
+#include "Templates.hpp"
+#include "CreatureAIFactory.hpp"
 #include "../shared/Opcodes.hpp"
 
-Creature::Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y) :
+Creature::Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y, CreatureTemplate* pTemplate) :
 Unit              (ObjID),
-pAI               (nullptr)
+pTemplate         (pTemplate)
 {
     Position = sf::Vector2i(x, y);
     this->pMap = pMap;
-    this->pAI = pAI;
+    pAI = AIFactory.CreateAI(pTemplate->ScriptName, this);
     MovementGenerator = new Pathfinder(this);
 }
 
@@ -47,7 +49,7 @@ void Creature::BindAI(CreatureAI* pAI)
 sf::Packet Creature::PackData()
 {
     sf::Packet Packet;
-    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << ObjID << Name << GetX() << GetY() << tx << ty;
+    Packet << (Uint16)MSG_ADD_OBJECT << pTemplate->Tileset << ObjID << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
     return Packet;
 }
 

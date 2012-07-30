@@ -61,13 +61,8 @@ public:
     }
 
 protected:
-    std::string Tileset;
-    std::string Name;
-
     Map* pMap;
     sf::Vector2i Position;
-    Uint16 tx;
-    Uint16 ty;
 
     const Uint32 ObjID;
 };

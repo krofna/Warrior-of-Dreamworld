@@ -60,8 +60,12 @@ public:
 private:
     WorldSession* pWorldSession;
 
-    std::string Username; // WorldObject::Name (todo?)
+    std::string Username;
     std::string Password;
+
+    std::string Tileset;
+    Uint16 tx;
+    Uint16 ty;
 
     std::vector<Uint16> Spells;
 

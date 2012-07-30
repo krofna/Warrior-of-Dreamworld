@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include "../client/ResourceManager.hpp"
 #include "../shared/Config.hpp"
-#include "CreatureAIFactory.hpp"
 #include "Player.hpp"
 #include "Database.hpp"
 #include "Pathfinder.hpp"
@@ -64,8 +63,8 @@ void Map::LoadCreatures()
 
     while(Result->next())
     {
-        pCreature = new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5));
-        pCreature->BindAI(AIFactory.CreateAI(sObjectMgr.GetCreatureScriptName(Result->getUInt(2)), pCreature));
+        pCreature = new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2)));
+        Creatures.push_back(pCreature);
     }
 }
 

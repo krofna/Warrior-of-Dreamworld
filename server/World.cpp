@@ -54,9 +54,14 @@ void World::Load()
         pAuthSession->LoadPlayersLoginInfo();
         LoadScripts();
     }
-    catch (sql::SQLException &e) 
+    catch(sql::SQLException &e) 
     {
         std::cout << "SQL Exception: " << e.what();
+        throw;
+    }
+    catch(std::exception &e)
+    {
+        std::cout << "STD Exception: " << e.what();
         throw;
     }
 }

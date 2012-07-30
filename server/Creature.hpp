@@ -21,13 +21,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "Unit.hpp"
 
+struct CreatureTemplate;
 class Pathfinder;
 class CreatureAI;
 
 class WOD_DLL_DECL Creature : public Unit
 {
 public:
-    Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y);
+    Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y, CreatureTemplate* pTemplate);
 
     void Update(Int32 diff);
 
@@ -42,6 +43,7 @@ public:
 private:
     CreatureAI* pAI;
     Pathfinder* MovementGenerator;
+    CreatureTemplate* pTemplate;
 };
 
 #endif

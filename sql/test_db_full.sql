@@ -21,11 +21,14 @@ CREATE TABLE `creature_template`
 (
 	`entry` INT UNSIGNED,
 	`name` CHAR(192),
+	`tileset` VARCHAR(20),
+	`tx` SMALLINT UNSIGNED,
+	`ty` SMALLINT UNSIGNED,
 	`ScriptName` CHAR(192),
 	PRIMARY KEY(entry)
 );
 
-INSERT INTO `creature_template` VALUES (0, 'krofnica', 'npc_krofnica');
+INSERT INTO `creature_template` VALUES (0, 'krofnica', 'dg_classm32.gif', 7, 10, 'npc_krofnica');
 
 DROP TABLE IF EXISTS `creature`;
 CREATE TABLE `creature`

@@ -31,13 +31,13 @@ ObjectMgr::~ObjectMgr()
     }
 }
 
-std::string ObjectMgr::GetCreatureScriptName(Uint32 Entry)
+CreatureTemplate* ObjectMgr::GetCreatureTemplate(Uint32 Entry)
 {
     auto CTemplate = CreatureTemplates.find(Entry);
     if(CTemplate != CreatureTemplates.end())
-        return CTemplate->second->ScriptName;
+        return CTemplate->second;
 
-    return std::string();
+    throw std::exception("Bad creature entry. Could not find template.");
 }
 
 Spell* ObjectMgr::GetSpell(Uint16 ID)
@@ -60,8 +60,12 @@ void ObjectMgr::LoadCreatureTemplates()
     while(Result->next())
     {
         pTemplate = new CreatureTemplate;
+        pTemplate->Entry = Result->getUInt(1);
         pTemplate->Name = Result->getString(2);
-        pTemplate->ScriptName = Result->getString(3);
+        pTemplate->Tileset = Result->getString(3);
+        pTemplate->tx = Result->getUInt(4);
+        pTemplate->ty = Result->getUInt(5);
+        pTemplate->ScriptName = Result->getString(6);
 
         CreatureTemplates[Result->getUInt(1)] = pTemplate;
     }
