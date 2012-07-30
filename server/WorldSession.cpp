@@ -92,7 +92,7 @@ void WorldSession::HandleCastSpellOpcode()
 
     RETURN_IF_PACKET_TOO_BIG
 
-    Spell* pSpell = sObjectMgr->GetSpell(SpellID);
+    Spell* pSpell = sObjectMgr.GetSpell(SpellID);
 
     if(pSpell == nullptr)
     {

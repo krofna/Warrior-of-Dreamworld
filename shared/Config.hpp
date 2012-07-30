@@ -19,14 +19,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#if defined(WIN32) || defined(_WIN32)
-  #define WOD_DLL_DECL __declspec(dllexport)
+  #if defined(WIN32) || defined(_WIN32)
+    #define WOD_DLL_DECL __declspec(dllexport)
 
-#elif defined( __GNUC__ )
-  #define WOD_DLL_DECL
+    #ifdef _MSC_VER
+      #pragma warning(disable : 4251)
+    #endif
 
-#else
-  #define WOD_DLL_DECL export
-#endif
+  #elif defined( __GNUC__ )
+    #define WOD_DLL_DECL
+
+  #else
+    #define WOD_DLL_DECL export
+  #endif
 
 #endif

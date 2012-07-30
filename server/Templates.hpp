@@ -16,32 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef CREATURE_H
-#define CREATURE_H
+#ifndef TEMPLATES_H
+#define TEMPLATES_H
 
-#include "Unit.hpp"
+#include <string>
 
-class Pathfinder;
-class CreatureAI;
-
-class WOD_DLL_DECL Creature : public Unit
+struct CreatureTemplate
 {
-public:
-    Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y);
-
-    void Update(Int32 diff);
-
-    sf::Packet PackData();
-
-    void SpellHit(SpellBox* pSpellBox);
-    void StartAttack(Unit* pVictim); //?
-
-    void BindAI(CreatureAI* pAI);
-
-    CreatureAI* GetAI();
-private:
-    CreatureAI* pAI;
-    Pathfinder* MovementGenerator;
+    std::string Name;
+    std::string ScriptName;
 };
 
 #endif

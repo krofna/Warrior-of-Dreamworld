@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define SCRIPT_CONFIG_H
 
 #include "../shared/Config.hpp"
-/*
+
 #if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
 
@@ -29,6 +29,6 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
     return true;
 }
 
-#endif*/
+#endif
 
 #endif

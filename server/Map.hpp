@@ -30,6 +30,8 @@ struct Map
     Map(const Uint16 MapID);
     ~Map();
 
+    void LoadCreatures();
+
     std::vector<Creature*> Creatures;
     std::vector<Player*> Players;
     std::vector<SpellBox> Spells;

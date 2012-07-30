@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define OBJECT_MGR_H
 
 #include "../shared/Defines.hpp"
+#include "Templates.hpp"
 
 struct Spell;
 
@@ -29,14 +30,17 @@ class ObjectMgr
 public:
     ~ObjectMgr();
 
+    std::string GetCreatureScriptName(Uint32 Entry);
     Spell* GetSpell(Uint16 ID);
 
     void LoadSpells();
+    void LoadCreatureTemplates();
 
 private:
     std::vector<Spell*> Spells;
+    std::map<Uint32, CreatureTemplate*> CreatureTemplates;
 };
 
-extern ObjectMgr* sObjectMgr;
+extern ObjectMgr sObjectMgr;
 
 #endif

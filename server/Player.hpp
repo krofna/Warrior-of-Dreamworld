@@ -60,7 +60,7 @@ public:
 private:
     WorldSession* pWorldSession;
 
-    std::string Username;
+    std::string Username; // WorldObject::Name (todo?)
     std::string Password;
 
     std::vector<Uint16> Spells;

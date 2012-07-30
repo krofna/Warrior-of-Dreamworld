@@ -32,7 +32,6 @@ IsRunning   (true)
 
 World::~World()
 {
-    delete sObjectMgr;
 }
 
 void World::Load()
@@ -43,12 +42,12 @@ void World::Load()
     }
 
     pAuthSession = new AuthSession();
-    sObjectMgr = new ObjectMgr();
 
     try
     {
         sDatabase.Connect();
-        sObjectMgr->LoadSpells();
+        sObjectMgr.LoadSpells();
+        sObjectMgr.LoadCreatureTemplates();
         pAuthSession->LoadPlayersLoginInfo();
         LoadScripts();
     }

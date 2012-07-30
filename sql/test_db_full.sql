@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` 
 (
-	`guid` INT,
+	`guid` INT UNSIGNED,
 	`name` VARCHAR(20),
 	`password` VARCHAR(30),
 	`tileset` VARCHAR(20),
@@ -19,18 +19,19 @@ INSERT INTO `players` VALUES (1, 'test', 'test', 'dg_classm32.gif', 1, 0, 0, 5, 
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template`
 (
-	`entry` INT,
+	`entry` INT UNSIGNED,
+	`name` CHAR(192),
 	`ScriptName` CHAR(192),
 	PRIMARY KEY(entry)
-)
+);
 
-INSERT INTO `creature_template` VALUES (0, 'npc_krofnica');
+INSERT INTO `creature_template` VALUES (0, 'krofnica', 'npc_krofnica');
 
 DROP TABLE IF EXISTS `creature`;
 CREATE TABLE `creature`
 (
-	`guid` INT,
-	`entry` INT,
+	`guid` INT UNSIGNED,
+	`entry` INT UNSIGNED,
 	`map` TINYINT UNSIGNED,
 	`x` TINYINT UNSIGNED,
 	`y` TINYINT UNSIGNED,

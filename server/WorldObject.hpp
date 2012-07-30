@@ -35,7 +35,6 @@ public:
 
     virtual void Update(Int32 diff) = 0;
     virtual sf::Packet PackData() = 0;
-    virtual void SaveToDB() = 0; // TODO: world objects need not to be saved? only players
 
     bool UpdateCoordinates(Uint8 Direction);
 
@@ -63,6 +62,7 @@ public:
 
 protected:
     std::string Tileset;
+    std::string Name;
 
     Map* pMap;
     sf::Vector2i Position;

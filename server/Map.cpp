@@ -19,8 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "../shared/Opcodes.hpp"
 #include "../client/ResourceManager.hpp"
+#include "../shared/Config.hpp"
+#include "../scripts/CreatureAIFactory.hpp"
 #include "Player.hpp"
+#include "Database.hpp"
 #include "Pathfinder.hpp"
+#include "ObjectMgr.hpp"
 #include <algorithm>
 
 Map::Map     (const Uint16 MapID) : 
@@ -50,6 +54,19 @@ Map::~Map()
         if((*PlayerIter)->IsInWorld())
             (*PlayerIter)->Kick();
         delete (*PlayerIter);
+    }
+}
+
+void Map::LoadCreatures()
+{
+    QueryResult Result(sDatabase.PQuery("SELECT * FROM `creature` WHERE map=%u", MapID));
+
+    Creature* pCreature;
+
+    while(Result->next())
+    {
+        pCreature = new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5));
+        pCreature->BindAI(AIFactory.CreateAI(sObjectMgr.GetCreatureScriptName(Result->getUInt(2)), pCreature));
     }
 }
 

@@ -18,9 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "ObjectMgr.hpp"
 #include "Spell.hpp"
+#include "Database.hpp"
 #include <fstream>
 
-ObjectMgr* sObjectMgr;
+ObjectMgr sObjectMgr;
 
 ObjectMgr::~ObjectMgr()
 {
@@ -28,6 +29,15 @@ ObjectMgr::~ObjectMgr()
     {
         delete (*SpellIter);
     }
+}
+
+std::string ObjectMgr::GetCreatureScriptName(Uint32 Entry)
+{
+    auto CTemplate = CreatureTemplates.find(Entry);
+    if(CTemplate != CreatureTemplates.end())
+        return CTemplate->second->ScriptName;
+
+    return std::string();
 }
 
 Spell* ObjectMgr::GetSpell(Uint16 ID)
@@ -39,6 +49,22 @@ Spell* ObjectMgr::GetSpell(Uint16 ID)
     }
 
     return nullptr;
+}
+
+void ObjectMgr::LoadCreatureTemplates()
+{
+    QueryResult Result(sDatabase.Query("SELECT * FROM `creature_template`"));
+
+    CreatureTemplate* pTemplate;
+
+    while(Result->next())
+    {
+        pTemplate = new CreatureTemplate;
+        pTemplate->Name = Result->getString(2);
+        pTemplate->ScriptName = Result->getString(3);
+
+        CreatureTemplates[Result->getUInt(1)] = pTemplate;
+    }
 }
 
 void ObjectMgr::LoadSpells()

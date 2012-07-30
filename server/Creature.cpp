@@ -20,10 +20,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "CreatureAI.hpp"
 #include "SpellBox.hpp"
 #include "Pathfinder.hpp"
+#include "../shared/Opcodes.hpp"
 
-Creature::Creature(Uint32 ObjID) :
-Unit              (ObjID)
+Creature::Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y) :
+Unit              (ObjID),
+pAI               (nullptr)
 {
+    Position = sf::Vector2i(x, y);
+    this->pMap = pMap;
+    this->pAI = pAI;
     MovementGenerator = new Pathfinder(nullptr);
 }
 
@@ -31,6 +36,19 @@ void Creature::Update(Int32 diff)
 {
     MovementGenerator->Update(diff);
     pAI->UpdateAI(diff);
+}
+
+void Creature::BindAI(CreatureAI* pAI)
+{
+    delete this->pAI;
+    this->pAI = pAI;
+}
+
+sf::Packet Creature::PackData()
+{
+    sf::Packet Packet;
+    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << ObjID << Name << GetX() << GetY() << tx << ty;
+    return Packet;
 }
 
 void Creature::SpellHit(SpellBox* pSpellBox)

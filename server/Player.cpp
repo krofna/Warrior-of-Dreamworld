@@ -53,15 +53,15 @@ void Player::LoadFromDB()
     QueryResult Result(sDatabase.PQuery("SELECT * FROM `players` WHERE guid='%u'", ObjID));
     Result->next();
 
-    //ObjID       = Result->getInt(1);
+    //ObjID       = Result->getUInt(1);
     //Username    = Result->getString(2);
     //Password    = Result->getString(3);
     Tileset     = Result->getString(4);
-    tx          = Result->getInt(5);
-    ty          = Result->getInt(6);
-    pMap        = sWorld->GetMap(Result->getInt(7));
-    Position.x  = Result->getInt(8);
-    Position.y  = Result->getInt(9);
+    tx          = Result->getUInt(5);
+    ty          = Result->getUInt(6);
+    pMap        = sWorld->GetMap(Result->getUInt(7));
+    Position.x  = Result->getUInt(8);
+    Position.y  = Result->getUInt(9);
 
     LoadedFromDB = true;
 }
