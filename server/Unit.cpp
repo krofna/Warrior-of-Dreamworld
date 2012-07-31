@@ -25,7 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Unit::Unit      (Uint32 ObjID) :
 WorldObject     (ObjID),
-pVictim         (nullptr)
+pVictim         (nullptr),
+MeeleAttackCooldown(0)
 {
 }
 
@@ -47,10 +48,27 @@ void Unit::CastSpell(Spell* pSpell, float Angle)
     pMap->AddSpell(this, pSpell, Angle);
 }
 
+void Unit::DoMeleeAttackIfReady(Int32 diff)
+{
+    // If there is no victim, or victim is too far away, return
+    if(!pVictim || math::GetManhattanDistance(Position, pVictim->GetPosition()) > 1)
+        return;
+
+    if(MeeleAttackCooldown <= diff)
+    {
+        //TODO: actually attack
+        MeeleAttackCooldown = 3000; // random blah
+    }
+    else
+    {
+        MeeleAttackCooldown -= diff;
+    }
+}
+
 void Unit::CastSpell(Uint16 Entry, Unit* pVictim)
 {
     // TODO: Angle is bugged because client side GetAngle works differently
-    CastSpell(sObjectMgr.GetSpell(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->Position * TILE_SIZE));
+    CastSpell(sObjectMgr.GetSpell(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->GetPosition() * TILE_SIZE));
 }
 
 void Unit::CastSpell(Uint16 Entry, float Angle)

@@ -36,7 +36,10 @@ struct Map
     std::vector<Player*> Players;
     std::vector<SpellBox> Spells;
 
+    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
     std::vector<std::vector<WorldObject*> > TileGrid;
+
+    // TODO: Since these are reset maybe create one(two) static member(s) with size of largest map?
     PathfinderNode* PathfindingGrid; // 2D
     Uint8* PathfindingStatusGrid; // 2D
 

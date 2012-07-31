@@ -53,6 +53,8 @@ public:
         {
             FireballTimer -= diff;
         }
+
+        pCreature->DoMeleeAttackIfReady(diff);
     }
 };
 

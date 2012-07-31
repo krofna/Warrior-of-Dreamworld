@@ -36,10 +36,5 @@ void CreatureAI::UpdateAI(Int32 diff)
     if(!pCreature->GetVictim())
         return;
 
-    DoMeleeAttackIfReady();
-}
-
-void CreatureAI::DoMeleeAttackIfReady()
-{
-    //pCreature->Attack
+    pCreature->DoMeleeAttackIfReady(diff);
 }

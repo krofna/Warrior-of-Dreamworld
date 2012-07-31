@@ -56,8 +56,6 @@ public:
     // Called when creature is hit by spell
     virtual void SpellHit(Unit* pCaster, const Spell* pSpell){};
 
-    void DoMeleeAttackIfReady(); // -- NYI
-
     // Creature controlled by this AI
     Creature* pCreature;
 };

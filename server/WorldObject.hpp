@@ -61,6 +61,11 @@ public:
         return Position.y;
     }
 
+    sf::Vector2i& GetPosition()
+    {
+        return Position;
+    }
+
 protected:
     Map* pMap;
     sf::Vector2i Position;

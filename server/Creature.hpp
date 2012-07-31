@@ -35,7 +35,6 @@ public:
     sf::Packet PackData();
 
     void SpellHit(SpellBox* pSpellBox);
-    void StartAttack(Unit* pVictim); //?
 
     CreatureAI* GetAI();
 private:

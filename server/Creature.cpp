@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Templates.hpp"
 #include "CreatureAIFactory.hpp"
 #include "../shared/Opcodes.hpp"
+#include "../shared/Math.hpp"
 
 Creature::Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y, CreatureTemplate* pTemplate) :
 Unit              (ObjID),

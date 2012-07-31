@@ -39,11 +39,14 @@ public:
     void CastSpell(Uint16 Entry, Unit* pVictim);
     void CastSpell(Uint16 Entry, float Angle);
 
+    void DoMeleeAttackIfReady(Int32 diff);
+
     Unit* GetVictim();
 
 protected:
     Uint32 Health;
     Uint32 Power;
+    Int32 MeeleAttackCooldown;
 
     Unit* pVictim;
 };
