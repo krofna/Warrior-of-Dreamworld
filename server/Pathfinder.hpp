@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <stack>
 #include <memory>
+#include <queue>
 #include "../shared/Defines.hpp"
 
 struct Map;
@@ -62,8 +63,8 @@ private:
     };
 
     void GeneratePath();
-    bool CheckOrthogonalPathfinderNode(PathfinderNode* pCurrent, PathfinderNode* pAdjacent);
-    bool CheckDiagonalPathfinderNode(PathfinderNode* pCurrent, PathfinderNode* pAdjacent);
+
+    void CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost);
 
     std::stack<sf::Vector2i> Path;
     //std::stack<sf::Vector2i> PathToHome; // NYI
@@ -71,6 +72,11 @@ private:
     WorldObject* pOrigin;
     WorldObject* pTarget;
     Map* pMap;
+    std::vector<std::vector<WorldObject*> >* pTileGrid;
+    PathfinderNode* PathfindingGrid;
+    // Priority queue of nodes : Lower cost, higher priority
+    std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode> OpenList;
+
     Int32 MovementCooldown;
 };
 
