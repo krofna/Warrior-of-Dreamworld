@@ -22,7 +22,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 namespace math
 {
-    float GetAngle(sf::Vector2f Origin, sf::Vector2f Target);
+    template <class T> float GetAngle(T Origin, T Target)
+    {
+        // Click position should represent center of sprite, NOT the upper-left corner
+        Target.x -= TILE_SIZE / 2;
+        Target.y -= TILE_SIZE / 2;
+
+        // 'Move' the origin to (0, 0)
+        Target.x -= Origin.x;
+        Target.y -= Origin.y;
+
+        // Calculate angle
+        return std::atan2((float)Target.x, (float)Target.y);
+    }
     float GetDistance(sf::Vector2i First, sf::Vector2f Second);
     int GetManhattanDistance(sf::Vector2i First, sf::Vector2i Second);
 }

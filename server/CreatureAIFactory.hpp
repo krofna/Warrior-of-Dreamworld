@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <map>
 #include <string>
-#include "../shared/Config.hpp"
 
 class CreatureAI;
 class Creature;
@@ -35,7 +34,5 @@ public:
 private:
     std::map<std::string, CreatureAI*(*)(Creature* pCreature)> Registry;
 };
-
-extern CreatureAIFactory AIFactory;
 
 #endif

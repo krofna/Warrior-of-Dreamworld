@@ -19,15 +19,40 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../server/CreatureAI.hpp"
 #include "../server/Creature.hpp"
 
+enum
+{
+    SPELL_FIREBALL = 0
+};
+
 class WOD_DLL_DECL npc_krofnicaAI : public CreatureAI
 {
 public:
-    npc_krofnicaAI(Creature* pCreature) : CreatureAI(pCreature) { }
+    npc_krofnicaAI(Creature* pCreature) : CreatureAI(pCreature)
+    {
+        Reset();
+    }
 
-    void UpdateAI(Int32 diff) override
+    Int32 FireballTimer;
+
+    void Reset()
+    {
+        FireballTimer = 5000;
+    }
+
+    void UpdateAI(Int32 diff)
     {
         if(!pCreature->GetVictim())
             return;
+
+        if(FireballTimer <= diff)
+        {
+            pCreature->CastSpell(SPELL_FIREBALL, pCreature->GetVictim());
+            FireballTimer = 5000;
+        }
+        else
+        {
+            FireballTimer -= diff;
+        }
     }
 };
 

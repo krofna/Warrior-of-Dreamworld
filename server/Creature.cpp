@@ -30,7 +30,7 @@ pTemplate         (pTemplate)
 {
     Position = sf::Vector2i(x, y);
     this->pMap = pMap;
-    pAI = AIFactory.CreateAI(pTemplate->ScriptName, this);
+    pAI = CreateAI(pTemplate->ScriptName, this);
     MovementGenerator = new Pathfinder(this);
 }
 

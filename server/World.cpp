@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
 #include "../scripts/ScriptLoader.hpp"
+#include "CreatureAIFactory.hpp"
 
 #define SERVER_HEARTBEAT 50
 
@@ -34,12 +35,20 @@ World::~World()
 {
 }
 
+CreatureAIFactory* World::GetAIFactory()
+{
+    return AIFactory;
+}
+
 void World::Load()
 {
     try
     {
         sDatabase.Connect();
         sObjectMgr.LoadCreatureTemplates();
+
+        AIFactory = new CreatureAIFactory;
+        LoadScripts();
 
         for(int i=0; i < MAP_COUNT; ++i)
         {
@@ -52,7 +61,6 @@ void World::Load()
 
         sObjectMgr.LoadSpells();
         pAuthSession->LoadPlayersLoginInfo();
-        LoadScripts();
     }
     catch(sql::SQLException &e) 
     {

@@ -64,7 +64,6 @@ private:
     void GeneratePath();
     bool CheckOrthogonalPathfinderNode(PathfinderNode* pCurrent, PathfinderNode* pAdjacent);
     bool CheckDiagonalPathfinderNode(PathfinderNode* pCurrent, PathfinderNode* pAdjacent);
-    void ResetPathfindingGrid();
 
     std::stack<sf::Vector2i> Path;
     //std::stack<sf::Vector2i> PathToHome; // NYI

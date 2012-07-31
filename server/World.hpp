@@ -22,6 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "AuthSession.hpp"
 
+class CreatureAIFactory;
+
 class World
 {
     friend class WorldSession;
@@ -36,12 +38,16 @@ public:
     void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
     Map* GetMap(Uint8 MapID);
 
+    CreatureAIFactory* GetAIFactory();
+
 private:
     void Update(Int32 diff);
 
     AuthSession* pAuthSession;
     std::vector<Map*> Maps;
     std::vector<WorldSession*> Sessions;
+
+    CreatureAIFactory* AIFactory;
 
     volatile bool IsRunning;
 };

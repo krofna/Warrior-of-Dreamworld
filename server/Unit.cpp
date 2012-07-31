@@ -20,6 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Spell.hpp"
 #include "Map.hpp"
 #include "../shared/Opcodes.hpp"
+#include "../shared/Math.hpp"
+#include "ObjectMgr.hpp"
 
 Unit::Unit      (Uint32 ObjID) :
 WorldObject     (ObjID),
@@ -41,8 +43,19 @@ void Unit::CastSpell(Spell* pSpell, float Angle)
     // TODO: Reduce mana etc etc
     sf::Packet Packet;
     Packet << (Uint16)MSG_CAST_SPELL << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
-    GetMap()->SendToPlayers(Packet);
-    GetMap()->AddSpell(this, pSpell, Angle);
+    pMap->SendToPlayers(Packet);
+    pMap->AddSpell(this, pSpell, Angle);
+}
+
+void Unit::CastSpell(Uint16 Entry, Unit* pVictim)
+{
+    // TODO: Angle is bugged because client side GetAngle works differently
+    CastSpell(sObjectMgr.GetSpell(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->Position * TILE_SIZE));
+}
+
+void Unit::CastSpell(Uint16 Entry, float Angle)
+{
+    CastSpell(sObjectMgr.GetSpell(Entry), Angle);
 }
 
 Unit* Unit::GetVictim()

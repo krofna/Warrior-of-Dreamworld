@@ -36,6 +36,8 @@ public:
 
     virtual void SpellHit(SpellBox* pSpellBox);
     virtual void CastSpell(Spell* pSpell, float Angle);
+    void CastSpell(Uint16 Entry, Unit* pVictim);
+    void CastSpell(Uint16 Entry, float Angle);
 
     Unit* GetVictim();
 

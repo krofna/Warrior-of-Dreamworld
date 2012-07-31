@@ -46,7 +46,6 @@ void Pathfinder::Update(Int32 diff)
     }
     if(!Path.empty() && (MovementCooldown <= diff))
     {
-        printf("left: %u\n", Path.size());
         pOrigin->UpdatePosition(Path.top());
         Path.pop();
         MovementCooldown = 500;
@@ -73,7 +72,7 @@ void Pathfinder::GeneratePath()
     }
 
     // Zero out status grid
-    ResetPathfindingGrid();
+    std::memset(pMap->PathfindingStatusGrid, 0, 50 * 50 * sizeof(pMap->PathfindingStatusGrid[0]));
 
     // Get pointer to 2D grid of pathfinding nodes in a map
     PathfinderNode* PathfindingGrid = pMap->PathfindingGrid;
@@ -183,12 +182,12 @@ bool Pathfinder::CheckOrthogonalPathfinderNode(PathfinderNode* pCurrent, Pathfin
 
         // Add it to open list
         pMap->PathfindingStatusGrid[50 * pAdjacent->Position.y + pAdjacent->Position.x] = OPEN;
-        printf("adding new to open list: costs: %u, %u\n", pAdjacent->G, pAdjacent->H);
         return true;
 
         // If it is already on open list
     case (Uint8)OPEN:
         // Check if G path of pCurrent is better than G path of pAdjacent
+        // TODO: Re-sort list?
         /*if((pCurrent->G + 10) < pAdjacent->G)
         {
             // Make pCurrent parent of pAdjacent
@@ -197,7 +196,7 @@ bool Pathfinder::CheckOrthogonalPathfinderNode(PathfinderNode* pCurrent, Pathfin
             // Recalculate distance
             pAdjacent->G = pCurrent->G + 10;
             pAdjacent->H = 10 * math::GetManhattanDistance(sf::Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
-
+            
             // Do not add on open list
             return false;
         }*/
@@ -208,9 +207,4 @@ bool Pathfinder::CheckOrthogonalPathfinderNode(PathfinderNode* pCurrent, Pathfin
     }
 
     return false;
-}
-
-void Pathfinder::ResetPathfindingGrid()
-{
-    std::memset(pMap->PathfindingStatusGrid, 0, 50 * 50 * sizeof(pMap->PathfindingStatusGrid[0]));
 }
