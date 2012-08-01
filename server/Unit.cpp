@@ -34,7 +34,7 @@ void Unit::SpellHit(SpellBox* pSpellBox)
 {
     // PH - reduce health and do shit
     // Threat checks etc?
-    sf::Packet Packet;
+    WorldPacket Packet;
     Packet << (uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID << ObjID;
     pMap->SendToPlayers(Packet);
 }
@@ -42,7 +42,7 @@ void Unit::SpellHit(SpellBox* pSpellBox)
 void Unit::CastSpell(Spell* pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
-    sf::Packet Packet;
+    WorldPacket Packet;
     Packet << (uint16)MSG_CAST_SPELL << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     pMap->SendToPlayers(Packet);
     pMap->AddSpell(this, pSpell, Angle);

@@ -30,7 +30,6 @@ AuthSession::AuthSession()
 
 AuthSession::~AuthSession()
 {
-    delete NewSocket;
 }
 
 void AuthSession::HandleAll()

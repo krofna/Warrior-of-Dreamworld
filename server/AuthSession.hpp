@@ -34,7 +34,7 @@ private:
     sf::TcpListener Listener;
     sf::TcpSocket* NewSocket;
 
-    sf::Packet AuthPacket;
+    WorldPacket AuthPacket;
     std::string Username, Password;
     uint16 Opcode;
 

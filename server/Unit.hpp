@@ -32,7 +32,7 @@ public:
 
     virtual void Update(int32 diff) = 0;
 
-    virtual sf::Packet PackData() = 0;
+    virtual WorldPacket PackData() = 0;
 
     virtual void SpellHit(SpellBox* pSpellBox);
     virtual void CastSpell(Spell* pSpell, float Angle);

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_PACKET_H
 #define WORLD_PACKET_H
 
-#include "Defines.hpp"
+#include "../shared/Defines.hpp"
 #include <cassert>
 #include <vector>
 
@@ -33,29 +33,33 @@ public:
     char* GetData();
     uint16 GetOpcode();
     void SetOpcode(uint16 Opcode);
-    size_t GetSize();
+    uint16 GetSize();
 
-    inline WorldPacket& operator >>(uint8 data);
-    inline WorldPacket& operator >>(uint16 data);
-    inline WorldPacket& operator >>(uint32 data);
-    inline WorldPacket& operator >>(uint64 data);
-    inline WorldPacket& operator >>(int8 data);
-    inline WorldPacket& operator >>(int16 data);
-    inline WorldPacket& operator >>(int32 data);
-    inline WorldPacket& operator >>(int64 data);
+    inline WorldPacket& operator <<(uint8 data);
+    inline WorldPacket& operator <<(uint16 data);
+    inline WorldPacket& operator <<(uint32 data);
+    inline WorldPacket& operator <<(uint64 data);
+    inline WorldPacket& operator <<(int8 data);
+    inline WorldPacket& operator <<(int16 data);
+    inline WorldPacket& operator <<(int32 data);
+    inline WorldPacket& operator <<(int64 data);
+    inline WorldPacket& operator <<(float data);
+    inline WorldPacket& operator <<(std::string data);
 
-    inline WorldPacket& operator <<(uint8& data);
-    inline WorldPacket& operator <<(uint16& data);
-    inline WorldPacket& operator <<(uint32& data);
-    inline WorldPacket& operator <<(uint64& data);
-    inline WorldPacket& operator <<(int8& data);
-    inline WorldPacket& operator <<(int16& data);
-    inline WorldPacket& operator <<(int32& data);
-    inline WorldPacket& operator <<(int64& data);
+    inline WorldPacket& operator >>(uint8& data);
+    inline WorldPacket& operator >>(uint16& data);
+    inline WorldPacket& operator >>(uint32& data);
+    inline WorldPacket& operator >>(uint64& data);
+    inline WorldPacket& operator >>(int8& data);
+    inline WorldPacket& operator >>(int16& data);
+    inline WorldPacket& operator >>(int32& data);
+    inline WorldPacket& operator >>(int64& data);
+    inline WorldPacket& operator >>(float& data);
+    inline WorldPacket& operator >>(std::string& data);
 
     enum
     {
-        HEADER_SIZE = 2+2
+        HEADER_SIZE = sizeof(uint16) + sizeof(uint16)
     };
 
 
@@ -71,7 +75,8 @@ private:
 
 template<class T> void WorldPacket::Append(T data)
 {
-    ByteBuffer.resize(ByteBuffer.size() + sizeof(data));
+    // TODO: fixed sized packets?
+    //ByteBuffer.resize(ByteBuffer.size() + sizeof(data));
     std::memcpy((void*)&ByteBuffer[WritePos], &data,  sizeof(data));
     WritePos += sizeof(data);
 }
@@ -80,6 +85,7 @@ template<class T> T WorldPacket::Read() const
 {
     assert(ReadPos + sizeof(T) <= ByteBuffer.size());
     T data = *((T*)&ByteBuffer[ReadPos]);
+    ReadPos += sizeof(T);
     return data;
 }
 

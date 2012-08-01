@@ -67,7 +67,8 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
 void WorldObject::UpdatePosition(sf::Vector2i Position)
 {
     this->Position = Position;
-    sf::Packet Packet;
-    Packet << (uint16)MSG_MOVE_OBJECT << ObjID << GetX() << GetY();
+    WorldPacket Packet;
+    Packet.SetOpcode((uint16)MSG_MOVE_OBJECT);
+    Packet << ObjID << GetX() << GetY();
     pMap->SendToPlayers(Packet);
 }

@@ -20,18 +20,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_SESSION_H
 
 #include "Player.hpp"
+#include "../shared/Defines.hpp"
+#include "../shared/WorldPacket.hpp"
+#include "boost/asio.hpp"
 
 class Player;
+class WorldPacket;
 
 class WorldSession
 {
     friend class AuthSession;
 public:
-    WorldSession(sf::TcpSocket* pSocket, Player* pPlayer);
+    WorldSession(boost::asio::io_service& io, Player* pPlayer);
     ~WorldSession();
 
-    void ReceivePackets();
-    void SendPacket(sf::Packet& Packet);
+    void Receive();
+    void Send(WorldPacket& Packet);
 
     void SendLogOutPacket();
 
@@ -43,10 +47,13 @@ public:
     void HandleLogOutOpcode();
 
 private:
+    void HandleSend(uint16 Opcode);
+    void HandleReceive();
+
+    boost::asio::ip::tcp::socket Socket;
+
+    WorldPacket Packet;
     Player* pPlayer;
-    sf::TcpSocket* pSocket;
-    sf::Packet Packet;
-    uint16 Opcode;
 };
 
 #endif

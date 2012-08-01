@@ -19,43 +19,64 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "../shared/Opcodes.hpp"
 #include "World.hpp"
+#include "boost/bind.hpp"
 #include "ObjectMgr.hpp"
 #include <iostream>
 
-WorldSession::WorldSession(sf::TcpSocket* pSocket, Player* pPlayer) :
-pSocket(pSocket),
-pPlayer(pPlayer)
+WorldSession::WorldSession(boost::asio::io_service& io, Player* pPlayer) :
+pPlayer                   (pPlayer),
+Socket                    (io),
+Packet                    (1)
 {
 }
 
 WorldSession::~WorldSession()
 {
-    delete pSocket;
 }
 
-void WorldSession::ReceivePackets()
+void WorldSession::Receive()
 {
-    // Loop as long as there are packets to receive
-    while(pSocket->receive(Packet) == sf::Socket::Status::Done)
+    // TODO: make it non blocking, store header into vector<char> ByteBuffer
+    // and make this nicer
+    if(!Socket.available())
+        return;
+
+    uint16 Size, Opcode;
+    boost::asio::read(Socket, boost::asio::buffer(&Size, 2));
+    boost::asio::read(Socket, boost::asio::buffer(&Opcode, 2));
+    
+    Packet = WorldPacket(Size);
+    boost::asio::async_read(Socket, Packet.GetData(), boost::bind(&WorldSession::HandleReceive, this));
+}
+
+void WorldSession::HandleReceive()
+{
+    if(Packet.GetOpcode() >= MSG_COUNT)
     {
-        // Extract the opcode and call the handler
-        // function depending on the opcode recieved
-        Packet >> Opcode;
-        if(Opcode >= MSG_COUNT)
-        {
-            printf("Received %u: Bad opcode!\n", Opcode);
-            continue;
-        }
-        printf("Received: %s, ", OpcodeTable[Opcode].name);
-        (this->*OpcodeTable[Opcode].Handler)();
+        printf("Received %u: Bad opcode!\n", Packet.GetOpcode());
     }
+    printf("Received: %s, ", OpcodeTable[Packet.GetOpcode()].name);
+
+    (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
 }
 
-void WorldSession::SendPacket(sf::Packet& Packet)
+void WorldSession::Send(WorldPacket& Packet)
 {
-    Packet >> Opcode;
-    printf("Sent: %s\n", OpcodeTable[Opcode].name);
-    pSocket->send(Packet);
+    size_t PacketSize = Packet.GetSize();
+    uint16 Opcode = Packet.GetOpcode();
+
+    std::vector<char> buffer(PacketSize + WorldPacket::HEADER_SIZE);
+
+    std::memcpy(&buffer[0], &PacketSize, 2);
+    std::memcpy(&buffer[2], &Opcode, 2);
+    std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
+
+    boost::asio::write(Socket, boost::asio::buffer(buffer), boost::bind(&WorldSession::HandleSend, this, Opcode));
+}
+
+void WorldSession::HandleSend(uint16 Opcode)
+{
+    std::cout << "SENT: " << OpcodeTable[Opcode].name << "\n";
 }
 
 void WorldSession::HandleNULL()
@@ -70,8 +91,6 @@ void WorldSession::HandleMoveObjectOpcode()
     uint8 Direction;
     Packet >> Direction;
 
-    RETURN_IF_PACKET_TOO_BIG
-
     printf("Packet is good!\n");
 
     // If player colided, return
@@ -79,8 +98,9 @@ void WorldSession::HandleMoveObjectOpcode()
         return;
     
     // Send movement update to all players in the map
-    Packet.clear();
-    Packet << (uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_MOVE_OBJECT);
+    Packet << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
     sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
 
@@ -89,8 +109,6 @@ void WorldSession::HandleCastSpellOpcode()
     uint16 SpellID;
     float Angle;
     Packet >> SpellID >> Angle;
-
-    RETURN_IF_PACKET_TOO_BIG
 
     Spell* pSpell = sObjectMgr.GetSpell(SpellID);
 
@@ -110,10 +128,9 @@ void WorldSession::HandleTextMessageOpcode()
     std::string Message;
     Packet >> Message;
 
-    RETURN_IF_PACKET_TOO_BIG
-
-    Packet.clear();
-    Packet << (uint16)MSG_SEND_TEXT << pPlayer->GetObjectID() << Message;
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_SEND_TEXT);
+    Packet << pPlayer->GetObjectID() << Message;
     pPlayer->GetMap()->SendToPlayers(Packet);
 }
 
@@ -124,7 +141,7 @@ void WorldSession::HandleLogOutOpcode()
 
 void WorldSession::SendLogOutPacket()
 {
-    Packet.clear();
-    Packet << (uint16)MSG_LOG_OUT;
-    SendPacket(Packet);
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_LOG_OUT);
+    Send(Packet);
 }

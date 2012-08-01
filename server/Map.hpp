@@ -41,7 +41,7 @@ struct Map
     virtual void Update(int32 diff);
     void UnitUpdate(Unit* pVictim);
 
-    void SendToPlayers(sf::Packet& Packet);
+    void SendToPlayers(WorldPacket& Packet);
 
     // Entities
     std::vector<Creature*> Creatures;

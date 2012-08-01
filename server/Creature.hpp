@@ -32,7 +32,7 @@ public:
 
     void Update(int32 diff);
 
-    sf::Packet PackData();
+    WorldPacket PackData();
 
     void SpellHit(SpellBox* pSpellBox);
 

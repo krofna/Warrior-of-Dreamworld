@@ -41,10 +41,11 @@ void Creature::Update(int32 diff)
     pAI->UpdateAI(diff);
 }
 
-sf::Packet Creature::PackData()
+WorldPacket Creature::PackData()
 {
-    sf::Packet Packet;
-    Packet << (uint16)MSG_ADD_OBJECT << pTemplate->Tileset << ObjID << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
+    WorldPacket Packet;
+    Packet.SetOpcode((uint16)MSG_ADD_OBJECT);
+    Packet << pTemplate->Tileset << ObjID << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
     return Packet;
 }
 

@@ -49,8 +49,8 @@ public:
 
     void Update(int32 diff);
 
-    void SendPacket(sf::Packet Packet);
-    sf::Packet PackData();
+    void SendPacket(WorldPacket Packet);
+    WorldPacket PackData();
     void BindSession(WorldSession* pWorldSession);
 
     void LogOut();

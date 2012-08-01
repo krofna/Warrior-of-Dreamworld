@@ -124,7 +124,7 @@ void Map::AddSpell(Unit* pCaster, Spell* pSpell, float Angle) // Unit* pCaster
     ++NewSpellBoxID;
 }
 
-void Map::SendToPlayers(sf::Packet& Packet)
+void Map::SendToPlayers(WorldPacket& Packet)
 {
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
     {
@@ -134,7 +134,7 @@ void Map::SendToPlayers(sf::Packet& Packet)
 
 void Map::RemovePlayer(Player* pPlayer)
 {
-    sf::Packet Packet;
+    WorldPacket Packet;
     Packet << (uint16)MSG_REMOVE_OBJECT << pPlayer->GetObjectID();
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)
     {
