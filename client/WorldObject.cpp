@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldObject.hpp"
 #include "ResourceManager.hpp"
 
-WorldObject::WorldObject(std::string Tileset, std::string Name, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty)
+WorldObject::WorldObject(std::string Tileset, std::string Name, uint16 x, uint16 y, uint16 tx, uint16 ty)
 {
     ObjectSprite.setTexture(*ResourceManager::GetTileset(Tileset));
     ObjectSprite.setTextureRect(sf::IntRect(tx * TILE_SIZE, ty * TILE_SIZE, TILE_SIZE, TILE_SIZE));
@@ -28,7 +28,7 @@ WorldObject::WorldObject(std::string Tileset, std::string Name, Uint16 x, Uint16
     ObjectName = Name; 
 }
 
-void WorldObject::UpdateCoordinates(Uint16 x, Uint16 y)
+void WorldObject::UpdateCoordinates(uint16 x, uint16 y)
 {/*
     switch(Direction)
     {

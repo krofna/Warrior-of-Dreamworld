@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Math.hpp"
 #include <cassert>
 
-World::World (Uint32 MeID) :
+World::World (uint32 MeID) :
 TileMap      (sf::PrimitiveType::Quads),
 WorldView    (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
 MoveWorldView(MOVE_STOP),
@@ -47,7 +47,7 @@ World::~World()
     }
 }
 
-void World::LoadTileMap(Uint16 MapID)
+void World::LoadTileMap(uint16 MapID)
 {
     ResourceManager::RemoveTileset(TilesetFileName);
 
@@ -243,7 +243,7 @@ void World::HandleTyping(sf::Event Event)
     }
 }
 
-void World::RemoveObject(Uint32 ObjectID)
+void World::RemoveObject(uint32 ObjectID)
 {
     auto Iter = WorldObjectMap.find(ObjectID);
     if(Iter == WorldObjectMap.end())

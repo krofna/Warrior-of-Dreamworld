@@ -20,5 +20,5 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 sf::RenderWindow Window;
 WorldSession* Session;
-Uint16 WindowWidth;
-Uint16 WindowHeight;
+uint16 WindowWidth;
+uint16 WindowHeight;

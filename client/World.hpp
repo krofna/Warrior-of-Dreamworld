@@ -32,14 +32,14 @@ class World : public GameState
     friend class WorldSession;
 
 public:
-    World(Uint32 MeID);
+    World(uint32 MeID);
     ~World();
 
-    void LoadTileMap(Uint16 MapID);
+    void LoadTileMap(uint16 MapID);
     void Draw();
     void HandleEvent(sf::Event Event);
 
-    void RemoveObject(Uint32 ObjectID);
+    void RemoveObject(uint32 ObjectID);
 
 private:
     void HandleTyping(sf::Event Event);
@@ -49,7 +49,7 @@ private:
     sf::RenderStates MapStates;
     sf::VertexArray TileMap;
     sf::View WorldView;
-    Uint8 MoveWorldView;
+    uint8 MoveWorldView;
     
     int MapWidth;
     int MapHeight;
@@ -66,9 +66,9 @@ private:
     float ChatOffsetY;
     bool Typing;
 
-    std::map<Uint32, WorldObject*> WorldObjectMap;
+    std::map<uint32, WorldObject*> WorldObjectMap;
     std::vector<Animation> Animations; // TODO; Only for spells SpellAnimations w/e
-    const Uint32 MeID;
+    const uint32 MeID;
 };
 
 #endif

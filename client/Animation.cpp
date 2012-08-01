@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ResourceManager.hpp"
 
 // TODO: [PH]
-Animation::Animation(Uint16 DisplayID, sf::Vector2f Position, float Angle, Uint32 ID) :
+Animation::Animation(uint16 DisplayID, sf::Vector2f Position, float Angle, uint32 ID) :
 Angle               (Angle),
 Sprite              (*ResourceManager::GetTileset("t.png")),
 ID                  (ID),

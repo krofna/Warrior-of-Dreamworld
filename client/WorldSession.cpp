@@ -66,18 +66,18 @@ void WorldSession::HandleNULL()
 
 void WorldSession::HandleLoginOpcode()
 {
-    Uint16 Status;
+    uint16 Status;
     Packet >> Status;
 
-    if(Status != (Uint16)LOGIN_SUCCESS)
+    if(Status != (uint16)LOGIN_SUCCESS)
     {
         printf("Login fail!\n");
         Socket.disconnect();
         return;
     }
 
-    Uint16 MapID;
-    Uint32 MeID;
+    uint16 MapID;
+    uint32 MeID;
     Packet >> MapID >> MeID;
 
     if(!Packet.endOfPacket())
@@ -96,8 +96,8 @@ void WorldSession::HandleLoginOpcode()
 
 void WorldSession::HandleAddObjectOpcode()
 {
-    Uint16 x, y, tx, ty;
-    Uint32 ObjID;
+    uint16 x, y, tx, ty;
+    uint32 ObjID;
     std::string Tileset, Username;
     Packet >> Tileset >> ObjID >> Username >> x >> y >> tx >> ty;
 
@@ -110,7 +110,7 @@ void WorldSession::HandleAddObjectOpcode()
 
 void WorldSession::HandleRemoveObjectOpcode()
 {
-    Uint32 ObjID;
+    uint32 ObjID;
     Packet >> ObjID;
 
     RETURN_IF_PACKET_TOO_BIG
@@ -120,8 +120,8 @@ void WorldSession::HandleRemoveObjectOpcode()
 
 void WorldSession::HandleMoveObjectOpcode()
 {
-    Uint32 ObjID;
-    Uint16 x, y;
+    uint32 ObjID;
+    uint16 x, y;
     Packet >> ObjID >> x >> y;
 
     RETURN_IF_PACKET_TOO_BIG
@@ -133,9 +133,9 @@ void WorldSession::HandleMoveObjectOpcode()
 void WorldSession::HandleCastSpellOpcode()
 {
     float Angle;
-    Uint16 Effect, DisplayID;
-    Uint32 CasterID;
-    Uint32 SpellBoxID;
+    uint16 Effect, DisplayID;
+    uint32 CasterID;
+    uint32 SpellBoxID;
     Packet >> Effect >> CasterID >> DisplayID >> Angle >> SpellBoxID;
 
     RETURN_IF_PACKET_TOO_BIG
@@ -148,7 +148,7 @@ void WorldSession::HandleCastSpellOpcode()
 
 void WorldSession::HandleTextMessageOpcode()
 {
-    Uint32 ObjID;
+    uint32 ObjID;
     sf::Text textMessage;
     std::string Message, Username;
     Packet >> ObjID >> Message;
@@ -172,7 +172,7 @@ void WorldSession::HandleLogOutOpcode()
 
 void WorldSession::HandleSpellHitOpcode()
 {/*
-    Uint32 SpellBoxID, VictimID;
+    uint32 SpellBoxID, VictimID;
     Packet >> SpellBoxID >> VictimID;
 
     RETURN_IF_PACKET_TOO_BIG
@@ -192,33 +192,33 @@ void WorldSession::HandleSpellHitOpcode()
     printf("Packet is good!\n");*/
 }
 
-void WorldSession::SendMovementRequest(Uint8 Direction)
+void WorldSession::SendMovementRequest(uint8 Direction)
 {
-    Packet << (Uint16)MSG_MOVE_OBJECT << Direction;
+    Packet << (uint16)MSG_MOVE_OBJECT << Direction;
     SendPacket(Packet);
 }
 
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
-    Packet << (Uint16)MSG_LOGIN << Username << Password;
+    Packet << (uint16)MSG_LOGIN << Username << Password;
     SendPacket(Packet);
 }
 
-void WorldSession::SendCastSpellRequest(Uint16 SpellID, float Angle)
+void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
 {
-    Packet << (Uint16)MSG_CAST_SPELL << SpellID << Angle;
+    Packet << (uint16)MSG_CAST_SPELL << SpellID << Angle;
     SendPacket(Packet);
 }
 
 void WorldSession::SendTextMessage(std::string& Message)
 {
-    Packet << (Uint16)MSG_SEND_TEXT << Message;
+    Packet << (uint16)MSG_SEND_TEXT << Message;
     SendPacket(Packet);
 }
 
 void WorldSession::SendLogOutRequest()
 {
-    Packet << (Uint16)MSG_LOG_OUT;
+    Packet << (uint16)MSG_LOG_OUT;
     SendPacket(Packet);
 
     // Back to login screen?

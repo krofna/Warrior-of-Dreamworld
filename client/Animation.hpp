@@ -24,9 +24,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Animation
 {
 public:
-    Animation(Uint16 DisplayID, sf::Vector2f Position, float Angle, Uint32 ID);
+    Animation(uint16 DisplayID, sf::Vector2f Position, float Angle, uint32 ID);
     void Update();
-    Uint32 GetID() const
+    uint32 GetID() const
     {
         return ID;
     }
@@ -36,7 +36,7 @@ private:
     sf::Clock Clock;
     sf::Sprite Sprite;
     float Angle;
-    Uint32 ID;
+    uint32 ID;
 };
 
 #endif

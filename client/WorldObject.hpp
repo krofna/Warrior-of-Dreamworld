@@ -28,10 +28,10 @@ TODO: Maybe everything should be WorldObject as far as client is concerned?
 class WorldObject
 {
 public:
-    WorldObject(std::string Tileset, std::string Name, Uint16 x, Uint16 y, Uint16 tx, Uint16 ty);
+    WorldObject(std::string Tileset, std::string Name, uint16 x, uint16 y, uint16 tx, uint16 ty);
     virtual void Draw();
 
-    void UpdateCoordinates(Uint16 x, Uint16 y);
+    void UpdateCoordinates(uint16 x, uint16 y);
     sf::Vector2f GetPosition();
 
     std::string GetObjectName()
