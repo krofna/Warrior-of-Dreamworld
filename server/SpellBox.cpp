@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Spell.hpp"
 #include "../shared/Opcodes.hpp"
 
-SpellBox::SpellBox(Spell* pSpell, Unit* pCaster, sf::FloatRect Hitbox, float Angle, Uint32 SpellBoxID) : 
+SpellBox::SpellBox(Spell* pSpell, Unit* pCaster, sf::FloatRect Hitbox, float Angle, uint32 SpellBoxID) : 
 pSpell            (pSpell),
 pCaster           (pCaster), 
 Hitbox            (Hitbox),
@@ -38,7 +38,7 @@ bool SpellBox::CollidesWith(Unit* pObject)
     return Hitbox.intersects(Obj);
 }
 
-void SpellBox::Update(Int32 diff)
+void SpellBox::Update(int32 diff)
 {
     diff += _Diff;
     int Multiplier = diff / 15;

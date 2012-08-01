@@ -27,26 +27,26 @@ class SpellBox;
 class WOD_DLL_DECL Unit : public WorldObject
 {
 public:
-    Unit(Uint32 ObjID);
+    Unit(uint32 ObjID);
     virtual ~Unit() { } 
 
-    virtual void Update(Int32 diff) = 0;
+    virtual void Update(int32 diff) = 0;
 
     virtual sf::Packet PackData() = 0;
 
     virtual void SpellHit(SpellBox* pSpellBox);
     virtual void CastSpell(Spell* pSpell, float Angle);
-    void CastSpell(Uint16 Entry, Unit* pVictim);
-    void CastSpell(Uint16 Entry, float Angle);
+    void CastSpell(uint16 Entry, Unit* pVictim);
+    void CastSpell(uint16 Entry, float Angle);
 
-    void DoMeleeAttackIfReady(Int32 diff);
+    void DoMeleeAttackIfReady(int32 diff);
 
     Unit* GetVictim();
 
 protected:
-    Uint32 Health;
-    Uint32 Power;
-    Int32 MeeleAttackCooldown;
+    uint32 Health;
+    uint32 Power;
+    int32 MeeleAttackCooldown;
 
     Unit* pVictim;
 };

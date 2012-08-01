@@ -20,17 +20,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define DEFINES_H
 
 #include <SFML/Graphics.hpp>
+#include <cstdint>
 
 #define RETURN_IF_PACKET_TOO_BIG if(!Packet.endOfPacket()) { printf("Packet is too big!\n"); return; }
 
-using sf::Uint8;
-using sf::Uint16;
-using sf::Uint32;
-using sf::Uint64;
-using sf::Int8;
-using sf::Int16;
-using sf::Int32;
-using sf::Int64;
+typedef uint8_t uint8;
+typedef uint16_t uint16;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
+
+typedef int8_t int8;
+typedef int16_t int16;
+typedef int32_t int32;
+typedef int64_t int64;
 
 #define TILE_SIZE 32
 #define MAP_COUNT 1

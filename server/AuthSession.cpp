@@ -54,7 +54,7 @@ void AuthSession::HandleAll()
         if(pSocket->receive(AuthPacket) == sf::Socket::Status::Done)
         {
             AuthPacket >> Opcode;
-            if(Opcode != (Uint16)MSG_LOGIN)
+            if(Opcode != (uint16)MSG_LOGIN)
                 continue;
 
             // Check if username exists
@@ -63,7 +63,7 @@ void AuthSession::HandleAll()
             if(pPlayer == nullptr)
             {
                 // Invalid username, send response
-                SendLoginFailPacket((Uint16)LOGIN_FAIL_BAD_USERNAME);
+                SendLoginFailPacket((uint16)LOGIN_FAIL_BAD_USERNAME);
                 continue;
             }
 
@@ -72,7 +72,7 @@ void AuthSession::HandleAll()
             if(pPlayer->Password != Password)
             {
                 // Invalid password, send response
-                SendLoginFailPacket((Uint16)LOGIN_FAIL_BAD_PASSWORD);
+                SendLoginFailPacket((uint16)LOGIN_FAIL_BAD_PASSWORD);
                 continue;
             }
 
@@ -84,7 +84,7 @@ void AuthSession::HandleAll()
 
             // Tell the client that he logged in sucessfully
             AuthPacket.clear();
-            AuthPacket << (Uint16)MSG_LOGIN << (Uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
+            AuthPacket << (uint16)MSG_LOGIN << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
             pSocket->send(AuthPacket);
 
             // Create new WorldSession for the player
@@ -100,10 +100,10 @@ void AuthSession::HandleAll()
     }
 }
 
-void AuthSession::SendLoginFailPacket(Uint16 Reason)
+void AuthSession::SendLoginFailPacket(uint16 Reason)
 {
     AuthPacket.clear();
-    AuthPacket << (Uint16)MSG_LOGIN << Reason;
+    AuthPacket << (uint16)MSG_LOGIN << Reason;
     pSocket->send(AuthPacket);
     pSocket->disconnect();
     delete pSocket;

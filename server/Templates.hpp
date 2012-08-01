@@ -23,11 +23,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 struct CreatureTemplate
 {
-    Uint32 Entry;
+    uint32 Entry;
     std::string Name;
     std::string Tileset;
-    Uint16 tx;
-    Uint16 ty;
+    uint16 tx;
+    uint16 ty;
     std::string ScriptName;
 };
 

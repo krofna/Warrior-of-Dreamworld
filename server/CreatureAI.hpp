@@ -33,7 +33,7 @@ public:
     virtual ~CreatureAI() {};
 
     // Called on World::Update
-    virtual void UpdateAI(Int32 diff);
+    virtual void UpdateAI(int32 diff);
 
     // Called when creature enters combat
     virtual void EnterCombat(Unit* pEnemy){};
@@ -51,7 +51,7 @@ public:
     virtual void KilledUnit(Unit* pVictim){}; // -- NYI
 
     // Called when creature is hit by melee attack
-    virtual void Hit(Unit* pAttacker, Uint32& Damage){}; // -- NYI
+    virtual void Hit(Unit* pAttacker, uint32& Damage){}; // -- NYI
 
     // Called when creature is hit by spell
     virtual void SpellHit(Unit* pCaster, const Spell* pSpell){};

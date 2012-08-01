@@ -28,9 +28,9 @@ class CreatureAI;
 class WOD_DLL_DECL Creature : public Unit
 {
 public:
-    Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y, CreatureTemplate* pTemplate);
+    Creature(uint32 ObjID, Map* pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate);
 
-    void Update(Int32 diff);
+    void Update(int32 diff);
 
     sf::Packet PackData();
 

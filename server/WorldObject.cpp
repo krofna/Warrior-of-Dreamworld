@@ -20,19 +20,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include "Map.hpp"
 
-WorldObject::WorldObject(Uint32 ObjID) :
+WorldObject::WorldObject(uint32 ObjID) :
 ObjID(ObjID)
 {
 }
 
-const Uint16 WorldObject::GetMapID() const
+const uint16 WorldObject::GetMapID() const
 {
     return pMap->MapID;
 }
 
-bool WorldObject::UpdateCoordinates(Uint8 Direction)
+bool WorldObject::UpdateCoordinates(uint8 Direction)
 {
-    Uint16 OldX = Position.x, OldY = Position.y;
+    uint16 OldX = Position.x, OldY = Position.y;
 
     switch(Direction)
     {
@@ -68,6 +68,6 @@ void WorldObject::UpdatePosition(sf::Vector2i Position)
 {
     this->Position = Position;
     sf::Packet Packet;
-    Packet << (Uint16)MSG_MOVE_OBJECT << ObjID << GetX() << GetY();
+    Packet << (uint16)MSG_MOVE_OBJECT << ObjID << GetX() << GetY();
     pMap->SendToPlayers(Packet);
 }

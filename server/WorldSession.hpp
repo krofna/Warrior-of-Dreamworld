@@ -46,7 +46,7 @@ private:
     Player* pPlayer;
     sf::TcpSocket* pSocket;
     sf::Packet Packet;
-    Uint16 Opcode;
+    uint16 Opcode;
 };
 
 #endif

@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Math.hpp"
 #include "ObjectMgr.hpp"
 
-Unit::Unit      (Uint32 ObjID) :
+Unit::Unit      (uint32 ObjID) :
 WorldObject     (ObjID),
 pVictim         (nullptr),
 MeeleAttackCooldown(0)
@@ -35,7 +35,7 @@ void Unit::SpellHit(SpellBox* pSpellBox)
     // PH - reduce health and do shit
     // Threat checks etc?
     sf::Packet Packet;
-    Packet << (Uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID << ObjID;
+    Packet << (uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID << ObjID;
     pMap->SendToPlayers(Packet);
 }
 
@@ -43,12 +43,12 @@ void Unit::CastSpell(Spell* pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
     sf::Packet Packet;
-    Packet << (Uint16)MSG_CAST_SPELL << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
+    Packet << (uint16)MSG_CAST_SPELL << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     pMap->SendToPlayers(Packet);
     pMap->AddSpell(this, pSpell, Angle);
 }
 
-void Unit::DoMeleeAttackIfReady(Int32 diff)
+void Unit::DoMeleeAttackIfReady(int32 diff)
 {
     // If there is no victim, or victim is too far away, return
     if(!pVictim || math::GetManhattanDistance(Position, pVictim->GetPosition()) > 1)
@@ -65,13 +65,13 @@ void Unit::DoMeleeAttackIfReady(Int32 diff)
     }
 }
 
-void Unit::CastSpell(Uint16 Entry, Unit* pVictim)
+void Unit::CastSpell(uint16 Entry, Unit* pVictim)
 {
     // TODO: Angle is bugged because client side GetAngle works differently
     CastSpell(sObjectMgr.GetSpell(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->GetPosition() * TILE_SIZE));
 }
 
-void Unit::CastSpell(Uint16 Entry, float Angle)
+void Unit::CastSpell(uint16 Entry, float Angle)
 {
     CastSpell(sObjectMgr.GetSpell(Entry), Angle);
 }

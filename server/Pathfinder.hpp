@@ -57,7 +57,7 @@ public:
 
     Pathfinder(WorldObject* pOrigin);
 
-    void Update(Int32 diff);
+    void Update(int32 diff);
     void UpdateTarget(WorldObject* pNewTarget);
 
 private:
@@ -103,10 +103,10 @@ private:
     // Pointer to 2D array of pre-allocated nodes used by pathfinder
     // Its size same as size of largest map
     static PathfinderNode* PathfindingGrid; // 2D
-    static Uint8* PathfindingStatusGrid;    // 2D
+    static uint8* PathfindingStatusGrid;    // 2D
 
     // Time between moving onto next tile in path in miliseconds
-    Int32 MovementCooldown;
+    int32 MovementCooldown;
 
     // Priority queue of nodes to be checked by CheckNode()
     std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode> OpenList;

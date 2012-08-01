@@ -36,12 +36,12 @@ public:
     void ConsoleInput();
 
     void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
-    Map* GetMap(Uint8 MapID);
+    Map* GetMap(uint8 MapID);
 
     CreatureAIFactory* GetAIFactory();
 
 private:
-    void Update(Int32 diff);
+    void Update(int32 diff);
 
     AuthSession* pAuthSession;
     std::vector<Map*> Maps;

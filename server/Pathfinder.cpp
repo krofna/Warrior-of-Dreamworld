@@ -31,7 +31,7 @@ TODO:
 */
 
 PathfinderNode* Pathfinder::PathfindingGrid;
-Uint8* Pathfinder::PathfindingStatusGrid;
+uint8* Pathfinder::PathfindingStatusGrid;
 
 Pathfinder::Pathfinder(WorldObject* pOrigin) :
 pOrigin               (pOrigin),
@@ -55,7 +55,7 @@ void Pathfinder::Init()
         }
     }
 
-    PathfindingStatusGrid = new Uint8[MAX_MAP_HEIGHT * MAX_MAP_WIDTH];
+    PathfindingStatusGrid = new uint8[MAX_MAP_HEIGHT * MAX_MAP_WIDTH];
 }
 
 void Pathfinder::Destroy()
@@ -64,7 +64,7 @@ void Pathfinder::Destroy()
     delete[] PathfindingStatusGrid;
 }
 
-void Pathfinder::Update(Int32 diff)
+void Pathfinder::Update(int32 diff)
 {
     if(pTarget && pTarget->Position != Target)
     {
@@ -203,7 +203,7 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
         switch(PathfindingStatusGrid[MAX_MAP_HEIGHT * pAdjacent->Position.y + pAdjacent->Position.x])
         {
             // If there is no status yet
-        case (Uint8)UNKNOWN:
+        case (uint8)UNKNOWN:
             // Make the current node parent
             pAdjacent->pParent = pCurrent;
 
@@ -216,7 +216,7 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
             OpenList.push(pAdjacent);
 
             // If it is already on open list
-        case (Uint8)OPEN:
+        case (uint8)OPEN:
             // Check if G path of pCurrent is better than G path of pAdjacent
             // TODO: Re-sort list?
             /*if((pCurrent->G + Cost) < pAdjacent->G)
@@ -230,7 +230,7 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
             }*/
 
             // If its closed, ignore it
-        case (Uint8)CLOSED:
+        case (uint8)CLOSED:
             break;
         }
     }

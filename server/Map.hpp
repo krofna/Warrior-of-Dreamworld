@@ -27,7 +27,7 @@ struct PathfinderNode;
 
 struct Map
 {
-    Map(const Uint16 MapID);
+    Map(const uint16 MapID);
     ~Map();
 
     void LoadCreatures();
@@ -38,7 +38,7 @@ struct Map
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
     void AddSpell(Unit* pCaster, Spell* pSpell, float Angle);
-    virtual void Update(Int32 diff);
+    virtual void Update(int32 diff);
     void UnitUpdate(Unit* pVictim);
 
     void SendToPlayers(sf::Packet& Packet);
@@ -48,9 +48,9 @@ struct Map
     std::vector<Player*> Players;
     std::vector<SpellBox> Spells;
 
-    const Uint16 MapID;
-    Uint32 NewSpellBoxID;
-    Int32 diff;
+    const uint16 MapID;
+    uint32 NewSpellBoxID;
+    int32 diff;
 };
 
 #endif

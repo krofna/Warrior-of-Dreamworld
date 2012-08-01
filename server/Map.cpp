@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include <algorithm>
 
-Map::Map     (const Uint16 MapID) : 
+Map::Map     (const uint16 MapID) : 
 MapID        (MapID),
 NewSpellBoxID(0),
 // [PH] This only works for map0, cause its size is 50x50 tiles 
@@ -62,7 +62,7 @@ void Map::LoadCreatures()
     }
 }
 
-void Map::Update(Int32 diff)
+void Map::Update(int32 diff)
 {
     this->diff = diff;
 
@@ -135,7 +135,7 @@ void Map::SendToPlayers(sf::Packet& Packet)
 void Map::RemovePlayer(Player* pPlayer)
 {
     sf::Packet Packet;
-    Packet << (Uint16)MSG_REMOVE_OBJECT << pPlayer->GetObjectID();
+    Packet << (uint16)MSG_REMOVE_OBJECT << pPlayer->GetObjectID();
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)
     {
         if((*PlayerIterator) == pPlayer)

@@ -32,7 +32,7 @@ class WOD_DLL_DECL Player : public Unit
     friend class AuthSession;
 
 public:
-    Player(std::string Username, std::string Password, Uint32 ObjID);
+    Player(std::string Username, std::string Password, uint32 ObjID);
     ~Player();
 
     // TODO
@@ -47,7 +47,7 @@ public:
 
     void CastSpell(Spell* pSpell, float Angle);
 
-    void Update(Int32 diff);
+    void Update(int32 diff);
 
     void SendPacket(sf::Packet Packet);
     sf::Packet PackData();
@@ -64,12 +64,12 @@ private:
     std::string Password;
 
     std::string Tileset;
-    Uint16 tx;
-    Uint16 ty;
+    uint16 tx;
+    uint16 ty;
 
-    std::vector<Uint16> Spells;
+    std::vector<uint16> Spells;
 
-    bool LearnedSpell(Uint8 ID);
+    bool LearnedSpell(uint8 ID);
 
     bool LoadedFromDB;
 };

@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "World.hpp"
 
-Player::Player(std::string Username, std::string Password, Uint32 ObjID) :
+Player::Player(std::string Username, std::string Password, uint32 ObjID) :
 Username     (Username),
 Password     (Password),
 Unit         (ObjID),
@@ -86,7 +86,7 @@ void Player::CastSpell(Spell* pSpell, float Angle)
     Unit::CastSpell(pSpell, Angle);
 }
 
-bool Player::LearnedSpell(Uint8 ID)
+bool Player::LearnedSpell(uint8 ID)
 {
     for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
     {
@@ -98,7 +98,7 @@ bool Player::LearnedSpell(Uint8 ID)
     return false;
 }
 
-void Player::Update(Int32 diff)
+void Player::Update(int32 diff)
 {
 }
 
@@ -110,7 +110,7 @@ void Player::SaveToDB()
 sf::Packet Player::PackData()
 {
     sf::Packet Packet;
-    Packet << (Uint16)MSG_ADD_OBJECT << Tileset << GetObjectID() << Username << GetX() << GetY() << tx << ty;
+    Packet << (uint16)MSG_ADD_OBJECT << Tileset << GetObjectID() << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }
 

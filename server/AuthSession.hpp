@@ -36,13 +36,13 @@ private:
 
     sf::Packet AuthPacket;
     std::string Username, Password;
-    Uint16 Opcode;
+    uint16 Opcode;
 
     std::vector<Player*> Players;
     std::vector<sf::TcpSocket*> Sockets;
 
     Player* GetPlayer(); // ?? private
-    void SendLoginFailPacket(Uint16 Reason);
+    void SendLoginFailPacket(uint16 Reason);
 
     // Iterators ?? not needed
     std::vector<sf::TcpSocket*>::iterator SocketIterator;

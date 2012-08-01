@@ -31,7 +31,7 @@ void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCrea
     sWorld->GetAIFactory()->RegisterAI(AIName, Creator);
 }
 
-void CreatureAI::UpdateAI(Int32 diff)
+void CreatureAI::UpdateAI(int32 diff)
 {
     if(!pCreature->GetVictim())
         return;

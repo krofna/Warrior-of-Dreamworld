@@ -67,7 +67,7 @@ void WorldSession::HandleNULL()
 
 void WorldSession::HandleMoveObjectOpcode()
 {
-    Uint8 Direction;
+    uint8 Direction;
     Packet >> Direction;
 
     RETURN_IF_PACKET_TOO_BIG
@@ -80,13 +80,13 @@ void WorldSession::HandleMoveObjectOpcode()
     
     // Send movement update to all players in the map
     Packet.clear();
-    Packet << (Uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
+    Packet << (uint16)MSG_MOVE_OBJECT << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
     sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
 
 void WorldSession::HandleCastSpellOpcode()
 {
-    Uint16 SpellID;
+    uint16 SpellID;
     float Angle;
     Packet >> SpellID >> Angle;
 
@@ -113,7 +113,7 @@ void WorldSession::HandleTextMessageOpcode()
     RETURN_IF_PACKET_TOO_BIG
 
     Packet.clear();
-    Packet << (Uint16)MSG_SEND_TEXT << pPlayer->GetObjectID() << Message;
+    Packet << (uint16)MSG_SEND_TEXT << pPlayer->GetObjectID() << Message;
     pPlayer->GetMap()->SendToPlayers(Packet);
 }
 
@@ -125,6 +125,6 @@ void WorldSession::HandleLogOutOpcode()
 void WorldSession::SendLogOutPacket()
 {
     Packet.clear();
-    Packet << (Uint16)MSG_LOG_OUT;
+    Packet << (uint16)MSG_LOG_OUT;
     SendPacket(Packet);
 }

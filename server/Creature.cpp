@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include "../shared/Math.hpp"
 
-Creature::Creature(Uint32 ObjID, Map* pMap, Uint16 x, Uint16 y, CreatureTemplate* pTemplate) :
+Creature::Creature(uint32 ObjID, Map* pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate) :
 Unit              (ObjID),
 pTemplate         (pTemplate)
 {
@@ -35,7 +35,7 @@ pTemplate         (pTemplate)
     MovementGenerator = new Pathfinder(this);
 }
 
-void Creature::Update(Int32 diff)
+void Creature::Update(int32 diff)
 {
     MovementGenerator->Update(diff);
     pAI->UpdateAI(diff);
@@ -44,7 +44,7 @@ void Creature::Update(Int32 diff)
 sf::Packet Creature::PackData()
 {
     sf::Packet Packet;
-    Packet << (Uint16)MSG_ADD_OBJECT << pTemplate->Tileset << ObjID << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
+    Packet << (uint16)MSG_ADD_OBJECT << pTemplate->Tileset << ObjID << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
     return Packet;
 }
 

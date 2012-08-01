@@ -30,33 +30,33 @@ class WOD_DLL_DECL WorldObject
 {
     friend class Pathfinder;
 public:
-    WorldObject(Uint32 ObjID);
+    WorldObject(uint32 ObjID);
     virtual ~WorldObject() {}
 
-    virtual void Update(Int32 diff) = 0;
+    virtual void Update(int32 diff) = 0;
     virtual sf::Packet PackData() = 0;
 
-    bool UpdateCoordinates(Uint8 Direction);
+    bool UpdateCoordinates(uint8 Direction);
     void UpdatePosition(sf::Vector2i Position);
 
-    const Uint32 GetObjectID() const
+    const uint32 GetObjectID() const
     {
         return ObjID;
     }
 
-    const Uint16 GetMapID() const;
+    const uint16 GetMapID() const;
 
     Map* GetMap() const
     {
         return pMap;
     }
 
-    Uint16 GetX() const
+    uint16 GetX() const
     {
         return Position.x;
     }
 
-    Uint16 GetY() const
+    uint16 GetY() const
     {
         return Position.y;
     }
@@ -70,7 +70,7 @@ protected:
     Map* pMap;
     sf::Vector2i Position;
 
-    const Uint32 ObjID;
+    const uint32 ObjID;
 };
 
 #endif

@@ -32,14 +32,14 @@ public:
         Reset();
     }
 
-    Int32 FireballTimer;
+    int32 FireballTimer;
 
     void Reset()
     {
         FireballTimer = 5000;
     }
 
-    void UpdateAI(Int32 diff)
+    void UpdateAI(int32 diff)
     {
         if(!pCreature->GetVictim())
             return;

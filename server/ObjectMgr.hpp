@@ -30,15 +30,15 @@ class ObjectMgr
 public:
     ~ObjectMgr();
 
-    CreatureTemplate* GetCreatureTemplate(Uint32 Entry);
-    Spell* GetSpell(Uint16 ID);
+    CreatureTemplate* GetCreatureTemplate(uint32 Entry);
+    Spell* GetSpell(uint16 ID);
 
     void LoadSpells();
     void LoadCreatureTemplates();
 
 private:
     std::vector<Spell*> Spells;
-    std::map<Uint32, CreatureTemplate*> CreatureTemplates;
+    std::map<uint32, CreatureTemplate*> CreatureTemplates;
 };
 
 extern ObjectMgr sObjectMgr; // todo: *

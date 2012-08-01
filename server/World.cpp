@@ -82,7 +82,7 @@ void World::Load()
 int World::Run()
 {
     sf::Clock Clock;
-    Int32 Diff;
+    int32 Diff;
 
     // Server main loop
     while(IsRunning)
@@ -120,7 +120,7 @@ void World::ConsoleInput()
     IsRunning = false;
 }
 
-void World::Update(Int32 diff)
+void World::Update(int32 diff)
 {
     for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
     {
@@ -136,7 +136,7 @@ void World::AddSession(sf::TcpSocket* pSocket, Player* pPlayer)
     Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
 }
 
-Map* World::GetMap(Uint8 MapID)
+Map* World::GetMap(uint8 MapID)
 {
     if(MapID < Maps.size())
         return Maps[MapID];

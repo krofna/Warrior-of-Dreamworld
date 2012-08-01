@@ -36,7 +36,7 @@ ObjectMgr::~ObjectMgr()
     }
 }
 
-CreatureTemplate* ObjectMgr::GetCreatureTemplate(Uint32 Entry)
+CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint32 Entry)
 {
     auto CTemplate = CreatureTemplates.find(Entry);
     if(CTemplate != CreatureTemplates.end())
@@ -45,7 +45,7 @@ CreatureTemplate* ObjectMgr::GetCreatureTemplate(Uint32 Entry)
     throw std::exception("Bad creature entry. Could not find template.");
 }
 
-Spell* ObjectMgr::GetSpell(Uint16 ID)
+Spell* ObjectMgr::GetSpell(uint16 ID)
 {
     for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
     {
@@ -80,11 +80,11 @@ void ObjectMgr::LoadSpells()
 {
     std::ifstream File("SpellDB.txt");
 
-    Uint16 ID;
-    Uint16 DisplayID;
-    Uint16 Effect;
-    Uint16 Value;
-    Uint16 Cost;
+    uint16 ID;
+    uint16 DisplayID;
+    uint16 Effect;
+    uint16 Value;
+    uint16 Cost;
     std::string Name;
 
     while(File >> ID >> DisplayID >> Effect >> Value >> Cost >> Name)
