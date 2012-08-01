@@ -32,10 +32,6 @@ struct Map
 
     void LoadCreatures();
 
-    std::vector<Creature*> Creatures;
-    std::vector<Player*> Players;
-    std::vector<SpellBox> Spells;
-
     // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
     std::vector<std::vector<WorldObject*> > TileGrid;
 
@@ -46,6 +42,11 @@ struct Map
     void UnitUpdate(Unit* pVictim);
 
     void SendToPlayers(sf::Packet& Packet);
+
+    // Entities
+    std::vector<Creature*> Creatures;
+    std::vector<Player*> Players;
+    std::vector<SpellBox> Spells;
 
     const Uint16 MapID;
     Uint32 NewSpellBoxID;
