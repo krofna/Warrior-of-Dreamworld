@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "../shared/Defines.hpp"
 #include <cmath>
-#define PI 3.14159265
 
 namespace math
 {

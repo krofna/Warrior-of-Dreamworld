@@ -104,7 +104,7 @@ void Player::Update(Int32 diff)
 
 void Player::SaveToDB()
 {
-    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, map=%u WHERE id=%u", Position.x, Position.y, pMap->MapID, GetObjectID());
+    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, map=%u WHERE guid=%u", Position.x, Position.y, pMap->MapID, GetObjectID());
 }
 
 sf::Packet Player::PackData()

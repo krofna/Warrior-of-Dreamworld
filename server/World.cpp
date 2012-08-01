@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "../scripts/ScriptLoader.hpp"
 #include "CreatureAIFactory.hpp"
+#include "Pathfinder.hpp"
 
 #define SERVER_HEARTBEAT 50
 
@@ -33,6 +34,8 @@ IsRunning   (true)
 
 World::~World()
 {
+    Pathfinder::Destroy();
+    delete AIFactory;
 }
 
 CreatureAIFactory* World::GetAIFactory()
@@ -45,10 +48,14 @@ void World::Load()
     try
     {
         sDatabase.Connect();
+
         sObjectMgr.LoadCreatureTemplates();
+        sObjectMgr.LoadSpells();
 
         AIFactory = new CreatureAIFactory;
         LoadScripts();
+
+        Pathfinder::Init();
 
         for(int i=0; i < MAP_COUNT; ++i)
         {
@@ -58,8 +65,6 @@ void World::Load()
         }
 
         pAuthSession = new AuthSession();
-
-        sObjectMgr.LoadSpells();
         pAuthSession->LoadPlayersLoginInfo();
     }
     catch(sql::SQLException &e) 
@@ -69,7 +74,7 @@ void World::Load()
     }
     catch(std::exception &e)
     {
-        std::cout << "STD Exception: " << e.what();
+        std::cout << "Exception: " << e.what();
         throw;
     }
 }

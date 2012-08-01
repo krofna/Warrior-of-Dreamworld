@@ -17,13 +17,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
+#include <fstream>
 #include <csignal>
 
 int main()
 {
     int ReturnValue = 0;
-
-    //signal(SIGINT, /*TODO*/);
 
     try
     {
@@ -34,6 +33,10 @@ int main()
         ConsoleInputThread.launch();
 
         ReturnValue = sWorld->Run();
+    }
+    catch(std::exception& e)
+    {
+        printf("%s\n", e.what());
     }
     catch(...)
     {

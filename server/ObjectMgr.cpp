@@ -29,6 +29,11 @@ ObjectMgr::~ObjectMgr()
     {
         delete (*SpellIter);
     }
+
+    for(auto iter = CreatureTemplates.begin(); iter != CreatureTemplates.end(); ++iter)
+    {
+        delete iter->second;
+    }
 }
 
 CreatureTemplate* ObjectMgr::GetCreatureTemplate(Uint32 Entry)

@@ -49,6 +49,12 @@ struct CompareNode : public std::binary_function<PathfinderNode*, PathfinderNode
 class Pathfinder
 {
 public:
+    // Called once to init static members
+    static void Init();
+
+    // Cleans up static members
+    static void Destroy();
+
     Pathfinder(WorldObject* pOrigin);
 
     void Update(Int32 diff);
@@ -95,8 +101,9 @@ private:
     std::vector<std::vector<WorldObject*> >* pTileGrid;
 
     // Pointer to 2D array of pre-allocated nodes used by pathfinder
-    // (see: pMap->PathfindingGrid) Its size is same as the map size
-    PathfinderNode* PathfindingGrid;
+    // Its size same as size of largest map
+    static PathfinderNode* PathfindingGrid; // 2D
+    static Uint8* PathfindingStatusGrid;    // 2D
 
     // Time between moving onto next tile in path in miliseconds
     Int32 MovementCooldown;
@@ -104,7 +111,7 @@ private:
     // Priority queue of nodes to be checked by CheckNode()
     std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode> OpenList;
 
-    //std::stack<sf::Vector2i> PathToHome; // NYI
+    //std::stack<sf::Vector2i> PathToHome; // NYI - maybe calculate path to home but store only home coord in ctor
 };
 
 #endif

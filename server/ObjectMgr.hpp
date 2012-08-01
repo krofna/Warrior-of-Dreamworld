@@ -41,6 +41,6 @@ private:
     std::map<Uint32, CreatureTemplate*> CreatureTemplates;
 };
 
-extern ObjectMgr sObjectMgr;
+extern ObjectMgr sObjectMgr; // todo: *
 
 #endif

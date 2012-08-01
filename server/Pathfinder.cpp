@@ -20,22 +20,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "WorldObject.hpp"
 #include "../shared/Math.hpp"
-#include <iostream>
+
+#define MAX_MAP_WIDTH 50
+#define MAX_MAP_HEIGHT 50
+
 /*
 TODO:
 - Bounds checking
 - Diagonal movement ( no cutting )
-- Reuse some code. There is alot of repeating
 */
+
+PathfinderNode* Pathfinder::PathfindingGrid;
+Uint8* Pathfinder::PathfindingStatusGrid;
 
 Pathfinder::Pathfinder(WorldObject* pOrigin) :
 pOrigin               (pOrigin),
 pMap                  (pOrigin->GetMap()),
 pTarget               (nullptr)
 {
-    PathfindingGrid = pMap->PathfindingGrid;
     pTileGrid =  &pMap->TileGrid;
     MovementCooldown = 1000;
+}
+
+void Pathfinder::Init()
+{
+    PathfindingGrid = new PathfinderNode[MAX_MAP_HEIGHT * MAX_MAP_WIDTH];
+    std::memset(PathfindingGrid, 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH);
+
+    for(int y = 0; y < MAX_MAP_HEIGHT; ++y)
+    {
+        for(int x = 0; x < MAX_MAP_WIDTH; ++x)
+        {
+            PathfindingGrid[MAX_MAP_HEIGHT * y + x].Position = std::move(sf::Vector2i(x, y));
+        }
+    }
+
+    PathfindingStatusGrid = new Uint8[MAX_MAP_HEIGHT * MAX_MAP_WIDTH];
+}
+
+void Pathfinder::Destroy()
+{
+    delete[] PathfindingGrid;
+    delete[] PathfindingStatusGrid;
 }
 
 void Pathfinder::Update(Int32 diff)
@@ -70,10 +96,10 @@ void Pathfinder::GeneratePath()
     Path = std::stack<sf::Vector2i>();
 
     // Zero out status grid
-    std::memset(pMap->PathfindingStatusGrid, 0, 50 * 50 * sizeof(pMap->PathfindingStatusGrid[0]));
+    std::memset(PathfindingStatusGrid, 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH * sizeof(PathfindingStatusGrid[0]));
 
     // Get Node with same position as creature in pathfinding grid
-    PathfinderNode* pOriginNode = &PathfindingGrid[50 * pOrigin->GetY() + pOrigin->GetX()];
+    PathfinderNode* pOriginNode = &PathfindingGrid[MAX_MAP_HEIGHT * pOrigin->GetY() + pOrigin->GetX()];
 
     // Origin node does not have parent node
     pOriginNode->pParent = nullptr;
@@ -92,7 +118,7 @@ void Pathfinder::GeneratePath()
         OpenList.pop();
 
         // Move it to "closed" list
-        pMap->PathfindingStatusGrid[50 * pCurrent->Position.y + pCurrent->Position.x] = CLOSED;
+        PathfindingStatusGrid[MAX_MAP_HEIGHT * pCurrent->Position.y + pCurrent->Position.x] = CLOSED;
 
         // If current node has same coordinates as target, we found our path
         if(pCurrent->Position == Target)
@@ -121,13 +147,13 @@ void Pathfinder::GeneratePath()
         }
 
         // Lower
-        if(pCurrent->Position.y != 49)
+        if(pCurrent->Position.y != 49) // Todo pMap->height
         {
             CheckNode(pCurrent, 0, 1, 10);
         }
 
         // Right
-        if(pCurrent->Position.x != 49)
+        if(pCurrent->Position.x != 49) // pMap->width-... TODO
         {
             CheckNode(pCurrent, 1, 0, 10);
         }
@@ -171,10 +197,10 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
 {
     if((*pTileGrid)[pCurrent->Position.y+y][pCurrent->Position.x+x] == nullptr)
     {
-        PathfinderNode* pAdjacent = &PathfindingGrid[50 * (pCurrent->Position.y+y) + pCurrent->Position.x+x];
+        PathfinderNode* pAdjacent = &PathfindingGrid[MAX_MAP_HEIGHT * (pCurrent->Position.y+y) + pCurrent->Position.x+x];
 
         // Check status
-        switch(pMap->PathfindingStatusGrid[50 * pAdjacent->Position.y + pAdjacent->Position.x])
+        switch(PathfindingStatusGrid[MAX_MAP_HEIGHT * pAdjacent->Position.y + pAdjacent->Position.x])
         {
             // If there is no status yet
         case (Uint8)UNKNOWN:
@@ -186,7 +212,7 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
             pAdjacent->H = 10 * math::GetManhattanDistance(sf::Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
 
             // Add it to open list
-            pMap->PathfindingStatusGrid[50 * pAdjacent->Position.y + pAdjacent->Position.x] = OPEN;
+            PathfindingStatusGrid[MAX_MAP_HEIGHT * pAdjacent->Position.y + pAdjacent->Position.x] = OPEN;
             OpenList.push(pAdjacent);
 
             // If it is already on open list
