@@ -26,10 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WorldPacket
 {
 public:
+    WorldPacket(size_t size);
+
     void Clear();
-    size_t GetSize();
+
+    char* GetData();
     uint16 GetOpcode();
     void SetOpcode(uint16 Opcode);
+    size_t GetSize();
 
     inline WorldPacket& operator >>(uint8 data);
     inline WorldPacket& operator >>(uint16 data);
@@ -49,13 +53,18 @@ public:
     inline WorldPacket& operator <<(int32& data);
     inline WorldPacket& operator <<(int64& data);
 
+    enum
+    {
+        HEADER_SIZE = 2+2
+    };
+
 
 private:
     template<class T> void Append(T data);
     template<class T> T Read() const;
 
-    size_t ReadPos, WritePos;
     uint16 Opcode;
+    size_t ReadPos, WritePos;
 
     std::vector<char> ByteBuffer;
 };

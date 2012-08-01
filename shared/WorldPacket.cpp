@@ -19,16 +19,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldPacket.hpp"
 #include "Opcodes.hpp"
 
+WorldPacket::WorldPacket(size_t size)
+{
+    ByteBuffer.reserve(size);
+}
+
 void WorldPacket::Clear()
 {
     ByteBuffer.clear();
-    ReadPos = WritePos = 0;
+    ReadPos = WritePos = 4;
     Opcode = (uint16)MSG_NULL;
 }
 
 size_t WorldPacket::GetSize()
 {
     return ByteBuffer.size();
+}
+
+char* WorldPacket::GetData()
+{
+    return (char*)&ByteBuffer[0];
 }
 
 uint16 WorldPacket::GetOpcode()
