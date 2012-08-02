@@ -43,8 +43,8 @@ void Player::AddToWorld()
 // PH: needs more work
 void Player::RemoveFromWorld()
 {
-    pMap->TileGrid[Position.y][Position.x] = nullptr;
-    pMap->RemovePlayer(this);
+    pMap->TileGrid[Position.y][Position.x] = WorldObjectPtr();
+    pMap->RemovePlayer(PlayerPtr(this));
 }
 
 void Player::LoadFromDB()
@@ -109,8 +109,7 @@ void Player::SaveToDB()
 
 WorldPacket Player::PackData()
 {
-    WorldPacket Packet;
-    Packet.SetOpcode((uint16)MSG_ADD_OBJECT);
+    WorldPacket Packet((uint16)MSG_ADD_OBJECT);
     Packet << Tileset << GetObjectID() << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }

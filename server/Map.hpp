@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "SpellBox.hpp"
 #include "Creature.hpp"
+#include "boost/shared_ptr.hpp"
 
 class Player;
 struct PathfinderNode;
@@ -32,20 +33,20 @@ struct Map
 
     void LoadCreatures();
 
-    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
-    std::vector<std::vector<WorldObject*> > TileGrid;
+    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObjectPtr
+    std::vector<std::vector<WorldObjectPtr> > TileGrid;
 
-    void RemovePlayer(Player* pPlayer);
-    void AddPlayer(Player* pPlayer);
-    void AddSpell(Unit* pCaster, Spell* pSpell, float Angle);
+    void RemovePlayer(PlayerPtr pPlayer);
+    void AddPlayer(PlayerPtr pPlayer);
+    void AddSpell(UnitPtr pCaster, Spell* pSpell, float Angle);
     virtual void Update(int32 diff);
-    void UnitUpdate(Unit* pVictim);
+    void UnitUpdate(UnitPtr pVictim);
 
     void SendToPlayers(WorldPacket& Packet);
 
     // Entities
-    std::vector<Creature*> Creatures;
-    std::vector<Player*> Players;
+    std::vector<CreaturePtr> Creatures;
+    std::vector<PlayerPtr> Players;
     std::vector<SpellBox> Spells;
 
     const uint16 MapID;

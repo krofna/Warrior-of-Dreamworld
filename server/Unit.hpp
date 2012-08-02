@@ -36,19 +36,19 @@ public:
 
     virtual void SpellHit(SpellBox* pSpellBox);
     virtual void CastSpell(Spell* pSpell, float Angle);
-    void CastSpell(uint16 Entry, Unit* pVictim);
+    void CastSpell(uint16 Entry, UnitPtr pVictim);
     void CastSpell(uint16 Entry, float Angle);
 
     void DoMeleeAttackIfReady(int32 diff);
 
-    Unit* GetVictim();
+    UnitPtr GetVictim();
 
 protected:
     uint32 Health;
     uint32 Power;
     int32 MeeleAttackCooldown;
 
-    Unit* pVictim;
+    UnitPtr pVictim;
 };
 
 #endif

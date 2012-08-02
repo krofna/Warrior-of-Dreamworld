@@ -29,7 +29,7 @@ class WorldSession;
 
 class WOD_DLL_DECL Player : public Unit
 {
-    friend class AuthSession;
+    friend class WorldSession;
 
 public:
     Player(std::string Username, std::string Password, uint32 ObjID);
@@ -56,6 +56,8 @@ public:
     void LogOut();
     void Kick();
     bool IsInWorld();
+
+    std::string GetUsername() { return Username; }
 
 private:
     WorldSession* pWorldSession;

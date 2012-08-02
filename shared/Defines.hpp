@@ -32,6 +32,18 @@ typedef int16_t int16;
 typedef int32_t int32;
 typedef int64_t int64;
 
+class Player;
+class Unit;
+class WorldObject;
+class Creature;
+
+#include "boost/shared_ptr.hpp"
+
+typedef boost::shared_ptr<Player> PlayerPtr;
+typedef boost::shared_ptr<Unit> UnitPtr;
+typedef boost::shared_ptr<Creature> CreaturePtr;
+typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
+
 #define TILE_SIZE 32
 #define MAP_COUNT 1
 

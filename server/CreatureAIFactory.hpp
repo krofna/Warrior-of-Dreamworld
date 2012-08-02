@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <map>
 #include <string>
+#include "../shared/Defines.hpp"
 
 class CreatureAI;
 class Creature;
@@ -28,11 +29,11 @@ class Creature;
 class CreatureAIFactory
 {
 public:
-    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
-    CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature);
+    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(CreaturePtr pCreature));
+    CreatureAI* CreateAI(const std::string& AIName, CreaturePtr pCreature);
 
 private:
-    std::map<std::string, CreatureAI*(*)(Creature* pCreature)> Registry;
+    std::map<std::string, CreatureAI*(*)(CreaturePtr pCreature)> Registry;
 };
 
 #endif

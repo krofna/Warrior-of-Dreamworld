@@ -19,8 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldPacket.hpp"
 #include "Opcodes.hpp"
 
-WorldPacket::WorldPacket(size_t size) :
-ByteBuffer              (size)
+WorldPacket::WorldPacket(uint16 Opcod) :
+Opcode                  (Opcode)
 {
     ReadPos = WritePos = 0;
 }
@@ -69,8 +69,8 @@ WorldPacket& WorldPacket::operator <<(std::string data)
     return *this; 
 }
 
-WorldPacket& WorldPacket::operator >>(uint8& data)  { data = Read<int8>();  return *this; }
-WorldPacket& WorldPacket::operator >>(uint16& data) { data = Read<int16>(); return *this; }
+WorldPacket& WorldPacket::operator >>(uint8& data)  { data = Read<uint8>(); return *this; }
+WorldPacket& WorldPacket::operator >>(uint16& data) { data = Read<uint16>();return *this; }
 WorldPacket& WorldPacket::operator >>(uint32& data) { data = Read<uint32>();return *this; }
 WorldPacket& WorldPacket::operator >>(uint64& data) { data = Read<uint64>();return *this; }
 WorldPacket& WorldPacket::operator >>(int8& data)   { data = Read<int8>();  return *this; }

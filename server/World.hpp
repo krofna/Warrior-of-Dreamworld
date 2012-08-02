@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_H
 
 #include "Map.hpp"
-#include "AuthSession.hpp"
+#include "WorldAcceptor.hpp"
 
 class CreatureAIFactory;
 
@@ -35,21 +35,24 @@ public:
     int Run();
     void ConsoleInput();
 
-    void AddSession(sf::TcpSocket* pSocket, Player* pPlayer);
+    void AddSession(WorldSession* pWorldSession);
     Map* GetMap(uint8 MapID);
 
     CreatureAIFactory* GetAIFactory();
 
 private:
-    void Update(int32 diff);
+    void Update(/*int32 diff*/);
 
-    AuthSession* pAuthSession;
+    WorldAcceptor* pWorldAcceptor;
     std::vector<Map*> Maps;
     std::vector<WorldSession*> Sessions;
 
     CreatureAIFactory* AIFactory;
 
     volatile bool IsRunning;
+
+    boost::asio::io_service io;
+    boost::asio::deadline_timer Timer;
 };
 
 extern World* sWorld;

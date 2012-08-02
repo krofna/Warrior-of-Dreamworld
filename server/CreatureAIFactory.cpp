@@ -20,12 +20,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "CreatureAI.hpp"
 #include "Creature.hpp"
 
-void CreatureAIFactory::RegisterAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature))
+void CreatureAIFactory::RegisterAI(const std::string& AIName, CreatureAI*(*Creator)(CreaturePtr pCreature))
 {
     Registry[AIName] = Creator;
 }
 
-CreatureAI* CreatureAIFactory::CreateAI(const std::string& AIName, Creature* pCreature)
+CreatureAI* CreatureAIFactory::CreateAI(const std::string& AIName, CreaturePtr pCreature)
 {
     if(Registry.find(AIName) == Registry.end())
         return new CreatureAI(pCreature);

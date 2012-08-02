@@ -33,10 +33,9 @@ TODO:
 PathfinderNode* Pathfinder::PathfindingGrid;
 uint8* Pathfinder::PathfindingStatusGrid;
 
-Pathfinder::Pathfinder(WorldObject* pOrigin) :
+Pathfinder::Pathfinder(WorldObjectPtr pOrigin) :
 pOrigin               (pOrigin),
-pMap                  (pOrigin->GetMap()),
-pTarget               (nullptr)
+pMap                  (pOrigin->GetMap())
 {
     pTileGrid =  &pMap->TileGrid;
     MovementCooldown = 1000;
@@ -83,7 +82,7 @@ void Pathfinder::Update(int32 diff)
     }
 }
 
-void Pathfinder::UpdateTarget(WorldObject* pNewTarget)
+void Pathfinder::UpdateTarget(WorldObjectPtr pNewTarget)
 {
     this->pTarget = pNewTarget;
     this->Target = sf::Vector2i(pTarget->GetX(), pTarget->GetY());

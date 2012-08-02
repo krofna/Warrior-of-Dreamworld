@@ -22,13 +22,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../scripts/ScriptLoader.hpp"
 #include "CreatureAIFactory.hpp"
 #include "Pathfinder.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
+#include "boost/bind.hpp"
 
 #define SERVER_HEARTBEAT 50
 
 World* sWorld;
 
 World::World() :
-IsRunning   (true)
+IsRunning   (true),
+Timer       (io)
 {
 }
 
@@ -51,6 +54,7 @@ void World::Load()
 
         sObjectMgr.LoadCreatureTemplates();
         sObjectMgr.LoadSpells();
+        sObjectMgr.LoadPlayersLoginInfo();
 
         AIFactory = new CreatureAIFactory;
         LoadScripts();
@@ -64,8 +68,7 @@ void World::Load()
             Maps.push_back(pMap);
         }
 
-        pAuthSession = new AuthSession();
-        pAuthSession->LoadPlayersLoginInfo();
+        pWorldAcceptor = new WorldAcceptor(io);
     }
     catch(sql::SQLException &e) 
     {
@@ -81,29 +84,9 @@ void World::Load()
 
 int World::Run()
 {
-    sf::Clock Clock;
-    int32 Diff;
-
-    // Server main loop
-    while(IsRunning)
-    {
-        // Handle Auth requests
-        pAuthSession->HandleAll();
-
-        // Receive packets from all clients
-        for(auto SessionIterator = Sessions.begin(); SessionIterator != Sessions.end(); ++SessionIterator)
-            (*SessionIterator)->ReceivePackets();
-
-        // If time between updates was less than 50ms, sleep
-        if(Clock.getElapsedTime().asMilliseconds() < SERVER_HEARTBEAT)
-            sf::sleep(sf::milliseconds(SERVER_HEARTBEAT - Clock.getElapsedTime().asMilliseconds()));
-
-        Diff = Clock.getElapsedTime().asMilliseconds();
-        Clock.restart();
-
-        // Call the world update
-        Update(Diff);
-    }
+    pWorldAcceptor->Accept();
+    Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
+    Timer.async_wait(boost::bind(&World::Update, this));
 
     return 0;
 }
@@ -120,20 +103,24 @@ void World::ConsoleInput()
     IsRunning = false;
 }
 
-void World::Update(int32 diff)
+void World::Update(/*int32 diff*/)
 {
+    if(!IsRunning)
+        return;
+
     for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
     {
-        (*MapIterator)->Update(diff);
+        (*MapIterator)->Update(50);
     }
+
+    Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
+    Timer.async_wait(boost::bind(&World::Update, this));
 }
 
-void World::AddSession(sf::TcpSocket* pSocket, Player* pPlayer)
+void World::AddSession(WorldSession* pWorldSession)
 {
-    WorldSession* pWorldSession = new WorldSession(pSocket, pPlayer);
-    pPlayer->BindSession(pWorldSession);
     Sessions.push_back(pWorldSession);
-    Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
+    Maps[pWorldSession->GetPlayer()->GetMapID()]->AddPlayer(pWorldSession->GetPlayer());
 }
 
 Map* World::GetMap(uint8 MapID)

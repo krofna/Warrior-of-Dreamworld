@@ -27,13 +27,13 @@ class Unit;
 class SpellBox
 {
 public:
-    SpellBox(Spell* pSpell, Unit* pCaster, sf::FloatRect Hitbox, float Angle, uint32 SpellBoxID);
+    SpellBox(Spell* pSpell, UnitPtr pCaster, sf::FloatRect Hitbox, float Angle, uint32 SpellBoxID);
 
-    bool CollidesWith(Unit* pObject);
+    bool CollidesWith(UnitPtr pObject);
     void Update(int32 diff);
 
     Spell* pSpell;
-    Unit* pCaster;
+    UnitPtr pCaster;
     uint32 SpellBoxID;
 
 private:

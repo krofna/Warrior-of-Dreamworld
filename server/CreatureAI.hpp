@@ -29,14 +29,14 @@ struct Spell;
 class WOD_DLL_DECL CreatureAI
 {
 public:
-    explicit CreatureAI(Creature* pCreature) : pCreature(pCreature) {}
+    explicit CreatureAI(CreaturePtr pCreature) : pCreature(pCreature) {}
     virtual ~CreatureAI() {};
 
     // Called on World::Update
     virtual void UpdateAI(int32 diff);
 
     // Called when creature enters combat
-    virtual void EnterCombat(Unit* pEnemy){};
+    virtual void EnterCombat(UnitPtr pEnemy){};
 
     // Called when creature starts running home
     virtual void RunHome(){}; // -- NYI
@@ -45,22 +45,22 @@ public:
     virtual void ReachedHome(){}; // -- NYI
 
     //Called when creature dies
-    virtual void JustDied(Unit* pKiller){}; // -- NYI
+    virtual void JustDied(UnitPtr pKiller){}; // -- NYI
 
     // Called when creature kills unit
-    virtual void KilledUnit(Unit* pVictim){}; // -- NYI
+    virtual void KilledUnit(UnitPtr pVictim){}; // -- NYI
 
     // Called when creature is hit by melee attack
-    virtual void Hit(Unit* pAttacker, uint32& Damage){}; // -- NYI
+    virtual void Hit(UnitPtr pAttacker, uint32& Damage){}; // -- NYI
 
     // Called when creature is hit by spell
-    virtual void SpellHit(Unit* pCaster, const Spell* pSpell){};
+    virtual void SpellHit(UnitPtr pCaster, const Spell* pSpell){};
 
     // Creature controlled by this AI
-    Creature* pCreature;
+    CreaturePtr pCreature;
 };
 
-CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature);
-WOD_DLL_DECL void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
+CreatureAI* CreateAI(const std::string& AIName, CreaturePtr pCreature);
+WOD_DLL_DECL void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(CreaturePtr pCreature));
 
 #endif

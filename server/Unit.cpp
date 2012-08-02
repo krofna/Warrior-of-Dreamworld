@@ -25,7 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Unit::Unit      (uint32 ObjID) :
 WorldObject     (ObjID),
-pVictim         (nullptr),
 MeeleAttackCooldown(0)
 {
 }
@@ -34,18 +33,18 @@ void Unit::SpellHit(SpellBox* pSpellBox)
 {
     // PH - reduce health and do shit
     // Threat checks etc?
-    WorldPacket Packet;
-    Packet << (uint16)MSG_SPELL_HIT << pSpellBox->SpellBoxID << ObjID;
+    WorldPacket Packet((uint16)MSG_SPELL_HIT);
+    Packet << pSpellBox->SpellBoxID << ObjID;
     pMap->SendToPlayers(Packet);
 }
 
 void Unit::CastSpell(Spell* pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
-    WorldPacket Packet;
-    Packet << (uint16)MSG_CAST_SPELL << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
+    WorldPacket Packet((uint16)MSG_CAST_SPELL);
+    Packet << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     pMap->SendToPlayers(Packet);
-    pMap->AddSpell(this, pSpell, Angle);
+    pMap->AddSpell(UnitPtr(this), pSpell, Angle);
 }
 
 void Unit::DoMeleeAttackIfReady(int32 diff)
@@ -65,7 +64,7 @@ void Unit::DoMeleeAttackIfReady(int32 diff)
     }
 }
 
-void Unit::CastSpell(uint16 Entry, Unit* pVictim)
+void Unit::CastSpell(uint16 Entry, UnitPtr pVictim)
 {
     // TODO: Angle is bugged because client side GetAngle works differently
     CastSpell(sObjectMgr.GetSpell(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->GetPosition() * TILE_SIZE));
@@ -76,7 +75,7 @@ void Unit::CastSpell(uint16 Entry, float Angle)
     CastSpell(sObjectMgr.GetSpell(Entry), Angle);
 }
 
-Unit* Unit::GetVictim()
+UnitPtr Unit::GetVictim()
 {
     return pVictim;
 }

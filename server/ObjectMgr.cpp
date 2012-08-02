@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include "Spell.hpp"
 #include "Database.hpp"
+#include "Player.hpp"
 #include <fstream>
 
 ObjectMgr sObjectMgr;
@@ -91,4 +92,27 @@ void ObjectMgr::LoadSpells()
     {
         Spells.push_back(new Spell(ID, DisplayID, Effect, Value, Cost, Name));
     }
+}
+
+void ObjectMgr::LoadPlayersLoginInfo()
+{
+    QueryResult Result(sDatabase.Query("SELECT name, password, guid FROM `players`"));
+
+    while(Result->next())
+    {
+        Players.push_back(PlayerPtr(new Player(Result->getString(1), Result->getString(2), Result->getUInt(3))));
+    }
+}
+
+PlayerPtr ObjectMgr::GetPlayer(std::string& Username)
+{
+    for(auto iter = Players.begin(); iter != Players.end(); ++iter)
+    {
+        if((*iter)->GetUsername() == Username)
+        {
+            return *iter;
+        }
+    }
+
+    return PlayerPtr();
 }

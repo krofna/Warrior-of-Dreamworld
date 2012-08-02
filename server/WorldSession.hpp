@@ -20,21 +20,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_SESSION_H
 
 #include "Player.hpp"
-#include "../shared/Defines.hpp"
 #include "../shared/WorldPacket.hpp"
+#include "ObjectMgr.hpp"
 #include "boost/asio.hpp"
 
 class Player;
 class WorldPacket;
 
+typedef boost::asio::ip::tcp::socket Socket;
+typedef boost::shared_ptr<boost::asio::ip::tcp::socket> SocketPtr;
+
 class WorldSession
 {
-    friend class AuthSession;
+    friend class WorldAcceptor;
 public:
-    WorldSession(boost::asio::io_service& io, Player* pPlayer);
+    WorldSession(boost::asio::io_service& io);
     ~WorldSession();
 
-    void Receive();
+    void Start();
     void Send(WorldPacket& Packet);
 
     void SendLogOutPacket();
@@ -45,15 +48,21 @@ public:
     void HandleCastSpellOpcode();
     void HandleTextMessageOpcode();
     void HandleLogOutOpcode();
+    void HandleLoginOpcode();
+
+    PlayerPtr GetPlayer();
 
 private:
     void HandleSend(uint16 Opcode);
     void HandleReceive();
+    void HandleHeader(uint16* Header);
+    
+    void SendLoginFailPacket(uint16 Reason);
 
-    boost::asio::ip::tcp::socket Socket;
+    Socket Socket;
 
     WorldPacket Packet;
-    Player* pPlayer;
+    PlayerPtr pPlayer;
 };
 
 #endif

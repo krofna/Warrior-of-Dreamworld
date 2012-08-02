@@ -55,10 +55,10 @@ public:
     // Cleans up static members
     static void Destroy();
 
-    Pathfinder(WorldObject* pOrigin);
+    Pathfinder(WorldObjectPtr pOrigin);
 
     void Update(int32 diff);
-    void UpdateTarget(WorldObject* pNewTarget);
+    void UpdateTarget(WorldObjectPtr pNewTarget);
 
 private:
     // Status of tile used by this Pathfinder
@@ -80,10 +80,10 @@ private:
     void CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost);
 
     // WorldObject controlled by this pathfinder
-    WorldObject* pOrigin;
+    WorldObjectPtr pOrigin;
 
     // WorldObject chased by pOrigin
-    WorldObject* pTarget;
+    WorldObjectPtr pTarget;
 
     // Position of pTarget when path was last generated
     // If it is different from pTarget->Position,
@@ -98,7 +98,7 @@ private:
     Map* pMap;
 
     // Pointer to 2D array of static world objects in pMap
-    std::vector<std::vector<WorldObject*> >* pTileGrid;
+    std::vector<std::vector<WorldObjectPtr> >* pTileGrid;
 
     // Pointer to 2D array of pre-allocated nodes used by pathfinder
     // Its size same as size of largest map

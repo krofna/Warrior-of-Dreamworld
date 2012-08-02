@@ -21,8 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "../shared/Defines.hpp"
 #include "Templates.hpp"
+#include "boost/smart_ptr.hpp"
 
+class Player;
 struct Spell;
+
+typedef boost::shared_ptr<Player> PlayerPtr;
 
 // TODO: Use this for spell/gameobject/creature templates
 class ObjectMgr
@@ -35,10 +39,13 @@ public:
 
     void LoadSpells();
     void LoadCreatureTemplates();
+    void LoadPlayersLoginInfo();
+    PlayerPtr GetPlayer(std::string& Username);
 
 private:
     std::vector<Spell*> Spells;
     std::map<uint32, CreatureTemplate*> CreatureTemplates;
+    std::vector<PlayerPtr> Players;
 };
 
 extern ObjectMgr sObjectMgr; // todo: *

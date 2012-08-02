@@ -30,34 +30,28 @@ Map::Map     (const uint16 MapID) :
 MapID        (MapID),
 NewSpellBoxID(0),
 // [PH] This only works for map0, cause its size is 50x50 tiles 
-TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
+TileGrid     (50, std::vector<WorldObjectPtr>(50, WorldObjectPtr()))
 {
 }
 
 Map::~Map()
 {
-    for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
-    {
-        delete (*CreatureIterator);
-    }
-
     // Kick all players if they are online
     for(auto PlayerIter = Players.begin(); PlayerIter != Players.end(); ++PlayerIter)
     {
         if((*PlayerIter)->IsInWorld())
             (*PlayerIter)->Kick();
-        delete (*PlayerIter);
     }
 }
 
 void Map::LoadCreatures()
 {
     QueryResult Result(sDatabase.PQuery("SELECT * FROM `creature` WHERE map='%u'", MapID));
-    Creature* pCreature;
+    CreaturePtr pCreature;
 
     while(Result->next())
     {
-        pCreature = new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2)));
+        pCreature = CreaturePtr(new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2))));
         Creatures.push_back(pCreature);
     }
 }
@@ -76,7 +70,7 @@ void Map::Update(int32 diff)
     std::for_each(Creatures.begin(), Creatures.end(), std::bind1st(std::mem_fun(&Map::UnitUpdate), this));
 }
 
-void Map::UnitUpdate(Unit* pUnit)
+void Map::UnitUpdate(UnitPtr pUnit)
 {
     // Check if unit got hit by spell
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)
@@ -94,7 +88,7 @@ void Map::UnitUpdate(Unit* pUnit)
     pUnit->Update(diff);
 }
 
-void Map::AddPlayer(Player* pPlayer)
+void Map::AddPlayer(PlayerPtr pPlayer)
 {
     // Pack & send all data about world objects to new player
     for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
@@ -117,7 +111,7 @@ void Map::AddPlayer(Player* pPlayer)
     Players.push_back(pPlayer);
 }
 
-void Map::AddSpell(Unit* pCaster, Spell* pSpell, float Angle) // Unit* pCaster
+void Map::AddSpell(UnitPtr pCaster, Spell* pSpell, float Angle) // UnitPtr pCaster
 {
     // PLACEHOLDER
     Spells.push_back(SpellBox(pSpell, pCaster, sf::FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));
@@ -132,10 +126,10 @@ void Map::SendToPlayers(WorldPacket& Packet)
     }
 }
 
-void Map::RemovePlayer(Player* pPlayer)
+void Map::RemovePlayer(PlayerPtr pPlayer)
 {
-    WorldPacket Packet;
-    Packet << (uint16)MSG_REMOVE_OBJECT << pPlayer->GetObjectID();
+    WorldPacket Packet((uint16)MSG_REMOVE_OBJECT);
+    Packet << pPlayer->GetObjectID();
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)
     {
         if((*PlayerIterator) == pPlayer)

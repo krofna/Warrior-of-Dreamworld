@@ -20,13 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include "World.hpp"
 #include "boost/bind.hpp"
-#include "ObjectMgr.hpp"
 #include <iostream>
 
-WorldSession::WorldSession(boost::asio::io_service& io, Player* pPlayer) :
-pPlayer                   (pPlayer),
+WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-Packet                    (1)
+Packet                    ((uint16)MSG_NULL)
 {
 }
 
@@ -34,19 +32,24 @@ WorldSession::~WorldSession()
 {
 }
 
-void WorldSession::Receive()
+PlayerPtr WorldSession::GetPlayer()
+{
+    return pPlayer;
+}
+
+void WorldSession::Start()
 {
     // TODO: make it non blocking, store header into vector<char> ByteBuffer
     // and make this nicer
-    if(!Socket.available())
-        return;
+    uint16 Header[2];
+    boost::asio::async_read(Socket, boost::asio::buffer(&Header, 4), boost::bind(&WorldSession::HandleHeader, this, Header));
+}
 
-    uint16 Size, Opcode;
-    boost::asio::read(Socket, boost::asio::buffer(&Size, 2));
-    boost::asio::read(Socket, boost::asio::buffer(&Opcode, 2));
-    
-    Packet = WorldPacket(Size);
-    boost::asio::async_read(Socket, Packet.GetData(), boost::bind(&WorldSession::HandleReceive, this));
+void WorldSession::HandleHeader(uint16* Header)
+{
+    uint16 Size = Header[0];
+    uint32 Opcode = Header[1];
+    boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Size), boost::bind(&WorldSession::HandleReceive, this));
 }
 
 void WorldSession::HandleReceive()
@@ -58,6 +61,8 @@ void WorldSession::HandleReceive()
     printf("Received: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
+
+    Start();
 }
 
 void WorldSession::Send(WorldPacket& Packet)
@@ -70,8 +75,8 @@ void WorldSession::Send(WorldPacket& Packet)
     std::memcpy(&buffer[0], &PacketSize, 2);
     std::memcpy(&buffer[2], &Opcode, 2);
     std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
-
-    boost::asio::write(Socket, boost::asio::buffer(buffer), boost::bind(&WorldSession::HandleSend, this, Opcode));
+    
+    boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
 }
 
 void WorldSession::HandleSend(uint16 Opcode)
@@ -79,11 +84,57 @@ void WorldSession::HandleSend(uint16 Opcode)
     std::cout << "SENT: " << OpcodeTable[Opcode].name << "\n";
 }
 
+void WorldSession::SendLoginFailPacket(uint16 Reason)
+{
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_LOGIN);
+    Packet << Reason;
+    Send(Packet);
+    Socket.close();
+}
+
 void WorldSession::HandleNULL()
 {
-    // This is used as a placeholder for opcodes
-    // which are handled in a special way, such as
-    // MSG_LOGIN. (See: AuthSession, OpcodeHandler)
+}
+
+void WorldSession::HandleLoginOpcode()
+{
+    // Check if username exists
+    std::string Username;
+    Packet >> Username;
+    pPlayer = sObjectMgr.GetPlayer(Username);
+    if(!pPlayer)
+    {
+        // Invalid username, send response
+        SendLoginFailPacket((uint16)LOGIN_FAIL_BAD_USERNAME);
+        return;
+    }
+
+    // Check if passwords match
+    std::string Password;
+    Packet >> Password;
+    if(pPlayer->Password != Password)
+    {
+        // Invalid password, send response
+        SendLoginFailPacket((uint16)LOGIN_FAIL_BAD_PASSWORD);
+        return;
+    }
+
+    // If player is online, kick him
+    if(pPlayer->IsInWorld())
+        pPlayer->Kick();
+    else if(!pPlayer->IsLoaded())
+        pPlayer->LoadFromDB();
+
+    // Tell the client that he logged in sucessfully
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_LOGIN);
+    Packet << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
+    Send(Packet);
+
+    // Add player to the world
+    pPlayer->BindSession(this);
+    sWorld->AddSession(this);
 }
 
 void WorldSession::HandleMoveObjectOpcode()
