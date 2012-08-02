@@ -101,8 +101,6 @@ void WorldSession::HandleAddObjectOpcode()
     std::string Tileset, Username;
     Packet >> Tileset >> ObjID >> Username >> x >> y >> tx >> ty;
 
-    RETURN_IF_PACKET_TOO_BIG
-
     WorldObject* pNewObject = new WorldObject(Tileset, Username, x, y, tx, ty);
     pWorld->WorldObjectMap[ObjID] = pNewObject;
     printf("Packet is good!\n");
@@ -113,8 +111,6 @@ void WorldSession::HandleRemoveObjectOpcode()
     uint32 ObjID;
     Packet >> ObjID;
 
-    RETURN_IF_PACKET_TOO_BIG
-
     pWorld->RemoveObject(ObjID);
 }
 
@@ -123,8 +119,6 @@ void WorldSession::HandleMoveObjectOpcode()
     uint32 ObjID;
     uint16 x, y;
     Packet >> ObjID >> x >> y;
-
-    RETURN_IF_PACKET_TOO_BIG
 
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
     printf("Packet is good!\n");
@@ -138,8 +132,6 @@ void WorldSession::HandleCastSpellOpcode()
     uint32 SpellBoxID;
     Packet >> Effect >> CasterID >> DisplayID >> Angle >> SpellBoxID;
 
-    RETURN_IF_PACKET_TOO_BIG
-
     WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
     pWorld->Animations.push_back(Animation(DisplayID, pCaster->GetPosition(), Angle, SpellBoxID));
 
@@ -152,8 +144,6 @@ void WorldSession::HandleTextMessageOpcode()
     sf::Text textMessage;
     std::string Message, Username;
     Packet >> ObjID >> Message;
-
-    RETURN_IF_PACKET_TOO_BIG
 
     Username = pWorld->WorldObjectMap[ObjID]->GetObjectName();
     textMessage.setString(Username + ": " + Message);
