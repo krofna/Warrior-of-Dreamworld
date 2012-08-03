@@ -26,7 +26,10 @@ int main()
 
     try
     {
-        sWorld = new World;
+        tcp::endpoint Endpoint(tcp::v4(), 0xBEEF);
+        boost::asio::io_service io;
+
+        sWorld = new World(io, Endpoint);
         sWorld->Load();
 
         sf::Thread ConsoleInputThread(&World::ConsoleInput, sWorld);

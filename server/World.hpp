@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "Map.hpp"
 #include "WorldAcceptor.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
 
 class CreatureAIFactory;
 
@@ -28,7 +29,7 @@ class World
 {
     friend class WorldSession;
 public:
-    World();
+    World(boost::asio::io_service& io, tcp::endpoint& Endpoint);
     ~World();
     void Load();
 
@@ -51,7 +52,7 @@ private:
 
     volatile bool IsRunning;
 
-    boost::asio::io_service io;
+    boost::asio::io_service& io;
     boost::asio::deadline_timer Timer;
 };
 

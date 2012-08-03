@@ -20,11 +20,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define AUTH_SESSION_H
 
 #include "../shared/Opcodes.hpp"
+using boost::asio::ip::tcp;
 
 class WorldAcceptor
 {
 public:
-    WorldAcceptor(boost::asio::io_service& io);
+    WorldAcceptor(boost::asio::io_service& io, tcp::endpoint& Endpoint);
     ~WorldAcceptor();
 
     void Accept();

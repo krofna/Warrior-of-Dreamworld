@@ -29,10 +29,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 World* sWorld;
 
-World::World() :
+World::World(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
 IsRunning   (true),
-Timer       (io)
+Timer       (io),
+io          (io)
 {
+    pWorldAcceptor = new WorldAcceptor(io, Endpoint);
 }
 
 World::~World()
@@ -67,8 +69,6 @@ void World::Load()
             pMap->LoadCreatures();
             Maps.push_back(pMap);
         }
-
-        pWorldAcceptor = new WorldAcceptor(io);
     }
     catch(sql::SQLException &e) 
     {
@@ -85,9 +85,9 @@ void World::Load()
 int World::Run()
 {
     pWorldAcceptor->Accept();
-    Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
+    Timer.expires_from_now(boost::posix_time::milliseconds(50));
     Timer.async_wait(boost::bind(&World::Update, this));
-
+    io.run();
     return 0;
 }
 
@@ -106,13 +106,15 @@ void World::ConsoleInput()
 void World::Update(/*int32 diff*/)
 {
     if(!IsRunning)
+    {
+        io.stop();
         return;
+    }
 
     for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
     {
         (*MapIterator)->Update(50);
     }
-
     Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
     Timer.async_wait(boost::bind(&World::Update, this));
 }
