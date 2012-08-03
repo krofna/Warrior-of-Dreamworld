@@ -54,11 +54,13 @@ public:
 private:
     void HandleSend(uint16 Opcode);
     void HandleReceive();
-    void HandleHeader(uint16* Header);
+    void HandleHeader();
     
     void SendLoginFailPacket(uint16 Reason);
 
     Socket Socket;
+
+    uint16 Header[2];
 
     WorldPacket Packet;
     PlayerPtr pPlayer;

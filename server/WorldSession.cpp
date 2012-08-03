@@ -41,14 +41,14 @@ void WorldSession::Start()
 {
     // TODO: make it non blocking, store header into vector<char> ByteBuffer
     // and make this nicer
-    uint16 Header[2];
-    boost::asio::async_read(Socket, boost::asio::buffer(&Header, 4), boost::bind(&WorldSession::HandleHeader, this, Header));
+    boost::asio::async_read(Socket, boost::asio::buffer((void*)&Header, 4), boost::bind(&WorldSession::HandleHeader, this));
 }
 
-void WorldSession::HandleHeader(uint16* Header)
+void WorldSession::HandleHeader()
 {
     uint16 Size = Header[0];
-    uint32 Opcode = Header[1];
+    Packet.SetOpcode(Header[1]);
+    std::cout << "Got packet, size: " << Size << std::endl;
     boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Size), boost::bind(&WorldSession::HandleReceive, this));
 }
 
@@ -57,11 +57,11 @@ void WorldSession::HandleReceive()
     if(Packet.GetOpcode() >= MSG_COUNT)
     {
         printf("Received %u: Bad opcode!\n", Packet.GetOpcode());
+        Start();
     }
     printf("Received: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
-
     Start();
 }
 
@@ -86,6 +86,7 @@ void WorldSession::HandleSend(uint16 Opcode)
 
 void WorldSession::SendLoginFailPacket(uint16 Reason)
 {
+    printf("login fail");
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_LOGIN);
     Packet << Reason;
@@ -127,10 +128,12 @@ void WorldSession::HandleLoginOpcode()
         pPlayer->LoadFromDB();
 
     // Tell the client that he logged in sucessfully
+    printf("login good");
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_LOGIN);
     Packet << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
     Send(Packet);
+    printf("sent");
 
     // Add player to the world
     pPlayer->BindSession(this);

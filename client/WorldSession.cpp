@@ -65,6 +65,8 @@ void WorldSession::Send(WorldPacket& Packet)
     std::memcpy(&buffer[2], &Opcode, 2);
     std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
     
+    std::cout << "Packet sent, size: " << PacketSize << std::endl;
+    
     boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
 }
 
