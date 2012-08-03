@@ -174,17 +174,6 @@ void WorldSession::HandleCastSpellOpcode()
     pPlayer->CastSpell(pSpell, Angle);
 }
 
-void WorldSession::HandleTextMessageOpcode()
-{
-    std::string Message;
-    Packet >> Message;
-
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_SEND_TEXT);
-    Packet << pPlayer->GetObjectID() << Message;
-    pPlayer->GetMap()->SendToPlayers(Packet);
-}
-
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();

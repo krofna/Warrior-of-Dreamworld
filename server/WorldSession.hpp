@@ -46,7 +46,6 @@ public:
     void HandleNULL();
     void HandleMoveObjectOpcode();
     void HandleCastSpellOpcode();
-    void HandleTextMessageOpcode();
     void HandleLogOutOpcode();
     void HandleLoginOpcode();
 
