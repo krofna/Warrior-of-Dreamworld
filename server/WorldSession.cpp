@@ -49,6 +49,7 @@ void WorldSession::HandleHeader()
     uint16 Size = Header[0];
     Packet.SetOpcode(Header[1]);
     std::cout << "Got packet, size: " << Size << std::endl;
+    Packet.Resize(Size);
     boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Size), boost::bind(&WorldSession::HandleReceive, this));
 }
 
@@ -86,7 +87,6 @@ void WorldSession::HandleSend(uint16 Opcode)
 
 void WorldSession::SendLoginFailPacket(uint16 Reason)
 {
-    printf("login fail");
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_LOGIN);
     Packet << Reason;
@@ -128,12 +128,10 @@ void WorldSession::HandleLoginOpcode()
         pPlayer->LoadFromDB();
 
     // Tell the client that he logged in sucessfully
-    printf("login good");
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_LOGIN);
     Packet << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
     Send(Packet);
-    printf("sent");
 
     // Add player to the world
     pPlayer->BindSession(this);

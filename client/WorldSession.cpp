@@ -39,6 +39,7 @@ void WorldSession::HandleConnect()
 
 void WorldSession::HandleHeader()
 {
+    Packet.Resize(Header[0]);
     boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Header[0]), boost::bind(&WorldSession::HandlePacket, this));
 }
 

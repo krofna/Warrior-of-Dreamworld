@@ -35,10 +35,11 @@ public:
 
     void Clear();
 
-    char* GetData();
+    void* GetData();
     uint16 GetOpcode();
     void SetOpcode(uint16 Opcode);
     uint16 GetSize();
+    void Resize(uint16 Size);
 
     inline WorldPacket& operator <<(uint8 data);
     inline WorldPacket& operator <<(uint16 data);
