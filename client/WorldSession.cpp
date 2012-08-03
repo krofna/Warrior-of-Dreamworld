@@ -172,25 +172,32 @@ void WorldSession::HandleSpellHitOpcode()
 
 void WorldSession::SendMovementRequest(uint8 Direction)
 {
-    Packet << (uint16)MSG_MOVE_OBJECT << Direction;
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_MOVE_OBJECT);
+    Packet << Direction;
     Send(Packet);
 }
 
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
-    Packet << (uint16)MSG_LOGIN << Username << Password;
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_LOGIN);
+    Packet << Username << Password;
     Send(Packet);
 }
 
 void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
 {
-    Packet << (uint16)MSG_CAST_SPELL << SpellID << Angle;
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_CAST_SPELL);
+    Packet << SpellID << Angle;
     Send(Packet);
 }
 
 void WorldSession::SendLogOutRequest()
 {
-    Packet << (uint16)MSG_LOG_OUT;
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_LOG_OUT);
     Send(Packet);
 
     // Back to login screen?

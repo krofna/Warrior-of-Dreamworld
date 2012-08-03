@@ -24,6 +24,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <cassert>
 #include <vector>
 
+// Todo:
+// - Store size/opcode in bytebuffer
+// - void Clear(uint16 Opcode);
+
 class WOD_DLL_DECL WorldPacket
 {
 public:
