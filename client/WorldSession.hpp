@@ -19,8 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_SESSION_H
 #define WORLD_SESSION_H
 
-#include <SFML/Network.hpp>
+#include "../shared/WorldPacket.hpp"
 #include "World.hpp"
+#include "boost/asio.hpp"
+using boost::asio::ip::tcp;
 
 class Game;
 class World;
@@ -28,11 +30,10 @@ class World;
 class WorldSession
 {
 public:
-    WorldSession(Game* pGame);
+    WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator);
 
     bool ConnectToServer(const char* Ip);
-    void RecievePackets();
-    void SendPacket(sf::Packet& Packet);
+    void SendPacket(WorldPacket& Packet);
 
     // Opcode handlers
     void HandleNULL();
@@ -49,17 +50,18 @@ public:
     void SendAuthRequest(std::string Username, std::string Password);
     void SendMovementRequest(uint8 Direction);
     void SendCastSpellRequest(uint16 SpellID, float Angle);
-    void SendTextMessage(std::string& Message);
     void SendLogOutRequest();
 
-    std::vector<sf::Text> TextMessages;
-
 private:
-    sf::TcpSocket Socket;
-    uint16 Opcode;
-    sf::Packet Packet;
+    void HandleConnect();
+    void HandlePacket();
+    void HandleHeader();
 
-    Game* pGame;
+    tcp::socket Socket;
+    uint16 Header[2];
+    WorldPacket Packet;
+
+    Game* sGame;
     World* pWorld;
 };
 

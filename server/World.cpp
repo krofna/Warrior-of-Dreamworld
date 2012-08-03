@@ -121,7 +121,6 @@ void World::Update(/*int32 diff*/)
 
 void World::AddSession(WorldSession* pWorldSession)
 {
-    Sessions.push_back(pWorldSession);
     Maps[pWorldSession->GetPlayer()->GetMapID()]->AddPlayer(pWorldSession->GetPlayer());
 }
 

@@ -34,9 +34,6 @@ CameraBottom (WindowHeight),
 MeID         (MeID)
 {
     Window.setView(WorldView);
-    Typing = false;
-    ChatOffsetX = -(WindowWidth / 2 - 5);
-    ChatOffsetY = 20;
 }
 
 World::~World()
@@ -127,32 +124,16 @@ void World::Draw()
     {
         i->Update();
     }
-
-    // Draw Text Messages
-    for(auto i = Session->TextMessages.begin(); i != Session->TextMessages.end(); i++)
-    {
-        int currentmessage = std::distance(Session->TextMessages.begin(), i);
-
-        (*i).setPosition(WorldView.getCenter().x + ChatOffsetX, WorldView.getCenter().y + ChatOffsetY + currentmessage * 20);
-        Window.draw((*i));
-    }
 }
 
 void World::HandleEvent(sf::Event Event)
 {
-    if(Typing)
-    {
-        HandleTyping(Event);
-        return;
-    }
-
     switch(Event.type)
     {
     case sf::Event::KeyPressed:
         switch(Event.key.code)
         {
         case sf::Keyboard::Return:
-            Typing = true;
             break;
 
         case sf::Keyboard::D:
@@ -203,41 +184,6 @@ void World::HandleEvent(sf::Event Event)
         Session->SendCastSpellRequest(0, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window.convertCoords(sf::Mouse::getPosition())));
         break;
         
-    default:
-        break;
-    }
-}
-
-void World::HandleTyping(sf::Event Event)
-{
-    switch(Event.type)
-    {
-    case sf::Event::KeyPressed:
-        switch(Event.key.code)
-        {
-        case sf::Keyboard::Return:
-            Typing = false;
-            if(!Message.empty())
-                Session->SendTextMessage(Message);
-            Message.clear();
-            break;
-
-        case sf::Keyboard::Space:
-            //     Message += " ";
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    case sf::Event::TextEntered:
-        // TODO: Make a function if key is valid
-        // In chat handler (later)
-        if(Typing && Event.text.unicode < 128)
-            Message += static_cast<char>(Event.key.code);
-        break;
-
     default:
         break;
     }

@@ -60,12 +60,6 @@ private:
     int CameraTop;
     // END TODO
 
-    // Chat Members
-    std::string Message;
-    float ChatOffsetX;
-    float ChatOffsetY;
-    bool Typing;
-
     std::map<uint32, WorldObject*> WorldObjectMap;
     std::vector<Animation> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint32 MeID;

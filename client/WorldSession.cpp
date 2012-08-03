@@ -21,42 +21,42 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Defines.hpp"
 #include "Game.hpp"
 #include "Login.hpp"
+#include "boost/bind.hpp"
 #include <cassert>
 
-WorldSession::WorldSession(Game* pGame) :
-pGame(pGame),
-pWorld(nullptr)
+WorldSession::WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator) :
+pWorld                    (nullptr),
+Socket                    (io),
+Packet                    ((uint16)MSG_NULL)
 {
+    boost::asio::async_connect(Socket, Iterator, boost::bind(&WorldSession::HandleConnect, this));
 }
 
-bool WorldSession::ConnectToServer(const char* Ip)
+void WorldSession::HandleConnect()
 {
-    sf::Socket::Status Status = Socket.connect(sf::IpAddress(Ip), 0xBEEF);
-    Socket.setBlocking(false);
-    return Status == sf::Socket::Status::Done;
+    boost::asio::async_read(Socket, boost::asio::buffer(Header, 4), boost::bind(&WorldSession::HandleHeader, this));
 }
 
-void WorldSession::RecievePackets()
+void WorldSession::HandleHeader()
 {
-    // Loop as long as there are packets to receive from server
-    while(Socket.receive(Packet) == sf::Socket::Status::Done)
+    boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Header[0]), boost::bind(&WorldSession::HandlePacket, this));
+}
+
+void WorldSession::HandlePacket()
+{
+    if(Header[1] >= MSG_COUNT)
     {
-        Packet >> Opcode;
-        if(Opcode >= MSG_COUNT)
-        {
-            printf("Recieved %u: Bad opcode!\n", Opcode);
-            continue;
-        }
-        printf("Recieved: %s, ", OpcodeTable[Opcode].name);
-        // Handle the packet
-        (this->*OpcodeTable[Opcode].Handler)();
+        printf("Recieved %u: Bad opcode!\n", Header[1]);
+        return;
     }
+    printf("Recieved: %s, ", OpcodeTable[Header[1]].name);
+    (this->*OpcodeTable[Header[1]].Handler)();
+    Packet.Clear();
 }
 
-void WorldSession::SendPacket(sf::Packet& Packet)
+void WorldSession::SendPacket(WorldPacket& Packet)
 {
-    Packet >> Opcode;
-    printf("Sent: %s\n", OpcodeTable[Opcode].name);
+    printf("Sent: %s\n", OpcodeTable[Packet.GetOpcode()].name);
     Socket.send(Packet);
 }
 
@@ -90,7 +90,7 @@ void WorldSession::HandleLoginOpcode()
     World* pWorld = new World(MeID);
     this->pWorld = pWorld;
     pWorld->LoadTileMap(MapID);
-    pGame->ChangeState(pWorld);
+    sGame->ChangeState(pWorld);
     printf("Packet is good!\n");
 }
 
@@ -138,22 +138,6 @@ void WorldSession::HandleCastSpellOpcode()
     printf("Packet is good!\n");
 }
 
-void WorldSession::HandleTextMessageOpcode()
-{
-    uint32 ObjID;
-    sf::Text textMessage;
-    std::string Message, Username;
-    Packet >> ObjID >> Message;
-
-    Username = pWorld->WorldObjectMap[ObjID]->GetObjectName();
-    textMessage.setString(Username + ": " + Message);
-    textMessage.setCharacterSize(18);
-    textMessage.setColor(sf::Color::Magenta);
-    TextMessages.push_back(textMessage);
-
-    printf("Packet is good!\n");
-}
-
 void WorldSession::HandleLogOutOpcode()
 {
     // [PH] TODO: Back to login screen, this is pretty nasty
@@ -164,8 +148,6 @@ void WorldSession::HandleSpellHitOpcode()
 {/*
     uint32 SpellBoxID, VictimID;
     Packet >> SpellBoxID >> VictimID;
-
-    RETURN_IF_PACKET_TOO_BIG
 
     for(auto SpellBoxIter = pWorld->Animations.begin(); SpellBoxIter != pWorld->Animations.end(); ++SpellBoxIter)
     {
@@ -200,18 +182,12 @@ void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
     SendPacket(Packet);
 }
 
-void WorldSession::SendTextMessage(std::string& Message)
-{
-    Packet << (uint16)MSG_SEND_TEXT << Message;
-    SendPacket(Packet);
-}
-
 void WorldSession::SendLogOutRequest()
 {
     Packet << (uint16)MSG_LOG_OUT;
     SendPacket(Packet);
 
     // Back to login screen?
-    //pGame->ChangeState(new Login());
+    //sGame->ChangeState(new Login());
     //Window.setView(Window.getDefaultView());
 }

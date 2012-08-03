@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "Config.hpp"
 #include "boost/scoped_ptr.hpp"
+#include "boost/thread/thread.hpp"
 
 int main()
 {
@@ -36,8 +37,17 @@ int main()
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
         cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << endl;
 
-        boost::scoped_ptr<Game> pGame(new Game(true));
-        Session = new WorldSession(pGame.get());
+        boost::asio::io_service io;
+        tcp::resolver Resolver(io);
+        tcp::resolver::query Query("127.0.0.1", "48879");
+        tcp::resolver::iterator Iterator = Resolver.resolve(Query);
+
+        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, io));
+        NetworkThread.join();
+
+        sGame = new Game(true);
+
+        Session = new WorldSession(io, Iterator);
         {
             ifstream ConfigFile("Config.conf");
 
@@ -50,9 +60,9 @@ int main()
             if(!Session->ConnectToServer(Ip.c_str()))
                 throw std::exception("Cannot connect to server");
 
-            pGame->ChangeState(new Login());
+            sGame->ChangeState(new Login());
         }
-        pGame->Run();
+        sGame->Run();
     }
     catch(std::exception& e)
     {

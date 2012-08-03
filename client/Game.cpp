@@ -40,7 +40,6 @@ void Game::Run()
         {
             CurrentState->HandleEvent(Event);
         }
-        Session->RecievePackets();
         Window.clear();
         CurrentState->Draw();
         Window.display();

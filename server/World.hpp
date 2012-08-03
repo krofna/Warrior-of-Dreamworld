@@ -46,7 +46,6 @@ private:
 
     WorldAcceptor* pWorldAcceptor;
     std::vector<Map*> Maps;
-    std::vector<WorldSession*> Sessions;
 
     CreatureAIFactory* AIFactory;
 
