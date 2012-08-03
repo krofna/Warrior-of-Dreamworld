@@ -32,8 +32,7 @@ class WorldSession
 public:
     WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator);
 
-    bool ConnectToServer(const char* Ip);
-    void SendPacket(WorldPacket& Packet);
+    void Send(WorldPacket& Packet);
 
     // Opcode handlers
     void HandleNULL();
@@ -56,6 +55,7 @@ private:
     void HandleConnect();
     void HandlePacket();
     void HandleHeader();
+    void HandleSend(uint16 Opcode);
 
     tcp::socket Socket;
     uint16 Header[2];

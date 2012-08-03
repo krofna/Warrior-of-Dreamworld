@@ -42,7 +42,7 @@ int main()
         tcp::resolver::query Query("127.0.0.1", "48879");
         tcp::resolver::iterator Iterator = Resolver.resolve(Query);
 
-        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, io));
+        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         NetworkThread.join();
 
         sGame = new Game(true);
@@ -56,9 +56,6 @@ int main()
 
             std::string Ip;
             ConfigFile >> Ip;
-
-            if(!Session->ConnectToServer(Ip.c_str()))
-                throw std::exception("Cannot connect to server");
 
             sGame->ChangeState(new Login());
         }

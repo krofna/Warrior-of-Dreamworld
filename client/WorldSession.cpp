@@ -54,10 +54,23 @@ void WorldSession::HandlePacket()
     Packet.Clear();
 }
 
-void WorldSession::SendPacket(WorldPacket& Packet)
+void WorldSession::Send(WorldPacket& Packet)
 {
-    printf("Sent: %s\n", OpcodeTable[Packet.GetOpcode()].name);
-    Socket.send(Packet);
+    size_t PacketSize = Packet.GetSize();
+    uint16 Opcode = Packet.GetOpcode();
+
+    std::vector<char> buffer(PacketSize + WorldPacket::HEADER_SIZE);
+
+    std::memcpy(&buffer[0], &PacketSize, 2);
+    std::memcpy(&buffer[2], &Opcode, 2);
+    std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
+    
+    boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
+}
+
+void WorldSession::HandleSend(uint16 Opcode)
+{
+    printf("Sent: %s\n", OpcodeTable[Opcode].name);
 }
 
 void WorldSession::HandleNULL()
@@ -72,20 +85,13 @@ void WorldSession::HandleLoginOpcode()
     if(Status != (uint16)LOGIN_SUCCESS)
     {
         printf("Login fail!\n");
-        Socket.disconnect();
+        Socket.close();
         return;
     }
 
     uint16 MapID;
     uint32 MeID;
     Packet >> MapID >> MeID;
-
-    if(!Packet.endOfPacket())
-    {
-        printf("Packet is too big!\n");
-        Socket.disconnect();
-        return;
-    }
 
     World* pWorld = new World(MeID);
     this->pWorld = pWorld;
@@ -167,25 +173,25 @@ void WorldSession::HandleSpellHitOpcode()
 void WorldSession::SendMovementRequest(uint8 Direction)
 {
     Packet << (uint16)MSG_MOVE_OBJECT << Direction;
-    SendPacket(Packet);
+    Send(Packet);
 }
 
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
     Packet << (uint16)MSG_LOGIN << Username << Password;
-    SendPacket(Packet);
+    Send(Packet);
 }
 
 void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
 {
     Packet << (uint16)MSG_CAST_SPELL << SpellID << Angle;
-    SendPacket(Packet);
+    Send(Packet);
 }
 
 void WorldSession::SendLogOutRequest()
 {
     Packet << (uint16)MSG_LOG_OUT;
-    SendPacket(Packet);
+    Send(Packet);
 
     // Back to login screen?
     //sGame->ChangeState(new Login());
