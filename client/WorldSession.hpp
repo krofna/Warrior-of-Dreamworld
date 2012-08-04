@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/WorldPacket.hpp"
 #include "World.hpp"
 #include "boost/asio.hpp"
+#include "boost/thread.hpp"
 using boost::asio::ip::tcp;
 
 class Game;
@@ -52,7 +53,7 @@ public:
     void SendLogOutRequest();
 
 private:
-    void HandleConnect();
+    void Start();
     void HandlePacket();
     void HandleHeader();
     void HandleSend(uint16 Opcode);
@@ -63,6 +64,8 @@ private:
 
     Game* sGame;
     World* pWorld;
+
+    boost::mutex NetworkMutex;
 };
 
 #endif

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldPacket.hpp"
 #include "Opcodes.hpp"
 
-WorldPacket::WorldPacket(uint16 Opcod) :
+WorldPacket::WorldPacket(uint16 Opcode) :
 Opcode                  (Opcode)
 {
     ReadPos = WritePos = 0;

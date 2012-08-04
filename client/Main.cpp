@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "Config.hpp"
 #include "boost/scoped_ptr.hpp"
-#include "boost/thread/thread.hpp"
 
 int main()
 {
@@ -42,9 +41,6 @@ int main()
         tcp::resolver::query Query("127.0.0.1", "48879");
         tcp::resolver::iterator Iterator = Resolver.resolve(Query);
 
-        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
-        NetworkThread.join();
-
         sGame = new Game(true);
 
         Session = new WorldSession(io, Iterator);
@@ -59,6 +55,7 @@ int main()
 
             sGame->ChangeState(new Login());
         }
+        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
     }
     catch(std::exception& e)

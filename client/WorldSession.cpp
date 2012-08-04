@@ -29,16 +29,17 @@ pWorld                    (nullptr),
 Socket                    (io),
 Packet                    ((uint16)MSG_NULL)
 {
-    boost::asio::async_connect(Socket, Iterator, boost::bind(&WorldSession::HandleConnect, this));
+    boost::asio::async_connect(Socket, Iterator, boost::bind(&WorldSession::Start, this));
 }
 
-void WorldSession::HandleConnect()
+void WorldSession::Start()
 {
     boost::asio::async_read(Socket, boost::asio::buffer(Header, 4), boost::bind(&WorldSession::HandleHeader, this));
 }
 
 void WorldSession::HandleHeader()
 {
+    Packet.Clear();
     Packet.Resize(Header[0]);
     boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Header[0]), boost::bind(&WorldSession::HandlePacket, this));
 }
@@ -51,8 +52,12 @@ void WorldSession::HandlePacket()
         return;
     }
     printf("Recieved: %s, ", OpcodeTable[Header[1]].name);
+
+    boost::mutex::scoped_lock lock(NetworkMutex);
     (this->*OpcodeTable[Header[1]].Handler)();
     Packet.Clear();
+
+    Start();
 }
 
 void WorldSession::Send(WorldPacket& Packet)
@@ -67,7 +72,7 @@ void WorldSession::Send(WorldPacket& Packet)
     std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
     
     std::cout << "Packet sent, size: " << PacketSize << std::endl;
-    
+    boost::mutex::scoped_lock lock(NetworkMutex);
     boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
 }
 
@@ -96,6 +101,7 @@ void WorldSession::HandleLoginOpcode()
     uint32 MeID;
     Packet >> MapID >> MeID;
 
+    boost::mutex::scoped_lock lock(NetworkMutex);
     World* pWorld = new World(MeID);
     this->pWorld = pWorld;
     pWorld->LoadTileMap(MapID);

@@ -75,6 +75,7 @@ void World::LoadTileMap(uint16 MapID)
 
         index += 4;
     }
+    printf("map loaded");
 }
 
 void World::Draw()

@@ -48,7 +48,6 @@ void WorldSession::HandleHeader()
 {
     uint16 Size = Header[0];
     Packet.SetOpcode(Header[1]);
-    std::cout << "Got packet, size: " << Size << std::endl;
     Packet.Resize(Size);
     boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Size), boost::bind(&WorldSession::HandleReceive, this));
 }
@@ -76,7 +75,6 @@ void WorldSession::Send(WorldPacket& Packet)
     std::memcpy(&buffer[0], &PacketSize, 2);
     std::memcpy(&buffer[2], &Opcode, 2);
     std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
-    
     boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
 }
 
