@@ -53,7 +53,6 @@ void WorldSession::HandlePacket()
     }
     printf("Recieved: %s, ", OpcodeTable[Header[1]].name);
 
-    boost::mutex::scoped_lock lock(NetworkMutex);
     (this->*OpcodeTable[Header[1]].Handler)();
     Packet.Clear();
 
@@ -71,8 +70,6 @@ void WorldSession::Send(WorldPacket& Packet)
     std::memcpy(&buffer[2], &Opcode, 2);
     std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
     
-    std::cout << "Packet sent, size: " << PacketSize << std::endl;
-    boost::mutex::scoped_lock lock(NetworkMutex);
     boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
 }
 
@@ -101,7 +98,6 @@ void WorldSession::HandleLoginOpcode()
     uint32 MeID;
     Packet >> MapID >> MeID;
 
-    boost::mutex::scoped_lock lock(NetworkMutex);
     World* pWorld = new World(MeID);
     this->pWorld = pWorld;
     pWorld->LoadTileMap(MapID);
@@ -157,26 +153,6 @@ void WorldSession::HandleLogOutOpcode()
 {
     // [PH] TODO: Back to login screen, this is pretty nasty
     Window.close();
-}
-
-void WorldSession::HandleSpellHitOpcode()
-{/*
-    uint32 SpellBoxID, VictimID;
-    Packet >> SpellBoxID >> VictimID;
-
-    for(auto SpellBoxIter = pWorld->Animations.begin(); SpellBoxIter != pWorld->Animations.end(); ++SpellBoxIter)
-    {
-        if(SpellBoxIter->GetID() == SpellBoxID)
-        {
-            pWorld->Animations.erase(SpellBoxIter);
-            break;
-        }
-    }
-
-    //PH, dont delete, instead, die
-    delete pWorld->WorldObjectMap[VictimID];
-    pWorld->WorldObjectMap.erase(VictimID);
-    printf("Packet is good!\n");*/
 }
 
 void WorldSession::SendMovementRequest(uint8 Direction)

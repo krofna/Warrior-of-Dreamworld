@@ -105,6 +105,7 @@ void World::ConsoleInput()
 
 void World::Update(/*int32 diff*/)
 {
+    // TODO: diff can be > 50. check time between calls to update
     if(!IsRunning)
     {
         io.stop();

@@ -33,9 +33,7 @@ void Unit::SpellHit(SpellBox* pSpellBox)
 {
     // PH - reduce health and do shit
     // Threat checks etc?
-    WorldPacket Packet((uint16)MSG_SPELL_HIT);
-    Packet << pSpellBox->SpellBoxID << ObjID;
-    pMap->SendToPlayers(Packet);
+    // TODO: Send a packet to players in map
 }
 
 void Unit::CastSpell(Spell* pSpell, float Angle)
