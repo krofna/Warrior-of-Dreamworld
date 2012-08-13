@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Defines.hpp"
 #include "WorldObject.hpp"
 #include "Animation.hpp"
+#include "boost/thread.hpp"
 
 class GameState;
 class WorldObject;
@@ -63,6 +64,9 @@ private:
     std::map<uint32, WorldObject*> WorldObjectMap;
     std::vector<Animation> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint32 MeID;
+
+    boost::mutex WorldObjectMutex;
+    boost::mutex AnimationsMutex;
 };
 
 #endif

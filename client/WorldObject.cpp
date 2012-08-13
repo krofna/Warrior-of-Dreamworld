@@ -50,7 +50,7 @@ void WorldObject::UpdateCoordinates(uint16 x, uint16 y)
 
 void WorldObject::Draw() 
 { 
-    Window.draw(ObjectSprite); 
+    Window->draw(ObjectSprite); 
 }
 
 sf::Vector2f WorldObject::GetPosition() 

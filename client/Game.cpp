@@ -18,11 +18,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Game.hpp"
 
-Game::Game(bool FullScreen) :
-CurrentState(nullptr)
+Game::Game  (bool FullScreen) :
+CurrentState(nullptr),
+NewState    (0)
 {
-    Window.create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", FullScreen ? sf::Style::Fullscreen : sf::Style::Close);
-    Window.setFramerateLimit(60);
+    Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", FullScreen ? sf::Style::Fullscreen : sf::Style::Close);
+    Window->setFramerateLimit(60);
 }
 
 Game::~Game()
@@ -34,20 +35,28 @@ void Game::Run()
 {
     sf::Event Event;
 
-    while(Window.isOpen())
+    while(Window->isOpen())
     {
-        while(Window.pollEvent(Event))
+        StateMutex.lock();
+        if(NewState)
+        {
+            delete CurrentState;
+            this->CurrentState = NewState;
+            NewState = nullptr;
+        }
+        StateMutex.unlock();
+        while(Window->pollEvent(Event))
         {
             CurrentState->HandleEvent(Event);
         }
-        Window.clear();
+        Window->clear();
         CurrentState->Draw();
-        Window.display();
+        Window->display();
     }
 }
 
 void Game::ChangeState(GameState* NewState)
 {
-    delete CurrentState;
-    CurrentState = NewState;
+    boost::mutex::scoped_lock lock_for_change_state(StateMutex);
+    this->NewState = NewState;
 }

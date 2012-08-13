@@ -69,7 +69,7 @@ public:
     };
 
 
-private:
+//private:
     template<class T> void Append(T data);
     template<class T> T Read();
 

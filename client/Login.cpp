@@ -31,7 +31,7 @@ void Login::HandleEvent(sf::Event Event)
     switch(Event.type)
     {
     case sf::Event::Closed:
-        Window.close();
+        Window->close();
         break;
 
     case sf::Event::KeyPressed:
@@ -57,7 +57,7 @@ void Login::HandleEvent(sf::Event Event)
                 Password.erase(Password.end()-1);
         }
         else if(Event.key.code == sf::Keyboard::Escape)
-            Window.close();
+            Window->close();
         break;
 
     case sf::Event::TextEntered:
@@ -81,5 +81,5 @@ void Login::HandleEvent(sf::Event Event)
 
 void Login::Draw()
 {
-    Window.draw(UsernameText);
+    Window->draw(UsernameText);
 }

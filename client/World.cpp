@@ -33,7 +33,7 @@ CameraRight  (WindowWidth),
 CameraBottom (WindowHeight),
 MeID         (MeID)
 {
-    Window.setView(WorldView);
+    Window->setView(WorldView);
 }
 
 World::~World()
@@ -75,7 +75,6 @@ void World::LoadTileMap(uint16 MapID)
 
         index += 4;
     }
-    printf("map loaded");
 }
 
 void World::Draw()
@@ -110,15 +109,17 @@ void World::Draw()
             WorldView.move(-TILE_SIZE, 0);
         }
 
-        Window.setView(WorldView);
+        Window->setView(WorldView);
     }
     
     // Draw tile map
-    Window.draw(TileMap, MapStates);
+    Window->draw(TileMap, MapStates);
 
     // Draw static objects
+    WorldObjectMutex.lock();
     for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
         (*i).second->Draw();
+    WorldObjectMutex.unlock();
 
     // Update animations
     for(auto i = Animations.begin(); i != Animations.end(); ++i)
@@ -155,7 +156,7 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::Escape:
             Session->SendLogOutRequest();
-            Window.close();
+            Window->close();
             return;
 
         default:
@@ -166,23 +167,23 @@ void World::HandleEvent(sf::Event Event)
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
 
-        if(sf::Mouse::getPosition(Window).x >= WindowWidth - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Window).x >= WindowWidth - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_RIGHT;
 
-        else if(sf::Mouse::getPosition(Window).x < TILE_SIZE / 2)
+        else if(sf::Mouse::getPosition(*Window).x < TILE_SIZE / 2)
             MoveWorldView |= MOVE_LEFT;
 
-        if(sf::Mouse::getPosition(Window).y > WindowHeight - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Window).y > WindowHeight - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_DOWN;
 
-        else if(sf::Mouse::getPosition(Window).y < TILE_SIZE / 2)
+        else if(sf::Mouse::getPosition(*Window).y < TILE_SIZE / 2)
             MoveWorldView |= MOVE_UP;
 
         break;
 
     case sf::Event::MouseButtonPressed:
         // PH
-        Session->SendCastSpellRequest(0, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window.convertCoords(sf::Mouse::getPosition())));
+        Session->SendCastSpellRequest(0, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:
@@ -192,10 +193,12 @@ void World::HandleEvent(sf::Event Event)
 
 void World::RemoveObject(uint32 ObjectID)
 {
+    WorldObjectMutex.lock();
     auto Iter = WorldObjectMap.find(ObjectID);
     if(Iter == WorldObjectMap.end())
         return;
 
     delete Iter->second;
     WorldObjectMap.erase(Iter);
+    WorldObjectMutex.unlock();
 }

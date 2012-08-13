@@ -21,10 +21,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "GameState.hpp"
 #include "Globals.hpp"
+#include "boost/thread.hpp"
 
 class Game
 {
-    friend class WorldSession;
 public:
     Game(bool FullScreen);
     ~Game();
@@ -34,6 +34,8 @@ public:
 
 private:
     GameState* CurrentState;
+    boost::mutex StateMutex;
+    GameState* NewState;
 };
 
 #endif

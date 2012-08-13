@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Globals.hpp"
 
-sf::RenderWindow Window;
+sf::RenderWindow* Window;
 WorldSession* Session;
 Game* sGame;
 uint16 WindowWidth;

@@ -59,6 +59,7 @@ private:
 
     tcp::socket Socket;
     uint16 Header[2];
+    std::vector<char> buffer;
     WorldPacket Packet;
 
     Game* sGame;

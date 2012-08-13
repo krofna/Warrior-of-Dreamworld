@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef GAME_STATE_H
 #define GAME_STATE_H
 
-#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 class GameState
 {

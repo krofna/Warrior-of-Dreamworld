@@ -41,5 +41,5 @@ void Animation::Update()
     Time -= sf::milliseconds(15 * Multiplier);
 
     Sprite.move(std::sin(this->Angle) * Multiplier, std::cos(this->Angle) * Multiplier);
-    Window.draw(Sprite);
+    Window->draw(Sprite);
 }

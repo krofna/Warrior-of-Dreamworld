@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Login.hpp"
 #include "Game.hpp"
 #include "WorldSession.hpp"
-#include "Config.hpp"
 #include "boost/scoped_ptr.hpp"
 
 int main()
@@ -28,6 +27,8 @@ int main()
 
     ofstream ErrorLog("Error Log.txt");
     cerr.rdbuf(ErrorLog.rdbuf());
+
+    Window = new sf::RenderWindow;
 
     try
     {
@@ -45,6 +46,7 @@ int main()
 
         Session = new WorldSession(io, Iterator);
         {
+            // TODO: this code is useless. see above
             ifstream ConfigFile("Config.conf");
 
             if(!ConfigFile)
@@ -67,7 +69,9 @@ int main()
         cerr << "Unhandled exception";
     }
 
+    delete sGame;
     delete Session;
+    delete Window;
 
     return 0;
 }

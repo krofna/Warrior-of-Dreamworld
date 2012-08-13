@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Defines.hpp"
 extern uint16 WindowWidth;
 extern uint16 WindowHeight;
-extern sf::RenderWindow Window;
+extern sf::RenderWindow* Window;
 
 #include <iostream>
 #include <fstream>

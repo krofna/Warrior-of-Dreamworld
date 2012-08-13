@@ -64,7 +64,7 @@ void WorldSession::Send(WorldPacket& Packet)
     size_t PacketSize = Packet.GetSize();
     uint16 Opcode = Packet.GetOpcode();
 
-    std::vector<char> buffer(PacketSize + WorldPacket::HEADER_SIZE);
+    buffer.resize(PacketSize + WorldPacket::HEADER_SIZE);
 
     std::memcpy(&buffer[0], &PacketSize, 2);
     std::memcpy(&buffer[2], &Opcode, 2);
@@ -101,6 +101,7 @@ void WorldSession::HandleLoginOpcode()
     World* pWorld = new World(MeID);
     this->pWorld = pWorld;
     pWorld->LoadTileMap(MapID);
+    std::cout << sGame << std::endl;
     sGame->ChangeState(pWorld);
     printf("Packet is good!\n");
 }
@@ -113,7 +114,9 @@ void WorldSession::HandleAddObjectOpcode()
     Packet >> Tileset >> ObjID >> Username >> x >> y >> tx >> ty;
 
     WorldObject* pNewObject = new WorldObject(Tileset, Username, x, y, tx, ty);
+    pWorld->WorldObjectMutex.lock();
     pWorld->WorldObjectMap[ObjID] = pNewObject;
+    pWorld->WorldObjectMutex.unlock();
     printf("Packet is good!\n");
 }
 
@@ -122,7 +125,9 @@ void WorldSession::HandleRemoveObjectOpcode()
     uint32 ObjID;
     Packet >> ObjID;
 
+    pWorld->WorldObjectMutex.lock();
     pWorld->RemoveObject(ObjID);
+    pWorld->WorldObjectMutex.unlock();
 }
 
 void WorldSession::HandleMoveObjectOpcode()
@@ -131,7 +136,9 @@ void WorldSession::HandleMoveObjectOpcode()
     uint16 x, y;
     Packet >> ObjID >> x >> y;
 
+    pWorld->WorldObjectMutex.lock();
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
+    pWorld->WorldObjectMutex.unlock();
     printf("Packet is good!\n");
 }
 
@@ -152,7 +159,7 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     // [PH] TODO: Back to login screen, this is pretty nasty
-    Window.close();
+    //Window->close();
 }
 
 void WorldSession::SendMovementRequest(uint8 Direction)
@@ -187,5 +194,5 @@ void WorldSession::SendLogOutRequest()
 
     // Back to login screen?
     //sGame->ChangeState(new Login());
-    //Window.setView(Window.getDefaultView());
+    //Window->setView(Window->getDefaultView());
 }
