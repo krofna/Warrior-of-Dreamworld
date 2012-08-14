@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class GameState
 {
 public:
+    virtual ~GameState(){}
     virtual void HandleEvent(sf::Event Event) = 0;
     virtual void Draw() = 0;
 };
