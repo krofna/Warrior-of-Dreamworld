@@ -31,7 +31,7 @@ class World;
 class WorldSession
 {
 public:
-    WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator);
+    WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator, Game* sGame);
 
     void Send(WorldPacket& Packet);
 

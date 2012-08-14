@@ -24,10 +24,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/bind.hpp"
 #include <cassert>
 
-WorldSession::WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator) :
+WorldSession::WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator, Game* sGame) :
 pWorld                    (nullptr),
 Socket                    (io),
-Packet                    ((uint16)MSG_NULL)
+Packet                    ((uint16)MSG_NULL),
+sGame                     (sGame)
 {
     boost::asio::async_connect(Socket, Iterator, boost::bind(&WorldSession::Start, this));
 }

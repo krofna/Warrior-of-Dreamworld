@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <string>
 #include "Unit.hpp"
 #include "WorldSession.hpp"
-#include <SFML/Network.hpp>
 #include "Spell.hpp"
 
 class WorldSession;

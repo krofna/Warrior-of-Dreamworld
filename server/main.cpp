@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
 #include <fstream>
+#include "boost/thread.hpp"
 #include <csignal>
 
 int main()
@@ -32,8 +33,7 @@ int main()
         sWorld = new World(io, Endpoint);
         sWorld->Load();
 
-        sf::Thread ConsoleInputThread(&World::ConsoleInput, sWorld);
-        ConsoleInputThread.launch();
+        boost::thread ConsoleInputThread(boost::bind(&World::ConsoleInput, sWorld));
 
         ReturnValue = sWorld->Run();
     }

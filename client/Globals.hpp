@@ -31,8 +31,4 @@ extern sf::RenderWindow* Window;
 class WorldSession;
 extern WorldSession* Session;
 
-#include "Game.hpp"
-class Game;
-extern Game* sGame;
-
 #endif

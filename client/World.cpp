@@ -33,7 +33,7 @@ CameraRight  (WindowWidth),
 CameraBottom (WindowHeight),
 MeID         (MeID)
 {
-    Window->setView(WorldView);
+   Window->setView(WorldView);
 }
 
 World::~World()

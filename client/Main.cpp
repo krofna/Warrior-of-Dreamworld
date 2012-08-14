@@ -28,6 +28,7 @@ int main()
     ofstream ErrorLog("Error Log.txt");
     cerr.rdbuf(ErrorLog.rdbuf());
 
+    Game* sGame;
     Window = new sf::RenderWindow;
 
     try
@@ -44,7 +45,7 @@ int main()
 
         sGame = new Game(true);
 
-        Session = new WorldSession(io, Iterator);
+        Session = new WorldSession(io, Iterator, sGame);
         {
             // TODO: this code is useless. see above
             ifstream ConfigFile("Config.conf");

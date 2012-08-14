@@ -29,6 +29,7 @@ class WorldObject
 {
 public:
     WorldObject(std::string Tileset, std::string Name, uint16 x, uint16 y, uint16 tx, uint16 ty);
+    virtual ~WorldObject(){}
     virtual void Draw();
 
     void UpdateCoordinates(uint16 x, uint16 y);

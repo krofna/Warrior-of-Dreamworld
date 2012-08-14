@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "../client/ResourceManager.hpp"
 #include <iostream>
+#include <cassert>
 
 std::map<std::string, sf::Texture*> ResourceManager::Tilesets;
 
@@ -27,7 +28,7 @@ sf::Texture* ResourceManager::GetTileset(const std::string& FileName)
     {
         sf::Texture* TilesetTexture = new sf::Texture();
         std::clog << "Loading texture: " << FileName << std::endl;
-        TilesetTexture->loadFromFile("data/tileset/" + FileName);
+        assert(TilesetTexture->loadFromFile("data/tileset/" + FileName));
         Tilesets[FileName] = TilesetTexture;
         return TilesetTexture;
     }
