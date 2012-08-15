@@ -69,8 +69,7 @@ void WorldSession::Send(WorldPacket& Packet)
 {
     size_t PacketSize = Packet.GetSize();
     uint16 Opcode = Packet.GetOpcode();
-
-    std::vector<char> buffer(PacketSize + WorldPacket::HEADER_SIZE);
+    buffer.resize(PacketSize + WorldPacket::HEADER_SIZE);
 
     std::memcpy(&buffer[0], &PacketSize, 2);
     std::memcpy(&buffer[2], &Opcode, 2);

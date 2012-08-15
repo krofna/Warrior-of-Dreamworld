@@ -22,6 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "GameState.hpp"
 #include "Globals.hpp"
 #include "boost/thread.hpp"
+#include "Loadable.h"
+#include <queue>
 
 class Game
 {
@@ -30,12 +32,14 @@ public:
     ~Game();
     void Run();
 
-    void ChangeState(GameState* NewState);
+    void AddToLoadQueue(Loadable* pLoadable, char* Argv);
+    void ChangeState(GameState* pState) { this->CurrentState = pState; }
 
 private:
     GameState* CurrentState;
-    boost::mutex StateMutex;
-    GameState* NewState;
+
+    std::queue<std::pair<Loadable*, char*> > LoadQueue;
+    boost::mutex LoadQueueMutex;
 };
 
 #endif

@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Login.hpp"
 #include "boost/bind.hpp"
 #include <cassert>
+#include <cstring>
 
 WorldSession::WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator, Game* sGame) :
 pWorld                    (nullptr),
@@ -95,15 +96,13 @@ void WorldSession::HandleLoginOpcode()
         return;
     }
 
-    uint16 MapID;
+    uint16* MapID = new uint16[1];
     uint32 MeID;
-    Packet >> MapID >> MeID;
+    Packet >> *MapID >> MeID;
 
     World* pWorld = new World(MeID);
     this->pWorld = pWorld;
-    pWorld->LoadTileMap(MapID);
-    std::cout << sGame << std::endl;
-    sGame->ChangeState(pWorld);
+    sGame->AddToLoadQueue(pWorld, (char*)MapID);
     printf("Packet is good!\n");
 }
 
@@ -111,13 +110,18 @@ void WorldSession::HandleAddObjectOpcode()
 {
     uint16 x, y, tx, ty;
     uint32 ObjID;
-    std::string Tileset, Username;
-    Packet >> Tileset >> ObjID >> Username >> x >> y >> tx >> ty;
+    std::string Username, Tileset;
+    char* Argv; // Tileset File name
 
-    WorldObject* pNewObject = new WorldObject(Tileset, Username, x, y, tx, ty);
-    pWorld->WorldObjectMutex.lock();
-    pWorld->WorldObjectMap[ObjID] = pNewObject;
-    pWorld->WorldObjectMutex.unlock();
+    Packet >> Tileset;
+    std::cout << "\"" << Tileset << "\"" << std::endl;
+    Argv = new char[Tileset.size() + 1];
+    std::memcpy(Argv, Tileset.c_str(), Tileset.size() + 1);
+    Packet >> ObjID >> Username >> x >> y >> tx >> ty;
+
+    WorldObject* pNewObject = new WorldObject(Username, x, y, tx, ty);
+    sGame->AddToLoadQueue(pNewObject, Argv);
+    pWorld->AddObject(pNewObject, ObjID);
     printf("Packet is good!\n");
 }
 
@@ -126,9 +130,7 @@ void WorldSession::HandleRemoveObjectOpcode()
     uint32 ObjID;
     Packet >> ObjID;
 
-    pWorld->WorldObjectMutex.lock();
     pWorld->RemoveObject(ObjID);
-    pWorld->WorldObjectMutex.unlock();
 }
 
 void WorldSession::HandleMoveObjectOpcode()

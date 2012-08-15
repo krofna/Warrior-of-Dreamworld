@@ -16,28 +16,20 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef LOGIN_H
-#define LOGIN_H
+#include <fstream>
+#include "boost/thread/mutex.hpp"
 
-#include "GameState.hpp"
-#include "Loadable.h"
-#include "Game.hpp"
-#include <SFML/Graphics.hpp>
-
-class Login : public GameState, public Loadable
+// Thread safe output
+class Log
 {
 public:
-    Login();
-    void HandleEvent(sf::Event Event);
-    void Draw();
-    virtual void Load(char* Argv) { sGame->ChangeState(this); }
+    Log();
+    void Write(const char* format, ...);
+    void Flush();
 
 private:
-    sf::Text UsernameText;
-
-    std::string Username;
-    std::string Password;
-    bool InputFlag;
+    std::ofstream File;
+    boost::mutex LogMutex;
 };
 
-#endif
+extern Log sLog;

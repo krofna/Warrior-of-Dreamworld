@@ -27,6 +27,7 @@ public:
     virtual ~GameState(){}
     virtual void HandleEvent(sf::Event Event) = 0;
     virtual void Draw() = 0;
+    virtual void Load(char* Argv) {}
 };
 
 #endif

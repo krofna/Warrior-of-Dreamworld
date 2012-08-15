@@ -27,8 +27,10 @@ extern sf::RenderWindow* Window;
 #include <iostream>
 #include <fstream>
 
-#include "WorldSession.hpp"
 class WorldSession;
 extern WorldSession* Session;
+
+class Game;
+extern Game* sGame;
 
 #endif

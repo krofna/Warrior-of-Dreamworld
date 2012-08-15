@@ -20,17 +20,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_OBJECT_H
 
 #include "../shared/Defines.hpp"
+#include "Loadable.h"
 #include "Globals.hpp"
 /*
 TODO: Maybe everything should be WorldObject as far as client is concerned?
 */
 
-class WorldObject
+class WorldObject : public Loadable
 {
 public:
-    WorldObject(std::string Tileset, std::string Name, uint16 x, uint16 y, uint16 tx, uint16 ty);
+    WorldObject(std::string Name, uint16 x, uint16 y, uint16 tx, uint16 ty);
     virtual ~WorldObject(){}
     virtual void Draw();
+    virtual void Load(char* Argv);
 
     void UpdateCoordinates(uint16 x, uint16 y);
     sf::Vector2f GetPosition();

@@ -19,8 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 
 Game::Game  (bool FullScreen) :
-CurrentState(nullptr),
-NewState    (0)
+CurrentState(nullptr)
 {
     Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", FullScreen ? sf::Style::Fullscreen : sf::Style::Close);
     Window->setFramerateLimit(60);
@@ -37,14 +36,15 @@ void Game::Run()
 
     while(Window->isOpen())
     {
-        StateMutex.lock();
-        if(NewState)
+        if(LoadQueueMutex.try_lock())
         {
-            delete CurrentState;
-            this->CurrentState = NewState;
-            NewState = nullptr;
+            while(!LoadQueue.empty())
+            {
+                LoadQueue.back().first->Load(LoadQueue.back().second);
+                LoadQueue.pop();
+            }
+            LoadQueueMutex.unlock();
         }
-        StateMutex.unlock();
         while(Window->pollEvent(Event))
         {
             CurrentState->HandleEvent(Event);
@@ -55,8 +55,8 @@ void Game::Run()
     }
 }
 
-void Game::ChangeState(GameState* NewState)
+void Game::AddToLoadQueue(Loadable* pLoadable, char* Argv)
 {
-    boost::mutex::scoped_lock lock_for_change_state(StateMutex);
-    this->NewState = NewState;
+    boost::mutex::scoped_lock lock(LoadQueueMutex);
+    LoadQueue.push(std::make_pair(pLoadable, Argv));
 }

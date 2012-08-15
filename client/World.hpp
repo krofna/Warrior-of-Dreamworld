@@ -24,22 +24,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldObject.hpp"
 #include "Animation.hpp"
 #include "boost/thread.hpp"
+#include "Loadable.h"
 
 class GameState;
 class WorldObject;
 
-class World : public GameState
+class World : public GameState, public Loadable
 {
-    friend class WorldSession;
+    friend class WorldSession; // not needed anymore
 
 public:
     World(uint32 MeID);
     ~World();
 
-    void LoadTileMap(uint16 MapID);
+    virtual void Load(char* Argv);
     void Draw();
     void HandleEvent(sf::Event Event);
 
+    void AddObject(WorldObject* pWorldObject, uint32 ObjectID);
     void RemoveObject(uint32 ObjectID);
 
 private:

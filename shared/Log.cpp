@@ -16,28 +16,36 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef LOGIN_H
-#define LOGIN_H
+#include "Log.hpp"
+#include <iostream>
+#include <cstdarg>
 
-#include "GameState.hpp"
-#include "Loadable.h"
-#include "Game.hpp"
-#include <SFML/Graphics.hpp>
+Log sLog;
 
-class Login : public GameState, public Loadable
+Log::Log() :
+File    ("Log.txt")
 {
-public:
-    Login();
-    void HandleEvent(sf::Event Event);
-    void Draw();
-    virtual void Load(char* Argv) { sGame->ChangeState(this); }
+}
 
-private:
-    sf::Text UsernameText;
+void Log::Write(const char* format, ...)
+{
+    va_list ArgList;
+    char Query[128];
 
-    std::string Username;
-    std::string Password;
-    bool InputFlag;
-};
+    va_start(ArgList, format);
+    vsnprintf_s(Query, 128, format, ArgList);
+    va_end(ArgList);
 
-#endif
+    boost::mutex::scoped_lock lock(LogMutex);
+
+    std::cout << (char*)Query << "\n";
+    File << (char*)Query << "\n";
+}
+
+void Log::Flush()
+{
+    boost::mutex::scoped_lock lock(LogMutex);
+
+    std::cout << std::flush;
+    File.flush();
+}

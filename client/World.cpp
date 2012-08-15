@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 #include "Utilities.hpp"
 #include "Globals.hpp"
+#include "Game.hpp"
+#include "WorldSession.hpp"
 #include "ResourceManager.hpp"
 #include "../shared/Math.hpp"
 #include <cassert>
@@ -33,7 +35,6 @@ CameraRight  (WindowWidth),
 CameraBottom (WindowHeight),
 MeID         (MeID)
 {
-   Window->setView(WorldView);
 }
 
 World::~World()
@@ -44,11 +45,13 @@ World::~World()
     }
 }
 
-void World::LoadTileMap(uint16 MapID)
+void World::Load(char* Argv)
 {
+    Window->setView(WorldView);
+
     ResourceManager::RemoveTileset(TilesetFileName);
 
-    std::string Path = "data/maps/map" + IntToString(MapID) + ".txt";
+    std::string Path = "data/maps/map" + IntToString(*(uint16*)Argv) + ".txt";
     std::ifstream File(Path);
     assert(File.good());
 
@@ -75,6 +78,10 @@ void World::LoadTileMap(uint16 MapID)
 
         index += 4;
     }
+
+    delete[] Argv;
+
+    sGame->ChangeState(this);
 }
 
 void World::Draw()
@@ -191,14 +198,19 @@ void World::HandleEvent(sf::Event Event)
     }
 }
 
+void World::AddObject(WorldObject* pWorldObject, uint32 ObjectID)
+{
+    boost::mutex::scoped_lock lock(WorldObjectMutex);
+    this->WorldObjectMap[ObjectID] = pWorldObject;
+}
+
 void World::RemoveObject(uint32 ObjectID)
 {
-    WorldObjectMutex.lock();
+    boost::mutex::scoped_lock lock(WorldObjectMutex);
     auto Iter = WorldObjectMap.find(ObjectID);
     if(Iter == WorldObjectMap.end())
         return;
 
     delete Iter->second;
     WorldObjectMap.erase(Iter);
-    WorldObjectMutex.unlock();
 }

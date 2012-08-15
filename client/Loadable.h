@@ -16,28 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef LOGIN_H
-#define LOGIN_H
+#ifndef LOADABLE_H
+#define LOADABLE_H
 
-#include "GameState.hpp"
-#include "Loadable.h"
-#include "Game.hpp"
-#include <SFML/Graphics.hpp>
-
-class Login : public GameState, public Loadable
+class Loadable
 {
 public:
-    Login();
-    void HandleEvent(sf::Event Event);
-    void Draw();
-    virtual void Load(char* Argv) { sGame->ChangeState(this); }
-
-private:
-    sf::Text UsernameText;
-
-    std::string Username;
-    std::string Password;
-    bool InputFlag;
+    virtual void Load(char* Argv) = 0;
 };
 
 #endif

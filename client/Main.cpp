@@ -28,7 +28,6 @@ int main()
     ofstream ErrorLog("Error Log.txt");
     cerr.rdbuf(ErrorLog.rdbuf());
 
-    Game* sGame;
     Window = new sf::RenderWindow;
 
     try
@@ -56,7 +55,7 @@ int main()
             std::string Ip;
             ConfigFile >> Ip;
 
-            sGame->ChangeState(new Login());
+            sGame->AddToLoadQueue(new Login(), nullptr);
         }
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
