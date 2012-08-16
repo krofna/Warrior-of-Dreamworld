@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define LOGIN_H
 
 #include "GameState.hpp"
-#include "Loadable.h"
 #include "Game.hpp"
 #include <SFML/Graphics.hpp>
 

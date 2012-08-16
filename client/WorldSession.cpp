@@ -77,7 +77,7 @@ void WorldSession::Send(WorldPacket& Packet)
 
 void WorldSession::HandleSend(uint16 Opcode)
 {
-    printf("Sent: %s\n", OpcodeTable[Opcode].name);
+    sLog.Write("Sent: %s\n", OpcodeTable[Opcode].name);
 }
 
 void WorldSession::HandleNULL()

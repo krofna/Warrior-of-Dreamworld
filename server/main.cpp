@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <fstream>
 #include "boost/thread.hpp"
 #include <csignal>
+#include "../shared/Log.hpp"
 
 int main()
 {
@@ -39,11 +40,11 @@ int main()
     }
     catch(std::exception& e)
     {
-        printf("%s\n", e.what());
+        sLog.Write("%s\n", e.what());
     }
     catch(...)
     {
-        printf("Unhandled exception");
+        sLog.Write("Unhandled exception");
     }
 
     delete sWorld;

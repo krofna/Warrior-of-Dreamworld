@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_OBJECT_H
 
 #include "../shared/Defines.hpp"
-#include "Loadable.h"
+#include "Loadable.hpp"
 #include "Globals.hpp"
 /*
 TODO: Maybe everything should be WorldObject as far as client is concerned?

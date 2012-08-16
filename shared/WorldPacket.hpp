@@ -40,7 +40,8 @@ public:
 
     void Clear();
 
-    void* GetData();
+    void* GetByteBuffer();
+    char* GetData();
     uint16 GetOpcode();
     void SetOpcode(uint16 Opcode);
     uint16 GetSize();

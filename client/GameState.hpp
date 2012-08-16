@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GAME_STATE_H
 
 #include <SFML/Graphics.hpp>
-#include "Loadable.h"
+#include "Loadable.hpp"
 
 class WorldPacket;
 

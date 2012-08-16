@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "WorldObject.hpp"
 #include "../shared/Math.hpp"
+#include "../shared/Log.hpp"
 
 #define MAX_MAP_WIDTH 50
 #define MAX_MAP_HEIGHT 50
@@ -189,7 +190,7 @@ void Pathfinder::GeneratePath()
 
     } while(!OpenList.empty());
 
-    printf("Could not generate path");
+    sLog.Write("Could not generate path");
 }
 
 void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)

@@ -225,6 +225,6 @@ void World::RemoveObject(uint32 ObjectID)
 
 void World::AddAnimation(Animation* pAnimation)
 {
-    boost::mutex::scoped_lock lock (DrawingMutex);
+    boost::mutex::scoped_lock lock(DrawingMutex);
     Animations.push_back(pAnimation);
 }

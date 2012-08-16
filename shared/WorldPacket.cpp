@@ -37,9 +37,21 @@ uint16 WorldPacket::GetSize()
     return ByteBuffer.size();
 }
 
-void* WorldPacket::GetData()
+void* WorldPacket::GetByteBuffer()
 {
-    return (void*)&ByteBuffer[0];
+    return &ByteBuffer[0];
+}
+
+char* WorldPacket::GetData()
+{
+    char* Data = (char*)operator new(ByteBuffer.size() + HEADER_SIZE);
+    uint16 Size = GetSize();
+
+    std::memcpy((void*)Data[0], &Size, 2);
+    std::memcpy((void*)Data[2], &Opcode, 2);
+    std::memcpy((void*)Data[4], &ByteBuffer[0], ByteBuffer.size());
+
+    return Data;
 }
 
 uint16 WorldPacket::GetOpcode()

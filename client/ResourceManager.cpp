@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "../client/ResourceManager.hpp"
-#include <iostream>
+#include "../shared/Log.hpp"
 #include <cassert>
 
 std::map<std::string, sf::Texture*> ResourceManager::Tilesets;
@@ -27,7 +27,7 @@ sf::Texture* ResourceManager::GetTileset(const std::string& FileName)
     if(Tilesets.find(FileName) == Tilesets.end())
     {
         sf::Texture* TilesetTexture = new sf::Texture();
-        std::clog << "Loading texture: " << FileName << std::endl;
+        sLog.Write("Loading texture: %s", FileName.c_str());
         assert(TilesetTexture->loadFromFile("data/tileset/" + FileName));
         Tilesets[FileName] = TilesetTexture;
         return TilesetTexture;

@@ -52,8 +52,8 @@ public:
     PlayerPtr GetPlayer();
 
 private:
-    void HandleSend(uint16 Opcode);
-    void HandleReceive();
+    void HandleSend(char* Data, const boost::system::error_code& Error);
+    void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader();
     
     void SendLoginFailPacket(uint16 Reason);
@@ -61,7 +61,6 @@ private:
     Socket Socket;
 
     uint16 Header[2];
-    std::vector<char> buffer;
 
     WorldPacket Packet;
     PlayerPtr pPlayer;

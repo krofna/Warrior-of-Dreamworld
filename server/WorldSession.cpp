@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include "World.hpp"
 #include "boost/bind.hpp"
-#include <iostream>
+#include "../shared/Log.hpp"
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
@@ -41,7 +41,9 @@ void WorldSession::Start()
 {
     // TODO: make it non blocking, store header into vector<char> ByteBuffer
     // and make this nicer
-    boost::asio::async_read(Socket, boost::asio::buffer((void*)&Header, 4), boost::bind(&WorldSession::HandleHeader, this));
+    boost::asio::async_read(Socket, 
+        boost::asio::buffer((void*)&Header, 4), 
+        boost::bind(&WorldSession::HandleHeader, this));
 }
 
 void WorldSession::HandleHeader()
@@ -49,17 +51,19 @@ void WorldSession::HandleHeader()
     uint16 Size = Header[0];
     Packet.SetOpcode(Header[1]);
     Packet.Resize(Size);
-    boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Size), boost::bind(&WorldSession::HandleReceive, this));
+    boost::asio::async_read(Socket, 
+        boost::asio::buffer(Packet.GetByteBuffer(), Size), 
+        boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
 }
 
-void WorldSession::HandleReceive()
+void WorldSession::HandleReceive(const boost::system::error_code& Error)
 {
     if(Packet.GetOpcode() >= MSG_COUNT)
     {
-        printf("Received %u: Bad opcode!\n", Packet.GetOpcode());
+        sLog.Write("Received %u: Bad opcode!\n", Packet.GetOpcode());
         Start();
     }
-    printf("Received: %s, ", OpcodeTable[Packet.GetOpcode()].name);
+    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
     Start();
@@ -67,19 +71,25 @@ void WorldSession::HandleReceive()
 
 void WorldSession::Send(WorldPacket& Packet)
 {
-    size_t PacketSize = Packet.GetSize();
-    uint16 Opcode = Packet.GetOpcode();
-    buffer.resize(PacketSize + WorldPacket::HEADER_SIZE);
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()]);
+    char* Data = Packet.GetData();
 
-    std::memcpy(&buffer[0], &PacketSize, 2);
-    std::memcpy(&buffer[2], &Opcode, 2);
-    std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
-    boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
+    boost::asio::async_write(Socket, 
+        boost::asio::buffer(Data, Packet.GetSize() + WorldPacket::HEADER_SIZE), 
+        boost::bind(&WorldSession::HandleSend, this, Data, boost::asio::placeholders::error));
 }
 
-void WorldSession::HandleSend(uint16 Opcode)
+void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error)
 {
-    std::cout << "SENT: " << OpcodeTable[Opcode].name << "\n";
+    if(!Error)
+    {
+        sLog.Write("Successful!\n");
+    }
+    else
+    {
+        sLog.Write("Failed!\n");
+    }
+    delete Data;
 }
 
 void WorldSession::SendLoginFailPacket(uint16 Reason)
@@ -140,7 +150,7 @@ void WorldSession::HandleMoveObjectOpcode()
     uint8 Direction;
     Packet >> Direction;
 
-    printf("Packet is good!\n");
+    sLog.Write("Packet is good!\n");
 
     // If player colided, return
     if(!pPlayer->UpdateCoordinates(Direction))
@@ -163,11 +173,11 @@ void WorldSession::HandleCastSpellOpcode()
 
     if(pSpell == nullptr)
     {
-        printf("Invalid Spell ID!\n");
+        sLog.Write("Invalid Spell ID!\n");
         return;
     }
 
-    printf("Packet is good!\n");
+    sLog.Write("Packet is good!\n");
 
     pPlayer->CastSpell(pSpell, Angle);
 }
