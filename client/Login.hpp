@@ -24,13 +24,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include <SFML/Graphics.hpp>
 
-class Login : public GameState, public Loadable
+class Login : public GameState
 {
 public:
     Login();
     void HandleEvent(sf::Event Event);
     void Draw();
-    virtual void Load(char* Argv) { sGame->ChangeState(this); }
+    virtual void Load(WorldPacket Argv) { sGame->ChangeState(this); }
 
 private:
     sf::Text UsernameText;

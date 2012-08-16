@@ -45,13 +45,15 @@ World::~World()
     }
 }
 
-void World::Load(char* Argv)
+void World::Load(WorldPacket Argv)
 {
     Window->setView(WorldView);
 
+    uint16 MapID;
+    Argv >> MapID;
     ResourceManager::RemoveTileset(TilesetFileName);
+    std::string Path = "data/maps/map" + IntToString(MapID) + ".txt";
 
-    std::string Path = "data/maps/map" + IntToString(*(uint16*)Argv) + ".txt";
     std::ifstream File(Path);
     assert(File.good());
 
@@ -78,8 +80,6 @@ void World::Load(char* Argv)
 
         index += 4;
     }
-
-    delete[] Argv;
 
     sGame->ChangeState(this);
 }

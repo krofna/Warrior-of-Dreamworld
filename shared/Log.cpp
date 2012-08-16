@@ -47,5 +47,5 @@ void Log::Flush()
     boost::mutex::scoped_lock lock(LogMutex);
 
     std::cout << std::flush;
-    File.flush();
+    File << std::flush;
 }

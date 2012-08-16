@@ -26,13 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 TODO: Maybe everything should be WorldObject as far as client is concerned?
 */
 
+class WorldPacket;
+
 class WorldObject : public Loadable
 {
 public:
-    WorldObject(std::string Name, uint16 x, uint16 y, uint16 tx, uint16 ty);
     virtual ~WorldObject(){}
     virtual void Draw();
-    virtual void Load(char* Argv);
+    virtual void Load(WorldPacket Argv);
 
     void UpdateCoordinates(uint16 x, uint16 y);
     sf::Vector2f GetPosition();

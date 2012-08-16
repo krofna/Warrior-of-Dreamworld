@@ -110,7 +110,7 @@ void Player::SaveToDB()
 WorldPacket Player::PackData()
 {
     WorldPacket Packet((uint16)MSG_ADD_OBJECT);
-    Packet << Tileset << GetObjectID() << Username << GetX() << GetY() << tx << ty;
+    Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }
 

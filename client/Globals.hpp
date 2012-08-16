@@ -24,8 +24,7 @@ extern uint16 WindowWidth;
 extern uint16 WindowHeight;
 extern sf::RenderWindow* Window;
 
-#include <iostream>
-#include <fstream>
+#include "../shared/Log.hpp"
 
 class WorldSession;
 extern WorldSession* Session;

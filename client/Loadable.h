@@ -19,10 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LOADABLE_H
 #define LOADABLE_H
 
+#include "../shared/WorldPacket.hpp"
+
 class Loadable
 {
 public:
-    virtual void Load(char* Argv) = 0;
+    virtual void Load(WorldPacket Argv) = 0;
 };
 
 #endif

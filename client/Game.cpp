@@ -40,7 +40,7 @@ void Game::Run()
         {
             while(!LoadQueue.empty())
             {
-                LoadQueue.back().first->Load(LoadQueue.back().second);
+                LoadQueue.front().first->Load(LoadQueue.front().second);
                 LoadQueue.pop();
             }
             LoadQueueMutex.unlock();
@@ -55,7 +55,7 @@ void Game::Run()
     }
 }
 
-void Game::AddToLoadQueue(Loadable* pLoadable, char* Argv)
+void Game::AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv)
 {
     boost::mutex::scoped_lock lock(LoadQueueMutex);
     LoadQueue.push(std::make_pair(pLoadable, Argv));

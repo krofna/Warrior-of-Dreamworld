@@ -44,7 +44,7 @@ void Creature::Update(int32 diff)
 WorldPacket Creature::PackData()
 {
     WorldPacket Packet((uint16)MSG_ADD_OBJECT);
-    Packet << pTemplate->Tileset << ObjID << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
+    Packet << ObjID << pTemplate->Tileset << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
     return Packet;
 }
 

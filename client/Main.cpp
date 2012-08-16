@@ -55,7 +55,7 @@ int main()
             std::string Ip;
             ConfigFile >> Ip;
 
-            sGame->AddToLoadQueue(new Login(), nullptr);
+            sGame->AddToLoadQueue(new Login(), WorldPacket(0));
         }
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();

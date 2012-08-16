@@ -32,13 +32,13 @@ public:
     ~Game();
     void Run();
 
-    void AddToLoadQueue(Loadable* pLoadable, char* Argv);
+    void AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv);
     void ChangeState(GameState* pState) { this->CurrentState = pState; }
 
 private:
     GameState* CurrentState;
 
-    std::queue<std::pair<Loadable*, char*> > LoadQueue;
+    std::queue<std::pair<Loadable*, WorldPacket> > LoadQueue;
     boost::mutex LoadQueueMutex;
 };
 

@@ -24,12 +24,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldObject.hpp"
 #include "Animation.hpp"
 #include "boost/thread.hpp"
-#include "Loadable.h"
 
 class GameState;
 class WorldObject;
 
-class World : public GameState, public Loadable
+class World : public GameState
 {
     friend class WorldSession; // not needed anymore
 
@@ -37,7 +36,7 @@ public:
     World(uint32 MeID);
     ~World();
 
-    virtual void Load(char* Argv);
+    virtual void Load(WorldPacket Argv);
     void Draw();
     void HandleEvent(sf::Event Event);
 

@@ -20,14 +20,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GAME_STATE_H
 
 #include <SFML/Graphics.hpp>
+#include "Loadable.h"
 
-class GameState
+class WorldPacket;
+
+class GameState : public Loadable
 {
 public:
     virtual ~GameState(){}
     virtual void HandleEvent(sf::Event Event) = 0;
     virtual void Draw() = 0;
-    virtual void Load(char* Argv) {}
+    virtual void Load(WorldPacket Argv) = 0;
 };
 
 #endif
