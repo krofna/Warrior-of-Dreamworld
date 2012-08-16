@@ -21,6 +21,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "../shared/WorldPacket.hpp"
 
+// This ABC is a hack which allows us to make
+// main thread load all OpenGL stuff which
+// would break if loaded from other threads
+
+// We achieve this by calling
+// sGame->AddToLoadQueue(Loadable*, WorldPacket)
+// where WorldPacket contains all params
+// required by Load function
+
 class Loadable
 {
 public:

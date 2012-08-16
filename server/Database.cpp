@@ -84,7 +84,7 @@ QueryResult Database::Query(const char* sql)
     std::auto_ptr<sql::PreparedStatement> PStatement(Connection->prepareStatement(sql));
     QueryResult Result(PStatement->executeQuery());
 
-    return std::move(Result);
+    return Result;
 }
 
 QueryResult Database::PQuery(const char* sql, ...)
@@ -96,5 +96,5 @@ QueryResult Database::PQuery(const char* sql, ...)
     vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
     va_end(ArgList);
 
-    return std::move(this->Query(Query));
+    return this->Query(Query);
 }

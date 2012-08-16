@@ -30,8 +30,7 @@ class WorldObject;
 
 class World : public GameState
 {
-    friend class WorldSession; // not needed anymore
-
+    friend class WorldSession;
 public:
     World(uint32 MeID);
     ~World();
@@ -42,6 +41,8 @@ public:
 
     void AddObject(WorldObject* pWorldObject, uint32 ObjectID);
     void RemoveObject(uint32 ObjectID);
+
+    void AddAnimation(Animation* pAnimation);
 
 private:
     void HandleTyping(sf::Event Event);
@@ -63,11 +64,10 @@ private:
     // END TODO
 
     std::map<uint32, WorldObject*> WorldObjectMap;
-    std::vector<Animation> Animations; // TODO; Only for spells SpellAnimations w/e
+    std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint32 MeID;
 
-    boost::mutex WorldObjectMutex;
-    boost::mutex AnimationsMutex;
+    boost::mutex DrawingMutex;
 };
 
 #endif

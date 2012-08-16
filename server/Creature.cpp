@@ -35,6 +35,11 @@ pTemplate         (pTemplate)
     MovementGenerator = new Pathfinder(WorldObjectPtr(this));
 }
 
+Creature::~Creature()
+{
+    delete pAI;
+}
+
 void Creature::Update(int32 diff)
 {
     MovementGenerator->Update(diff);

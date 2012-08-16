@@ -43,6 +43,11 @@ World::~World()
     {
         delete ObjIter->second;
     }
+
+    for(auto AnimIter = Animations.begin(); AnimIter != Animations.end(); ++AnimIter)
+    {
+        delete *AnimIter;
+    }
 }
 
 void World::Load(WorldPacket Argv)
@@ -81,11 +86,16 @@ void World::Load(WorldPacket Argv)
         index += 4;
     }
 
-    sGame->ChangeState(this);
+    sGame->PopState();
+    sGame->PushState(this);
 }
 
 void World::Draw()
 {
+    // Network thread shouldn't add new stuff while drawing
+    boost::mutex::scoped_lock lock(DrawingMutex);
+
+
     if(MoveWorldView != MOVE_STOP)
     {
         if(MoveWorldView & MOVE_UP && CameraTop > 0)
@@ -123,15 +133,13 @@ void World::Draw()
     Window->draw(TileMap, MapStates);
 
     // Draw static objects
-    WorldObjectMutex.lock();
     for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
         (*i).second->Draw();
-    WorldObjectMutex.unlock();
 
     // Update animations
     for(auto i = Animations.begin(); i != Animations.end(); ++i)
     {
-        i->Update();
+        (*i)->Update();
     }
 }
 
@@ -200,17 +208,23 @@ void World::HandleEvent(sf::Event Event)
 
 void World::AddObject(WorldObject* pWorldObject, uint32 ObjectID)
 {
-    boost::mutex::scoped_lock lock(WorldObjectMutex);
+    boost::mutex::scoped_lock lock(DrawingMutex);
     this->WorldObjectMap[ObjectID] = pWorldObject;
 }
 
 void World::RemoveObject(uint32 ObjectID)
 {
-    boost::mutex::scoped_lock lock(WorldObjectMutex);
+    boost::mutex::scoped_lock lock(DrawingMutex);
     auto Iter = WorldObjectMap.find(ObjectID);
     if(Iter == WorldObjectMap.end())
         return;
 
     delete Iter->second;
     WorldObjectMap.erase(Iter);
+}
+
+void World::AddAnimation(Animation* pAnimation)
+{
+    boost::mutex::scoped_lock lock (DrawingMutex);
+    Animations.push_back(pAnimation);
 }

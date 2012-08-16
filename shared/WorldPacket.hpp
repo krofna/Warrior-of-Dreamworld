@@ -27,7 +27,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // Todo:
 // - Store size/opcode in bytebuffer
 // - void Clear(uint16 Opcode);
+// - Base class ByteBuffer; same shit, but no Opcode,
+// will be useful for Loadable::Load
 
+// Implements heterogeneous container
+// Not necessarily used for sending 
+// over network. See: Loadable::Load
 class WOD_DLL_DECL WorldPacket
 {
 public:
@@ -40,6 +45,9 @@ public:
     void SetOpcode(uint16 Opcode);
     uint16 GetSize();
     void Resize(uint16 Size);
+    void UpdateWritePos();
+
+    template<class T> void ReadSkip();
 
     inline WorldPacket& operator <<(uint8 data);
     inline WorldPacket& operator <<(uint16 data);
@@ -78,6 +86,11 @@ private:
 
     std::vector<char> ByteBuffer;
 };
+
+template<class T> void WorldPacket::ReadSkip()
+{
+    ReadPos +=  sizeof(T);
+}
 
 template<class T> void WorldPacket::Append(T data)
 {

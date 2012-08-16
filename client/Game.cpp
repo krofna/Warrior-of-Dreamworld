@@ -18,8 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Game.hpp"
 
-Game::Game  (bool FullScreen) :
-CurrentState(nullptr)
+Game::Game  (bool FullScreen)
 {
     Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", FullScreen ? sf::Style::Fullscreen : sf::Style::Close);
     Window->setFramerateLimit(60);
@@ -27,7 +26,7 @@ CurrentState(nullptr)
 
 Game::~Game()
 {
-    delete CurrentState;
+    PopAllStates();
 }
 
 void Game::Run()
@@ -47,10 +46,10 @@ void Game::Run()
         }
         while(Window->pollEvent(Event))
         {
-            CurrentState->HandleEvent(Event);
+            StateStack.top()->HandleEvent(Event);
         }
         Window->clear();
-        CurrentState->Draw();
+        StateStack.top()->Draw();
         Window->display();
     }
 }

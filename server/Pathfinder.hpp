@@ -102,6 +102,7 @@ private:
 
     // Pointer to 2D array of pre-allocated nodes used by pathfinder
     // Its size same as size of largest map
+    // [TODO]: Maybe make it a bit bigger to get nicer path?
     static PathfinderNode* PathfindingGrid; // 2D
     static uint8* PathfindingStatusGrid;    // 2D
 

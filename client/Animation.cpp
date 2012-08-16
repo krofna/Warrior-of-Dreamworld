@@ -21,16 +21,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <cmath>
 #include "ResourceManager.hpp"
 
-// TODO: [PH]
-Animation::Animation(uint16 DisplayID, sf::Vector2f Position, float Angle, uint32 ID) :
-Angle               (Angle),
-Sprite              (*ResourceManager::GetTileset("t.png")),
-ID                  (ID),
-Time                (sf::microseconds(0))
-//DisplayID         (Do something with it)
-//Speed
+void Animation::Load(WorldPacket Argv)
 {
+    sf::Vector2f Position;
+    Argv.ReadSkip<uint16>(); // Effect
+    Argv.ReadSkip<uint16>(); // DisplayID
+    Argv >> Angle >> ID >> Position.x >> Position.y;
+    Sprite.setTexture(*ResourceManager::GetTileset("t.png")); // [PH], use DisplayID
     Sprite.setPosition(Position);
+    Time = sf::microseconds(0);
 }
 
 void Animation::Update()

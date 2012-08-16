@@ -30,7 +30,7 @@ public:
     Login();
     void HandleEvent(sf::Event Event);
     void Draw();
-    virtual void Load(WorldPacket Argv) { sGame->ChangeState(this); }
+    virtual void Load(WorldPacket Argv) { sGame->PopAllStates(); sGame->PushState(this); }
 
 private:
     sf::Text UsernameText;

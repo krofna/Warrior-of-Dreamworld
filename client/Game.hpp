@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/thread.hpp"
 #include "Loadable.h"
 #include <queue>
+#include <stack>
 
 class Game
 {
@@ -33,10 +34,13 @@ public:
     void Run();
 
     void AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv);
-    void ChangeState(GameState* pState) { this->CurrentState = pState; }
+    void PushState(GameState* pState) { StateStack.push(pState); }
+    void PopState() { delete StateStack.top(); StateStack.pop(); }
+    void PopAllStates() { while(!StateStack.empty()) { delete StateStack.top(); StateStack.pop(); }}
+
 
 private:
-    GameState* CurrentState;
+    std::stack<GameState*> StateStack;
 
     std::queue<std::pair<Loadable*, WorldPacket> > LoadQueue;
     boost::mutex LoadQueueMutex;

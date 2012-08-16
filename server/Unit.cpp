@@ -40,7 +40,7 @@ void Unit::CastSpell(Spell* pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
     WorldPacket Packet((uint16)MSG_CAST_SPELL);
-    Packet << pSpell->Effect << ObjID << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
+    Packet << ObjID << pSpell->Effect << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     pMap->SendToPlayers(Packet);
     pMap->AddSpell(UnitPtr(this), pSpell, Angle);
 }

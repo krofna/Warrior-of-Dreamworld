@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/bind.hpp"
 #include <cassert>
 #include <cstring>
+
 WorldSession::WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator, Game* sGame) :
 pWorld                    (nullptr),
 Socket                    (io),
@@ -132,30 +133,28 @@ void WorldSession::HandleMoveObjectOpcode()
     uint16 x, y;
     Packet >> ObjID >> x >> y;
 
-    pWorld->WorldObjectMutex.lock();
+    pWorld->DrawingMutex.lock();
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
-    pWorld->WorldObjectMutex.unlock();
+    pWorld->DrawingMutex.unlock();
     printf("Packet is good!\n");
 }
 
 void WorldSession::HandleCastSpellOpcode()
 {
-    float Angle;
-    uint16 Effect, DisplayID;
     uint32 CasterID;
-    uint32 SpellBoxID;
-    Packet >> Effect >> CasterID >> DisplayID >> Angle >> SpellBoxID;
-
+    Packet >> CasterID;
+    Packet.UpdateWritePos();
     WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
-    pWorld->Animations.push_back(Animation(DisplayID, pCaster->GetPosition(), Angle, SpellBoxID));
-
+    Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
+    Animation* pAnim = new Animation;
+    sGame->AddToLoadQueue(pAnim, Packet);
+    pWorld->AddAnimation(pAnim);
     printf("Packet is good!\n");
 }
 
 void WorldSession::HandleLogOutOpcode()
 {
-    // [PH] TODO: Back to login screen, this is pretty nasty
-    //Window->close();
+    sGame->AddToLoadQueue(new Login(), WorldPacket(0));
 }
 
 void WorldSession::SendMovementRequest(uint8 Direction)

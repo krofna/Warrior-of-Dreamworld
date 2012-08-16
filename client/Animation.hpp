@@ -20,12 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define ANIMATION_H
 
 #include "../shared/Defines.hpp"
-// TODO: SpellAnimation? SpellBox?
-class Animation
+#include "Loadable.h"
+// TODO: SpellAnimation? SpellBox? (name change)
+class Animation : public Loadable
 {
 public:
-    Animation(uint16 DisplayID, sf::Vector2f Position, float Angle, uint32 ID);
     void Update();
+    virtual void Load(WorldPacket Argv);
     uint32 GetID() const
     {
         return ID;
