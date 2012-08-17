@@ -38,8 +38,8 @@ void Log::Write(const char* format, ...)
 
     boost::mutex::scoped_lock lock(LogMutex);
 
-    std::cout << (char*)Query;
-    File << (char*)Query;
+    std::cout << (char*)Query << "\n";
+    File << (char*)Query << "\n";
 }
 
 void Log::Flush()

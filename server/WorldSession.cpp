@@ -39,10 +39,8 @@ PlayerPtr WorldSession::GetPlayer()
 
 void WorldSession::Start()
 {
-    // TODO: make it non blocking, store header into vector<char> ByteBuffer
-    // and make this nicer
     boost::asio::async_read(Socket, 
-        boost::asio::buffer((void*)&Header, 4), 
+        boost::asio::buffer(Header, 4), 
         boost::bind(&WorldSession::HandleHeader, this));
 }
 
@@ -58,10 +56,16 @@ void WorldSession::HandleHeader()
 
 void WorldSession::HandleReceive(const boost::system::error_code& Error)
 {
+    Packet.ResetReadPos();
+    if(Error)
+    {
+        sLog.Write("Failed to receive packet");
+        return; // This has effect of disconnecting - TODO: do proper cleanup
+    }
     if(Packet.GetOpcode() >= MSG_COUNT)
     {
-        sLog.Write("Received %u: Bad opcode!\n", Packet.GetOpcode());
-        Start();
+        sLog.Write("Received %u: Bad opcode!", Packet.GetOpcode());
+        return; // This has effect of disconnecting - TODO: do proper cleanup
     }
     sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
@@ -83,11 +87,11 @@ void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error
 {
     if(!Error)
     {
-        sLog.Write("Successful!\n");
+        sLog.Write("Successful!");
     }
     else
     {
-        sLog.Write("Failed!\n");
+        sLog.Write("Failed!");
     }
     delete Data;
 }
@@ -143,6 +147,7 @@ void WorldSession::HandleLoginOpcode()
     // Add player to the world
     pPlayer->BindSession(this);
     sWorld->AddSession(this);
+    printf("Packet is good!");
 }
 
 void WorldSession::HandleMoveObjectOpcode()
@@ -150,7 +155,7 @@ void WorldSession::HandleMoveObjectOpcode()
     uint8 Direction;
     Packet >> Direction;
 
-    sLog.Write("Packet is good!\n");
+    sLog.Write("Packet is good!");
 
     // If player colided, return
     if(!pPlayer->UpdateCoordinates(Direction))
@@ -173,11 +178,11 @@ void WorldSession::HandleCastSpellOpcode()
 
     if(pSpell == nullptr)
     {
-        sLog.Write("Invalid Spell ID!\n");
+        sLog.Write("Invalid Spell ID!");
         return;
     }
 
-    sLog.Write("Packet is good!\n");
+    sLog.Write("Packet is good!");
 
     pPlayer->CastSpell(pSpell, Angle);
 }

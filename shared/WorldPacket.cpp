@@ -47,9 +47,11 @@ char* WorldPacket::GetData()
     char* Data = (char*)operator new(ByteBuffer.size() + HEADER_SIZE);
     uint16 Size = GetSize();
 
-    std::memcpy((void*)Data[0], &Size, 2);
-    std::memcpy((void*)Data[2], &Opcode, 2);
-    std::memcpy((void*)Data[4], &ByteBuffer[0], ByteBuffer.size());
+    std::memcpy((void*)&Data[0], &Size, 2);
+    std::memcpy((void*)&Data[2], &Opcode, 2);
+    std::memcpy((void*)&Data[4], &ByteBuffer[0], ByteBuffer.size());
+
+    std::cout << "Sending packet, size: " << Size << ", opcode: " << Opcode << std::endl;
 
     return Data;
 }
@@ -72,6 +74,11 @@ void WorldPacket::Resize(uint16 Size)
 void WorldPacket::UpdateWritePos()
 {
     WritePos = ByteBuffer.size();
+}
+
+void WorldPacket::ResetReadPos()
+{
+    ReadPos = 0;
 }
 
 WorldPacket& WorldPacket::operator <<(uint8 data)   { Append<uint8>(data);  return *this; }

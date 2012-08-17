@@ -53,13 +53,12 @@ public:
 
 private:
     void Start();
-    void HandlePacket();
+    void HandlePacket(const boost::system::error_code& Error);
     void HandleHeader();
-    void HandleSend(uint16 Opcode);
+    void HandleSend(char* Data, const boost::system::error_code& Error);
 
     tcp::socket Socket;
     uint16 Header[2];
-    std::vector<char> buffer;
     WorldPacket Packet;
 
     Game* sGame;

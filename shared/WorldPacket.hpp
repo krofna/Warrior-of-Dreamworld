@@ -47,6 +47,7 @@ public:
     uint16 GetSize();
     void Resize(uint16 Size);
     void UpdateWritePos();
+    void ResetReadPos();
 
     template<class T> void ReadSkip();
 

@@ -36,48 +36,61 @@ sGame                     (sGame)
 
 void WorldSession::Start()
 {
-    boost::asio::async_read(Socket, boost::asio::buffer(Header, 4), boost::bind(&WorldSession::HandleHeader, this));
+    boost::asio::async_read(Socket, 
+        boost::asio::buffer(Header, 4), 
+        boost::bind(&WorldSession::HandleHeader, this));
 }
 
 void WorldSession::HandleHeader()
 {
-    Packet.Clear();
+    sLog.Write("Got packet, size: %u, opcode: %u\n", Header[0], Header[1]);
     Packet.Resize(Header[0]);
-    boost::asio::async_read(Socket, boost::asio::buffer(Packet.GetData(), Header[0]), boost::bind(&WorldSession::HandlePacket, this));
+    Packet.SetOpcode(Header[1]);
+    boost::asio::async_read(Socket, 
+        boost::asio::buffer(Packet.GetByteBuffer(), Header[0]), 
+        boost::bind(&WorldSession::HandlePacket, this, boost::asio::placeholders::error));
 }
 
-void WorldSession::HandlePacket()
+void WorldSession::HandlePacket(const boost::system::error_code& Error)
 {
-    if(Header[1] >= MSG_COUNT)
+    Packet.ResetReadPos();
+    if(Error)
     {
-        printf("Recieved %u: Bad opcode!\n", Header[1]);
+        sLog.Write("Failed to receive packet");
         return;
     }
-    printf("Recieved: %s, ", OpcodeTable[Header[1]].name);
+    if(Packet.GetOpcode() >= MSG_COUNT)
+    {
+        sLog.Write("Received %u: Bad opcode!", Packet.GetOpcode());
+        return;
+    }
+    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
-    (this->*OpcodeTable[Header[1]].Handler)();
-    Packet.Clear();
-
+    (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
     Start();
 }
 
 void WorldSession::Send(WorldPacket& Packet)
 {
-    size_t PacketSize = Packet.GetSize();
-    uint16 Opcode = Packet.GetOpcode();
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()]);
+    char* Data = Packet.GetData();
 
-    buffer.resize(PacketSize + WorldPacket::HEADER_SIZE);
-
-    std::memcpy(&buffer[0], &PacketSize, 2);
-    std::memcpy(&buffer[2], &Opcode, 2);
-    std::memcpy(&buffer[4], Packet.GetData(), Packet.GetSize());
-    
-    boost::asio::async_write(Socket, boost::asio::buffer(buffer, buffer.size()), boost::bind(&WorldSession::HandleSend, this, Opcode));
+    boost::asio::async_write(Socket, 
+        boost::asio::buffer(Data, Packet.GetSize() + WorldPacket::HEADER_SIZE), 
+        boost::bind(&WorldSession::HandleSend, this, Data, boost::asio::placeholders::error));
 }
 
-void WorldSession::HandleSend(uint16 Opcode)
+void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error)
 {
-    sLog.Write("Sent: %s\n", OpcodeTable[Opcode].name);
+    if(!Error)
+    {
+        sLog.Write("Successful!");
+    }
+    else
+    {
+        sLog.Write("Failed!");
+    }
+    delete Data;
 }
 
 void WorldSession::HandleNULL()
@@ -91,7 +104,7 @@ void WorldSession::HandleLoginOpcode()
 
     if(Status != (uint16)LOGIN_SUCCESS)
     {
-        printf("Login fail!\n");
+        printf("Login fail!");
         Socket.close();
         return;
     }
@@ -105,18 +118,19 @@ void WorldSession::HandleLoginOpcode()
     WorldPacket Argv(0);
     Argv << MapID;
     sGame->AddToLoadQueue(pWorld, Argv);
-    printf("Packet is good!\n");
+    printf("Packet is good!");
 }
 
 void WorldSession::HandleAddObjectOpcode()
 {
     uint32 ObjID;
     Packet >> ObjID;
+    std::cout << "objID: " << ObjID << std::endl;
 
     WorldObject* pNewObject = new WorldObject;
     sGame->AddToLoadQueue(pNewObject, Packet);
     pWorld->AddObject(pNewObject, ObjID);
-    printf("Packet is good!\n");
+    printf("Packet is good!");
 }
 
 void WorldSession::HandleRemoveObjectOpcode()
@@ -136,7 +150,7 @@ void WorldSession::HandleMoveObjectOpcode()
     pWorld->DrawingMutex.lock();
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
     pWorld->DrawingMutex.unlock();
-    printf("Packet is good!\n");
+    printf("Packet is good!");
 }
 
 void WorldSession::HandleCastSpellOpcode()
@@ -149,7 +163,7 @@ void WorldSession::HandleCastSpellOpcode()
     Animation* pAnim = new Animation;
     sGame->AddToLoadQueue(pAnim, Packet);
     pWorld->AddAnimation(pAnim);
-    printf("Packet is good!\n");
+    printf("Packet is good!");
 }
 
 void WorldSession::HandleLogOutOpcode()
