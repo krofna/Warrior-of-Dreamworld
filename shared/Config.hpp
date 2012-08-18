@@ -32,5 +32,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   #else
     #define WOD_DLL_DECL export
   #endif
+  
+#if defined(__VARIADIC_TEMPLATES) || (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4) && defined(__GXX_EXPERIMENTAL_CXX0X__))
+  #define HAVE_VARIADIC_TEMPLATES
+#endif
 
 #endif
