@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Pathfinder.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/bind.hpp"
+#include "../shared/Log.hpp"
 
 #define SERVER_HEARTBEAT 50
 
@@ -72,12 +73,12 @@ void World::Load()
     }
     catch(sql::SQLException &e) 
     {
-        std::cout << "SQL Exception: " << e.what();
+        sLog.Write("SQL Exception: %s", e.what());
         throw;
     }
     catch(std::exception &e)
     {
-        std::cout << "Exception: " << e.what();
+        sLog.Write("Exception: %s",e.what());
         throw;
     }
 }

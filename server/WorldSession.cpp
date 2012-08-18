@@ -147,7 +147,7 @@ void WorldSession::HandleLoginOpcode()
     // Add player to the world
     pPlayer->BindSession(this);
     sWorld->AddSession(this);
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleMoveObjectOpcode()

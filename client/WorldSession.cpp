@@ -125,8 +125,6 @@ void WorldSession::HandleAddObjectOpcode()
 {
     uint32 ObjID;
     Packet >> ObjID;
-    std::cout << "objID: " << ObjID << std::endl;
-
     WorldObject* pNewObject = new WorldObject;
     sGame->AddToLoadQueue(pNewObject, Packet);
     pWorld->AddObject(pNewObject, ObjID);
@@ -158,7 +156,9 @@ void WorldSession::HandleCastSpellOpcode()
     uint32 CasterID;
     Packet >> CasterID;
     Packet.UpdateWritePos();
+    pWorld->DrawingMutex.lock();
     WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
+    pWorld->DrawingMutex.unlock();
     Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
     Animation* pAnim = new Animation;
     sGame->AddToLoadQueue(pAnim, Packet);

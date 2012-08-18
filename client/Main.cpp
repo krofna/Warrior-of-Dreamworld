@@ -25,9 +25,6 @@ int main()
 {
     using namespace std;
 
-    ofstream ErrorLog("Error Log.txt");
-    cerr.rdbuf(ErrorLog.rdbuf());
-
     Window = new sf::RenderWindow;
 
     try
@@ -62,11 +59,11 @@ int main()
     }
     catch(std::exception& e)
     {
-        cerr << e.what();
+        sLog.Write("%s", e.what());
     }
     catch(...)
     {
-        cerr << "Unhandled exception";
+        sLog.Write("Unhandled exception");
     }
 
     delete sGame;
