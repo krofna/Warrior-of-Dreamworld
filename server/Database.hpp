@@ -43,14 +43,15 @@ public:
     void Execute(const char* sql);
     
     #ifdef HAVE_VARIADIC_TEMPLATES
-    
+    // TODO: Merge Format to make a free function
+    std::string Format(std::string const& toFormat);
     template<typename Value, typename... Values>
-    void PExecute(const char* sql, Value const& val, Values... values);
-    template<typename Value, typename... Values>
-    QueryResult PQuery(const char* sql, Value const& val, Values... values);
+    std::string Format(std::string const& toFormat, Value const& val, Values... values);
     
-    
-    // TODO: PHelper
+    template<typename... Values>
+    void PExecute(std::string const& toFormat, Values... values);
+    template<typename... Values>
+    QueryResult PQuery(std::string const& toFormat, Values... values);
     #else
     
     void PExecute(const char* sql, ...);
@@ -66,43 +67,53 @@ private:
 };
 
 #ifdef HAVE_VARIADIC_TEMPLATES
+
+std::string Database::Format(std::string const& toFormat)
+{
+    return toFormat;
+}
+// TODO: Need more work.
 template<typename Value, typename... Values>
-void Database::PExecute(const char* sql, Value const& val, Values... values)
+std::string Database::Format(std::string const& toFormat, Value const& val, Values... values)
 {
     std::ostringstream QueryStr;
-    
-    while (*sql)
+
+    size_t placeholderPos = toFormat.find('%');
+    bool useValues = false, writeValues = true;
+
+    if (placeholderPos != std::string::npos)
     {
-        if (*sql == '%' && *(++sql) != '%')
+        if(toFormat[placeholderPos + 1] == '%')
         {
-            QueryStr << val;
-            ++sql;
-            PHelper(sql, QueryStr, values...);
-            return;
+            toFormat.erase(toFormat.begin() + placeholderPos, toFormat.begin() + placeholderPos);
+            writeValues = false;
         }
-        QueryStr << *sql;
+        useValues = true;
     }
-    
-    Execute(QueryStr.str().c_str());
+
+    if (useValues)
+    {
+        if (writeValues)
+            QueryStr << toFormat.substr(0, placeholderPos) << val << Format(toFormat.substr(placeholderPos+1), values...);
+        else
+            QueryStr << toFormat.substr(0, placeholderPos + 1) << Format(toFormat.substr(placeholderPos + 2), val, values...);
+    }
+
+    else
+        QueryStr << toForma;t
+
+    return QueryStr.str();
+}
+
+template<typename... Values>
+void Database::PExecute(std::string const& sql, Values... values)
+{
+    Execute(Format(sql, values...).c_str());
 }
 template<typename Value, typename... Values>
-void Database::PQuery(const char* sql, Value const& val, Values... values)
+void Database::PQuery(std::string const& sql, Values... values)
 {
-    std::ostringstream QueryStr;
-    
-    while (*sql)
-    {
-        if (*sql == '%' && *(++sql) != '%')
-        {
-            QueryStr << val;
-            ++sql;
-            PHelper(sql, QueryStr, values...);
-            return;
-        }
-        QueryStr << *sql;
-    }
-    
-    Query(QueryStr.str().c_str());
+    Query(Format(sql, values...).c_str());
 }
 #endif
 extern Database sDatabase;
