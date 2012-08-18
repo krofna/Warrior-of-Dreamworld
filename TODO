@@ -1,4 +1,5 @@
 Code:
+- Secure login with password hash encrypted (SHA512 maybe ?)
 - Some data may/should be Uint8 instead of Uint16
 - Cleanup Includes/forward declares...
 - Give tilesets IDs instead of std::strings
