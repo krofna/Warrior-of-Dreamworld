@@ -98,13 +98,13 @@ void World::ConsoleInput()
     
     while (true)
     {
-        std::cout << "Console> ";
+        sLog.Write("Console> ");
         std::getline(std::cin, Input);
         
         if (Input == "exit")
             break;
         else
-            std::cout << "Unknown command !" << std::endl;
+            sLog.Write("Unknown command!");
     }
     IsRunning = false;
 }
