@@ -60,6 +60,7 @@ void Database::Connect()
     Statement = Connection->createStatement();
 }
 
+#ifndef HAVE_VARIADIC_TEMPLATES
 #define MAX_QUERY_LEN 3*1024 // this is so wrong in so many ways
 
 void Database::PExecute(const char* sql, ...)
@@ -73,6 +74,7 @@ void Database::PExecute(const char* sql, ...)
 
     Execute(Query);
 }
+#endif
 
 void Database::Execute(const char* sql)
 {
@@ -86,7 +88,7 @@ QueryResult Database::Query(const char* sql)
 
     return Result;
 }
-
+#ifndef HAVE_VARIADIC_TEMPLATES
 QueryResult Database::PQuery(const char* sql, ...)
 {
     va_list ArgList;
@@ -98,3 +100,4 @@ QueryResult Database::PQuery(const char* sql, ...)
 
     return this->Query(Query);
 }
+#endif
