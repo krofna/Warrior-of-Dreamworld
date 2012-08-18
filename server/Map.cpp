@@ -111,7 +111,7 @@ void Map::AddPlayer(PlayerPtr pPlayer)
     Players.push_back(pPlayer);
 }
 
-void Map::AddSpell(UnitPtr pCaster, Spell* pSpell, float Angle) // UnitPtr pCaster
+void Map::AddSpell(UnitPtr pCaster, Spell* pSpell, float Angle)
 {
     // PLACEHOLDER
     Spells.push_back(SpellBox(pSpell, pCaster, sf::FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));
