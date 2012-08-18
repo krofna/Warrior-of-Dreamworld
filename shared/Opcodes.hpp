@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#include "WorldSession.hpp"
+class WorldSession;
 
 #define MSG_COUNT 7
 
