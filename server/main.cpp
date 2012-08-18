@@ -37,6 +37,7 @@ int main()
         boost::thread ConsoleInputThread(boost::bind(&World::ConsoleInput, sWorld));
 
         ReturnValue = sWorld->Run();
+        ConsoleInputThread.join();
     }
     catch(std::exception& e)
     {
