@@ -96,10 +96,16 @@ int World::Run()
 void World::ConsoleInput()
 {
     std::string Input;
-
-    while(Input != "shutdown")
+    
+    while (true)
     {
-        std::cin >> Input;
+        std::cout << "Console> ";
+        std::getline(std::cin, Input);
+        
+        if (Input == "exit")
+            break;
+        else
+            std::cout << "Unknown command !" << std::endl;
     }
     IsRunning = false;
 }
