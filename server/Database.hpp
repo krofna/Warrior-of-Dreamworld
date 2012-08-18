@@ -38,10 +38,26 @@ public:
     ~Database();
 
     void Connect();
-    void PExecute(const char* sql, ...);
-    void Execute(const char* sql);
+    
     QueryResult Query(const char* sql);
+    void Execute(const char* sql);
+    
+    #ifdef HAVE_VARIADIC_TEMPLATES
+    
+    template<typename Value, typename... Values>
+    void PExecute(const char* sql, Value const& val, Values... values);
+    template<typename Value, typename... Values>
+    QueryResult PQuery(const char* sql, Value const& val, Values... values);
+    
+    
+    // TODO: PHelper
+    #else
+    
+    void PExecute(const char* sql, ...);
     QueryResult PQuery(const char* sql, ...);
+    
+    #endif
+    
 
 private:
     sql::Driver* Driver;
@@ -49,6 +65,46 @@ private:
     sql::Statement* Statement;
 };
 
+#ifdef HAVE_VARIADIC_TEMPLATES
+template<typename Value, typename... Values>
+void Database::PExecute(const char* sql, Value const& val, Values... values)
+{
+    std::ostringstream QueryStr;
+    
+    while (*sql)
+    {
+        if (*sql == '%' && *(++sql) != '%')
+        {
+            QueryStr << val;
+            ++sql;
+            PHelper(sql, QueryStr, values...);
+            return;
+        }
+        QueryStr << *sql;
+    }
+    
+    Execute(QueryStr.str().c_str());
+}
+template<typename Value, typename... Values>
+void Database::PQuery(const char* sql, Value const& val, Values... values)
+{
+    std::ostringstream QueryStr;
+    
+    while (*sql)
+    {
+        if (*sql == '%' && *(++sql) != '%')
+        {
+            QueryStr << val;
+            ++sql;
+            PHelper(sql, QueryStr, values...);
+            return;
+        }
+        QueryStr << *sql;
+    }
+    
+    Query(QueryStr.str().c_str());
+}
+#endif
 extern Database sDatabase;
 
 #endif
