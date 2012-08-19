@@ -26,6 +26,7 @@ int main()
     using namespace std;
 
     Window = new sf::RenderWindow;
+    boost::asio::io_service io;
 
     try
     {
@@ -34,7 +35,6 @@ int main()
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
         cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << endl;
 
-        boost::asio::io_service io;
         tcp::resolver Resolver(io);
         tcp::resolver::query Query("127.0.0.1", "48879");
         tcp::resolver::iterator Iterator = Resolver.resolve(Query);
