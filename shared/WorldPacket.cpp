@@ -51,8 +51,6 @@ char* WorldPacket::GetData()
     std::memcpy((void*)&Data[2], &Opcode, 2);
     std::memcpy((void*)&Data[4], &ByteBuffer[0], ByteBuffer.size());
 
-    std::cout << "Sending packet, size: " << Size << ", opcode: " << Opcode << std::endl;
-
     return Data;
 }
 

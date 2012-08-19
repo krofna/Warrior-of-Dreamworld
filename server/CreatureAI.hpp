@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Unit;
 class Creature;
+class SpellBox;
 struct Spell;
 
 class WOD_DLL_DECL CreatureAI
@@ -54,7 +55,7 @@ public:
     virtual void Hit(UnitPtr pAttacker, uint32& Damage){}; // -- NYI
 
     // Called when creature is hit by spell
-    virtual void SpellHit(UnitPtr pCaster, const Spell* pSpell){};
+    virtual void SpellHit(SpellBox* pSpellBox){};
 
     // Creature controlled by this AI
     CreaturePtr pCreature;

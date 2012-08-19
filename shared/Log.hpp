@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+#ifndef LOG_H
+#define LOG_H
+
 #include <fstream>
 #include "boost/thread/mutex.hpp"
 #include "Config.hpp"
@@ -69,3 +72,5 @@ Log& Log::operator <<(Value const& val)
 }
 
 extern Log sLog;
+
+#endif

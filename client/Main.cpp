@@ -27,30 +27,26 @@ int main()
 {
     using namespace std;
 
-    ofstream ErrorLog("Error Log.txt");
-    cerr.rdbuf(ErrorLog.rdbuf());
-
     Window = new sf::RenderWindow;
-
     boost::asio::io_service io;
 
     try
     {
-        cerr << "Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf" << endl;
+        sLog.Write("Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf");
         WindowWidth = (*sf::VideoMode::getFullscreenModes().begin()).width;
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
-        cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << endl;
+        sLog.Write("My guess is: %ux%u", WindowWidth, WindowHeight);
 
+        std::string Ip;
+        
         tcp::resolver Resolver(io);
-        tcp::resolver::query Query("127.0.0.1", "48879");
+        tcp::resolver::query Query(Ip.c_str(), "48879");
         tcp::resolver::iterator Iterator = Resolver.resolve(Query);
 
         sGame = new Game(true);
-
         Session = new WorldSession(io, Iterator, sGame);
-        {
-            sGame->PushState(new Login());
-        }
+        sGame->PushState(new Login());
+
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
         NetworkThread.join();
@@ -58,12 +54,14 @@ int main()
     catch(std::exception const
           & e)
     {
-        cerr << e.what();
+        sLog.Write("%s", e.what());
     }
     catch(...)
     {
-        cerr << "Unhandled exception";
+        sLog.Write("Unhandled exception");
     }
+
+    sLog.Flush();
 
     delete sGame;
     delete Session;

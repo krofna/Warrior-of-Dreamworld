@@ -38,6 +38,10 @@ Database::~Database()
 void Database::Connect()
 {
     std::ifstream CfgFile("WorldServerConfig.conf");
+
+    if(!CfgFile)
+        throw std::runtime_error("Cannot open WorldServerConfig.conf");
+
     std::string Data[4], Buffer;
     int i = 0;
 

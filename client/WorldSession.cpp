@@ -43,7 +43,6 @@ void WorldSession::Start()
 
 void WorldSession::HandleHeader()
 {
-    sLog.Write("Got packet, size: %u, opcode: %u\n", Header[0], Header[1]);
     Packet.Resize(Header[0]);
     Packet.SetOpcode(Header[1]);
     boost::asio::async_read(Socket,
@@ -104,7 +103,7 @@ void WorldSession::HandleLoginOpcode()
 
     if(Status != (uint16)LOGIN_SUCCESS)
     {
-        printf("Login fail!");
+        sLog.Write("Login fail!");
         Socket.close();
         return;
     }
@@ -118,19 +117,17 @@ void WorldSession::HandleLoginOpcode()
     WorldPacket Argv(0);
     Argv << MapID;
     sGame->AddToLoadQueue(pWorld, Argv);
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleAddObjectOpcode()
 {
     uint32 ObjID;
     Packet >> ObjID;
-    std::cout << "objID: " << ObjID << std::endl;
-
     WorldObject* pNewObject = new WorldObject;
     sGame->AddToLoadQueue(pNewObject, Packet);
     pWorld->AddObject(pNewObject, ObjID);
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleRemoveObjectOpcode()
@@ -150,7 +147,7 @@ void WorldSession::HandleMoveObjectOpcode()
     pWorld->DrawingMutex.lock();
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
     pWorld->DrawingMutex.unlock();
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleCastSpellOpcode()
@@ -158,12 +155,14 @@ void WorldSession::HandleCastSpellOpcode()
     uint32 CasterID;
     Packet >> CasterID;
     Packet.UpdateWritePos();
+    pWorld->DrawingMutex.lock();
     WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
+    pWorld->DrawingMutex.unlock();
     Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
     Animation* pAnim = new Animation;
     sGame->AddToLoadQueue(pAnim, Packet);
     pWorld->AddAnimation(pAnim);
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleLogOutOpcode()
@@ -184,7 +183,7 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_LOGIN);
 
-    EncryptSHA512(Password);
+    //EncryptSHA512(Password);
 
     Packet << Username << Password;
     Send(Packet);

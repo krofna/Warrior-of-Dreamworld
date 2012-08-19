@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Pathfinder.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/bind.hpp"
+#include "../shared/Log.hpp"
 
 #define SERVER_HEARTBEAT 50
 
@@ -89,6 +90,7 @@ int World::Run()
 {
     pWorldAcceptor->Accept();
     Timer.expires_from_now(boost::posix_time::milliseconds(50));
+    OldTime = boost::posix_time::microsec_clock::local_time();
     Timer.async_wait(boost::bind(&World::Update, this));
     io.run();
     return 0;
@@ -114,18 +116,20 @@ void World::ConsoleInput()
     IsRunning = false;
 }
 
-void World::Update(/*int32 diff*/)
+void World::Update()
 {
-    // TODO: diff can be > 50. check time between calls to update
     if(!IsRunning)
     {
         io.stop();
         return;
     }
 
+    boost::posix_time::ptime NewTime = boost::posix_time::microsec_clock::local_time();
+    Diff = NewTime - OldTime;
+
     for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
     {
-        (*MapIterator)->Update(50);
+        (*MapIterator)->Update(Diff.total_milliseconds());
     }
     Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
     Timer.async_wait(boost::bind(&World::Update, this));

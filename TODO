@@ -1,5 +1,11 @@
-General:
-- Remove the obsolete Code::Blocks projects
+URGENT TODOS:
+1) ByteBuffer in WorldPacket should contain header data as well, 
+this is better idea than dynamically allocating char* whenever
+i want to send a packet. Too much memcpy-ing is going on
+
+2) There is a small chance (about 0.1% when last tested) that client
+will crash if main thread calls WorldSession::Send while network thread
+is writing data to a socket
 
 Code:
 - Command system for creating accounts, modifying password accounts, more...

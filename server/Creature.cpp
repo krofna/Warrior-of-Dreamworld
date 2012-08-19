@@ -63,7 +63,7 @@ void Creature::SpellHit(SpellBox* pSpellBox)
         MovementGenerator->UpdateTarget(WorldObjectPtr(pVictim));
         pAI->EnterCombat(pVictim);
     }
-    pAI->SpellHit(pSpellBox->pCaster, pSpellBox->pSpell);
+    pAI->SpellHit(pSpellBox);
 }
 
 CreatureAI* Creature::GetAI()

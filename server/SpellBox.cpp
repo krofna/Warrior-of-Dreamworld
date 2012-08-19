@@ -40,6 +40,7 @@ bool SpellBox::CollidesWith(UnitPtr pObject)
 
 void SpellBox::Update(int32 diff)
 {
+    // TODO: This is completly random...
     diff += _Diff;
     int Multiplier = diff / 15;
     _Diff = diff - Multiplier * 15;

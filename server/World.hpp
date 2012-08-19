@@ -42,7 +42,7 @@ public:
     CreatureAIFactory* GetAIFactory();
 
 private:
-    void Update(/*int32 diff*/);
+    void Update();
     bool HandleCommand(std::string const& CommandName);
 
     WorldAcceptor* pWorldAcceptor;
@@ -54,6 +54,8 @@ private:
 
     boost::asio::io_service& io;
     boost::asio::deadline_timer Timer;
+    boost::posix_time::ptime OldTime;
+    boost::posix_time::time_duration Diff;
 };
 
 extern World* sWorld;

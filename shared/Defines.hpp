@@ -40,10 +40,17 @@ class Creature;
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 
-typedef boost::shared_ptr<Player> PlayerPtr;
-typedef boost::shared_ptr<Unit> UnitPtr;
-typedef boost::shared_ptr<Creature> CreaturePtr;
-typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
+#ifndef NOT_AVAILABLE_SHARED_PTR
+    typedef boost::shared_ptr<Player> PlayerPtr;
+    typedef boost::shared_ptr<Unit> UnitPtr;
+    typedef boost::shared_ptr<Creature> CreaturePtr;
+    typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
+#else
+    typedef std::shared_ptr<Player> PlayerPtr;
+    typedef std::shared_ptr<Unit> UnitPtr;
+    typedef std::shared_ptr<Creature> CreaturePtr;
+    typedef std::shared_ptr<WorldObject> WorldObjectPtr;
+#endif
 
 typedef boost::asio::ip::tcp::socket Socket;
 typedef boost::shared_ptr<Socket> SocketPtr;

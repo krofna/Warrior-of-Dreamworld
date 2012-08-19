@@ -104,6 +104,12 @@ template<class T> void WorldPacket::Append(T data)
 
 template<class T> T WorldPacket::Read()
 {
+    // [TODO]
+    // For now we will assume that assert failed
+    // because I am shitty programmer.
+    // Packet should be dropped instead of crashing
+    // server
+    // [/TODO]
     assert(ReadPos + sizeof(T) <= ByteBuffer.size());
     T data = *((T*)&ByteBuffer[ReadPos]);
     ReadPos += sizeof(T);
