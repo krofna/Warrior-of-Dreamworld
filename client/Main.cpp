@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "boost/scoped_ptr.hpp"
 
+#include <stdexcept>
+
 int main()
 {
     using namespace std;
@@ -46,21 +48,24 @@ int main()
 
         Session = new WorldSession(io, Iterator, sGame);
         {
-            // TODO: this code is useless. see above
-            ifstream ConfigFile("Config.conf");
-
-            if(!ConfigFile)
-                throw std::exception("Cannot open Config.conf");
-
-            std::string Ip;
-            ConfigFile >> Ip;
+/*             // TODO: this code is useless. see above
+ *             ifstream ConfigFile("Config.conf");
+ *
+ *             if(!ConfigFile)
+ *                 throw std::runtime_error("Cannot open Config.conf");
+ *
+ *             std::string Ip;
+ *             ConfigFile >> Ip;
+ */// RAAAAAAAAAAAAAH, THIS MAKE ME CRASH ON LINUX.
 
             sGame->PushState(new Login());
         }
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
+        NetworkThread.join();
     }
-    catch(std::exception& e)
+    catch(std::exception const
+          & e)
     {
         cerr << e.what();
     }

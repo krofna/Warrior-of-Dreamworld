@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Login.hpp"
 #include "Globals.hpp"
+#include "WorldSession.hpp"
 #include "../shared/Opcodes.hpp"
 #include <cassert>
 

@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Log.hpp"
 #include <iostream>
 #include <cstdarg>
+#include <cstdlib>
 
 Log sLog;
 
@@ -27,6 +28,7 @@ File    ("Log.txt")
 {
 }
 
+#ifndef HAVE_VARIADIC_TEMPLATES
 void Log::Write(const char* format, ...)
 {
     va_list ArgList;
@@ -41,6 +43,15 @@ void Log::Write(const char* format, ...)
     std::cout << (char*)Query << "\n";
     File << (char*)Query << "\n";
 }
+#else
+void Log::Write(std::string const& String)
+{
+    boost::mutex::scoped_lock lock(LogMutex);
+
+    std::cout << String << '\n';
+    File << String << '\n';
+}
+#endif
 
 void Log::Flush()
 {

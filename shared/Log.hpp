@@ -18,18 +18,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include <fstream>
 #include "boost/thread/mutex.hpp"
+#include "Config.hpp"
+
+#ifdef HAVE_VARIADIC_TEMPLATES
+#include "Utils.hpp"
+#endif
 
 // Thread safe output
 class Log
 {
 public:
     Log();
+    #ifndef HAVE_VARIADIC_TEMPLATES
     void Write(const char* format, ...);
+    #else
+    void Write(std::string const& String);
+    template<typename... Values>
+    void Write(std::string const& String, Values... values);
+    #endif
     void Flush();
 
 private:
     std::ofstream File;
     boost::mutex LogMutex;
 };
+
+#ifdef HAVE_VARIADIC_TEMPLATES
+template<typename... Values>
+void Log::Write(std::string const& String, Values... values)
+{
+    std::string Formated = Format(String, values...);
+    boost::mutex::scoped_lock lock(LogMutex);
+
+    std::cout << Formated << '\n';
+    File << Formated << '\n';
+}
+#endif
 
 extern Log sLog;
