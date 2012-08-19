@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "../shared/Defines.hpp"
+#include "../shared/Vector2.hpp"
 #include <cmath>
 
 namespace math
@@ -34,6 +35,6 @@ namespace math
         // Calculate angle
         return std::atan2((float)Target.x, (float)Target.y);
     }
-    float GetDistance(sf::Vector2i First, sf::Vector2f Second);
-    int GetManhattanDistance(sf::Vector2i First, sf::Vector2i Second);
+    float GetDistance(Vector2i First, Vector2f Second);
+    int GetManhattanDistance(Vector2i First, Vector2i Second);
 }

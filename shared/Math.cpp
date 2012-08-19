@@ -20,13 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 namespace math
 {
-    float GetDistance(sf::Vector2i First, sf::Vector2f Second)
+    float GetDistance(Vector2i First, Vector2f Second)
     {
-        return std::sqrt((First.x - Second.x) * (First.x - Second.x) + (First.y - Second.y) * (First.y - Second.y));
+        return First.GetDistance(Second);
     }
 
-    int GetManhattanDistance(sf::Vector2i First, sf::Vector2i Second)
+    int GetManhattanDistance(Vector2i First, Vector2i Second)
     {
-        return std::abs(First.x - Second.x) + std::abs(First.y - Second.y);
+        return First.GetManhattanDistance(Second);
     }
 };

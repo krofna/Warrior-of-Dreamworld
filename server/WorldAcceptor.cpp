@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldAcceptor.hpp"
 #include "World.hpp"
+#include "WorldSession.hpp"
 #include "Database.hpp"
 #include <fstream>
 #include "boost/bind.hpp"

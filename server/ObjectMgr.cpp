@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "Player.hpp"
 #include <fstream>
+#include <stdexcept>
 
 ObjectMgr sObjectMgr;
 
@@ -43,7 +44,7 @@ CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint32 Entry)
     if(CTemplate != CreatureTemplates.end())
         return CTemplate->second;
 
-    throw std::exception("Bad creature entry. Could not find template.");
+    throw std::runtime_error("Bad creature entry. Could not find template.");
 }
 
 Spell* ObjectMgr::GetSpell(uint16 ID)

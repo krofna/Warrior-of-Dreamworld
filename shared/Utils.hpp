@@ -9,6 +9,7 @@ inline std::string Format(std::string const& toFormat)
     return toFormat;
 }
 // TODO: Need more work.
+// I assume that next is the placeholder, there is a u or any character other than % and I delete it
 template<typename Value, typename... Values>
 inline std::string Format(std::string toFormat, Value const& val, Values... values)
 {
@@ -23,6 +24,10 @@ inline std::string Format(std::string toFormat, Value const& val, Values... valu
         {
             toFormat.erase(toFormat.begin() + placeholderPos, toFormat.begin() + placeholderPos);
             writeValues = false;
+        }
+        else
+        {
+            toFormat.erase(toFormat.begin() + placeholderPos + 1, toFormat.begin() + placeholderPos + 1);
         }
         useValues = true;
     }

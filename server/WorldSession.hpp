@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Player;
 class WorldPacket;
 
-typedef boost::asio::ip::tcp::socket Socket;
+typedef boost::asio::ip::tcp::socket TSocket;
 typedef boost::shared_ptr<boost::asio::ip::tcp::socket> SocketPtr;
 
 class WorldSession
@@ -55,10 +55,10 @@ private:
     void HandleSend(char* Data, const boost::system::error_code& Error);
     void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader();
-    
+
     void SendLoginFailPacket(uint16 Reason);
 
-    Socket Socket;
+    TSocket Socket;
 
     uint16 Header[2];
 

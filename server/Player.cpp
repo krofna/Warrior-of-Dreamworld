@@ -22,10 +22,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 
 Player::Player(std::string Username, std::string Password, uint32 ObjID) :
-Username     (Username),
-Password     (Password),
 Unit         (ObjID),
 pWorldSession(nullptr),
+Username     (Username),
+Password     (Password),
 LoadedFromDB (false)
 {
 }
@@ -62,7 +62,7 @@ void Player::LoadFromDB()
     pMap        = sWorld->GetMap(Result->getUInt(7));
     Position.x  = Result->getUInt(8);
     Position.y  = Result->getUInt(9);
-    
+
     LoadedFromDB = true;
 }
 

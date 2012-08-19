@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
+#include "WorldSession.hpp"
+#include "../shared/Log.hpp"
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
 #include "../scripts/ScriptLoader.hpp"
@@ -31,8 +33,9 @@ World* sWorld;
 
 World::World(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
 IsRunning   (true),
-Timer       (io),
-io          (io)
+io          (io),
+Timer       (io)
+
 {
     pWorldAcceptor = new WorldAcceptor(io, Endpoint);
 }
@@ -59,7 +62,7 @@ void World::Load()
         sObjectMgr.LoadPlayersLoginInfo();
 
         AIFactory = new CreatureAIFactory;
-        LoadScripts();
+        //LoadScripts(); -- TODO --
 
         Pathfinder::Init();
 
@@ -70,7 +73,7 @@ void World::Load()
             Maps.push_back(pMap);
         }
     }
-    catch(sql::SQLException &e) 
+    catch(sql::SQLException &e)
     {
         std::cout << "SQL Exception: " << e.what();
         throw;
@@ -95,12 +98,12 @@ int World::Run()
 void World::ConsoleInput()
 {
     std::string Input;
-    
+
     while (true)
     {
         sLog.Write("Console> ");
         std::getline(std::cin, Input);
-        
+
         if (Input == "exit")
             break;
         else

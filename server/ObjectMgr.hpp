@@ -21,12 +21,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "../shared/Defines.hpp"
 #include "Templates.hpp"
-#include "boost/smart_ptr.hpp"
+#include <boost/smart_ptr.hpp>
 
 class Player;
 struct Spell;
 
-typedef boost::shared_ptr<Player> PlayerPtr;
+#ifndef NOT_AVAILABLE_SHARED_PTR
+    typedef boost::shared_ptr<Player> PlayerPtr;
+#else
+    typedef std::shared_ptr<Player> PlayerPtr;
+#endif
 
 // TODO: Use this for spell/gameobject/creature templates
 class ObjectMgr

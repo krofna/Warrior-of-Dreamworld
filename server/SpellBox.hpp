@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define SPELL_BOX_H
 
 #include "../shared/Defines.hpp"
+#include "../shared/Rect.hpp"
 
 struct Spell;
 class Unit;
@@ -27,7 +28,7 @@ class Unit;
 class SpellBox
 {
 public:
-    SpellBox(Spell* pSpell, UnitPtr pCaster, sf::FloatRect Hitbox, float Angle, uint32 SpellBoxID);
+    SpellBox(Spell* pSpell, UnitPtr pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID);
 
     bool CollidesWith(UnitPtr pObject);
     void Update(int32 diff);
@@ -37,7 +38,7 @@ public:
     uint32 SpellBoxID;
 
 private:
-    sf::FloatRect Hitbox;
+    FloatRect Hitbox;
     float Angle;
     int32 _Diff;
 };

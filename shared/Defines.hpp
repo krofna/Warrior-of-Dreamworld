@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include <SFML/Graphics.hpp>
 #include <cstdint>
 
 typedef uint8_t uint8;
@@ -37,12 +36,17 @@ class Unit;
 class WorldObject;
 class Creature;
 
-#include "boost/shared_ptr.hpp"
+
+#include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
 
 typedef boost::shared_ptr<Player> PlayerPtr;
 typedef boost::shared_ptr<Unit> UnitPtr;
 typedef boost::shared_ptr<Creature> CreaturePtr;
 typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
+
+typedef boost::asio::ip::tcp::socket Socket;
+typedef boost::shared_ptr<Socket> SocketPtr;
 
 #define TILE_SIZE 32
 #define MAP_COUNT 1

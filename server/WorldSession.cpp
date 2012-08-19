@@ -39,8 +39,8 @@ PlayerPtr WorldSession::GetPlayer()
 
 void WorldSession::Start()
 {
-    boost::asio::async_read(Socket, 
-        boost::asio::buffer(Header, 4), 
+    boost::asio::async_read(Socket,
+        boost::asio::buffer(Header, 4),
         boost::bind(&WorldSession::HandleHeader, this));
 }
 
@@ -49,8 +49,8 @@ void WorldSession::HandleHeader()
     uint16 Size = Header[0];
     Packet.SetOpcode(Header[1]);
     Packet.Resize(Size);
-    boost::asio::async_read(Socket, 
-        boost::asio::buffer(Packet.GetByteBuffer(), Size), 
+    boost::asio::async_read(Socket,
+        boost::asio::buffer(Packet.GetByteBuffer(), Size),
         boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
 }
 
@@ -75,11 +75,11 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
 
 void WorldSession::Send(WorldPacket& Packet)
 {
-    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()]);
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
     char* Data = Packet.GetData();
 
-    boost::asio::async_write(Socket, 
-        boost::asio::buffer(Data, Packet.GetSize() + WorldPacket::HEADER_SIZE), 
+    boost::asio::async_write(Socket,
+        boost::asio::buffer(Data, Packet.GetSize() + WorldPacket::HEADER_SIZE),
         boost::bind(&WorldSession::HandleSend, this, Data, boost::asio::placeholders::error));
 }
 
@@ -160,7 +160,7 @@ void WorldSession::HandleMoveObjectOpcode()
     // If player colided, return
     if(!pPlayer->UpdateCoordinates(Direction))
         return;
-    
+
     // Send movement update to all players in the map
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_MOVE_OBJECT);
