@@ -106,8 +106,10 @@ void World::ConsoleInput()
 
         if (Input == "exit")
             break;
-        else
+        else if (!HandleCommand(Input))
             sLog.Write("Unknown command!");
+        else
+            sLog.Write("WARN()");
     }
     IsRunning = false;
 }
@@ -140,4 +142,26 @@ Map* World::GetMap(uint8 MapID)
         return Maps[MapID];
 
     return nullptr;
+}
+bool World::HandleCommand(std::string const& CommandName)
+{
+    std::istringstream in(CommandName);
+
+    std::string Command;
+    in >> Command;
+
+    if (Command == "account")
+    {
+        std::string Subcommand;
+        if (Subcommand == "create")
+        {
+            std::string UserName, Password;
+            in >> UserName >> Password;
+            // TODO: Create account.
+            sLog.Write("Account successfully created.");
+            return true;
+        }
+    }
+
+    return false;
 }

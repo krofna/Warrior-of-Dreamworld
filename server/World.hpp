@@ -43,6 +43,7 @@ public:
 
 private:
     void Update(/*int32 diff*/);
+    bool HandleCommand(std::string const& CommandName);
 
     WorldAcceptor* pWorldAcceptor;
     std::vector<Map*> Maps;
