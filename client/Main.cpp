@@ -32,6 +32,8 @@ int main()
 
     Window = new sf::RenderWindow;
 
+    boost::asio::io_service io;
+
     try
     {
         cerr << "Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf" << endl;
@@ -39,7 +41,6 @@ int main()
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
         cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << endl;
 
-        boost::asio::io_service io;
         tcp::resolver Resolver(io);
         tcp::resolver::query Query("127.0.0.1", "48879");
         tcp::resolver::iterator Iterator = Resolver.resolve(Query);
@@ -48,15 +49,14 @@ int main()
 
         Session = new WorldSession(io, Iterator, sGame);
         {
-/*             // TODO: this code is useless. see above
- *             ifstream ConfigFile("Config.conf");
- *
- *             if(!ConfigFile)
- *                 throw std::runtime_error("Cannot open Config.conf");
- *
- *             std::string Ip;
- *             ConfigFile >> Ip;
- */// RAAAAAAAAAAAAAH, THIS MAKE ME CRASH ON LINUX.
+             // TODO: this code is useless. see above
+             ifstream ConfigFile("Config.conf");
+
+             if(!ConfigFile)
+                 throw std::runtime_error("Cannot open Config.conf");
+
+             std::string Ip;
+             ConfigFile >> Ip; 
 
             sGame->PushState(new Login());
         }

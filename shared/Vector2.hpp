@@ -1,6 +1,8 @@
 #ifndef VECTOR2_HPP
 #define VECTOR2_HPP
 
+#include <cmath>
+#include "Defines.hpp"
 // TODO: Minor cleanings necessary.
 
 template<typename NumberType>
