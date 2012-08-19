@@ -2,7 +2,7 @@ General:
 - Remove the obsolete Code::Blocks projects
 
 Code:
-- Secure login with password hash encrypted (SHA512 maybe ?) (Server remaining)
+- Command system for creating accounts, modifying password accounts, more...
 - Handle case where we haven't variadic template and vsnprintf_s available
 - GUI System for Login and Chat (SFGUI ?)
 - Some data may/should be Uint8 instead of Uint16
