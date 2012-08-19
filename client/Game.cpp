@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Game::Game  (bool FullScreen)
 {
-    Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", FullScreen ? sf::Style::Fullscreen : sf::Style::Close);
+    Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", sf::Style::Close);
     Window->setFramerateLimit(60);
 }
 

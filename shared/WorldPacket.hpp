@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Config.hpp"
 #include <cassert>
 #include <vector>
+#include <cstring>
 
 // Todo:
 // - Store size/opcode in bytebuffer
@@ -31,7 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // will be useful for Loadable::Load
 
 // Implements heterogeneous container
-// Not necessarily used for sending 
+// Not necessarily used for sending
 // over network. See: Loadable::Load
 class WOD_DLL_DECL WorldPacket
 {
@@ -51,27 +52,27 @@ public:
 
     template<class T> void ReadSkip();
 
-    inline WorldPacket& operator <<(uint8 data);
-    inline WorldPacket& operator <<(uint16 data);
-    inline WorldPacket& operator <<(uint32 data);
-    inline WorldPacket& operator <<(uint64 data);
-    inline WorldPacket& operator <<(int8 data);
-    inline WorldPacket& operator <<(int16 data);
-    inline WorldPacket& operator <<(int32 data);
-    inline WorldPacket& operator <<(int64 data);
-    inline WorldPacket& operator <<(float data);
-    inline WorldPacket& operator <<(std::string data);
+    WorldPacket& operator <<(uint8 data);
+    WorldPacket& operator <<(uint16 data);
+    WorldPacket& operator <<(uint32 data);
+    WorldPacket& operator <<(uint64 data);
+    WorldPacket& operator <<(int8 data);
+    WorldPacket& operator <<(int16 data);
+    WorldPacket& operator <<(int32 data);
+    WorldPacket& operator <<(int64 data);
+    WorldPacket& operator <<(float data);
+    WorldPacket& operator <<(std::string data);
 
-    inline WorldPacket& operator >>(uint8& data);
-    inline WorldPacket& operator >>(uint16& data);
-    inline WorldPacket& operator >>(uint32& data);
-    inline WorldPacket& operator >>(uint64& data);
-    inline WorldPacket& operator >>(int8& data);
-    inline WorldPacket& operator >>(int16& data);
-    inline WorldPacket& operator >>(int32& data);
-    inline WorldPacket& operator >>(int64& data);
-    inline WorldPacket& operator >>(float& data);
-    inline WorldPacket& operator >>(std::string& data);
+    WorldPacket& operator >>(uint8& data);
+    WorldPacket& operator >>(uint16& data);
+    WorldPacket& operator >>(uint32& data);
+    WorldPacket& operator >>(uint64& data);
+    WorldPacket& operator >>(int8& data);
+    WorldPacket& operator >>(int16& data);
+    WorldPacket& operator >>(int32& data);
+    WorldPacket& operator >>(int64& data);
+    WorldPacket& operator >>(float& data);
+    WorldPacket& operator >>(std::string& data);
 
     enum
     {

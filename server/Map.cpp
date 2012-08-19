@@ -26,10 +26,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include <algorithm>
 
-Map::Map     (const uint16 MapID) : 
+Map::Map     (const uint16 MapID) :
 MapID        (MapID),
 NewSpellBoxID(0),
-// [PH] This only works for map0, cause its size is 50x50 tiles 
+// [PH] This only works for map0, cause its size is 50x50 tiles
 TileGrid     (50, std::vector<WorldObjectPtr>(50, WorldObjectPtr()))
 {
 }
@@ -114,7 +114,7 @@ void Map::AddPlayer(PlayerPtr pPlayer)
 void Map::AddSpell(UnitPtr pCaster, Spell* pSpell, float Angle)
 {
     // PLACEHOLDER
-    Spells.push_back(SpellBox(pSpell, pCaster, sf::FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));
+    Spells.push_back(SpellBox(pSpell, pCaster, FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));
     ++NewSpellBoxID;
 }
 

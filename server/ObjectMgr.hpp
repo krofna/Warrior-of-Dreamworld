@@ -25,8 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Player;
 struct Spell;
 
-typedef boost::shared_ptr<Player> PlayerPtr;
-
 // TODO: Use this for spell/gameobject/creature templates
 class ObjectMgr
 {

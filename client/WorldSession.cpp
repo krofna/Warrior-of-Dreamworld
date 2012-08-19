@@ -26,18 +26,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <cstring>
 
 WorldSession::WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator, Game* sGame) :
-pWorld                    (nullptr),
 Socket                    (io),
 Packet                    ((uint16)MSG_NULL),
-sGame                     (sGame)
+sGame                     (sGame),
+pWorld                    (nullptr)
 {
     boost::asio::async_connect(Socket, Iterator, boost::bind(&WorldSession::Start, this));
 }
 
 void WorldSession::Start()
 {
-    boost::asio::async_read(Socket, 
-        boost::asio::buffer(Header, 4), 
+    boost::asio::async_read(Socket,
+        boost::asio::buffer(Header, 4),
         boost::bind(&WorldSession::HandleHeader, this));
 }
 
@@ -45,8 +45,8 @@ void WorldSession::HandleHeader()
 {
     Packet.Resize(Header[0]);
     Packet.SetOpcode(Header[1]);
-    boost::asio::async_read(Socket, 
-        boost::asio::buffer(Packet.GetByteBuffer(), Header[0]), 
+    boost::asio::async_read(Socket,
+        boost::asio::buffer(Packet.GetByteBuffer(), Header[0]),
         boost::bind(&WorldSession::HandlePacket, this, boost::asio::placeholders::error));
 }
 
@@ -71,11 +71,11 @@ void WorldSession::HandlePacket(const boost::system::error_code& Error)
 
 void WorldSession::Send(WorldPacket& Packet)
 {
-    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()]);
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
     char* Data = Packet.GetData();
 
-    boost::asio::async_write(Socket, 
-        boost::asio::buffer(Data, Packet.GetSize() + WorldPacket::HEADER_SIZE), 
+    boost::asio::async_write(Socket,
+        boost::asio::buffer(Data, Packet.GetSize() + WorldPacket::HEADER_SIZE),
         boost::bind(&WorldSession::HandleSend, this, Data, boost::asio::placeholders::error));
 }
 
@@ -182,6 +182,9 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_LOGIN);
+
+    //EncryptSHA512(Password);
+
     Packet << Username << Password;
     Send(Packet);
 }

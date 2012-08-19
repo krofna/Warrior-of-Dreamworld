@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Defines.hpp"
 #include "../shared/Config.hpp"
 #include "../shared/WorldPacket.hpp"
+#include "../shared/Vector2.hpp"
 
 struct Map;
 class Pathfinder;
@@ -37,7 +38,7 @@ public:
     virtual WorldPacket PackData() = 0;
 
     bool UpdateCoordinates(uint8 Direction);
-    void UpdatePosition(sf::Vector2i Position);
+    void UpdatePosition(Vector2i Position);
 
     const uint32 GetObjectID() const
     {
@@ -61,14 +62,14 @@ public:
         return Position.y;
     }
 
-    sf::Vector2i& GetPosition()
+    Vector2i& GetPosition()
     {
         return Position;
     }
 
 protected:
     Map* pMap;
-    sf::Vector2i Position;
+    Vector2i Position;
 
     const uint32 ObjID;
 };

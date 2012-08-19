@@ -51,7 +51,7 @@ void Pathfinder::Init()
     {
         for(int x = 0; x < MAX_MAP_WIDTH; ++x)
         {
-            PathfindingGrid[MAX_MAP_HEIGHT * y + x].Position = std::move(sf::Vector2i(x, y));
+            PathfindingGrid[MAX_MAP_HEIGHT * y + x].Position = std::move(Vector2i(x, y));
         }
     }
 
@@ -68,7 +68,7 @@ void Pathfinder::Update(int32 diff)
 {
     if(pTarget && pTarget->Position != Target)
     {
-        this->Target = sf::Vector2i(pTarget->GetX(), pTarget->GetY());
+        this->Target = Vector2i(pTarget->GetX(), pTarget->GetY());
         GeneratePath();
     }
     if(!Path.empty() && (MovementCooldown <= diff))
@@ -86,14 +86,14 @@ void Pathfinder::Update(int32 diff)
 void Pathfinder::UpdateTarget(WorldObjectPtr pNewTarget)
 {
     this->pTarget = pNewTarget;
-    this->Target = sf::Vector2i(pTarget->GetX(), pTarget->GetY());
+    this->Target = Vector2i(pTarget->GetX(), pTarget->GetY());
     GeneratePath();
 }
 
 void Pathfinder::GeneratePath()
 {
     // Destroy old path
-    Path = std::stack<sf::Vector2i>();
+    Path = std::stack<Vector2i>();
 
     // Zero out status grid
     std::memset(PathfindingStatusGrid, 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH * sizeof(PathfindingStatusGrid[0]));
@@ -106,7 +106,7 @@ void Pathfinder::GeneratePath()
 
     // Origin node does not have G cost
     pOriginNode->G = 0;
-    pOriginNode->H = 10 * math::GetManhattanDistance(sf::Vector2i(pOriginNode->Position.x, pOriginNode->Position.y), Target);
+    pOriginNode->H = 10 * math::GetManhattanDistance(Vector2i(pOriginNode->Position.x, pOriginNode->Position.y), Target);
 
     // Add origin node to queue
     OpenList.push(pOriginNode);
@@ -137,7 +137,7 @@ void Pathfinder::GeneratePath()
 
         // For each of adjacent nodes
         // if it is not out of bounds
-        // and if tile is 'walkable', 
+        // and if tile is 'walkable',
         // check its status
 
         // Upper
@@ -163,7 +163,7 @@ void Pathfinder::GeneratePath()
         {
             CheckNode(pCurrent, -1, 0, 10);
         }
-        
+
         // Upper-right
         if(pCurrent->Position.x != 49 && pCurrent->Position.y != 0)
         {
@@ -209,7 +209,7 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
 
             // Calculate costs
             pAdjacent->G = pCurrent->G + Cost;
-            pAdjacent->H = 10 * math::GetManhattanDistance(sf::Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
+            pAdjacent->H = 10 * math::GetManhattanDistance(Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
 
             // Add it to open list
             PathfindingStatusGrid[MAX_MAP_HEIGHT * pAdjacent->Position.y + pAdjacent->Position.x] = OPEN;
@@ -226,7 +226,7 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
 
             // Recalculate distance
             pAdjacent->G = pCurrent->G + Cost;
-            pAdjacent->H = 10 * math::GetManhattanDistance(sf::Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
+            pAdjacent->H = 10 * math::GetManhattanDistance(Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
             }*/
 
             // If its closed, ignore it

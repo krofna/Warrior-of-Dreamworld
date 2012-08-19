@@ -45,9 +45,9 @@ void Database::Connect()
     std::string Data[4], Buffer;
     int i = 0;
 
-    while(std::getline(CfgFile, Buffer)) 
+    while(std::getline(CfgFile, Buffer))
     {
-        Buffer.erase(Buffer.begin(), find_if(Buffer.begin(), Buffer.end(), std::not1(std::ptr_fun<int, int>(std::isspace)))); 
+        Buffer.erase(Buffer.begin(), find_if(Buffer.begin(), Buffer.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
 
         if(!std::isalpha(Buffer[0]))
         {
@@ -64,19 +64,21 @@ void Database::Connect()
     Statement = Connection->createStatement();
 }
 
-#define MAX_QUERY_LEN 3*1024 // this is so wrong in so many ways
+#ifndef HAVE_VARIADIC_TEMPLATES
+    #define MAX_QUERY_LEN 3*1024 // this is so wrong in so many ways
 
-void Database::PExecute(const char* sql, ...)
-{
-    va_list ArgList;
-    char Query[MAX_QUERY_LEN];
+    void Database::PExecute(const char* sql, ...)
+    {
+        va_list ArgList;
+        char Query[MAX_QUERY_LEN];
 
-    va_start(ArgList, sql);
-    vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
-    va_end(ArgList);
+        va_start(ArgList, sql);
+        secure_vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
+        va_end(ArgList);
 
-    Execute(Query);
-}
+        Execute(Query);
+    }
+#endif
 
 void Database::Execute(const char* sql)
 {
@@ -90,15 +92,16 @@ QueryResult Database::Query(const char* sql)
 
     return Result;
 }
+#ifndef HAVE_VARIADIC_TEMPLATES
+    QueryResult Database::PQuery(const char* sql, ...)
+    {
+        va_list ArgList;
+        char Query[MAX_QUERY_LEN];
 
-QueryResult Database::PQuery(const char* sql, ...)
-{
-    va_list ArgList;
-    char Query[MAX_QUERY_LEN];
+        va_start(ArgList, sql);
+        secure_vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
+        va_end(ArgList);
 
-    va_start(ArgList, sql);
-    vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
-    va_end(ArgList);
-
-    return this->Query(Query);
-}
+        return this->Query(Query);
+    }
+#endif

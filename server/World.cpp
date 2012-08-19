@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
+#include "WorldSession.hpp"
+#include "../shared/Log.hpp"
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
 #include "../scripts/ScriptLoader.hpp"
@@ -32,8 +34,9 @@ World* sWorld;
 
 World::World(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
 IsRunning   (true),
-Timer       (io),
-io          (io)
+io          (io),
+Timer       (io)
+
 {
     pWorldAcceptor = new WorldAcceptor(io, Endpoint);
 }
@@ -71,14 +74,14 @@ void World::Load()
             Maps.push_back(pMap);
         }
     }
-    catch(sql::SQLException &e) 
+    catch(sql::SQLException &e)
     {
-        sLog.Write("SQL Exception: %s", e.what());
+        sLog << "SQL Exception: " << e.what() << '\n';
         throw;
     }
     catch(std::exception &e)
     {
-        sLog.Write("Exception: %s",e.what());
+        sLog << "Exception: " << e.what() << '\n';
         throw;
     }
 }
@@ -97,16 +100,18 @@ int World::Run()
 void World::ConsoleInput()
 {
     std::string Input;
-    
+
     while (true)
     {
         sLog.Write("Console> ");
         std::getline(std::cin, Input);
-        
+
         if (Input == "exit")
             break;
-        else
+        else if (!HandleCommand(Input))
             sLog.Write("Unknown command!");
+        else
+            sLog.Write("WARN()");
     }
     IsRunning = false;
 }
@@ -141,4 +146,26 @@ Map* World::GetMap(uint8 MapID)
         return Maps[MapID];
 
     return nullptr;
+}
+bool World::HandleCommand(std::string const& CommandName)
+{
+    std::istringstream in(CommandName);
+
+    std::string Command;
+    in >> Command;
+
+    if (Command == "account")
+    {
+        std::string Subcommand;
+        if (Subcommand == "create")
+        {
+            std::string UserName, Password;
+            in >> UserName >> Password;
+            // TODO: Create account.
+            sLog.Write("Account successfully created.");
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -55,7 +55,7 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
         if(pMap->TileGrid[Position.y][Position.x+1])
             return false;
         Position.x++;
-        break;        
+        break;
     }
 
     pMap->TileGrid[OldY][OldX] = WorldObjectPtr();
@@ -64,7 +64,7 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
     return true;
 }
 
-void WorldObject::UpdatePosition(sf::Vector2i Position)
+void WorldObject::UpdatePosition(Vector2i Position)
 {
     this->Position = Position;
     WorldPacket Packet((uint16)MSG_MOVE_OBJECT);

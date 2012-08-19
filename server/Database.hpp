@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef DATABASE_H
 #define DATABASE_H
 
+#include "../shared/Config.hpp"
+
 #include "mysql_connection.h"
 
 #include <cppconn/driver.h>
@@ -29,7 +31,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <memory>
 
-typedef std::unique_ptr<sql::ResultSet> QueryResult;
+#ifdef HAVE_VARIADIC_TEMPLATES
+    #include "../shared/Utils.hpp"
+#endif
+
+#ifndef NOT_AVAILABLE_UNIQUE_PTR
+    typedef std::unique_ptr<sql::ResultSet> QueryResult;
+#else
+    typedef boost::unique_ptr<sql::ResultSet> QueryResult;
+#endif
 
 class Database
 {
@@ -38,16 +48,39 @@ public:
     ~Database();
 
     void Connect();
-    void PExecute(const char* sql, ...);
-    void Execute(const char* sql);
+
     QueryResult Query(const char* sql);
-    QueryResult PQuery(const char* sql, ...);
+    void Execute(const char* sql);
+
+    #ifdef HAVE_VARIADIC_TEMPLATES
+        template<typename... Values>
+        void PExecute(std::string const& toFormat, Values... values);
+        template<typename... Values>
+        QueryResult PQuery(std::string const& toFormat, Values... values);
+    #else
+        void PExecute(const char* sql, ...);
+        QueryResult PQuery(const char* sql, ...);
+    #endif
+
 
 private:
     sql::Driver* Driver;
     sql::Connection* Connection;
     sql::Statement* Statement;
 };
+
+#ifdef HAVE_VARIADIC_TEMPLATES
+    template<typename... Values>
+    void Database::PExecute(std::string const& sql, Values... values)
+    {
+        Execute(Format(sql, values...).c_str());
+    }
+    template<typename... Values>
+    QueryResult Database::PQuery(std::string const& sql, Values... values)
+    {
+        return Query(Format(sql, values...).c_str());
+    }
+#endif
 
 extern Database sDatabase;
 

@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "SpellBox.hpp"
 #include "Creature.hpp"
+#include <boost/shared_ptr.hpp>
 
 class Player;
 struct PathfinderNode;
@@ -31,9 +32,6 @@ struct Map
     ~Map();
 
     void LoadCreatures();
-
-    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObjectPtr
-    std::vector<std::vector<WorldObjectPtr> > TileGrid;
 
     void RemovePlayer(PlayerPtr pPlayer);
     void AddPlayer(PlayerPtr pPlayer);
@@ -51,6 +49,9 @@ struct Map
     const uint16 MapID;
     uint32 NewSpellBoxID;
     int32 diff;
+
+    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObjectPtr
+    std::vector<std::vector<WorldObjectPtr> > TileGrid;
 };
 
 #endif

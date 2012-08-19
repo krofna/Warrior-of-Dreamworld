@@ -53,14 +53,14 @@ private:
     sf::VertexArray TileMap;
     sf::View WorldView;
     uint8 MoveWorldView;
-    
+
     int MapWidth;
     int MapHeight;
 
     int CameraLeft;
+    int CameraTop;
     int CameraRight;
     int CameraBottom;
-    int CameraTop;
     // END TODO
 
     std::map<uint32, WorldObject*> WorldObjectMap;

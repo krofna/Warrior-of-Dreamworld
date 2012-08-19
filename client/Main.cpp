@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "boost/scoped_ptr.hpp"
 
+#include <stdexcept>
+
 int main()
 {
     using namespace std;
@@ -39,8 +41,8 @@ int main()
         {
             ifstream ConfigFile("Config.conf");
 
-            if(!ConfigFile)
-                throw std::exception("Cannot open Config.conf");
+             if(!ConfigFile)
+                 throw std::runtime_error("Cannot open Config.conf");
 
             ConfigFile >> Ip;
         }
@@ -55,8 +57,10 @@ int main()
 
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
+        NetworkThread.join();
     }
-    catch(std::exception& e)
+    catch(std::exception const
+          & e)
     {
         sLog.Write("%s", e.what());
     }

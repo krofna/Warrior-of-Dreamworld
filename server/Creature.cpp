@@ -29,7 +29,7 @@ Creature::Creature(uint32 ObjID, Map* pMap, uint16 x, uint16 y, CreatureTemplate
 Unit              (ObjID),
 pTemplate         (pTemplate)
 {
-    Position = sf::Vector2i(x, y);
+    Position = Vector2i(x, y);
     this->pMap = pMap;
     pAI = CreateAI(pTemplate->ScriptName, CreaturePtr(this));
     MovementGenerator = new Pathfinder(WorldObjectPtr(this));
@@ -56,7 +56,7 @@ WorldPacket Creature::PackData()
 void Creature::SpellHit(SpellBox* pSpellBox)
 {
     Unit::SpellHit(pSpellBox);
-    
+
     if(!pVictim)
     {
         pVictim = pSpellBox->pCaster;

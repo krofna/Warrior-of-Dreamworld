@@ -20,6 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GLOBALS_H
 
 #include "../shared/Defines.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+
 extern uint16 WindowWidth;
 extern uint16 WindowHeight;
 extern sf::RenderWindow* Window;

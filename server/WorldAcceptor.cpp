@@ -17,6 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldAcceptor.hpp"
+#include "World.hpp"
+#include "WorldSession.hpp"
+#include "Database.hpp"
 #include "boost/bind.hpp"
 
 WorldAcceptor::WorldAcceptor(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
