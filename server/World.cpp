@@ -62,7 +62,7 @@ void World::Load()
         sObjectMgr.LoadPlayersLoginInfo();
 
         AIFactory = new CreatureAIFactory;
-        //LoadScripts(); -- TODO --
+        LoadScripts();
 
         Pathfinder::Init();
 
@@ -75,12 +75,12 @@ void World::Load()
     }
     catch(sql::SQLException &e)
     {
-        std::cout << "SQL Exception: " << e.what();
+        sLog << "SQL Exception: " << e.what() << '\n';
         throw;
     }
     catch(std::exception &e)
     {
-        std::cout << "Exception: " << e.what();
+        sLog << "Exception: " << e.what() << '\n';
         throw;
     }
 }

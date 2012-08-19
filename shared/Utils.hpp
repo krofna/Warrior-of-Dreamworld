@@ -9,14 +9,13 @@ inline std::string Format(std::string const& toFormat)
     return toFormat;
 }
 // TODO: Need more work.
-// I assume that next is the placeholder, there is a u or any character other than % and I delete it
 template<typename Value, typename... Values>
 inline std::string Format(std::string toFormat, Value const& val, Values... values)
 {
     std::ostringstream QueryStr;
 
     size_t placeholderPos = toFormat.find('%');
-    bool useValues = false, writeValues = true;
+    bool useValues = false, writeValues = true, itsEnd = false;
 
     if (placeholderPos != std::string::npos)
     {
@@ -27,15 +26,23 @@ inline std::string Format(std::string toFormat, Value const& val, Values... valu
         }
         else
         {
-            toFormat.erase(toFormat.begin() + placeholderPos + 1, toFormat.begin() + placeholderPos + 1);
+            toFormat.erase(toFormat.begin() + placeholderPos, toFormat.begin() + placeholderPos + 1);
         }
+
+        if ((placeholderPos + 1) >= toFormat.size())
+            itsEnd = true;
         useValues = true;
     }
 
     if (useValues)
     {
         if (writeValues)
-            QueryStr << toFormat.substr(0, placeholderPos) << val << Format(toFormat.substr(placeholderPos+1), values...);
+        {
+            if (itsEnd)
+                QueryStr << toFormat.substr(0, placeholderPos) << val;
+            else
+                QueryStr << toFormat.substr(0, placeholderPos) << val << Format(toFormat.substr(placeholderPos+1), values...);
+        }
         else
             QueryStr << toFormat.substr(0, placeholderPos + 1) << Format(toFormat.substr(placeholderPos + 2), val, values...);
     }

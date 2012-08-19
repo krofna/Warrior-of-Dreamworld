@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     #define WOD_DLL_DECL __declspec(dllexport)
 
     #ifdef _MSC_VER
+      #define secure_vsnprintf vsnprintf_s
       #pragma warning(disable : 4251)
     #endif
 
@@ -35,6 +36,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   
 #if defined(__VARIADIC_TEMPLATES) || (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4) && defined(__GXX_EXPERIMENTAL_CXX0X__))
   #define HAVE_VARIADIC_TEMPLATES
+#endif
+
+#ifndef secure_vsnprintf
+#define secure_vsnprintf vsprintf
 #endif
 
 #endif

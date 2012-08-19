@@ -69,7 +69,7 @@ void Database::Connect()
         char Query[MAX_QUERY_LEN];
 
         va_start(ArgList, sql);
-        vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
+        secure_vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
         va_end(ArgList);
 
         Execute(Query);
@@ -95,7 +95,7 @@ QueryResult Database::Query(const char* sql)
         char Query[MAX_QUERY_LEN];
 
         va_start(ArgList, sql);
-        vsnprintf_s(Query, MAX_QUERY_LEN, sql, ArgList);
+        secure_vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
         va_end(ArgList);
 
         return this->Query(Query);

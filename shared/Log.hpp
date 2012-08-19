@@ -36,6 +36,9 @@ public:
     template<typename... Values>
     void Write(std::string const& String, Values... values);
     #endif
+
+    template<typename Value>
+    Log& operator <<(Value const& val);
     void Flush();
 
 private:
@@ -54,5 +57,15 @@ void Log::Write(std::string const& String, Values... values)
     File << Formated << '\n';
 }
 #endif
+
+template<typename Value>
+Log& Log::operator <<(Value const& val)
+{
+    boost::mutex::scoped_lock lock(LogMutex);
+
+    std::cout << val;
+    File << val;
+    return *this;
+}
 
 extern Log sLog;

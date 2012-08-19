@@ -2,11 +2,15 @@ cmake_minimum_required(VERSION 2.8)
 
 Project(Client)
 
-add_definitions(-std=gnu++0x)
-set(EXECUTABLE_OUTPUT_PATH ../bin/${CMAKE_BUILD_TYPE})
+if (GLOBAL_COMPILATION)
+    set(ADD_PATH .)
+else (GLOBAL_COMPILATION)
+    set(ADD_PATH ..)
+endif (GLOBAL_COMPILATION)
 
-include(FindSFML)
-include(FindBoost)
+add_definitions(-std=gnu++0x)
+set(EXECUTABLE_OUTPUT_PATH ${ADD_PATH}/bin/${CMAKE_BUILD_TYPE})
+
 include(FindThreads)
 
 FIND_PACKAGE(SFML COMPONENTS SYSTEM WINDOW GRAPHICS REQUIRED)
@@ -22,14 +26,14 @@ include_directories(${Boost_INCLUDE_DIRS})
 file(
 GLOB_RECURSE
 SHARED_SRC
-../../shared/*
+${ADD_PATH}/../shared/*
 )
 
 file(
 GLOB
 CLIENT_SRC
-../../client/*.cpp
-../../client/*.hpp
+${ADD_PATH}/../client/*.cpp
+${ADD_PATH}/../client/*.hpp
 )
 file(
 GLOB

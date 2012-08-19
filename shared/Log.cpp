@@ -35,7 +35,7 @@ void Log::Write(const char* format, ...)
     char Query[128];
 
     va_start(ArgList, format);
-    vsnprintf_s(Query, 128, format, ArgList);
+    secure_vsnprintf(Query, 128, format, ArgList);
     va_end(ArgList);
 
     boost::mutex::scoped_lock lock(LogMutex);

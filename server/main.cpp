@@ -41,7 +41,7 @@ int main()
     }
     catch(std::exception& e)
     {
-        sLog.Write("%s\n", e.what());
+        sLog.Write("%s", e.what());
     }
     catch(...)
     {
