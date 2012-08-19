@@ -43,7 +43,6 @@ void WorldSession::Start()
 
 void WorldSession::HandleHeader()
 {
-    sLog.Write("Got packet, size: %u, opcode: %u\n", Header[0], Header[1]);
     Packet.Resize(Header[0]);
     Packet.SetOpcode(Header[1]);
     boost::asio::async_read(Socket, 
@@ -104,7 +103,7 @@ void WorldSession::HandleLoginOpcode()
 
     if(Status != (uint16)LOGIN_SUCCESS)
     {
-        printf("Login fail!");
+        sLog.Write("Login fail!");
         Socket.close();
         return;
     }
@@ -118,7 +117,7 @@ void WorldSession::HandleLoginOpcode()
     WorldPacket Argv(0);
     Argv << MapID;
     sGame->AddToLoadQueue(pWorld, Argv);
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleAddObjectOpcode()
@@ -128,7 +127,7 @@ void WorldSession::HandleAddObjectOpcode()
     WorldObject* pNewObject = new WorldObject;
     sGame->AddToLoadQueue(pNewObject, Packet);
     pWorld->AddObject(pNewObject, ObjID);
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleRemoveObjectOpcode()
@@ -148,7 +147,7 @@ void WorldSession::HandleMoveObjectOpcode()
     pWorld->DrawingMutex.lock();
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
     pWorld->DrawingMutex.unlock();
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleCastSpellOpcode()
@@ -163,7 +162,7 @@ void WorldSession::HandleCastSpellOpcode()
     Animation* pAnim = new Animation;
     sGame->AddToLoadQueue(pAnim, Packet);
     pWorld->AddAnimation(pAnim);
-    printf("Packet is good!");
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleLogOutOpcode()

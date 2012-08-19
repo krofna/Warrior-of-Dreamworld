@@ -24,12 +24,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 int main()
 {
-    int ReturnValue = 0;
+    int ReturnValue = 1;
+    boost::asio::io_service io;
 
     try
     {
         tcp::endpoint Endpoint(tcp::v4(), 0xBEEF);
-        boost::asio::io_service io;
 
         sWorld = new World(io, Endpoint);
         sWorld->Load();

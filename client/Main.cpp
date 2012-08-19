@@ -30,30 +30,29 @@ int main()
 
     try
     {
-        cerr << "Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf" << endl;
+        sLog.Write("Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf");
         WindowWidth = (*sf::VideoMode::getFullscreenModes().begin()).width;
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
-        cerr << "My guess is: " << WindowWidth << "x" << WindowHeight << endl;
+        sLog.Write("My guess is: %ux%u", WindowWidth, WindowHeight);
 
-        tcp::resolver Resolver(io);
-        tcp::resolver::query Query("127.0.0.1", "48879");
-        tcp::resolver::iterator Iterator = Resolver.resolve(Query);
-
-        sGame = new Game(true);
-
-        Session = new WorldSession(io, Iterator, sGame);
+        std::string Ip;
         {
-            // TODO: this code is useless. see above
             ifstream ConfigFile("Config.conf");
 
             if(!ConfigFile)
                 throw std::exception("Cannot open Config.conf");
 
-            std::string Ip;
             ConfigFile >> Ip;
-
-            sGame->PushState(new Login());
         }
+
+        tcp::resolver Resolver(io);
+        tcp::resolver::query Query(Ip.c_str(), "48879");
+        tcp::resolver::iterator Iterator = Resolver.resolve(Query);
+
+        sGame = new Game(true);
+        Session = new WorldSession(io, Iterator, sGame);
+        sGame->PushState(new Login());
+
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
     }
@@ -65,6 +64,8 @@ int main()
     {
         sLog.Write("Unhandled exception");
     }
+
+    sLog.Flush();
 
     delete sGame;
     delete Session;
