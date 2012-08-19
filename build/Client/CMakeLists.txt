@@ -47,4 +47,5 @@ add_executable(Client
     ${CLIENT_SRC}
     ${SHARED_SRC})
 target_link_libraries(Client
-    ${CLIENT_LIBS})
+    ${CLIENT_LIBS}
+    -lsfgui)

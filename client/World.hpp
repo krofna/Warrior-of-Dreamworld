@@ -36,6 +36,7 @@ public:
     ~World();
 
     virtual void Load(WorldPacket Argv);
+    void Update() {}
     void Draw();
     void HandleEvent(sf::Event Event);
 

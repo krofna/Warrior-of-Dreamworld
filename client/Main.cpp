@@ -49,15 +49,6 @@ int main()
 
         Session = new WorldSession(io, Iterator, sGame);
         {
-             // TODO: this code is useless. see above
-             ifstream ConfigFile("Config.conf");
-
-             if(!ConfigFile)
-                 throw std::runtime_error("Cannot open Config.conf");
-
-             std::string Ip;
-             ConfigFile >> Ip; 
-
             sGame->PushState(new Login());
         }
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));

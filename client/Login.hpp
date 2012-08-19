@@ -21,22 +21,46 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "GameState.hpp"
 #include "Game.hpp"
-#include <SFML/Graphics.hpp>
 
 class Login : public GameState
 {
+    enum EFocus
+    {
+        IP,
+        Port,
+        Username,
+        Password,
+        None
+    };
 public:
     Login();
+    ~Login();
+
     void HandleEvent(sf::Event Event);
     void Draw();
+    void Update();
     virtual void Load(WorldPacket Argv) { sGame->PopAllStates(); sGame->PushState(this); }
 
 private:
-    sf::Text UsernameText;
+    void onConnectButtonPressed();
+    void GrabNextFocus();
 
-    std::string Username;
-    std::string Password;
-    bool InputFlag;
+    void Create();
+
+private:
+    sfg::Window::Ptr m_LoginWindow;
+
+    sfg::Button::Ptr m_ConnectButton;
+
+    sfg::Label::Ptr m_CurrentState;
+
+    sfg::Entry::Ptr m_IPEntry;
+    sfg::Entry::Ptr m_PortEntry;
+
+    sfg::Entry::Ptr m_UsernameEntry;
+    sfg::Entry::Ptr m_PasswordEntry;
+
+    EFocus m_CurrentFocus;
 };
 
 #endif

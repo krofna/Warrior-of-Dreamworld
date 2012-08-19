@@ -22,5 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 sf::RenderWindow* Window;
 Game* sGame;
 WorldSession* Session;
+sfg::SFGUI sSFGUI;
+sfg::Desktop sDesktop;
 uint16 WindowWidth;
 uint16 WindowHeight;

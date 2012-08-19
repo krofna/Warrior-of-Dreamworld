@@ -29,6 +29,7 @@ class GameState : public Loadable
 public:
     virtual ~GameState(){}
     virtual void HandleEvent(sf::Event Event) = 0;
+    virtual void Update() = 0;
     virtual void Draw() = 0;
     virtual void Load(WorldPacket Argv) = 0;
 };

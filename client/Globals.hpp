@@ -21,10 +21,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "../shared/Defines.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFGUI/SFGUI.hpp>
 
 extern uint16 WindowWidth;
 extern uint16 WindowHeight;
 extern sf::RenderWindow* Window;
+
+extern sfg::SFGUI sSFGUI;
+extern sfg::Desktop sDesktop;
 
 #include "../shared/Log.hpp"
 

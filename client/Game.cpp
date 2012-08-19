@@ -51,6 +51,8 @@ void Game::Run()
         Window->clear();
         StateStack.top()->Draw();
         Window->display();
+
+        StateStack.top()->Update();
     }
 }
 

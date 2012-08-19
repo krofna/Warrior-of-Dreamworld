@@ -22,65 +22,135 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include <cassert>
 
-Login::Login() :
-InputFlag(true)
+Login::Login() : m_CurrentFocus(None)
 {
+    Window->resetGLStates();
+    Create();
+}
+Login::~Login()
+{
+    sDesktop.Remove(m_LoginWindow);
 }
 
 void Login::HandleEvent(sf::Event Event)
 {
-    switch(Event.type)
-    {
-    case sf::Event::Closed:
-        Window->close();
-        break;
-
-    case sf::Event::KeyPressed:
-        if(Event.key.code == sf::Keyboard::Return)
-        {
-            if(InputFlag)
-            {
-                InputFlag = false;
-            }
-            else
-            {
-                Session->SendAuthRequest(Username, Password);
-            }
-        }
-        else if(Event.key.code == sf::Keyboard::BackSpace)
-        {
-            if(InputFlag)
-            {
-                Username.erase(Username.end()-1);
-                UsernameText.setString(Username);
-            }
-            else
-                Password.erase(Password.end()-1);
-        }
-        else if(Event.key.code == sf::Keyboard::Escape)
-            Window->close();
-        break;
-
-    case sf::Event::TextEntered:
-        if(InputFlag)
-        {
-            if(Event.text.unicode > 64)
-            {
-                Username += tolower(static_cast<char>(Event.key.code));
-                UsernameText.setString(Username);
-            }
-        }
-        else
-        {
-            if(Event.text.unicode > 64)
-                Password += static_cast<char>(Event.key.code);
-        }
-    default:
-		break;
-    }
+    sDesktop.HandleEvent(Event);
+    if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Tab)
+        GrabNextFocus();
+    if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Return)
+        onConnectButtonPressed();
 }
 
 void Login::Draw()
 {
-    Window->draw(UsernameText);
+    sSFGUI.Display(*Window);
+}
+
+void Login::Update()
+{
+    sDesktop.Update(0); // FIXME: Use a good frame time !
+}
+
+void Login::Create()
+{
+    m_LoginWindow = sfg::Window::Create();
+    m_LoginWindow->SetTitle("Login");
+
+    sfg::Box::Ptr Global = sfg::Box::Create(sfg::Box::VERTICAL);
+    sfg::Box::Ptr IP = sfg::Box::Create(sfg::Box::HORIZONTAL);
+    sfg::Box::Ptr Port = sfg::Box::Create(sfg::Box::HORIZONTAL);
+    sfg::Box::Ptr Username = sfg::Box::Create(sfg::Box::HORIZONTAL);
+    sfg::Box::Ptr Password = sfg::Box::Create(sfg::Box::HORIZONTAL);
+
+    m_ConnectButton = sfg::Button::Create();
+    m_ConnectButton->SetLabel("Connect!");
+
+    m_ConnectButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Login::onConnectButtonPressed, this);
+
+    m_CurrentState = sfg::Label::Create("Wait for user...");
+
+    m_IPEntry = sfg::Entry::Create();
+    m_IPEntry->SetRequisition(sf::Vector2f(80.f, 0.f));
+
+    m_PortEntry = sfg::Entry::Create();
+    m_PortEntry->SetRequisition(sf::Vector2f(40.f, 0.f));
+
+    m_UsernameEntry = sfg::Entry::Create();
+    m_UsernameEntry->SetRequisition(sf::Vector2f(85.f, 0.f));
+
+    m_PasswordEntry = sfg::Entry::Create();
+    m_PasswordEntry->SetRequisition(sf::Vector2f(90.f, 0.f));
+    m_PasswordEntry->HideText('*');
+
+    IP->Pack(sfg::Label::Create("IP Address: "));
+    IP->Pack(m_IPEntry);
+
+    Port->Pack(sfg::Label::Create("Port: "));
+    Port->Pack(m_PortEntry);
+
+    Username->Pack(sfg::Label::Create("Username: "));
+    Username->Pack(m_UsernameEntry);
+
+    Password->Pack(sfg::Label::Create("Password: "));
+    Password->Pack(m_PasswordEntry);
+
+    Global->Pack(IP);
+    Global->Pack(Port);
+    Global->Pack(Username);
+    Global->Pack(Password);
+    Global->Pack(m_ConnectButton);
+    Global->Pack(m_CurrentState);
+
+    Global->SetSpacing(5.f);
+
+    m_LoginWindow->Add(Global);
+    m_LoginWindow->SetPosition(sf::Vector2f(WindowWidth / 2, WindowHeight / 2));
+
+    sDesktop.Add(m_LoginWindow);
+}
+
+void Login::onConnectButtonPressed()
+{
+    Session->SendAuthRequest(m_UsernameEntry->GetText(), m_PasswordEntry->GetText());
+    m_CurrentState->SetText("Logging in progress...");
+}
+void Login::GrabNextFocus()
+{
+    switch (m_CurrentFocus)
+    {
+        case IP:
+        {
+            m_CurrentFocus = Port;
+            m_PortEntry->GrabFocus();
+            break;
+        }
+        case Port:
+        {
+            m_CurrentFocus = Username;
+            m_UsernameEntry->GrabFocus();
+            break;
+        }
+        case Username:
+        {
+            m_CurrentFocus = Password;
+            m_PasswordEntry->GrabFocus();
+            break;
+        }
+        case Password:
+        {
+            m_CurrentFocus = IP;
+            m_IPEntry->GrabFocus();
+            break;
+        }
+        case None:
+        {
+            m_CurrentFocus = IP;
+            m_IPEntry->GrabFocus();
+            break;
+        }
+        default:
+        {
+            sLog.Write("Unknown focus.");
+        }
+    }
 }
