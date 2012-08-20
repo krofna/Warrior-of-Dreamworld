@@ -126,6 +126,7 @@ void World::Update()
 
     boost::posix_time::ptime NewTime = boost::posix_time::microsec_clock::local_time();
     Diff = NewTime - OldTime;
+    OldTime = NewTime;
 
     for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
     {
