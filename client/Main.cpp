@@ -27,7 +27,8 @@ int main()
 {
     using namespace std;
 
-    Window = new sf::RenderWindow;
+    Window = new sf::RenderWindow();
+    sSFGUI = new sfg::SFGUI();
     boost::asio::io_service io;
 
     try
@@ -65,6 +66,7 @@ int main()
 
     delete sGame;
     delete Session;
+    delete sSFGUI;
     delete Window;
 
     return 0;

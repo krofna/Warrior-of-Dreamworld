@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Globals.hpp"
 #include "WorldSession.hpp"
 #include "../shared/Opcodes.hpp"
-#include <cassert>
 
 Login::Login() : m_CurrentFocus(None)
 {
@@ -43,7 +42,7 @@ void Login::HandleEvent(sf::Event Event)
 
 void Login::Draw()
 {
-    sSFGUI.Display(*Window);
+    sSFGUI->Display(*Window);
 }
 
 void Login::Update()

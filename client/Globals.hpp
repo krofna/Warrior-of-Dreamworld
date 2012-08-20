@@ -27,7 +27,7 @@ extern uint16 WindowWidth;
 extern uint16 WindowHeight;
 extern sf::RenderWindow* Window;
 
-extern sfg::SFGUI sSFGUI;
+extern sfg::SFGUI* sSFGUI;
 extern sfg::Desktop sDesktop;
 
 #include "../shared/Log.hpp"
