@@ -103,7 +103,7 @@ void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), Packet.GetSize() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
