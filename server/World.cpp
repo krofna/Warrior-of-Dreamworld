@@ -43,7 +43,6 @@ Timer       (io)
 
 World::~World()
 {
-    Pathfinder::Destroy();
     delete AIFactory;
 }
 

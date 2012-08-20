@@ -37,7 +37,7 @@ class Map : public boost::enable_shared_from_this<Map>
 
     void RemovePlayer(PlayerPtr pPlayer);
     void AddPlayer(PlayerPtr pPlayer);
-    void AddSpell(UnitPtr pCaster, Spell* pSpell, float Angle);
+    void AddSpell(UnitPtr pCaster, SpellPtr pSpell, float Angle);
     virtual void Update(int32 diff);
     void UnitUpdate(UnitPtr pVictim);
 

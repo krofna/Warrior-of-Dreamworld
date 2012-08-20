@@ -32,7 +32,7 @@ public:
     ~ObjectMgr();
 
     CreatureTemplate* GetCreatureTemplate(uint32 Entry);
-    Spell* GetSpell(uint16 ID);
+    SpellPtr GetSpell(uint16 ID);
 
     void LoadSpells();
     void LoadCreatureTemplates();
@@ -40,7 +40,7 @@ public:
     PlayerPtr GetPlayer(std::string& Username);
 
 private:
-    std::vector<Spell*> Spells;
+    std::vector<SpellPtr> Spells;
     std::map<uint32, CreatureTemplate*> CreatureTemplates;
     std::vector<PlayerPtr> Players;
 };

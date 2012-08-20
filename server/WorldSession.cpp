@@ -188,9 +188,9 @@ void WorldSession::HandleCastSpellOpcode()
     float Angle;
     Packet >> SpellID >> Angle;
 
-    Spell* pSpell = sObjectMgr.GetSpell(SpellID);
+    SpellPtr pSpell = sObjectMgr.GetSpell(SpellID);
 
-    if(pSpell == nullptr)
+    if(!pSpell)
     {
         sLog.Write("Invalid Spell ID!");
         return;

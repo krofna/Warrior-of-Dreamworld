@@ -27,11 +27,6 @@ ObjectMgr sObjectMgr;
 
 ObjectMgr::~ObjectMgr()
 {
-    for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
-    {
-        delete (*SpellIter);
-    }
-
     for(auto iter = CreatureTemplates.begin(); iter != CreatureTemplates.end(); ++iter)
     {
         delete iter->second;
@@ -47,7 +42,7 @@ CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint32 Entry)
     throw std::runtime_error("Bad creature entry. Could not find template.");
 }
 
-Spell* ObjectMgr::GetSpell(uint16 ID)
+SpellPtr ObjectMgr::GetSpell(uint16 ID)
 {
     for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
     {
@@ -55,7 +50,7 @@ Spell* ObjectMgr::GetSpell(uint16 ID)
             return (*SpellIter);
     }
 
-    return nullptr;
+    return SpellPtr();
 }
 
 void ObjectMgr::LoadCreatureTemplates()
@@ -91,7 +86,7 @@ void ObjectMgr::LoadSpells()
 
     while(File >> ID >> DisplayID >> Effect >> Value >> Cost >> Name)
     {
-        Spells.push_back(new Spell(ID, DisplayID, Effect, Value, Cost, Name));
+        Spells.push_back(SpellPtr(new Spell(ID, DisplayID, Effect, Value, Cost, Name)));
     }
 }
 

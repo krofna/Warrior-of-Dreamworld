@@ -60,7 +60,7 @@ void Creature::SpellHit(SpellBox* pSpellBox)
     if(!pVictim)
     {
         pVictim = pSpellBox->pCaster;
-        MovementGenerator->UpdateTarget(WorldObjectPtr(pVictim));
+        MovementGenerator->UpdateTarget(pVictim);
         pAI->EnterCombat(pVictim);
     }
     pAI->SpellHit(pSpellBox);

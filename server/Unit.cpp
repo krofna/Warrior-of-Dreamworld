@@ -36,7 +36,7 @@ void Unit::SpellHit(SpellBox* pSpellBox)
     // TODO: Send a packet to players in map
 }
 
-void Unit::CastSpell(Spell* pSpell, float Angle)
+void Unit::CastSpell(SpellPtr pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
     WorldPacket Packet((uint16)MSG_CAST_SPELL);

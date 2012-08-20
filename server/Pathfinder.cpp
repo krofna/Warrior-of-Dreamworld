@@ -31,8 +31,8 @@ TODO:
 - Diagonal movement ( no cutting )
 */
 
-PathfinderNode* Pathfinder::PathfindingGrid;
-uint8* Pathfinder::PathfindingStatusGrid;
+boost::shared_array<PathfinderNode> Pathfinder::PathfindingGrid;
+boost::shared_array<uint8> Pathfinder::PathfindingStatusGrid;
 
 Pathfinder::Pathfinder(WorldObjectPtr pOrigin) :
 pOrigin               (pOrigin),
@@ -44,8 +44,8 @@ pMap                  (pOrigin->GetMap())
 
 void Pathfinder::Init()
 {
-    PathfindingGrid = new PathfinderNode[MAX_MAP_HEIGHT * MAX_MAP_WIDTH];
-    std::memset(PathfindingGrid, 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH);
+    PathfindingGrid.reset(new PathfinderNode[MAX_MAP_HEIGHT * MAX_MAP_WIDTH]);
+    std::memset(PathfindingGrid.get(), 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH);
 
     for(int y = 0; y < MAX_MAP_HEIGHT; ++y)
     {
@@ -55,13 +55,7 @@ void Pathfinder::Init()
         }
     }
 
-    PathfindingStatusGrid = new uint8[MAX_MAP_HEIGHT * MAX_MAP_WIDTH];
-}
-
-void Pathfinder::Destroy()
-{
-    delete[] PathfindingGrid;
-    delete[] PathfindingStatusGrid;
+    PathfindingStatusGrid.reset(new uint8[MAX_MAP_HEIGHT * MAX_MAP_WIDTH]);
 }
 
 void Pathfinder::Update(int32 diff)
@@ -96,10 +90,10 @@ void Pathfinder::GeneratePath()
     Path = std::stack<Vector2i>();
 
     // Zero out status grid
-    std::memset(PathfindingStatusGrid, 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH * sizeof(PathfindingStatusGrid[0]));
+    std::memset(PathfindingStatusGrid.get(), 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH * sizeof(PathfindingStatusGrid[0]));
 
     // Get Node with same position as creature in pathfinding grid
-    PathfinderNode* pOriginNode = &PathfindingGrid[MAX_MAP_HEIGHT * pOrigin->GetY() + pOrigin->GetX()];
+    PathfinderNode* pOriginNode = &(PathfindingGrid[MAX_MAP_HEIGHT * pOrigin->GetY() + pOrigin->GetX()]);
 
     // Origin node does not have parent node
     pOriginNode->pParent = nullptr;

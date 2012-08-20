@@ -77,7 +77,7 @@ void Player::SpellHit(SpellBox* pSpellBox)
     Unit::SpellHit(pSpellBox);
 }
 
-void Player::CastSpell(Spell* pSpell, float Angle)
+void Player::CastSpell(SpellPtr pSpell, float Angle)
 {
     // TODO: Uncomment this when player actually learns spells xD
     //if(!LearnedSpell(pSpell->ID))

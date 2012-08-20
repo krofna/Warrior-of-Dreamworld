@@ -28,12 +28,12 @@ class Unit;
 class SpellBox
 {
 public:
-    SpellBox(Spell* pSpell, UnitPtr pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID);
+    SpellBox(SpellPtr pSpell, UnitPtr pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID);
 
     bool CollidesWith(UnitPtr pObject);
     void Update(int32 diff);
 
-    Spell* pSpell;
+    SpellPtr pSpell;
     UnitPtr pCaster;
     uint32 SpellBoxID;
 
