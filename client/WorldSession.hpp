@@ -48,6 +48,7 @@ public:
     void HandleCastSpellOpcode();
     void HandleTextMessageOpcode();
     void HandleLogOutOpcode();
+    void HandleSystemMessageOpcode();
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);

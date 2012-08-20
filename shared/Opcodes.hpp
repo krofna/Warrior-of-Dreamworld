@@ -19,9 +19,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#include "WorldSession.hpp"
+#ifdef MSVC
+    #include "WorldSession.hpp"
+#else
+    class WorldSession;
+#endif
 
-#define MSG_COUNT 7
+#define MSG_COUNT 8 
 
 enum Opcodes
 {
@@ -31,7 +35,8 @@ enum Opcodes
     MSG_REMOVE_OBJECT,
     MSG_MOVE_OBJECT,
     MSG_CAST_SPELL,
-    MSG_LOG_OUT
+    MSG_LOG_OUT,
+    MSG_SYSTEM_MESSAGE,
 };
 
 enum

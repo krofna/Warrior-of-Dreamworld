@@ -23,13 +23,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     #define WOD_DLL_DECL __declspec(dllexport)
 
     #ifdef _MSC_VER
+      #define MSVC
       #define secure_vsnprintf vsnprintf_s
       #pragma warning(disable : 4251)
     #endif
 
   #elif defined( __GNUC__ )
-    #define WOD_DLL_DECL
-
+    #define WOD_DLL_DECL __attribute__((__visibility__("default"))) // FIXME: Check that !
   #else
     #define WOD_DLL_DECL export
   #endif
@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #endif
 
 #ifndef secure_vsnprintf
-#define secure_vsnprintf vsprintf
+    #define secure_vsnprintf vsprintf
 #endif
 
 #endif

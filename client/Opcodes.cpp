@@ -18,6 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "../shared/Opcodes.hpp"
 
+#ifndef MSVC
+    #include "WorldSession.hpp"
+#endif
+
 OpcodeHandler OpcodeTable[MSG_COUNT] = 
 {
     { "MSG_NULL", &WorldSession::HandleNULL },
@@ -26,5 +30,6 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
     { "MSG_REMOVE_OBJECT", &WorldSession::HandleRemoveObjectOpcode }, // SMSG
     { "MSG_MOVE_OBJECT", &WorldSession::HandleMoveObjectOpcode },
     { "MSG_CAST_SPELL", &WorldSession::HandleCastSpellOpcode },
-    { "MSG_LOG_OUT", &WorldSession::HandleLogOutOpcode }
+    { "MSG_LOG_OUT", &WorldSession::HandleLogOutOpcode },
+    { "MSG_SYSTEM_MESSAGE", &WorldSession::HandleSystemMessageOpcode } // SMSG
 };

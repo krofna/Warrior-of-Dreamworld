@@ -195,6 +195,15 @@ void WorldSession::HandleLogOutOpcode()
     sGame->AddToLoadQueue(new Login(), WorldPacket(0));
 }
 
+void WorldSession::HandleSystemMessageOpcode()
+{
+    std::string Message;
+    Packet >> Message;
+
+    sLog.Write("System Msg: %s", Message);
+    sLog.Write("Packet is good!");
+}
+
 void WorldSession::SendMovementRequest(uint8 Direction)
 {
     WorldPacket Packet((uint16)MSG_MOVE_OBJECT);

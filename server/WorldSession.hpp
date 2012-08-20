@@ -66,6 +66,8 @@ private:
     WorldPacket Packet;
     PlayerPtr pPlayer;
 
+    bool Connected;
+
     std::queue<char*> MessageQueue;
 };
 

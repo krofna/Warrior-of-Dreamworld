@@ -24,7 +24,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-Packet                    ((uint16)MSG_NULL)
+Packet                    ((uint16)MSG_NULL),
+Connected(true)
 {
 }
 
@@ -70,7 +71,8 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
-    Start();
+    if (Connected)
+        Start();
 }
 
 void WorldSession::Send(WorldPacket& Packet)
@@ -202,6 +204,7 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
+    Connected = false;
 }
 
 void WorldSession::SendLogOutPacket()
