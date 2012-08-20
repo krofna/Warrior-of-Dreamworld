@@ -35,6 +35,8 @@ class Player;
 class Unit;
 class WorldObject;
 class Creature;
+class Map;
+class Spell;
 
 
 #include <boost/asio.hpp>
@@ -45,11 +47,15 @@ class Creature;
     typedef boost::shared_ptr<Unit> UnitPtr;
     typedef boost::shared_ptr<Creature> CreaturePtr;
     typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
+    typedef boost::shared_ptr<Map> MapPtr;
+    typedef boost::shared_ptr<Spell> SpellPtr;
 #else
     typedef std::shared_ptr<Player> PlayerPtr;
     typedef std::shared_ptr<Unit> UnitPtr;
     typedef std::shared_ptr<Creature> CreaturePtr;
     typedef std::shared_ptr<WorldObject> WorldObjectPtr;
+    typedef std::shared_ptr<Map> MapPtr;
+    typedef std::shared_ptr<Spell> SpellPtr;
 #endif
 
 typedef boost::asio::ip::tcp::socket Socket;
