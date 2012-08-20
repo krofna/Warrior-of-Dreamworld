@@ -22,15 +22,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include "Login.hpp"
 #include "boost/bind.hpp"
-#include <cassert>
 #include <cstring>
 
-WorldSession::WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator, Game* sGame) :
+WorldSession::WorldSession(boost::asio::io_service& io, Game* sGame) :
 Socket                    (io),
 Packet                    ((uint16)MSG_NULL),
 sGame                     (sGame),
-pWorld                    (nullptr)
+pWorld                    (nullptr),
+Resolver                  (io),
+Work                      (new boost::asio::io_service::work(io))
 {
+}
+
+void WorldSession::Connect(std::string Ip, std::string Port)
+{
+    tcp::resolver::query Query(Ip.c_str(), Port.c_str());
+    tcp::resolver::iterator Iterator = Resolver.resolve(Query);
     boost::asio::async_connect(Socket, Iterator, boost::bind(&WorldSession::Start, this));
 }
 

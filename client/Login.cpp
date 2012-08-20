@@ -110,6 +110,7 @@ void Login::Create()
 
 void Login::onConnectButtonPressed()
 {
+    Session->Connect(m_IPEntry->GetText(), m_PortEntry->GetText());
     Session->SendAuthRequest(m_UsernameEntry->GetText(), m_PasswordEntry->GetText());
     m_CurrentState->SetText("Logging in progress...");
 }

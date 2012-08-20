@@ -38,14 +38,8 @@ int main()
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
         sLog.Write("My guess is: %ux%u", WindowWidth, WindowHeight);
 
-        std::string Ip;
-        
-        tcp::resolver Resolver(io);
-        tcp::resolver::query Query(Ip.c_str(), "48879");
-        tcp::resolver::iterator Iterator = Resolver.resolve(Query);
-
         sGame = new Game(true);
-        Session = new WorldSession(io, Iterator, sGame);
+        Session = new WorldSession(io, sGame);
         sGame->PushState(new Login());
 
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));

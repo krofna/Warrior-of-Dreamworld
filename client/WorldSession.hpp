@@ -32,7 +32,9 @@ class World;
 class WorldSession
 {
 public:
-    WorldSession(boost::asio::io_service& io, tcp::resolver::iterator Iterator, Game* sGame);
+    WorldSession(boost::asio::io_service& io, Game* sGame);
+
+    void Connect(std::string Ip, std::string Port);
 
     void Send(WorldPacket& Packet);
 
@@ -61,6 +63,9 @@ private:
     tcp::socket Socket;
     uint16 Header[2];
     WorldPacket Packet;
+
+    boost::shared_ptr<boost::asio::io_service::work> Work;
+    tcp::resolver Resolver;
 
     Game* sGame;
     World* pWorld;
