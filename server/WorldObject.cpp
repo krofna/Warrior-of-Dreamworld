@@ -34,6 +34,9 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
 {
     uint16 OldX = Position.x, OldY = Position.y;
 
+    if (pMap->CheckOutside(Position.y, Position.x, Direction))
+        return false;
+
     switch(Direction)
     {
     case MOVE_UP:
@@ -58,8 +61,7 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
         break;
     }
 
-    pMap->TileGrid[OldY][OldX] = WorldObjectPtr();
-    //pMap->TileGrid[Position.y][Position.x] = this;
+    pMap->TileGrid[OldY][OldX].reset();
 
     return true;
 }

@@ -143,3 +143,26 @@ void Map::RemovePlayer(PlayerPtr pPlayer)
         }
     }
 }
+
+bool Map::CheckOutside(int PosX, int PosY, uint8 Direction) const
+{
+    // FIXME: This works only for map0 (50x50)
+    switch(Direction)
+    {
+        case MOVE_UP:
+            return ((PosY + 1) >= 50);
+            break;
+        case MOVE_DOWN:
+            return ((PosY - 1) < 0);
+            break;
+        case MOVE_LEFT:
+            return ((PosX - 1) < 0);
+            break;
+        case MOVE_RIGHT:
+            return ((PosX + 1) >= 50);
+            break;
+        default:
+            return false;
+            break;
+    }
+}

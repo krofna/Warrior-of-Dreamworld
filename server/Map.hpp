@@ -41,6 +41,8 @@ struct Map
 
     void SendToPlayers(WorldPacket& Packet);
 
+    bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
+
     // Entities
     std::vector<CreaturePtr> Creatures;
     std::vector<PlayerPtr> Players;
