@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 #include "boost/asio.hpp"
 #include "boost/thread.hpp"
+#include <queue>
 using boost::asio::ip::tcp;
 
 class Game;
@@ -69,6 +70,9 @@ private:
 
     Game* sGame;
     World* pWorld;
+
+    std::queue<char*> MessageQueue;
+    boost::mutex MessageQueueMutex;
 };
 
 #endif
