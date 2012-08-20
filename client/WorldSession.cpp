@@ -89,7 +89,7 @@ void WorldSession::Send(WorldPacket& Packet)
     if(MessageQueue.size() == 1)
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), Packet.GetSize() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
