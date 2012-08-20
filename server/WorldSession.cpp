@@ -76,11 +76,14 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
 void WorldSession::Send(WorldPacket& Packet)
 {
     sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
-    char* Data = Packet.GetData();
 
-    boost::asio::async_write(Socket,
-        boost::asio::buffer(Data, Packet.GetSize() + WorldPacket::HEADER_SIZE),
-        boost::bind(&WorldSession::HandleSend, this, Data, boost::asio::placeholders::error));
+    MessageQueue.push(Packet.GetData());
+    if(MessageQueue.size() == 1)
+    {
+        boost::asio::async_write(Socket,
+            boost::asio::buffer(MessageQueue.front(), Packet.GetSize() + WorldPacket::HEADER_SIZE),
+            boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
+    }
 }
 
 void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error)
@@ -93,7 +96,16 @@ void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error
     {
         sLog.Write("Failed!");
     }
+
     delete Data;
+
+    MessageQueue.pop();
+    if(!MessageQueue.empty())
+    {
+        boost::asio::async_write(Socket,
+            boost::asio::buffer(MessageQueue.front(), Packet.GetSize() + WorldPacket::HEADER_SIZE),
+            boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
+    }
 }
 
 void WorldSession::SendLoginFailPacket(uint16 Reason)

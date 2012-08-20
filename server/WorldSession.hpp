@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/WorldPacket.hpp"
 #include "ObjectMgr.hpp"
 #include "boost/asio.hpp"
+#include <queue>
 
 class Player;
 class WorldPacket;
@@ -64,6 +65,8 @@ private:
 
     WorldPacket Packet;
     PlayerPtr pPlayer;
+
+    std::queue<char*> MessageQueue;
 };
 
 #endif
