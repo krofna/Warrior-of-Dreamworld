@@ -37,7 +37,7 @@ public:
     void ConsoleInput();
 
     void AddSession(WorldSession* pWorldSession);
-    MapPtr GetMap(uint8 MapID);
+    MapPtr GetMap(uint16 MapID);
 
     CreatureAIFactory* GetAIFactory();
 

@@ -83,7 +83,7 @@ void World::Load()
         sLog.Write("Pathfinding initialized.");
 
         sLog.Write("Loading maps...");
-        for(uint8 i = 0; i < MAP_COUNT; ++i)
+        for(uint16 i = 0; i < MAP_COUNT; ++i)
         {
             MapPtr pMap(new Map(i));
             sLog.Write("Loading creatures' map (%d)", i);
@@ -160,7 +160,7 @@ void World::AddSession(WorldSession* pWorldSession)
     Maps[pWorldSession->GetPlayer()->GetMapID()]->AddPlayer(pWorldSession->GetPlayer());
 }
 
-MapPtr World::GetMap(uint8 MapID)
+MapPtr World::GetMap(uint16 MapID)
 {
     if(MapID < Maps.size())
         return Maps[MapID];
