@@ -56,23 +56,42 @@ void World::Load()
 {
     try
     {
+        sLog.Write("Connect to database...");
         sDatabase.Connect();
+        sLog.Write("Connected to database.");
 
+        sLog.Write("Load creature templates...");
         sObjectMgr.LoadCreatureTemplates();
+        sLog.Write("Creature templates loaded.");
+
+        sLog.Write("Load spells...");
         sObjectMgr.LoadSpells();
+        sLog.Write("Spells loaded.");
+
+        sLog.Write("Load players login informations...");
         sObjectMgr.LoadPlayersLoginInfo();
+        sLog.Write("Players login informations loaded.");
 
         AIFactory = new CreatureAIFactory;
+
+        sLog.Write("Load scripts...");
         LoadScripts();
+        sLog.Write("Scripts loaded.");
 
+        sLog.Write("Init Pathfinding...");
         Pathfinder::Init();
+        sLog.Write("Pathfinding initialized.");
 
-        for(int i=0; i < MAP_COUNT; ++i)
+        sLog.Write("Loading maps...");
+        for(uint8 i = 0; i < MAP_COUNT; ++i)
         {
-            Map* pMap = new Map(i);
+            MapPtr pMap(new Map(i));
+            sLog.Write("Loading creatures' map (%d)", i);
             pMap->LoadCreatures();
+            sLog.Write("Creatures' map loaded (%d)", i);
             Maps.push_back(pMap);
         }
+        sLog.Write("Maps loaded.");
     }
     catch(sql::SQLException &e)
     {
@@ -141,12 +160,12 @@ void World::AddSession(WorldSession* pWorldSession)
     Maps[pWorldSession->GetPlayer()->GetMapID()]->AddPlayer(pWorldSession->GetPlayer());
 }
 
-Map* World::GetMap(uint8 MapID)
+MapPtr World::GetMap(uint8 MapID)
 {
     if(MapID < Maps.size())
         return Maps[MapID];
 
-    return nullptr;
+    return MapPtr();
 }
 bool World::HandleCommand(std::string const& CommandName)
 {

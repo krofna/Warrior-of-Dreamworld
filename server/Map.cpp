@@ -20,18 +20,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Opcodes.hpp"
 #include "../client/ResourceManager.hpp"
 #include "../shared/Config.hpp"
+#include "../shared/Log.hpp"
 #include "Player.hpp"
 #include "Database.hpp"
 #include "Pathfinder.hpp"
 #include "ObjectMgr.hpp"
 #include <algorithm>
 
-Map::Map     (const uint16 MapID) :
-MapID        (MapID),
+Map::Map     (uint16 TMapID) : 
 NewSpellBoxID(0),
 // [PH] This only works for map0, cause its size is 50x50 tiles
 TileGrid     (50, std::vector<WorldObjectPtr>(50, WorldObjectPtr()))
 {
+    MapID = TMapID;
+    sLog.Write("Map %d loaded.", MapID);
 }
 
 Map::~Map()
@@ -42,6 +44,7 @@ Map::~Map()
         if((*PlayerIter)->IsInWorld())
             (*PlayerIter)->Kick();
     }
+    sLog.Write("Map %d destroyed.", MapID);
 }
 
 void Map::LoadCreatures()
@@ -51,7 +54,7 @@ void Map::LoadCreatures()
 
     while(Result->next())
     {
-        pCreature = CreaturePtr(new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2))));
+        pCreature = CreaturePtr(new Creature(Result->getUInt(1), shared_from_this(), Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2))));
         Creatures.push_back(pCreature);
     }
 }

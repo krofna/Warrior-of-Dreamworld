@@ -22,13 +22,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "SpellBox.hpp"
 #include "Creature.hpp"
 #include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 class Player;
 struct PathfinderNode;
 
-struct Map
+class Map : public boost::enable_shared_from_this<Map>
 {
-    Map(const uint16 MapID);
+    public:
+    Map(uint16 TMapID);
     ~Map();
 
     void LoadCreatures();
@@ -48,7 +50,7 @@ struct Map
     std::vector<PlayerPtr> Players;
     std::vector<SpellBox> Spells;
 
-    const uint16 MapID;
+    uint16 MapID;
     uint32 NewSpellBoxID;
     int32 diff;
 

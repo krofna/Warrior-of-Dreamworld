@@ -24,9 +24,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "Spell.hpp"
 
+#include <boost/enable_shared_from_this.hpp>
+
 class WorldSession;
 
-class WOD_DLL_DECL Player : public Unit
+class WOD_DLL_DECL Player : public Unit, public boost::enable_shared_from_this<Player>
 {
     friend class WorldSession;
 

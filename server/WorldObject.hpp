@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Vector2.hpp"
 
 struct Map;
+typedef boost::shared_ptr<Map> MapPtr;
 class Pathfinder;
 
 class WOD_DLL_DECL WorldObject
@@ -47,7 +48,7 @@ public:
 
     const uint16 GetMapID() const;
 
-    Map* GetMap() const
+    MapPtr GetMap() const
     {
         return pMap;
     }
@@ -68,7 +69,7 @@ public:
     }
 
 protected:
-    Map* pMap;
+    MapPtr pMap;
     Vector2i Position;
 
     const uint32 ObjID;
