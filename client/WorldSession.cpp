@@ -195,16 +195,14 @@ void WorldSession::HandleLogOutOpcode()
 
 void WorldSession::SendMovementRequest(uint8 Direction)
 {
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_MOVE_OBJECT);
+    WorldPacket Packet((uint16)MSG_MOVE_OBJECT);
     Packet << Direction;
     Send(Packet);
 }
 
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_LOGIN);
+    WorldPacket Packet((uint16)MSG_LOGIN);
 
     //EncryptSHA512(Password);
 
@@ -214,16 +212,14 @@ void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 
 void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
 {
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_CAST_SPELL);
+    WorldPacket Packet((uint16)MSG_CAST_SPELL);
     Packet << SpellID << Angle;
     Send(Packet);
 }
 
 void WorldSession::SendLogOutRequest()
 {
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_LOG_OUT);
+    WorldPacket Packet((uint16)MSG_LOG_OUT);
     Send(Packet);
 
     // Back to login screen?
