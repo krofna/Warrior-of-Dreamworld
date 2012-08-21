@@ -32,6 +32,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <memory>
 
 typedef std::unique_ptr<sql::ResultSet> QueryResult;
+typedef std::unique_ptr<sql::Connection> ConnectionPtr;
+typedef std::unique_ptr<sql::Statement> StatementPtr;
+typedef std::unique_ptr<sql::PreparedStatement> PStatementPtr;
 
 class Database
 {
@@ -54,12 +57,11 @@ public:
         QueryResult PQuery(const char* sql, ...);
     #endif
 
-
 private:
-    sql::Driver* Driver;
-    sql::Connection* Connection;
-    sql::Statement* Statement;
-    sql::PreparedStatement* PStatement;
+    sql::Driver* Driver; // has protected destructor
+    ConnectionPtr Connection;
+    StatementPtr Statement;
+    PStatementPtr PStatement;
 };
 
 #ifdef HAVE_VARIADIC_TEMPLATES

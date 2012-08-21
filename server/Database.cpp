@@ -31,7 +31,6 @@ Database::Database()
 
 Database::~Database()
 {
-    // I love smart pointers :)
 }
 
 void Database::Connect()
@@ -58,7 +57,7 @@ void Database::Connect()
         ++i;
     }
 
-    Driver.reset(get_driver_instance());
+    Driver = get_driver_instance();
     Connection.reset(Driver->connect(Data[0], Data[1], Data[2]));
     Connection->setSchema(Data[3]);
     Statement.reset(Connection->createStatement());
