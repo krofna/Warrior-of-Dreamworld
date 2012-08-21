@@ -19,27 +19,49 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef CONFIG_H
 #define CONFIG_H
 
-  #if defined(WIN32) || defined(_WIN32)
+/** ************************ Windows stuff ************************ **/
+    #if defined(WIN32) || defined(_WIN32)
     #define WOD_DLL_DECL __declspec(dllexport)
 
-    #ifdef _MSC_VER
-      #define MSVC
-      #define secure_vsnprintf vsnprintf_s
-      #pragma warning(disable : 4251)
+/** ************************ Microsoft Visual Studio C++ stuff ************************ **/
+    #if defined(_MSC_VER)
+        #define MSVC
+        #define secure_vsnprintf vsnprintf_s
+        #pragma warning(disable : 4251)
+
+        #if defined(_MSC_VER == 1500)
+            #include <memory>
+            namespace std { namespace tr1 { using namespace std; } }
+        #else
+            #include <boost/shared_ptr.hpp>
+            #include <boost/unique_ptr.hpp>
+            #define USE_BOOST
+        #endif
     #endif
 
-  #elif defined( __GNUC__ )
-    #define WOD_DLL_DECL __attribute__((__visibility__("default"))) // FIXME: Check that !
-  #else
-    #define WOD_DLL_DECL export
-  #endif
-  
-#if defined(__VARIADIC_TEMPLATES) || (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4) && defined(__GXX_EXPERIMENTAL_CXX0X__))
-  #define HAVE_VARIADIC_TEMPLATES
-#endif
+/** ************************ GNU GCC Compiler stuff ************************ **/
+    #elif defined( __GNUC__ )
+        #define WOD_DLL_DECL __attribute__((__visibility__("default"))) // FIXME: Check that !
 
-#ifndef secure_vsnprintf
-    #define secure_vsnprintf vsprintf
-#endif
+        #if defined(__VARIADIC_TEMPLATES) || (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4) && defined(__GXX_EXPERIMENTAL_CXX0X__))
+            #define HAVE_VARIADIC_TEMPLATES
+            #include "Utils.hpp"
+        #else
+            #define secure_vsnprintf vsprintf // FIXME: Implement a secure vsprintf for replace all others "secure_vsprintf"
+        #endif
 
-#endif
+        #if defined((__GNUC_ == 4) &&(__GNUC_MINOR__ >= 1 && __GNU_MINOR < 3))
+            #include <tr1/memory>
+            namespace std { namespace tr1 { using namespace std; } }
+        #elif defined(__GNUC__ > 4 || (__GNUC__ == 4) && (__GNUC_MINOR >= 3))
+            #include <memory>
+        #else
+            #include <boost/shared_ptr.hpp>
+            #include <boost/unique_ptr.hpp>
+            #define USE_BOOST
+        #endif
+    #else
+        #define WOD_DLL_DECL export
+    #endif
+
+#endif // CONFIG_H
