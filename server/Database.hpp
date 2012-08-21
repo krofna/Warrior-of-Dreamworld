@@ -67,6 +67,7 @@ private:
     sql::Driver* Driver;
     sql::Connection* Connection;
     sql::Statement* Statement;
+    sql::PreparedStatement* PStatement;
 };
 
 #ifdef HAVE_VARIADIC_TEMPLATES

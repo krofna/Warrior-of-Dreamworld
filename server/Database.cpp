@@ -25,12 +25,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Database sDatabase;
 
-Database::Database()
+Database::Database() :
+PStatement        (nullptr)
 {
 }
 
 Database::~Database()
 {
+    delete PStatement;
     delete Statement;
     delete Connection;
 }
@@ -88,10 +90,10 @@ void Database::Execute(const char* sql)
 
 QueryResult Database::Query(const char* sql)
 {
-    std::auto_ptr<sql::PreparedStatement> PStatement(Connection->prepareStatement(sql));
-    QueryResult Result(PStatement->executeQuery());
+    delete PStatement;
+    PStatement = Connection->prepareStatement(sql);
 
-    return Result;
+    return QueryResult(PStatement->executeQuery());
 }
 #ifndef HAVE_VARIADIC_TEMPLATES
     QueryResult Database::PQuery(const char* sql, ...)
