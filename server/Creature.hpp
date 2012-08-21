@@ -35,7 +35,7 @@ public:
 
     WorldPacket PackData();
 
-    void SpellHit(SpellBox* pSpellBox);
+    void SpellHit(SpellBoxPtr pSpellBox);
 
     CreatureAI* GetAI();
 private:

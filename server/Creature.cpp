@@ -53,7 +53,7 @@ WorldPacket Creature::PackData()
     return Packet;
 }
 
-void Creature::SpellHit(SpellBox* pSpellBox)
+void Creature::SpellHit(SpellBoxPtr pSpellBox)
 {
     Unit::SpellHit(pSpellBox);
 

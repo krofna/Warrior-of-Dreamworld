@@ -34,7 +34,7 @@ public:
 
     virtual WorldPacket PackData() = 0;
 
-    virtual void SpellHit(SpellBox* pSpellBox);
+    virtual void SpellHit(SpellBoxPtr pSpellBox);
     virtual void CastSpell(SpellPtr pSpell, float Angle);
     void CastSpell(uint16 Entry, UnitPtr pVictim);
     void CastSpell(uint16 Entry, float Angle);

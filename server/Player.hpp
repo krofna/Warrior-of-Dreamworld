@@ -44,7 +44,7 @@ public:
     void SaveToDB();
     bool IsLoaded();
 
-    void SpellHit(SpellBox* pSpellBox);
+    void SpellHit(SpellBoxPtr pSpellBox);
 
     void CastSpell(SpellPtr pSpell, float Angle);
 

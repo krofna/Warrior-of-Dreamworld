@@ -55,7 +55,7 @@ public:
     virtual void Hit(UnitPtr pAttacker, uint32& Damage){}; // -- NYI
 
     // Called when creature is hit by spell
-    virtual void SpellHit(SpellBox* pSpellBox){};
+    virtual void SpellHit(SpellBoxPtr pSpellBox){};
 
     // Creature controlled by this AI
     CreaturePtr pCreature;

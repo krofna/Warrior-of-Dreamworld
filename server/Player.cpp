@@ -71,7 +71,7 @@ bool Player::IsLoaded()
     return LoadedFromDB;
 }
 
-void Player::SpellHit(SpellBox* pSpellBox)
+void Player::SpellHit(SpellBoxPtr pSpellBox)
 {
     // PH, TODO: do player specific stuff
     Unit::SpellHit(pSpellBox);

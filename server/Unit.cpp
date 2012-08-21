@@ -29,7 +29,7 @@ MeeleAttackCooldown(0)
 {
 }
 
-void Unit::SpellHit(SpellBox* pSpellBox)
+void Unit::SpellHit(SpellBoxPtr pSpellBox)
 {
     // PH - reduce health and do shit
     // Threat checks etc?

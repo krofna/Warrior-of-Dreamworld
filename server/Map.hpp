@@ -25,7 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <boost/enable_shared_from_this.hpp>
 
 class Player;
-struct PathfinderNode;
 
 class Map : public boost::enable_shared_from_this<Map>
 {
@@ -48,7 +47,7 @@ class Map : public boost::enable_shared_from_this<Map>
     // Entities
     std::vector<CreaturePtr> Creatures;
     std::vector<PlayerPtr> Players;
-    std::vector<SpellBox> Spells;
+    std::vector<SpellBoxPtr> Spells;
 
     uint16 MapID;
     uint32 NewSpellBoxID;

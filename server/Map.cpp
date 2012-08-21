@@ -66,7 +66,7 @@ void Map::Update(int32 diff)
     // Update spell box positions
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end(); ++SpellBoxIter)
     {
-        SpellBoxIter->Update(diff);
+        (*SpellBoxIter)->Update(diff);
     }
 
     std::for_each(Players.begin(), Players.end(), std::bind1st(std::mem_fun(&Map::UnitUpdate), this));
@@ -78,9 +78,9 @@ void Map::UnitUpdate(UnitPtr pUnit)
     // Check if unit got hit by spell
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)
     {
-        if(SpellBoxIter->pCaster != pUnit/*Is friendly? Healing?*/ && SpellBoxIter->CollidesWith(pUnit))
+        if((*SpellBoxIter)->pCaster != pUnit/*Is friendly? Healing?*/ && (*SpellBoxIter)->CollidesWith(pUnit))
         {
-            pUnit->SpellHit(&(*SpellBoxIter));
+            pUnit->SpellHit(*SpellBoxIter);
             SpellBoxIter = Spells.erase(SpellBoxIter);
         }
         else
@@ -117,7 +117,7 @@ void Map::AddPlayer(PlayerPtr pPlayer)
 void Map::AddSpell(UnitPtr pCaster, SpellPtr pSpell, float Angle)
 {
     // PLACEHOLDER
-    Spells.push_back(SpellBox(pSpell, pCaster, FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));
+    Spells.push_back(SpellBoxPtr(new SpellBox(pSpell, pCaster, FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID)));
     ++NewSpellBoxID;
 }
 
