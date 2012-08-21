@@ -49,10 +49,11 @@ void Database::Connect()
     {
         Buffer.erase(Buffer.begin(), find_if(Buffer.begin(), Buffer.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
 
-        if(!std::isalnum(Buffer[0]))
-        {
+        if(Buffer.empty())
             continue;
-        }
+
+        if(!std::isalnum(Buffer[0]))
+            continue;
 
         std::stringstream(Buffer) >> Data[i];
         ++i;

@@ -25,6 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
+typedef boost::asio::ip::tcp::acceptor TAcceptor;
+typedef boost::asio::ip::tcp::socket TSocket;
+typedef boost::shared_ptr<boost::asio::ip::tcp::socket> SocketPtr;
 
 class WorldAcceptor
 {
@@ -37,7 +40,7 @@ public:
 private:
     void HandleAccept(WorldSession* Session, const boost::system::error_code& error);
 
-    boost::asio::ip::tcp::acceptor Acceptor;
+    TAcceptor Acceptor;
     SocketPtr NewSocket;
 };
 

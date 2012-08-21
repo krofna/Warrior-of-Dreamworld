@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/bind.hpp"
 
 WorldAcceptor::WorldAcceptor(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
-NewSocket               (new Socket(io)),
+NewSocket               (new TSocket(io)),
 Acceptor                (io, Endpoint)
 {
 

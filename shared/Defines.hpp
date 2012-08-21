@@ -39,7 +39,6 @@ class Map;
 class Spell;
 
 
-#include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 
 #ifndef NOT_AVAILABLE_SHARED_PTR
@@ -57,9 +56,6 @@ class Spell;
     typedef std::shared_ptr<Map> MapPtr;
     typedef std::shared_ptr<Spell> SpellPtr;
 #endif
-
-typedef boost::asio::ip::tcp::socket Socket;
-typedef boost::shared_ptr<Socket> SocketPtr;
 
 #define TILE_SIZE 32
 #define MAP_COUNT 1
