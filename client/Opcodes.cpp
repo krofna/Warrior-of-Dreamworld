@@ -25,13 +25,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 OpcodeHandler OpcodeTable[MSG_COUNT] = 
 {
     { "MSG_NULL", &WorldSession::HandleNULL },
-    MakeOpcode(Login),
-    MakeOpcode(AddObject), // SMSG
-    MakeOpcode(RemoveObject), // SMSG
-    MakeOpcode(MoveObject),
-    MakeOpcode(CastSpell),
-    MakeOpcode(LogOut),
-    MakeOpcode(SystemMessage) // SMSG
+    
+    MakeOpcode(MSG_LOGIN, Login),
+    MakeOpcode(MSG_ADD_OBJECT, AddObject), // SMSG
+    MakeOpcode(MSG_REMOVE_OBJECT, RemoveObject), // SMSG
+    MakeOpcode(MSG_MOVE_OBJECT, MoveObject),
+    MakeOpcode(MSG_CAST_SPELL, CastSpell),
+    MakeOpcode(MSG_LOG_OUT, LogOut),
+    MakeOpcode(MSG_SYSTEM_MESSAGE, SystemMessage) // SMSG
     
     /*{ "MSG_LOGIN", &WorldSession::HandleLoginOpcode },
     { "MSG_ADD_OBJECT", &WorldSession::HandleAddObjectOpcode }, // SMSG
