@@ -31,15 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <memory>
 
-#ifdef HAVE_VARIADIC_TEMPLATES
-    #include "../shared/Utils.hpp"
-#endif
-
-#ifndef NOT_AVAILABLE_UNIQUE_PTR
-    typedef std::unique_ptr<sql::ResultSet> QueryResult;
-#else
-    typedef boost::unique_ptr<sql::ResultSet> QueryResult;
-#endif
+typedef std::unique_ptr<sql::ResultSet> QueryResult;
 
 class Database
 {
