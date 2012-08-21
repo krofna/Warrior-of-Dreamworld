@@ -154,10 +154,10 @@ bool Map::CheckOutside(int PosX, int PosY, uint8 Direction) const
     switch(Direction)
     {
         case MOVE_UP:
-            return ((PosY + 1) >= 50);
+            return ((PosY - 1) < 0);
             break;
         case MOVE_DOWN:
-            return ((PosY - 1) < 0);
+            return ((PosY + 1) >= 50);
             break;
         case MOVE_LEFT:
             return ((PosX - 1) < 0);
