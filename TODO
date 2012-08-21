@@ -13,7 +13,7 @@ Code:
 - GUI System for Chat (SFGUI ?)
 - Some data may/should be Uint8 instead of Uint16
 - Cleanup Includes/forward declares...
-- Give tilesets IDs instead of std::strings
+- Give tilesets IDs instead of std::string
 - world_edit
 - site to register accounts (RenaissanceinCroatia working on it)
 - Melee attack
