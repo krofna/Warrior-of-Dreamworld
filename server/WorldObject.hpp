@@ -24,8 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/WorldPacket.hpp"
 #include "../shared/Vector2.hpp"
 
-struct Map;
-typedef boost::shared_ptr<Map> MapPtr;
+class Map;
 class Pathfinder;
 
 class WOD_DLL_DECL WorldObject

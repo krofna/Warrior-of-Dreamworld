@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Unit;
 class Creature;
 class SpellBox;
-struct Spell;
+class Spell;
 
 class WOD_DLL_DECL CreatureAI
 {

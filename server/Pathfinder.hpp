@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Vector2.hpp"
 #include <boost/shared_array.hpp>
 
-struct Map;
+class Map;
 typedef boost::shared_ptr<Map> MapPtr;
 class WorldObject;
 

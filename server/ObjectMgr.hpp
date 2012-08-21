@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Templates.hpp"
 
 class Player;
-struct Spell;
+class Spell;
 
 // TODO: Use this for spell/gameobject/creature templates
 class ObjectMgr
