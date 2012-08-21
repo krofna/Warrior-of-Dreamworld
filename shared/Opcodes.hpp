@@ -58,5 +58,6 @@ struct OpcodeHandler
 extern OpcodeHandler OpcodeTable[MSG_COUNT];
 
 #define MakeOpcode(NameOpcode, Name) { #NameOpcode, &WorldSession:: ## Handle ## Name ## Opcode }
+#define MakeNullOpcode(NameOpcode) { #NameOpcode, &WorldSession::HandleNULL }
 
 #endif
