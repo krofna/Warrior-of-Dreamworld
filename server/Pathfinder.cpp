@@ -51,7 +51,7 @@ void Pathfinder::Init()
     {
         for(int x = 0; x < MAX_MAP_WIDTH; ++x)
         {
-            PathfindingGrid[MAX_MAP_HEIGHT * y + x].Position = std::move(Vector2i(x, y));
+            PathfindingGrid[MAX_MAP_HEIGHT * y + x].Position = Vector2i(x, y);
         }
     }
 
@@ -90,7 +90,7 @@ void Pathfinder::GeneratePath()
     Path = std::stack<Vector2i>();
 
     // Zero out status grid
-    std::memset(PathfindingStatusGrid.get(), 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH * sizeof(PathfindingStatusGrid[0]));
+    std::memset(PathfindingStatusGrid.get(), 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH * sizeof(uint8));
 
     // Get Node with same position as creature in pathfinding grid
     PathfinderNode* pOriginNode = &(PathfindingGrid[MAX_MAP_HEIGHT * pOrigin->GetY() + pOrigin->GetX()]);
@@ -189,7 +189,7 @@ void Pathfinder::GeneratePath()
 
 void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
 {
-    if((*pTileGrid)[pCurrent->Position.y+y][pCurrent->Position.x+x] == nullptr)
+    if(!(*pTileGrid)[pCurrent->Position.y+y][pCurrent->Position.x+x])
     {
         PathfinderNode* pAdjacent = &PathfindingGrid[MAX_MAP_HEIGHT * (pCurrent->Position.y+y) + pCurrent->Position.x+x];
 

@@ -62,7 +62,7 @@ public:
         return Position.y;
     }
 
-    Vector2i& GetPosition()
+    Vector2i GetPosition() const
     {
         return Position;
     }
