@@ -25,16 +25,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Database sDatabase;
 
-Database::Database() :
-PStatement        (nullptr)
+Database::Database()
 {
 }
 
 Database::~Database()
 {
-    delete PStatement;
-    delete Statement;
-    delete Connection;
+    // I love smart pointers :)
 }
 
 void Database::Connect()
@@ -61,25 +58,24 @@ void Database::Connect()
         ++i;
     }
 
-    Driver = get_driver_instance();
-    Connection = Driver->connect(Data[0], Data[1], Data[2]);
+    Driver.reset(get_driver_instance());
+    Connection.reset(Driver->connect(Data[0], Data[1], Data[2]));
     Connection->setSchema(Data[3]);
-    Statement = Connection->createStatement();
+    Statement.reset(Connection->createStatement());
 }
 
 #ifndef HAVE_VARIADIC_TEMPLATES
     #define MAX_QUERY_LEN 3*1024 // this is so wrong in so many ways
-
     void Database::PExecute(const char* sql, ...)
     {
         va_list ArgList;
-        char Query[MAX_QUERY_LEN];
+        char CQuery[MAX_QUERY_LEN];
 
         va_start(ArgList, sql);
-        secure_vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
+        secure_vsnprintf(CQuery, MAX_QUERY_LEN, sql, ArgList);
         va_end(ArgList);
 
-        Execute(Query);
+        Execute(CQuery);
     }
 #endif
 
@@ -90,21 +86,19 @@ void Database::Execute(const char* sql)
 
 QueryResult Database::Query(const char* sql)
 {
-    delete PStatement;
-    PStatement = Connection->prepareStatement(sql);
-
+    PStatement.reset(Connection->prepareStatement(sql));
     return QueryResult(PStatement->executeQuery());
 }
 #ifndef HAVE_VARIADIC_TEMPLATES
     QueryResult Database::PQuery(const char* sql, ...)
     {
         va_list ArgList;
-        char Query[MAX_QUERY_LEN];
+        char CQuery[MAX_QUERY_LEN];
 
         va_start(ArgList, sql);
-        secure_vsnprintf(Query, MAX_QUERY_LEN, sql, ArgList);
+        secure_vsnprintf(CQuery, MAX_QUERY_LEN, sql, ArgList);
         va_end(ArgList);
 
-        return this->Query(Query);
+        return Query(CQuery);
     }
 #endif
