@@ -31,8 +31,12 @@ pTemplate         (pTemplate)
 {
     Position = Vector2i(x, y);
     this->pMap = pMap;
-    pAI = CreateAI(pTemplate->ScriptName, CreaturePtr(this));
-    MovementGenerator = new Pathfinder(WorldObjectPtr(this));
+}
+
+void Creature::InitializeAI()
+{
+    pAI = CreateAI(pTemplate->ScriptName, boost::static_pointer_cast<Creature>(shared_from_this()));
+    MovementGenerator = new Pathfinder(shared_from_this());
 }
 
 Creature::~Creature()

@@ -30,6 +30,7 @@ class WOD_DLL_DECL Creature : public Unit
 public:
     Creature(uint32 ObjID, MapPtr pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate);
     ~Creature();
+    void InitializeAI();
 
     void Update(int32 diff);
 

@@ -42,7 +42,7 @@ void Unit::CastSpell(SpellPtr pSpell, float Angle)
     WorldPacket Packet((uint16)MSG_CAST_SPELL);
     Packet << ObjID << pSpell->Effect << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     pMap->SendToPlayers(Packet);
-    pMap->AddSpell(UnitPtr(this), pSpell, Angle);
+    pMap->AddSpell(boost::static_pointer_cast<Unit>(shared_from_this()), pSpell, Angle);
 }
 
 void Unit::DoMeleeAttackIfReady(int32 diff)

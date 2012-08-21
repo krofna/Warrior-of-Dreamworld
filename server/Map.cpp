@@ -55,6 +55,7 @@ void Map::LoadCreatures()
     while(Result->next())
     {
         pCreature = CreaturePtr(new Creature(Result->getUInt(1), shared_from_this(), Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2))));
+        pCreature->InitializeAI();
         Creatures.push_back(pCreature);
     }
 }
