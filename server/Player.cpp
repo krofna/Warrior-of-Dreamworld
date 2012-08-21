@@ -44,7 +44,7 @@ void Player::AddToWorld()
 void Player::RemoveFromWorld()
 {
     pMap->TileGrid[Position.y][Position.x].reset();
-    pMap->RemovePlayer(shared_from_this());
+    pMap->RemovePlayer(boost::static_pointer_cast<Player>(shared_from_this()));
 }
 
 void Player::LoadFromDB()
@@ -71,7 +71,7 @@ bool Player::IsLoaded()
     return LoadedFromDB;
 }
 
-void Player::SpellHit(SpellBox* pSpellBox)
+void Player::SpellHit(SpellBoxPtr pSpellBox)
 {
     // PH, TODO: do player specific stuff
     Unit::SpellHit(pSpellBox);

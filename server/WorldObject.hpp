@@ -23,11 +23,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Config.hpp"
 #include "../shared/WorldPacket.hpp"
 #include "../shared/Vector2.hpp"
+#include "boost/enable_shared_from_this.hpp"
 
 class Map;
 class Pathfinder;
 
-class WOD_DLL_DECL WorldObject
+class WOD_DLL_DECL WorldObject : public boost::enable_shared_from_this<WorldObject>
 {
     friend class Pathfinder;
 public:

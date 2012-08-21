@@ -20,9 +20,6 @@ class Vector2
         template<typename OtherType>
         float GetAngle(Vector2<OtherType> const& Target);
 
-        template<typename OtherType>
-        Vector2<NumberType>& operator *(OtherType const& Multiplier) { x *= static_cast<NumberType>(Multiplier); y *= static_cast<NumberType>(Multiplier); return *this;}
-
     NumberType x;
     NumberType y;
 };
@@ -37,6 +34,12 @@ template<typename NumberType>
 bool operator !=(Vector2<NumberType> const& Left, Vector2<NumberType> const& Right)
 {
     return Left.x != Right.x && Left.y != Right.y;
+}
+
+template<typename NumberType>
+Vector2<NumberType> operator *(Vector2<NumberType> const& Left, NumberType Multiplier)
+{
+    return Vector2<NumberType>(Left.x * Multiplier, Left.y * Multiplier);
 }
 
 template<typename NumberType>
@@ -63,24 +66,6 @@ float Vector2<NumberType>::GetDistance(Vector2<OtherType> const& Target)
 {
     return std::sqrt((x - Target.x) * (x - Target.x) + (y - Target.y) * (y - Target.y));
 }
-
-template<typename NumberType>
-template<typename OtherType>
-float Vector2<NumberType>::GetAngle(Vector2<OtherType> const& Target)
-{
-    // Click position should represent center of sprite, NOT the upper-left corner
-    Target.x -= TILE_SIZE / 2;
-    Target.y -= TILE_SIZE / 2;
-
-    // 'Move' the origin to (0, 0)
-    Target.x -= x;
-    Target.y -= y;
-
-    // Calculate angle
-    return std::atan2(Target.x, Target.y);
-}
-
-
 
 typedef Vector2<float> Vector2f;
 typedef Vector2<double> Vector2d;

@@ -37,6 +37,7 @@ class WorldObject;
 class Creature;
 class Map;
 class Spell;
+class SpellBox;
 
 
 #include <boost/shared_ptr.hpp>
@@ -48,6 +49,7 @@ class Spell;
     typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
     typedef boost::shared_ptr<Map> MapPtr;
     typedef boost::shared_ptr<Spell> SpellPtr;
+    typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
 #else
     typedef std::shared_ptr<Player> PlayerPtr;
     typedef std::shared_ptr<Unit> UnitPtr;
@@ -55,6 +57,7 @@ class Spell;
     typedef std::shared_ptr<WorldObject> WorldObjectPtr;
     typedef std::shared_ptr<Map> MapPtr;
     typedef std::shared_ptr<Spell> SpellPtr;
+    typedef std::shared_ptr<SpellBox> SpellBoxPtr;
 #endif
 
 #define TILE_SIZE 32
