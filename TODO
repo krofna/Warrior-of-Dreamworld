@@ -7,8 +7,6 @@ i want to send a packet. Too much memcpy-ing is going on
 but seems like boost & thread branches broke it.
 We need to do proper cleanup
 
-3) Pathfinder broke! Again, this worked in [90]. Investigate
-
 Code:
 - Command system for creating accounts, modifying password accounts, more...
 - Handle case where we haven't variadic template and vsnprintf_s available
