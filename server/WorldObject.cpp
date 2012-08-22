@@ -34,7 +34,7 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
 {
     uint16 OldX = Position.x, OldY = Position.y;
 
-    if (pMap->CheckOutside(Position.y, Position.x, Direction))
+    if (pMap->CheckOutside(Position.x, Position.y, Direction))
         return false;
 
     switch(Direction)

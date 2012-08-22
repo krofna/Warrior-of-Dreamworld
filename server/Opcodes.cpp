@@ -28,7 +28,7 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
     MakeOpcode(MSG_LOGIN, Login),
     MakeNullOpcode(MSG_ADD_OBJECT),
     MakeNullOpcode(MSG_REMOVE_OBJECT),
-    MakeOpcode(MSG_MOVE_OBJET, MoveObject),
+    MakeOpcode(MSG_MOVE_OBJECT, MoveObject),
     MakeOpcode(MSG_CAST_SPELL, CastSpell),
     MakeOpcode(MSG_LOG_OUT, LogOut),
     MakeNullOpcode(MSG_SYSTEM_MESSAGE)
