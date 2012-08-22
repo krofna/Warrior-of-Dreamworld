@@ -7,10 +7,18 @@ i want to send a packet. Too much memcpy-ing is going on
 but seems like boost & thread branches broke it.
 We need to do proper cleanup
 
+3) Propertly clean up SPELL_BOLT on client side when its erased from server
+
+4) Send unix time stamp in packet header and take it into consideration when
+spawning SPELL_BOLTs
+
+5) Use chrono instead of posix time to calculate Update diffs (when update took
+longer than 50ms)
+
 Code:
 - Command system for creating accounts, modifying password accounts, more...
 - Handle case where we haven't variadic template and vsnprintf_s available
-- GUI System for Chat (SFGUI ?)
+- GUI System for Chat (Fullmetal-Alchimist assigned)
 - Some data may/should be Uint8 instead of Uint16
 - Cleanup Includes/forward declares...
 - Give tilesets IDs instead of std::string
