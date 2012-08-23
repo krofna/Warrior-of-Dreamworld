@@ -108,7 +108,7 @@ int World::Run()
 {
     pWorldAcceptor->Accept();
     Timer.expires_from_now(boost::posix_time::milliseconds(50));
-    OldTime = boost::posix_time::microsec_clock::local_time();
+    OldTime = boost::chrono::high_resolution_clock::now();
     Timer.async_wait(boost::bind(&World::Update, this));
     io.run();
     return 0;
@@ -142,13 +142,13 @@ void World::Update()
         return;
     }
 
-    boost::posix_time::ptime NewTime = boost::posix_time::microsec_clock::local_time();
-    Diff = NewTime - OldTime;
-    OldTime = NewTime;
+    boost::chrono::milliseconds NewTime = boost::chrono::duration_cast<boost::chrono::milliseconds>(boost::chrono::high_resolution_clock::now() - OldTime);
+    boost::chrono::high_resolution_clock::time_point newOldTime(NewTime);
+    OldTime = newOldTime;
 
     for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
     {
-        (*MapIterator)->Update(Diff.total_milliseconds());
+        (*MapIterator)->Update(NewTime.count());
     }
     Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
     Timer.async_wait(boost::bind(&World::Update, this));

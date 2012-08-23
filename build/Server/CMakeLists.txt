@@ -21,7 +21,7 @@ include(FindThreads)
 
 set(MYSQLCONNECTORCPP_ROOT_DIR /home/ryan/Documents/Développement/mysql-connector-c++)
 
-FIND_PACKAGE(Boost COMPONENTS system thread REQUIRED)
+FIND_PACKAGE(Boost COMPONENTS system thread chrono REQUIRED)
 FIND_PACKAGE(MySQLConnectorCPP)
 FIND_PACKAGE(Threads)
 

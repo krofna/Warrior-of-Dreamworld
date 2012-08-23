@@ -12,12 +12,7 @@ We need to do proper cleanup
 4) Send unix time stamp in packet header and take it into consideration when
 spawning SPELL_BOLTs
 
-5) Use chrono instead of posix time to calculate Update diffs (when update took
-longer than 50ms)
-
-6) Make GUID row AUTO_INCREMENT for generating automagically new GUID.
-
-7) [strike]Shit I forgot...[/strike]
+5) [strike]Shit I forgot...[/strike]
 I remembered!
 Consider using either raw pointers or home brew non reference counting pointers (with owner)
 to improve server performance.
