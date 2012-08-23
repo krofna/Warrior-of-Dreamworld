@@ -16,6 +16,7 @@
 
 # Compiled executables
 *.exe
+*.out
 
 # Microsoft Visual C++ files
 *.suo
@@ -31,3 +32,4 @@
 *.lastbuildstate
 *.log
 *.txt
+*.exp

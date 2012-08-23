@@ -16,23 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef CHAT_H
-#define CHAT_H
+#ifndef COMMAND_HANDLER_H
+#define COMMAND_HANDLER_H
 
 #include "../shared/Defines.hpp"
 #include <boost/tokenizer.hpp>
 
 struct ChatCommand;
 
-class ChatHandler
+class CommandHandler
 {
 public:
-    explicit ChatHandler(PlayerPtr& pPlayer);
+    CommandHandler(std::string& Msg) : Console(true), Tokenizer(Msg), TokIter(Tokenizer.begin()) { }
+    CommandHandler(PlayerPtr& pPlayer, std::string Msg) : pPlayer(pPlayer), Console(false), Tokenizer(Msg), TokIter(Tokenizer.begin()) { }
 
     // @return: true if command was executed
     //          false if its not a command
     // @throws: BadCommand
-    bool ParseCommand(std::string& Msg);
+    bool ExecuteCommand();
 
 private:
     ChatCommand* GetCommandTable();
@@ -42,9 +43,12 @@ private:
     void HandleAccountDeleteCommand();
     void HandleAccountSetSecLevelCommand();
 
-    void ExtractArg(boost::tokenizer<>& Tokenizer, boost::tokenizer<>::iterator& TokIter, std::string& Arg);
+    void ExtractArg(std::string& Arg);
 
     PlayerPtr pPlayer;
+    boost::tokenizer<> Tokenizer;
+    boost::tokenizer<>::iterator TokIter;
+    bool Console;
 
 private:
     class BadCommand {};
@@ -57,7 +61,7 @@ struct ChatCommand
     const char* Name;
     uint8 SecurityLevel;
     bool AllowConsole;
-    void (ChatHandler::*Handler)();
+    void (CommandHandler::*Handler)();
     std::string Help;
     ChatCommand* ChildCommands;
 };
