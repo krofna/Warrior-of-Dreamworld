@@ -27,7 +27,7 @@ struct ChatCommand;
 class ChatHandler
 {
 public:
-    explicit ChatHandler(PlayerPtr pPlayer);
+    explicit ChatHandler(PlayerPtr& pPlayer);
 
     // @return: true if command was executed
     //          false if its not a command
@@ -42,9 +42,7 @@ private:
     void HandleAccountDeleteCommand();
     void HandleAccountSetSecLevelCommand();
 
-    static boost::tokenizer<> Tokenizer;
-    static boost::tokenizer<>::iterator TokIter;
-    void ExtractArg(std::string& Arg);
+    void ExtractArg(boost::tokenizer<>& Tokenizer, boost::tokenizer<>::iterator& TokIter, std::string& Arg);
 
     PlayerPtr pPlayer;
 

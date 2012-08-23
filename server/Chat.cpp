@@ -48,14 +48,14 @@ ChatCommand* ChatHandler::GetCommandTable()
 bool ChatHandler::ParseCommand(std::string& Msg)
 {
     // Is it a command?
-    if(Msg.empty() && Msg[0] != '.' && (!std::isalpha(Msg[1])))
+    if((Msg.empty()) && (Msg[0] != '.') && (!std::isalpha(Msg[1])))
         return false;
 
     std::string Command;
 
-    boost::tokenizer<> Tok(Msg);
-    TokIter = Tok.begin();
-    ExtractArg(Command);
+    boost::tokenizer<> Tokenizer(Msg);
+    boost::tokenizer<>::iterator TokIter = Tokenizer.begin();
+    ExtractArg(Tokenizer, TokIter, Command);
 
     // Is there such command?
     ChatCommand* pCommand;
@@ -73,7 +73,7 @@ bool ChatHandler::ParseCommand(std::string& Msg)
             if(Command.compare(pCommand->Name) == 0)
                 break;
         }
-        ExtractArg(Command);
+        ExtractArg(Tokenizer, TokIter, Command);
     }
 
     (this->*pCommand->Handler)();
@@ -81,7 +81,7 @@ bool ChatHandler::ParseCommand(std::string& Msg)
     return true;
 }
 
-void ChatHandler::ExtractArg(std::string& Arg)
+void ChatHandler::ExtractArg(boost::tokenizer<>& Tokenizer, boost::tokenizer<>::iterator& TokIter, std::string& Arg)
 {
     if(TokIter == Tokenizer.end())
         throw BadCommand();

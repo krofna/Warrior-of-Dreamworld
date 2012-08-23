@@ -30,14 +30,14 @@ class Spell;
 class WOD_DLL_DECL CreatureAI
 {
 public:
-    explicit CreatureAI(CreaturePtr pCreature) : pCreature(pCreature) {}
+    explicit CreatureAI(CreaturePtr& pCreature) : pCreature(pCreature) {}
     virtual ~CreatureAI() {};
 
     // Called on World::Update
     virtual void UpdateAI(int32 diff);
 
     // Called when creature enters combat
-    virtual void EnterCombat(UnitPtr pEnemy){};
+    virtual void EnterCombat(UnitPtr& pEnemy){};
 
     // Called when creature starts running home
     virtual void RunHome(){}; // -- NYI
@@ -46,16 +46,16 @@ public:
     virtual void ReachedHome(){}; // -- NYI
 
     //Called when creature dies
-    virtual void JustDied(UnitPtr pKiller){}; // -- NYI
+    virtual void JustDied(UnitPtr& pKiller){}; // -- NYI
 
     // Called when creature kills unit
-    virtual void KilledUnit(UnitPtr pVictim){}; // -- NYI
+    virtual void KilledUnit(UnitPtr& pVictim){}; // -- NYI
 
     // Called when creature is hit by melee attack
-    virtual void Hit(UnitPtr pAttacker, uint32& Damage){}; // -- NYI
+    virtual void Hit(UnitPtr& pAttacker, uint32& Damage){}; // -- NYI
 
     // Called when creature is hit by spell
-    virtual void SpellHit(SpellBoxPtr pSpellBox){};
+    virtual void SpellHit(SpellBoxPtr& pSpellBox){};
 
     // Creature controlled by this AI
     CreaturePtr pCreature;

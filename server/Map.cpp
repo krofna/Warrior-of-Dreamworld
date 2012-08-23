@@ -25,7 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "Pathfinder.hpp"
 #include "ObjectMgr.hpp"
-#include <algorithm>
 
 Map::Map     (uint16 TMapID) : 
 NewSpellBoxID(0),
@@ -33,7 +32,7 @@ NewSpellBoxID(0),
 TileGrid     (50, std::vector<WorldObjectPtr>(50, WorldObjectPtr()))
 {
     MapID = TMapID;
-    sLog.Write("Map %d loaded.", MapID);
+    sLog.Write("Map %u loaded.", MapID);
 }
 
 Map::~Map()
@@ -44,7 +43,7 @@ Map::~Map()
         if((*PlayerIter)->IsInWorld())
             (*PlayerIter)->Kick();
     }
-    sLog.Write("Map %d destroyed.", MapID);
+    sLog.Write("Map %u destroyed.", MapID);
 }
 
 void Map::LoadCreatures()
@@ -92,7 +91,7 @@ void Map::UnitUpdate(UnitPtr pUnit)
     pUnit->Update(diff);
 }
 
-void Map::AddPlayer(PlayerPtr pPlayer)
+void Map::AddPlayer(PlayerPtr& pPlayer)
 {
     // Pack & send all data about world objects to new player
     for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
@@ -115,7 +114,7 @@ void Map::AddPlayer(PlayerPtr pPlayer)
     Players.push_back(pPlayer);
 }
 
-void Map::AddSpell(UnitPtr pCaster, SpellPtr pSpell, float Angle)
+void Map::AddSpell(UnitPtr& pCaster, SpellPtr& pSpell, float Angle)
 {
     // PLACEHOLDER
     Spells.push_back(SpellBoxPtr(new SpellBox(pSpell, pCaster, FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID)));
@@ -130,7 +129,7 @@ void Map::SendToPlayers(WorldPacket& Packet)
     }
 }
 
-void Map::RemovePlayer(PlayerPtr pPlayer)
+void Map::RemovePlayer(PlayerPtr& pPlayer)
 {
     WorldPacket Packet((uint16)MSG_REMOVE_OBJECT);
     Packet << pPlayer->GetObjectID();

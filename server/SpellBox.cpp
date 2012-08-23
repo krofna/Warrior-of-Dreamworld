@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Spell.hpp"
 #include "../shared/Opcodes.hpp"
 
-SpellBox::SpellBox(SpellPtr pSpell, UnitPtr pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID) :
+SpellBox::SpellBox(SpellPtr& pSpell, UnitPtr& pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID) :
 pSpell            (pSpell),
 pCaster           (pCaster),
 Hitbox            (Hitbox),
@@ -31,7 +31,7 @@ _Diff             (0)
 {
 }
 
-bool SpellBox::CollidesWith(UnitPtr pObject)
+bool SpellBox::CollidesWith(UnitPtr& pObject)
 {
     // TODO: Adjust hitbox, dont construct new objects too much
     FloatRect Obj(pObject->GetX(), pObject->GetY(), 1.0f, 1.0f);

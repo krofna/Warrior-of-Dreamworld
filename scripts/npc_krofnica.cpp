@@ -27,7 +27,7 @@ enum
 class WOD_DLL_DECL npc_krofnicaAI : public CreatureAI
 {
 public:
-    npc_krofnicaAI(CreaturePtr pCreature) : CreatureAI(pCreature)
+    npc_krofnicaAI(CreaturePtr& pCreature) : CreatureAI(pCreature)
     {
         Reset();
     }
