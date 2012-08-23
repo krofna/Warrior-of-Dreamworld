@@ -29,11 +29,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         #define secure_vsnprintf vsnprintf_s
         #pragma warning(disable : 4251)
 
-        #if(_MSC_VER == 1500)
+        #if(_MSC_VER >= 1500)
             #include <memory>
             namespace std { namespace tr1 { using namespace std; } }
         #else
-            // TODO
             #define USE_BOOST
         #endif
     #endif
@@ -55,7 +54,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         #elif defined(__GNUC__ > 4 || (__GNUC__ == 4) && (__GNUC_MINOR >= 3))
             #include <memory>
         #else
-            // TODO
             #define USE_BOOST
         #endif
     #else

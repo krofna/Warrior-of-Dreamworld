@@ -20,15 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define PATHFINDER_H
 
 #include <stack>
-#include <memory>
 #include <queue>
 #include "../shared/Defines.hpp"
 #include "../shared/Vector2.hpp"
 #include <boost/shared_array.hpp>
-
-class Map;
-typedef boost::shared_ptr<Map> MapPtr;
-class WorldObject;
 
 /*
 TODO: Instead of *50 use map width: see Map.cpp Map::{ctor}

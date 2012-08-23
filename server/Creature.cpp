@@ -35,7 +35,7 @@ pTemplate         (pTemplate)
 
 void Creature::InitializeAI()
 {
-    pAI = CreateAI(pTemplate->ScriptName, boost::static_pointer_cast<Creature>(shared_from_this()));
+    pAI = CreateAI(pTemplate->ScriptName, static_pointer_cast<Creature>(shared_from_this()));
     MovementGenerator = new Pathfinder(shared_from_this());
 }
 

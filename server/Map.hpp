@@ -21,12 +21,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "SpellBox.hpp"
 #include "Creature.hpp"
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
 
 class Player;
 
-class Map : public boost::enable_shared_from_this<Map>
+class Map : public enable_shared_from_this<Map>
 {
     public:
     Map(uint16 TMapID);

@@ -44,7 +44,7 @@ void Player::AddToWorld()
 void Player::RemoveFromWorld()
 {
     pMap->TileGrid[Position.y][Position.x].reset();
-    pMap->RemovePlayer(boost::static_pointer_cast<Player>(shared_from_this()));
+    pMap->RemovePlayer(static_pointer_cast<Player>(shared_from_this()));
 }
 
 void Player::LoadFromDB()
