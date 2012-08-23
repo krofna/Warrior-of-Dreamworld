@@ -73,7 +73,7 @@ bool CommandHandler::ExecuteCommand()
         ExtractArg(Command);
     }
 
-    if(Console)
+    if(Console && pCommand->AllowConsole)
     {
         (this->*pCommand->Handler)();
     }
