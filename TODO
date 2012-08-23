@@ -15,6 +15,8 @@ spawning SPELL_BOLTs
 5) Use chrono instead of posix time to calculate Update diffs (when update took
 longer than 50ms)
 
+6) Shit I forgot...
+
 Code:
 - Command system for creating accounts, modifying password accounts, more...
 - Handle case where we haven't variadic template and vsnprintf_s available

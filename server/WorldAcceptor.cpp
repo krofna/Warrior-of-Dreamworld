@@ -50,6 +50,6 @@ void WorldAcceptor::Accept()
     WorldSession* NewSession(new WorldSession(Acceptor.get_io_service()));
     Acceptor.async_accept(NewSession->Socket,
         boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
-          boost::asio::placeholders::error));
+        boost::asio::placeholders::error));
 }
 

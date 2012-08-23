@@ -39,17 +39,15 @@ class Map;
 class Spell;
 class SpellBox;
 
-
-#include <boost/shared_ptr.hpp>
-
 #ifndef NOT_AVAILABLE_SHARED_PTR
-    typedef boost::shared_ptr<Player> PlayerPtr;
-    typedef boost::shared_ptr<Unit> UnitPtr;
-    typedef boost::shared_ptr<Creature> CreaturePtr;
-    typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
-    typedef boost::shared_ptr<Map> MapPtr;
-    typedef boost::shared_ptr<Spell> SpellPtr;
-    typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
+    #include <boost/shared_ptr.hpp>
+        typedef boost::shared_ptr<Player> PlayerPtr;
+        typedef boost::shared_ptr<Unit> UnitPtr;
+        typedef boost::shared_ptr<Creature> CreaturePtr;
+        typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
+        typedef boost::shared_ptr<Map> MapPtr;
+        typedef boost::shared_ptr<Spell> SpellPtr;
+        typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
 #else
     typedef std::shared_ptr<Player> PlayerPtr;
     typedef std::shared_ptr<Unit> UnitPtr;
@@ -70,6 +68,15 @@ enum
     MOVE_DOWN   = 2,
     MOVE_LEFT   = 4,
     MOVE_RIGHT  = 8
+};
+
+enum
+{
+    SEC_PLAYER    = 0,
+    SEC_MOD       = 1,
+    SEC_DEV       = 2,
+    SEC_ADMIN     = 3,
+    SEC_CONSOLE   = 4
 };
 
 enum
