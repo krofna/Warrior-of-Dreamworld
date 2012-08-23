@@ -42,8 +42,8 @@ class SpellBox;
 #include "Config.hpp"
 
 #ifdef USE_BOOST
-    #include <boost/shared_ptr.hpp>
-    #include <boost/enable_shared_from_this.hpp>
+        #include <boost/shared_ptr.hpp>
+        #include <boost/enable_shared_from_this.hpp>
         typedef boost::shared_ptr<Player> PlayerPtr;
         typedef boost::shared_ptr<Unit> UnitPtr;
         typedef boost::shared_ptr<Creature> CreaturePtr;
@@ -52,17 +52,36 @@ class SpellBox;
         typedef boost::shared_ptr<Spell> SpellPtr;
         typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
         using boost::enable_shared_from_this;
+        using boost::static_pointer_cast;
 #else
-    #include <memory>
-        typedef std::tr1::shared_ptr<Player> PlayerPtr;
-        typedef std::tr1::shared_ptr<Unit> UnitPtr;
-        typedef std::tr1::shared_ptr<Creature> CreaturePtr;
-        typedef std::tr1::shared_ptr<WorldObject> WorldObjectPtr;
-        typedef std::tr1::shared_ptr<Map> MapPtr;
-        typedef std::tr1::shared_ptr<Spell> SpellPtr;
-        typedef std::tr1::shared_ptr<SpellBox> SpellBoxPtr;
-        using std::tr1::enable_shared_from_this;
-        using std::tr1::static_pointer_cast;
+        #ifndef SMART_PTR_TR1_INCLUDE
+            #include <memory>
+        #else
+            #include <tr1/memory>
+        #endif 
+
+        #if SMART_PTR_TR1
+            typedef std::tr1::shared_ptr<Player> PlayerPtr;
+            typedef std::tr1::shared_ptr<Unit> UnitPtr;
+            typedef std::tr1::shared_ptr<Creature> CreaturePtr;
+            typedef std::tr1::shared_ptr<WorldObject> WorldObjectPtr;
+            typedef std::tr1::shared_ptr<Map> MapPtr;
+            typedef std::tr1::shared_ptr<Spell> SpellPtr;
+            typedef std::tr1::shared_ptr<SpellBox> SpellBoxPtr;
+            using std::tr1::enable_shared_from_this;
+            using std::tr1::static_pointer_cast;
+        #else
+            typedef std::shared_ptr<Player> PlayerPtr;
+            typedef std::shared_ptr<Unit> UnitPtr;
+            typedef std::shared_ptr<Creature> CreaturePtr;
+            typedef std::shared_ptr<WorldObject> WorldObjectPtr;
+            typedef std::shared_ptr<Map> MapPtr;
+            typedef std::shared_ptr<Spell> SpellPtr;
+            typedef std::shared_ptr<SpellBox> SpellBoxPtr;
+            using std::enable_shared_from_this;
+            using std::static_pointer_cast;
+       #endif
+
 #endif
 
 #define TILE_SIZE 32

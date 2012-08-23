@@ -99,8 +99,7 @@ void CommandHandler::HandleAccountCreateCommand()
     ExtractArg(Username);
     ExtractArg(Password);
 
-    // TODO: How to get new GUID?
-    //sDatabase.PExecute("INSERT INTO `players` VALUES (new_guid, '%s', '%s', 'dg_classm32.gif', 0, 0, 0, 0, 0", Username.c_str(); Password.c_str());
+    sDatabase.PExecute("INSERT INTO `players` VALUES (DEFAULT, '%s'; '%s'; 'dg_classm32.gif', 0, 0, 0, 0, 0", Username.c_str(), Password.c_str());
 }
 
 void CommandHandler::HandleAccountDeleteCommand()
@@ -108,6 +107,7 @@ void CommandHandler::HandleAccountDeleteCommand()
     std::string Username;
     ExtractArg(Username);
     // Find player
+    // A FindPlayer(UserName)->Kick() ?
     // Kick player if online
     // sDatabase.PExecute("DELETE FROM `players` WHERE name='%s'", Username.c_str());
 }

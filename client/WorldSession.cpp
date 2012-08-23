@@ -203,6 +203,16 @@ void WorldSession::HandleSystemMessageOpcode()
     sLog.Write("System Msg: %s", Message);
     sLog.Write("Packet is good!");
 }
+void WorldSession::HandleChatMessageOpcode()
+{
+    uint32 ObjID;
+    std::string Message;
+
+    Packet >> ObjID >> Message;
+
+    pWorld->ReceiveNewMessage(ObjID, Message);
+    sLog.Write("Packet is good!");
+}
 
 void WorldSession::SendMovementRequest(uint8 Direction)
 {

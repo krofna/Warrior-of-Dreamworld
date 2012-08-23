@@ -119,6 +119,15 @@ void WorldSession::SendLoginFailPacket(uint16 Reason)
     Socket.close();
 }
 
+void WorldSession::SendChatMessage(uint32 FromID, std::string const& Message)
+{
+    Packet.Clear();
+
+    Packet.SetOpcode((uint16)MSG_CHAT_MESSAGE);
+    Packet << FromID << Message;
+    Send(Packet);
+}
+
 void WorldSession::HandleNULL()
 {
 }
@@ -207,9 +216,32 @@ void WorldSession::HandleLogOutOpcode()
     Connected = false;
 }
 
+void WorldSession::HandleChatMessageOpcode()
+{
+    std::string Message;
+    Packet >> Message;
+
+    if (!pPlayer->CanSpeak())
+    {
+        SendNotification("You can't speak !");
+        return;
+    }
+
+    pPlayer->Say(Message);
+}
+
 void WorldSession::SendLogOutPacket()
 {
     Packet.Clear();
     Packet.SetOpcode((uint16)MSG_LOG_OUT);
+    Send(Packet);
+}
+
+void WorldSession::SendNotification(std::string const& NotificationMessage)
+{
+    Packet.Clear();
+    Packet.SetOpcode((uint16)MSG_SYSTEM_MESSAGE);
+
+    Packet << NotificationMessage;
     Send(Packet);
 }

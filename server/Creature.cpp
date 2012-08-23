@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "SpellBox.hpp"
 #include "Pathfinder.hpp"
 #include "Templates.hpp"
+#include "Map.hpp"
 #include "CreatureAIFactory.hpp"
 #include "../shared/Opcodes.hpp"
 #include "../shared/Math.hpp"
@@ -68,6 +69,14 @@ void Creature::SpellHit(SpellBoxPtr pSpellBox)
         pAI->EnterCombat(pVictim);
     }
     pAI->SpellHit(pSpellBox);
+}
+
+void Creature::Say(std::string const& Text)
+{
+    WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
+    Packet << ObjID << Text;
+
+    pMap->SendToPlayers(Packet); // TODO: Check range
 }
 
 CreatureAI* Creature::GetAI()

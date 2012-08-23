@@ -38,6 +38,8 @@ public:
 
     void SpellHit(SpellBoxPtr pSpellBox);
 
+    void Say(std::string const& Text);
+
     CreatureAI* GetAI();
 private:
     CreatureAI* pAI;

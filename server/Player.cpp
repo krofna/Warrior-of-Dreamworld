@@ -26,7 +26,8 @@ Unit         (ObjID),
 pWorldSession(nullptr),
 Username     (Username),
 Password     (Password),
-LoadedFromDB (false)
+LoadedFromDB (false),
+m_IsMute     (false)
 {
 }
 
@@ -44,7 +45,8 @@ void Player::AddToWorld()
 void Player::RemoveFromWorld()
 {
     pMap->TileGrid[Position.y][Position.x].reset();
-    pMap->RemovePlayer(static_pointer_cast<Player>(shared_from_this()));
+    PlayerPtr me = static_pointer_cast<Player>(shared_from_this());
+    pMap->RemovePlayer(me);
 }
 
 void Player::LoadFromDB()
@@ -141,4 +143,17 @@ void Player::LogOut()
     pWorldSession = nullptr;
     this->RemoveFromWorld();
     this->SaveToDB();
+}
+
+void Player::Say(std::string const& Text)
+{
+    WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
+    Packet << GetObjectID() << Text;
+
+    pMap->SendToPlayers(Packet); // TODO: Check range.
+}
+
+bool Player::CanSpeak() const
+{
+    return !m_IsMute;
 }

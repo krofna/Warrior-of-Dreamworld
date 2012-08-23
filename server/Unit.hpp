@@ -34,6 +34,8 @@ public:
 
     virtual WorldPacket PackData() = 0;
 
+    virtual void Say(std::string const& Text) = 0;
+
     virtual void SpellHit(SpellBoxPtr pSpellBox);
     virtual void CastSpell(SpellPtr pSpell, float Angle);
     void CastSpell(uint16 Entry, UnitPtr pVictim);

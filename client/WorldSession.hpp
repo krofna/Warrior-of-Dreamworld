@@ -46,9 +46,9 @@ public:
     void HandleRemoveObjectOpcode();
     void HandleMoveObjectOpcode();
     void HandleCastSpellOpcode();
-    void HandleTextMessageOpcode();
     void HandleLogOutOpcode();
     void HandleSystemMessageOpcode();
+    void HandleChatMessageOpcode();
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);

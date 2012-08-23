@@ -23,10 +23,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Defines.hpp"
 #include "WorldObject.hpp"
 #include "Animation.hpp"
-#include "boost/thread.hpp"
+#include <boost/thread.hpp>
+#include <boost/shared_ptr.hpp>
 
 class GameState;
 class WorldObject;
+class MessageChatArea;
+
+typedef boost::shared_ptr<MessageChatArea> MessageChatAreaPtr;
 
 class World : public GameState
 {
@@ -45,8 +49,13 @@ public:
 
     void AddAnimation(Animation* pAnimation);
 
+protected:
+    void ReceiveNewMessage(uint32 ObjID, std::string const& Message);
+
 private:
     void HandleTyping(sf::Event Event);
+
+    MessageChatAreaPtr m_MessageArea;
 
     // TODO: Map?
     std::string TilesetFileName;

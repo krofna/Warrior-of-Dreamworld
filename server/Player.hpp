@@ -42,6 +42,10 @@ public:
     void SaveToDB();
     bool IsLoaded();
 
+    void Say(std::string const& Text);
+
+    bool CanSpeak() const;
+
     void SpellHit(SpellBoxPtr pSpellBox);
 
     void CastSpell(SpellPtr pSpell, float Angle);
@@ -73,6 +77,7 @@ private:
     bool LearnedSpell(uint8 ID);
 
     bool LoadedFromDB;
+    bool m_IsMute;
 };
 
 #endif

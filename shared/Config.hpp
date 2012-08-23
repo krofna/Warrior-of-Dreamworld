@@ -30,8 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         #pragma warning(disable : 4251)
 
         #if(_MSC_VER >= 1500)
-            #include <memory>
-            namespace std { namespace tr1 { using namespace std; } }
+            #define SMART_PTR_TR1
         #else
             #define USE_BOOST
         #endif
@@ -48,11 +47,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
             #define secure_vsnprintf vsprintf // FIXME: Implement a secure vsprintf for replace all others "secure_vsprintf"
         #endif
 
-        #if defined((__GNUC_ == 4) &&(__GNUC_MINOR__ >= 1 && __GNU_MINOR < 3))
-            #include <tr1/memory>
-            namespace std { namespace tr1 { using namespace std; } }
-        #elif defined(__GNUC__ > 4 || (__GNUC__ == 4) && (__GNUC_MINOR >= 3))
-            #include <memory>
+        #if ((__GNUC_ == 4) &&(__GNUC_MINOR__ >= 1 && __GNU_MINOR < 3))
+            #define SMART_PTR_TR1_INCLUDE
+        #elif (__GNUC__ > 4 || (__GNUC__ == 4) && (__GNUC_MINOR >= 3))
+            #define SMART_PTR
         #else
             #define USE_BOOST
         #endif

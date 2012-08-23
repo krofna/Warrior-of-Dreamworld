@@ -21,19 +21,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Globals.hpp"
 #include "Game.hpp"
 #include "WorldSession.hpp"
+#include "MessageChatArea.hpp"
 #include "ResourceManager.hpp"
 #include "../shared/Math.hpp"
 #include <cassert>
 
 World::World (uint32 MeID) :
-TileMap      (sf::PrimitiveType::Quads),
-WorldView    (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
-MoveWorldView(MOVE_STOP),
-CameraLeft   (WorldView.getCenter().x - WindowWidth / 2),
-CameraTop    (WorldView.getCenter().y - WindowHeight / 2),
-CameraRight  (WindowWidth),
-CameraBottom (WindowHeight),
-MeID         (MeID)
+m_MessageArea (new MessageChatArea),
+TileMap       (sf::PrimitiveType::Quads),
+WorldView     (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
+MoveWorldView (MOVE_STOP),
+CameraLeft    (WorldView.getCenter().x - WindowWidth / 2),
+CameraTop     (WorldView.getCenter().y - WindowHeight / 2),
+CameraRight   (WindowWidth),
+CameraBottom  (WindowHeight),
+MeID          (MeID)
 {
 }
 
@@ -141,6 +143,9 @@ void World::Draw()
     {
         (*i)->Update();
     }
+
+    // Draw chat GUI
+    m_MessageArea->Draw();
 }
 
 void World::HandleEvent(sf::Event Event)
@@ -221,6 +226,15 @@ void World::RemoveObject(uint32 ObjectID)
 
     delete Iter->second;
     WorldObjectMap.erase(Iter);
+}
+void World::ReceiveNewMessage(uint32 ObjectID, std::string const& Text)
+{
+    boost::mutex::scoped_lock lock(DrawingMutex);
+    auto Iter = WorldObjectMap.find(ObjectID);
+    if (Iter == WorldObjectMap.end())
+        return;
+
+    m_MessageArea->AddMessage(Iter->second->GetObjectName(), Text);
 }
 
 void World::AddAnimation(Animation* pAnimation)

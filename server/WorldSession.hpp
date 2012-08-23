@@ -42,6 +42,8 @@ public:
     void Send(WorldPacket& Packet);
 
     void SendLogOutPacket();
+    void SendChatMessage(uint32 FromID, std::string const& Message);
+    void SendNotification(std::string const& NotificationMessage);
 
     // Opcode handlers
     void HandleNULL();
@@ -49,6 +51,7 @@ public:
     void HandleCastSpellOpcode();
     void HandleLogOutOpcode();
     void HandleLoginOpcode();
+    void HandleChatMessageOpcode();
 
     PlayerPtr GetPlayer();
 

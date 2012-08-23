@@ -156,7 +156,8 @@ void World::Update()
 
 void World::AddSession(WorldSession* pWorldSession)
 {
-    Maps[pWorldSession->GetPlayer()->GetMapID()]->AddPlayer(pWorldSession->GetPlayer());
+    PlayerPtr pPlayer = pWorldSession->GetPlayer();
+    Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
 }
 
 MapPtr World::GetMap(uint16 MapID)
