@@ -38,7 +38,7 @@ public:
     bool UpdateCoordinates(uint8 Direction);
     void UpdatePosition(Vector2i Position);
 
-    const uint32 GetObjectID() const
+    const uint64 GetObjectID() const
     {
         return ObjID;
     }
@@ -69,7 +69,7 @@ protected:
     MapPtr pMap;
     Vector2i Position;
 
-    const uint32 ObjID;
+    const uint64 ObjID;
 };
 
 #endif

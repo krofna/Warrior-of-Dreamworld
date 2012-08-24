@@ -42,7 +42,7 @@ public:
     void Send(WorldPacket& Packet);
 
     void SendLogOutPacket();
-    void SendChatMessage(uint32 FromID, std::string const& Message);
+    void SendChatMessage(uint64 FromID, std::string const& Message);
     void SendNotification(std::string const& NotificationMessage);
 
     // Opcode handlers

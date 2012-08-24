@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "Player.hpp"
 #include "../shared/Log.hpp"
+#include "GUID.hpp"
 #include <cctype>
 
 ChatCommand* CommandHandler::GetCommandTable()
@@ -109,7 +110,7 @@ void CommandHandler::HandleAccountCreateCommand()
     ExtractArg(Username);
     ExtractArg(Password);
 
-    sDatabase.PExecute("INSERT INTO `players` VALUES (DEFAULT, '%s', '%s', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0", Username.c_str(), Password.c_str());
+    sDatabase.PExecute("INSERT INTO `players` VALUES (%u, '%s', '%s', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0", Generate64BitsGUID(), Username.c_str(), Password.c_str());
 
     sLog.Write("Account %s successfully created.", Username.c_str());
 }
@@ -120,7 +121,7 @@ void CommandHandler::HandleAccountDeleteCommand()
     ExtractArg(Username);
 
     QueryResult Result = sDatabase.PQuery("SELECT `guid`, `online` WHERE `username` = '%s' LIMIT 1", Username.c_str());
-    uint32 GUID = Result->getUInt(0);
+    uint64 GUID = Result->getUInt(0);
     bool IsConnected = (Result->getUInt(1) == 1);
 
 /*    if (IsConnected)

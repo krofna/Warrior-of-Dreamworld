@@ -134,7 +134,7 @@ void WorldSession::HandleLoginOpcode()
     }
 
     uint16 MapID;
-    uint32 MeID;
+    uint64 MeID;
     Packet >> MapID >> MeID;
 
     World* pWorld = new World(MeID);
@@ -147,7 +147,7 @@ void WorldSession::HandleLoginOpcode()
 
 void WorldSession::HandleAddObjectOpcode()
 {
-    uint32 ObjID;
+    uint64 ObjID;
     Packet >> ObjID;
     WorldObject* pNewObject = new WorldObject;
     sGame->AddToLoadQueue(pNewObject, Packet);
@@ -157,7 +157,7 @@ void WorldSession::HandleAddObjectOpcode()
 
 void WorldSession::HandleRemoveObjectOpcode()
 {
-    uint32 ObjID;
+    uint64 ObjID;
     Packet >> ObjID;
 
     pWorld->RemoveObject(ObjID);
@@ -165,7 +165,7 @@ void WorldSession::HandleRemoveObjectOpcode()
 
 void WorldSession::HandleMoveObjectOpcode()
 {
-    uint32 ObjID;
+    uint64 ObjID;
     uint16 x, y;
     Packet >> ObjID >> x >> y;
 
@@ -177,7 +177,7 @@ void WorldSession::HandleMoveObjectOpcode()
 
 void WorldSession::HandleCastSpellOpcode()
 {
-    uint32 CasterID;
+    uint64 CasterID;
     Packet >> CasterID;
     Packet.UpdateWritePos();
     pWorld->DrawingMutex.lock();
@@ -205,7 +205,7 @@ void WorldSession::HandleSystemMessageOpcode()
 }
 void WorldSession::HandleChatMessageOpcode()
 {
-    uint32 ObjID;
+    uint64 ObjID;
     std::string Message;
 
     Packet >> ObjID >> Message;

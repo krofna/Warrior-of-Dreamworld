@@ -36,7 +36,7 @@ class World : public GameState
 {
     friend class WorldSession;
 public:
-    World(uint32 MeID);
+    World(uint64 MeID);
     ~World();
 
     virtual void Load(WorldPacket Argv);
@@ -44,13 +44,13 @@ public:
     void Draw();
     void HandleEvent(sf::Event Event);
 
-    void AddObject(WorldObject* pWorldObject, uint32 ObjectID);
-    void RemoveObject(uint32 ObjectID);
+    void AddObject(WorldObject* pWorldObject, uint64 ObjectID);
+    void RemoveObject(uint64 ObjectID);
 
     void AddAnimation(Animation* pAnimation);
 
 protected:
-    void ReceiveNewMessage(uint32 ObjID, std::string const& Message);
+    void ReceiveNewMessage(uint64 ObjID, std::string const& Message);
 
 private:
     void HandleTyping(sf::Event Event);
@@ -73,9 +73,9 @@ private:
     int CameraBottom;
     // END TODO
 
-    std::map<uint32, WorldObject*> WorldObjectMap;
+    std::map<uint64, WorldObject*> WorldObjectMap;
     std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
-    const uint32 MeID;
+    const uint64 MeID;
 
     boost::mutex DrawingMutex;
 };

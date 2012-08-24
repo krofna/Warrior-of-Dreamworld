@@ -40,7 +40,7 @@ public:
     void UpdateCoordinates(uint16 x, uint16 y);
     sf::Vector2f GetPosition();
 
-    std::string GetObjectName()
+    std::string GetObjectName() const
     {
         return ObjectName;
     }

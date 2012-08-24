@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Math.hpp"
 #include <cassert>
 
-World::World (uint32 MeID) :
+World::World (uint64 MeID) :
 m_MessageArea (new MessageChatArea),
 TileMap       (sf::PrimitiveType::Quads),
 WorldView     (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
@@ -211,13 +211,13 @@ void World::HandleEvent(sf::Event Event)
     }
 }
 
-void World::AddObject(WorldObject* pWorldObject, uint32 ObjectID)
+void World::AddObject(WorldObject* pWorldObject, uint64 ObjectID)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);
     this->WorldObjectMap[ObjectID] = pWorldObject;
 }
 
-void World::RemoveObject(uint32 ObjectID)
+void World::RemoveObject(uint64 ObjectID)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);
     auto Iter = WorldObjectMap.find(ObjectID);
@@ -227,7 +227,7 @@ void World::RemoveObject(uint32 ObjectID)
     delete Iter->second;
     WorldObjectMap.erase(Iter);
 }
-void World::ReceiveNewMessage(uint32 ObjectID, std::string const& Text)
+void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);
     auto Iter = WorldObjectMap.find(ObjectID);

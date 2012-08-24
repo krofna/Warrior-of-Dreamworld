@@ -119,7 +119,7 @@ void WorldSession::SendLoginFailPacket(uint16 Reason)
     Socket.close();
 }
 
-void WorldSession::SendChatMessage(uint32 FromID, std::string const& Message)
+void WorldSession::SendChatMessage(uint64 FromID, std::string const& Message)
 {
     Packet.Clear();
 
