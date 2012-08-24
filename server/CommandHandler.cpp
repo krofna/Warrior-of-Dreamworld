@@ -73,6 +73,10 @@ bool CommandHandler::ExecuteCommand()
     while(!pCommand->Handler)
     {
         ExtractArg(Command);
+
+        if(pCommand->ChildCommands == NULL)
+            throw BadCommand();
+
         for(pCommand = pCommand->ChildCommands; pCommand->Name != NULL; ++pCommand)
         {
             if(Command.compare(pCommand->Name) == 0)

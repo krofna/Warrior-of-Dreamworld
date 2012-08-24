@@ -176,7 +176,7 @@ void World::HandleCommand(std::string& Command)
     {
         Handler.ExecuteCommand();
     }
-    catch(CommandHandler::BadCommand& e)
+    catch(CommandHandler::BadCommand&)
     {
         sLog.Write("Unknown command !");
     }
