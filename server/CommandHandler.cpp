@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Player.hpp"
 #include "../shared/Log.hpp"
 #include "GUID.hpp"
+#include "boost/lexical_cast.hpp"
 #include <cctype>
 
 ChatCommand* CommandHandler::GetCommandTable()
@@ -108,6 +109,19 @@ void CommandHandler::ExtractArg(std::string& Arg)
     Arg = *TokIter++;
 }
 
+void CommandHandler::ExtractArg(uint32& Arg)
+{
+    try
+    {
+        Arg = boost::lexical_cast<int>(*TokIter++);
+    }
+    catch(boost::bad_lexical_cast& e)
+    {
+        sLog.Write(e.what());
+        throw BadCommand();
+    }
+}
+
 void CommandHandler::HandleAccountCreateCommand()
 {
     std::string Username, Password;
@@ -135,11 +149,13 @@ void CommandHandler::HandleAccountSetSecLevelCommand()
     std::string Username;
     ExtractArg(Username);
 
-    // TODO: Use a integer for SecLevel.
-    std::string SecLevel;
+    uint32 SecLevel;
     ExtractArg(SecLevel);
 
-    sDatabase.PExecute("UPDATE `players` SET `seclevel` = %s WHERE `username` = '%s'", SecLevel.c_str(), Username.c_str());
+    if(SecLevel > 4 || SecLevel < 0)
+        throw BadCommand();
+
+    sDatabase.PExecute("UPDATE `players` SET `seclevel` = %u WHERE `username` = '%s'", SecLevel, Username.c_str());
 }
 
 void CommandHandler::HandleAccountSetPasswordCommand()
