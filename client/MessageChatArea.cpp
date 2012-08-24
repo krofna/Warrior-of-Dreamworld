@@ -3,8 +3,8 @@
 
 MessageChatArea::MessageChatArea()
 {
-    if (!m_DefaultFont.loadFromFile("arial.ttf"))
-        throw std::runtime_error("Impossible to load arial.ttf font");
+    //if (!m_DefaultFont.loadFromFile("arial.ttf"))
+        //throw std::runtime_error("Impossible to load arial.ttf font");
 }
 
 void MessageChatArea::AddMessage(std::string const& ObjectName, std::string const& Content)

@@ -32,10 +32,10 @@ File    ("Log.txt")
 void Log::Write(const char* format, ...)
 {
     va_list ArgList;
-    char Query[128];
+    char Query[256];
 
     va_start(ArgList, format);
-    secure_vsnprintf(Query, 128, format, ArgList);
+    secure_vsnprintf(Query, 256, format, ArgList);
     va_end(ArgList);
 
     boost::mutex::scoped_lock lock(LogMutex);

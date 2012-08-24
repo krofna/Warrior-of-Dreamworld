@@ -53,7 +53,10 @@ bool CommandHandler::ExecuteCommand()
     ExtractArg(Command);
 
     // Is it a command?
-    if((Command.empty()) && (Command[0] != '.') && (!std::isalpha(Command[1])))
+    if(Command.empty())
+        return false;
+
+    if((!Console) && ((Command[0] != '.') || (!std::isalpha(Command[1]))))
         return false;
 
     // Is there such command?
@@ -67,17 +70,18 @@ bool CommandHandler::ExecuteCommand()
 
     while(!pCommand->Handler)
     {
+        ExtractArg(Command);
         for(pCommand = pCommand->ChildCommands; pCommand->Name != NULL; ++pCommand)
         {
             if(Command.compare(pCommand->Name) == 0)
                 break;
         }
-        ExtractArg(Command);
     }
 
     if(Console && pCommand->AllowConsole)
     {
         (this->*pCommand->Handler)();
+        sLog.Write("Hopefully executed command ...");
     }
     else 
     {

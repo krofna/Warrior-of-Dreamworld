@@ -47,10 +47,10 @@ void Unit::CastSpell(SpellPtr pSpell, float Angle)
     pMap->AddSpell(me, pSpell, Angle);
 }
 
-void Unit::Say(std::string const& Text)
+void Unit::Say(const char* Text)
 {
     WorldPacket SayPacket((uint16)MSG_CHAT_MESSAGE);
-    SayPacket << GetObjectID() << Text;
+    SayPacket << GetObjectID() << std::string(Text);
 
     pMap->SendToPlayers(SayPacket);
 }

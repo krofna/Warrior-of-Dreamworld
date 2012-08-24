@@ -60,7 +60,7 @@ class SpellBox;
             #include <tr1/memory>
         #endif 
 
-        #if SMART_PTR_TR1
+        #ifdef SMART_PTR_TR1
             typedef std::tr1::shared_ptr<Player> PlayerPtr;
             typedef std::tr1::shared_ptr<Unit> UnitPtr;
             typedef std::tr1::shared_ptr<Creature> CreaturePtr;

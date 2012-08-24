@@ -61,8 +61,6 @@ void Map::LoadCreatures()
 
 void Map::Update(int32 diff)
 {
-    this->diff = diff;
-
     // Update spell box positions
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end(); ++SpellBoxIter)
     {
