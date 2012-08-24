@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/bind.hpp"
 #include "../shared/Log.hpp"
+#include "CommandHandler.hpp"
 
 #define SERVER_HEARTBEAT 50
 
@@ -107,8 +108,8 @@ void World::Load()
 int World::Run()
 {
     pWorldAcceptor->Accept();
-    Timer.expires_from_now(boost::posix_time::milliseconds(50));
     OldTime = boost::chrono::high_resolution_clock::now();
+    Timer.expires_from_now(boost::posix_time::milliseconds(50));
     Timer.async_wait(boost::bind(&World::Update, this));
     io.run();
     return 0;
@@ -141,15 +142,18 @@ void World::Update()
         io.stop();
         return;
     }
-
-    boost::chrono::milliseconds NewTime = boost::chrono::duration_cast<boost::chrono::milliseconds>(boost::chrono::high_resolution_clock::now() - OldTime);
-    boost::chrono::high_resolution_clock::time_point newOldTime(NewTime);
-    OldTime = newOldTime;
+    auto now = boost::chrono::high_resolution_clock::now();
+    ms NewTime = boost::chrono::duration_cast<ms>(boost::chrono::high_resolution_clock::now() - OldTime);
+    #ifdef DEBUG_UPDATE_TIME
+    sLog.Write("World::Update(now: %u, old: %u, new: %u)", now, OldTime, NewTime);
+    #endif
 
     for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
     {
         (*MapIterator)->Update(NewTime.count());
     }
+    OldTime += NewTime;
+
     Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
     Timer.async_wait(boost::bind(&World::Update, this));
 }
@@ -167,25 +171,18 @@ MapPtr World::GetMap(uint16 MapID)
 
     return MapPtr();
 }
-bool World::HandleCommand(std::string const& CommandName)
+bool World::HandleCommand(std::string& Command)
 {
-    std::istringstream in(CommandName);
+    CommandHandler Handler(Command);
 
-    std::string Command;
-    in >> Command;
-
-    if (Command == "account")
+    try
     {
-        std::string Subcommand;
-        if (Subcommand == "create")
-        {
-            std::string UserName, Password;
-            in >> UserName >> Password;
-            // TODO: Create account.
-            sLog.Write("Account successfully created.");
-            return true;
-        }
+        Handler.ExecuteCommand();
+    }
+    catch(CommandHandler::BadCommand& e)
+    {
+        sLog.Write("something went wrong with command");
     }
 
-    return false;
+    return true;
 }

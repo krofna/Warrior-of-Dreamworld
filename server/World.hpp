@@ -43,7 +43,7 @@ public:
 
 private:
     void Update();
-    bool HandleCommand(std::string const& CommandName);
+    bool HandleCommand(std::string& Command);
 
     WorldAcceptor* pWorldAcceptor;
     std::vector<MapPtr> Maps;
@@ -57,6 +57,7 @@ private:
     boost::chrono::high_resolution_clock::time_point OldTime;
 };
 
+typedef boost::chrono::milliseconds ms;
 extern World* sWorld;
 
 #endif
