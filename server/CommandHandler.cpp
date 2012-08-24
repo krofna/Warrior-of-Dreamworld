@@ -113,7 +113,7 @@ void CommandHandler::ExtractArg(uint32& Arg)
 {
     try
     {
-        Arg = boost::lexical_cast<int>(*TokIter++);
+        Arg = boost::lexical_cast<uint32>(*TokIter++);
     }
     catch(boost::bad_lexical_cast& e)
     {
