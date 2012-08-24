@@ -17,15 +17,43 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include <fstream>
+#include <sstream>
+#include <boost/archive/binary_oarchive.hpp>
+
+template<typename T>
+std::string ToString(T const& Number)
+{
+    std::ostringstream out;
+    out << Number;
+    return out.str();
+}
 
 int main()
 {
-    std::ofstream File("map0.txt");
+    std::cout << "Map ID: ";
+    int mapID;
+    std::cin >> mapID;
 
-    File << "dg_edging132.gif 50 50 ";
+    std::string fileName = "map" + ToString(mapID) + ".map";
+    std::ofstream File(fileName);
+    if (File)
+    {
+        boost::archive::binary_oarchive out(File);
 
+        int sizeY, sizeX;
+        std::cout << "Size: ";
+        std::cin >> sizeY >> sizeX;
 
-    for(int y = 0; y < 50; ++y)
-        for(int x = 0; x < 50; ++x)
-            File << x << " " << y << " 1 15 ";
+        std::string fileNameTileset;
+        std::cout << "Tileset Filename: ";
+        std::cin >> fileNameTileset;
+
+        out << fileNameTileset;
+
+        for (int y = 0 ; y < sizeY ; ++y)
+            for (int x = 0 ; x < sizeX ; ++x)
+                File << x << " " << y << " 1 15";
+    }
+    else
+        std::cerr << "Error when opening: " << fileName << std::endl;
 }

@@ -19,8 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ScriptLoader.hpp"
 
 extern void LoadScript_npc_krofnica();
+extern void LoadScript_npc_the_fullmetal_alchimist();
 
 void LoadScripts()
 {
     LoadScript_npc_krofnica();
+    LoadScript_npc_the_fullmetal_alchimist();
 }

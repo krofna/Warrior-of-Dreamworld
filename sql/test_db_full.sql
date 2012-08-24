@@ -28,6 +28,7 @@ CREATE TABLE `creature_template`
 );
 
 INSERT INTO `creature_template` VALUES (0, 'krofnica', 'dg_classm32.gif', 7, 10, 'npc_krofnica');
+INSERT INTO `creature_template` VALUES (1, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 'npc_the_fullmetal_alchimist');
 
 DROP TABLE IF EXISTS `creature`;
 CREATE TABLE `creature`
@@ -41,3 +42,4 @@ CREATE TABLE `creature`
 );
 
 INSERT INTO `creature` VALUES (UUID_SHORT(), 0, 0, 10, 10);
+INSERT INTO `creature` VALUES (UUID_SHORT(), 1, 0, 11, 11);
