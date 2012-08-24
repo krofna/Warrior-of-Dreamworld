@@ -19,8 +19,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../client/ResourceManager.hpp"
 #include "../shared/Log.hpp"
 #include <cassert>
+#include <vector>
 
-std::map<std::string, sf::Texture*> ResourceManager::Tilesets;
+std::map<std::string, sf::Texture* > ResourceManager::Tilesets;
+
+void ResourceManager::Init()
+{
+}
+void ResourceManager::Destroy()
+{
+    for (auto Iter = Tilesets.begin() ; Iter != Tilesets.end() ; ++Iter)
+        delete (*Iter).second;
+}
 
 sf::Texture* ResourceManager::GetTileset(const std::string& FileName)
 {

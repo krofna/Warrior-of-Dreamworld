@@ -71,13 +71,7 @@ void Creature::SpellHit(SpellBoxPtr pSpellBox)
     pAI->SpellHit(pSpellBox);
 }
 
-void Creature::Say(std::string const& Text)
-{
-    WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
-    Packet << ObjID << Text;
 
-    pMap->SendToPlayers(Packet); // TODO: Check range
-}
 
 CreatureAI* Creature::GetAI()
 {

@@ -27,7 +27,7 @@ void Animation::Load(WorldPacket Argv)
     Argv.ReadSkip<uint16>(); // Effect
     Argv.ReadSkip<uint16>(); // DisplayID
     Argv >> Angle >> ID >> Position.x >> Position.y;
-    Sprite.setTexture(*ResourceManager::GetTileset("t.png")); // [PH], use DisplayID
+    Sprite.setTexture(*ResourceManager::GetTileset("t.png"));
     Sprite.setPosition(Position);
     Time = sf::microseconds(0);
 }

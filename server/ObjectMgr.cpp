@@ -92,7 +92,7 @@ void ObjectMgr::LoadSpells()
 
 void ObjectMgr::LoadPlayersLoginInfo()
 {
-    QueryResult Result(sDatabase.Query("SELECT name, password, guid FROM `players`"));
+    QueryResult Result(sDatabase.Query("SELECT username, password, guid FROM `players`"));
 
     while(Result->next())
     {

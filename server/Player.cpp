@@ -51,19 +51,18 @@ void Player::RemoveFromWorld()
 
 void Player::LoadFromDB()
 {
-    // TODO: Not all columns.
-    QueryResult Result(sDatabase.PQuery("SELECT * FROM `players` WHERE guid='%u'", ObjID));
+    QueryResult Result(sDatabase.PQuery("SELECT `seclevel`, `tileset`, `tx`, `ty`, `mapid`, `x`, `y` FROM `players` WHERE guid='%u'", ObjID));
     Result->next();
 
-    //ObjID       = Result->getUInt(1);
-    //Username    = Result->getString(2);
-    //Password    = Result->getString(3);
-    Tileset     = Result->getString(4);
-    tx          = Result->getUInt(5);
-    ty          = Result->getUInt(6);
-    pMap        = sWorld->GetMap(Result->getUInt(7));
-    Position.x  = Result->getUInt(8);
-    Position.y  = Result->getUInt(9);
+    SecLevel    = Result->getUInt(1);
+    Tileset     = Result->getString(2);
+    tx          = Result->getUInt(3);
+    ty          = Result->getUInt(4);
+    pMap        = sWorld->GetMap(Result->getUInt(5));
+    Position.x  = Result->getUInt(6);
+    Position.y  = Result->getUInt(7);
+
+    sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %u", ObjID);
 
     LoadedFromDB = true;
 }
@@ -143,14 +142,6 @@ void Player::LogOut()
     pWorldSession = nullptr;
     this->RemoveFromWorld();
     this->SaveToDB();
-}
-
-void Player::Say(std::string const& Text)
-{
-    WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
-    Packet << GetObjectID() << Text;
-
-    pMap->SendToPlayers(Packet); // TODO: Check range.
 }
 
 bool Player::CanSpeak() const

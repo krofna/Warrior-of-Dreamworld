@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "CommandHandler.hpp"
 #include "Database.hpp"
+#include "Player.hpp"
+#include "../shared/Log.hpp"
 #include <cctype>
 
 ChatCommand* CommandHandler::GetCommandTable()
@@ -79,7 +81,10 @@ bool CommandHandler::ExecuteCommand()
     }
     else 
     {
-        // TODO: Check SEC_LEVEL
+        if (pPlayer->GetSecLevel() >= pCommand->SecurityLevel)
+            (this->*pCommand->Handler)();
+        else
+            return false;
     }
 
     return true;
@@ -90,6 +95,7 @@ void CommandHandler::ExtractArg(std::string& Arg)
     if(TokIter == Tokenizer.end())
         throw BadCommand();
 
+
     Arg = *TokIter++;
 }
 
@@ -99,21 +105,34 @@ void CommandHandler::HandleAccountCreateCommand()
     ExtractArg(Username);
     ExtractArg(Password);
 
-    sDatabase.PExecute("INSERT INTO `players` VALUES (DEFAULT, '%s'; '%s'; 'dg_classm32.gif', 0, 0, 0, 0, 0", Username.c_str(), Password.c_str());
+    sDatabase.PExecute("INSERT INTO `players` VALUES (DEFAULT, '%s', '%s', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0", Username.c_str(), Password.c_str());
+
+    sLog.Write("Account %s successfully created.", Username.c_str());
 }
 
 void CommandHandler::HandleAccountDeleteCommand()
 {
     std::string Username;
     ExtractArg(Username);
-    // Find player
-    // A FindPlayer(UserName)->Kick() ?
-    // Kick player if online
-    // sDatabase.PExecute("DELETE FROM `players` WHERE name='%s'", Username.c_str());
+
+    QueryResult Result = sDatabase.PQuery("SELECT `guid`, `online` WHERE `username` = '%s' LIMIT 1", Username.c_str());
+    uint32 GUID = Result->getUInt(0);
+    bool IsConnected = (Result->getUInt(1) == 1);
+
+/*    if (IsConnected)
+        pWorld->KickPlayer(GUID);*/
+
+    sDatabase.PExecute("DELETE FROM `players` WHERE `guid` = %u", GUID);
 }
 
 void CommandHandler::HandleAccountSetSecLevelCommand()
 {
     std::string Username;
     ExtractArg(Username);
+
+    // TODO: Use a integer for SecLevel.
+    std::string SecLevel;
+    ExtractArg(SecLevel);
+
+    sDatabase.PExecute("UPDATE `players` SET `seclevel` = %s WHERE `username` = '%s'", SecLevel.c_str(), Username.c_str());
 }

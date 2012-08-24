@@ -47,6 +47,14 @@ void Unit::CastSpell(SpellPtr pSpell, float Angle)
     pMap->AddSpell(me, pSpell, Angle);
 }
 
+void Unit::Say(std::string const& Text)
+{
+    WorldPacket SayPacket((uint16)MSG_CHAT_MESSAGE);
+    SayPacket << GetObjectID() << Text;
+
+    pMap->SendToPlayers(SayPacket);
+}
+
 void Unit::DoMeleeAttackIfReady(int32 diff)
 {
     // If there is no victim, or victim is too far away, return
@@ -73,6 +81,11 @@ void Unit::CastSpell(uint16 Entry, UnitPtr pVictim)
 void Unit::CastSpell(uint16 Entry, float Angle)
 {
     CastSpell(sObjectMgr.GetSpell(Entry), Angle);
+}
+
+void Unit::Kill()
+{
+    Health = 0; // :)
 }
 
 UnitPtr Unit::GetVictim()

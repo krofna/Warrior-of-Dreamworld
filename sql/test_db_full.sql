@@ -2,8 +2,10 @@ DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` 
 (
 	`guid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(20) NOT NULL,
+	`username` VARCHAR(20) NOT NULL,
 	`password` VARCHAR(30) NOT NULL,
+    `online` TINYINT UNSIGNED DEFAULT 0,
+    `seclevel` TINYINT UNSIGNED DEFAULT 0,
 	`tileset` VARCHAR(20) NOT NULL,
 	`tx` SMALLINT UNSIGNED NOT NULL,
 	`ty` SMALLINT UNSIGNED NOT NULL,
@@ -13,8 +15,8 @@ CREATE TABLE `players`
 	PRIMARY KEY(guid)
 );
 
-INSERT INTO `players` VALUES (DEFAULT, 'admin', 'password', 'dg_classm32.gif', 0, 0, 0, 5, 5);
-INSERT INTO `players` VALUES (DEFAULT, 'test', 'test', 'dg_classm32.gif', 1, 0, 0, 5, 6);
+INSERT INTO `players` VALUES (DEFAULT, 'admin', 'password', 0, 4, 'dg_classm32.gif', 0, 0, 0, 5, 5);
+INSERT INTO `players` VALUES (DEFAULT, 'test', 'test', 0, 0, 'dg_classm32.gif', 1, 0, 0, 5, 6);
 
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template`

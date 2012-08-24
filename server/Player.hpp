@@ -42,8 +42,6 @@ public:
     void SaveToDB();
     bool IsLoaded();
 
-    void Say(std::string const& Text);
-
     bool CanSpeak() const;
 
     void SpellHit(SpellBoxPtr pSpellBox);
@@ -60,13 +58,17 @@ public:
     void Kick();
     bool IsInWorld();
 
-    std::string GetUsername() { return Username; }
+
+    int GetSecLevel() const { return SecLevel;}
+    std::string GetUsername() const { return Username; }
 
 private:
     WorldSession* pWorldSession;
 
     std::string Username;
     std::string Password;
+
+    int SecLevel;
 
     std::string Tileset;
     uint16 tx;

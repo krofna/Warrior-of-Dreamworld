@@ -25,7 +25,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class ResourceManager
 {
 public:
+    static void Init();
+    static void Destroy();
+
     static sf::Texture* GetTileset(const std::string& FileName);
+
     static void RemoveTileset(const std::string& FileName);
 
 private:

@@ -34,7 +34,7 @@ public:
 
     virtual WorldPacket PackData() = 0;
 
-    virtual void Say(std::string const& Text) = 0;
+    virtual void Say(std::string const& Text);
 
     virtual void SpellHit(SpellBoxPtr pSpellBox);
     virtual void CastSpell(SpellPtr pSpell, float Angle);
@@ -42,6 +42,7 @@ public:
     void CastSpell(uint16 Entry, float Angle);
 
     void DoMeleeAttackIfReady(int32 diff);
+    void Kill();
 
     UnitPtr GetVictim();
 
