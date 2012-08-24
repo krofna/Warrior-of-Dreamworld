@@ -227,7 +227,7 @@ void WorldSession::HandleChatMessageOpcode()
         return;
     }
 
-    pPlayer->Say(Message);
+    pPlayer->Say(Message.c_str());
 }
 
 void WorldSession::SendLogOutPacket()

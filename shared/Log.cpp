@@ -32,7 +32,7 @@ File    ("Log.txt")
 void Log::Write(const char* format, ...)
 {
     va_list ArgList;
-    char Query[128];
+    char Query[256];
 
     va_start(ArgList, format);
     secure_vsnprintf(Query, 128, format, ArgList);

@@ -180,6 +180,11 @@ bool World::HandleCommand(std::string& Command)
     {
         sLog.Write("something went wrong with command");
     }
+    catch(sql::SQLException& e)
+    {
+        sLog.Write(e.what());
+        sLog.Flush();
+    }
 
     return true;
 }
