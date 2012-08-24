@@ -50,7 +50,7 @@ private:
     boost::tokenizer<>::iterator TokIter;
     bool Console;
 
-private:
+public:
     class BadCommand {};
 };
 
