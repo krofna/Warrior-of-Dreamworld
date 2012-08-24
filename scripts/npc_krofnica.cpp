@@ -24,6 +24,10 @@ enum
     SPELL_FIREBALL = 0
 };
 
+// It's not FullMetal-Alchimist who have write this :P
+#define TEXT_ATTACK "I'm Krofnica, the boss."
+#define TEXT_ENRAGE "I'M THE CREATOR OF THIS GAME, I CAN'T DIE !"
+
 class WOD_DLL_DECL npc_krofnicaAI : public CreatureAI
 {
 public:
@@ -33,10 +37,14 @@ public:
     }
 
     int32 FireballTimer;
+    int32 AttackTimer;
+    int32 EnrageTimer;
 
     void Reset()
     {
         FireballTimer = 5000;
+        AttackTimer = 5000;
+        EnrageTimer = 30000;
     }
 
     void UpdateAI(int32 diff)
@@ -50,9 +58,23 @@ public:
             FireballTimer = 5000;
         }
         else
-        {
             FireballTimer -= diff;
+
+        if (AttackTimer <= diff)
+        {
+            pCreature->Say(TEXT_ATTACK);
+            AttackTimer = 5000;
         }
+        else
+            AttackTimer -= diff;
+
+        if (EnrageTimer <= diff)
+        {
+            pCreature->Say(TEXT_ENRAGE);
+            EnrageTimer = 30000;
+        }
+        else
+            EnrageTimer -= diff;
 
         pCreature->DoMeleeAttackIfReady(diff);
     }
