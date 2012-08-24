@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "boost/bind.hpp"
 #include "../shared/Log.hpp"
+#include "CommandHandler.hpp"
 
 #define SERVER_HEARTBEAT 50
 
@@ -167,25 +168,18 @@ MapPtr World::GetMap(uint16 MapID)
 
     return MapPtr();
 }
-bool World::HandleCommand(std::string const& CommandName)
+bool World::HandleCommand(std::string& Command)
 {
-    std::istringstream in(CommandName);
+    CommandHandler Handler(Command);
 
-    std::string Command;
-    in >> Command;
-
-    if (Command == "account")
+    try
     {
-        std::string Subcommand;
-        if (Subcommand == "create")
-        {
-            std::string UserName, Password;
-            in >> UserName >> Password;
-            // TODO: Create account.
-            sLog.Write("Account successfully created.");
-            return true;
-        }
+        Handler.ExecuteCommand();
+    }
+    catch(CommandHandler::BadCommand& e)
+    {
+        sLog.Write("something went wrong with command");
     }
 
-    return false;
+    return true;
 }

@@ -43,7 +43,7 @@ public:
 
 private:
     void Update();
-    bool HandleCommand(std::string const& CommandName);
+    bool HandleCommand(std::string& Command);
 
     WorldAcceptor* pWorldAcceptor;
     std::vector<MapPtr> Maps;
