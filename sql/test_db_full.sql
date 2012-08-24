@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` 
 (
-	`guid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`guid` BIGINT UNSIGNED NOT NULL,
 	`username` VARCHAR(20) NOT NULL,
 	`password` VARCHAR(30) NOT NULL,
     `online` TINYINT UNSIGNED DEFAULT 0,
@@ -14,9 +14,6 @@ CREATE TABLE `players`
 	`y` SMALLINT UNSIGNED NOT NULL,
 	PRIMARY KEY(guid)
 );
-
-INSERT INTO `players` VALUES (DEFAULT, 'admin', 'password', 0, 4, 'dg_classm32.gif', 0, 0, 0, 5, 5);
-INSERT INTO `players` VALUES (DEFAULT, 'test', 'test', 0, 0, 'dg_classm32.gif', 1, 0, 0, 5, 6);
 
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template`
@@ -35,7 +32,7 @@ INSERT INTO `creature_template` VALUES (0, 'krofnica', 'dg_classm32.gif', 7, 10,
 DROP TABLE IF EXISTS `creature`;
 CREATE TABLE `creature`
 (
-	`guid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`guid` BIGINT UNSIGNED NOT NULL,
 	`entry` INT UNSIGNED NOT NULL,
 	`map` TINYINT UNSIGNED NOT NULL,
 	`x` TINYINT UNSIGNED NOT NULL,
@@ -43,4 +40,4 @@ CREATE TABLE `creature`
 	PRIMARY KEY(guid)
 );
 
-INSERT INTO `creature` VALUES (DEFAULT, 0, 0, 10, 10);
+INSERT INTO `creature` VALUES (UUID_SHORT(), 0, 0, 10, 10);
