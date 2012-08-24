@@ -27,6 +27,8 @@ enum
 // It's not FullMetal-Alchimist who have write this :P
 #define TEXT_ATTACK "I'm Krofnica, the boss."
 #define TEXT_ENRAGE "I'M THE CREATOR OF THIS GAME, I CAN'T DIE !"
+#define TEXT_ENTER_COMBAT "You dare to challenge Krofnica?!"
+#define TEXT_HIT "You think that can hurt mighty Krofnica? Fool."
 
 class WOD_DLL_DECL npc_krofnicaAI : public CreatureAI
 {
@@ -45,6 +47,16 @@ public:
         FireballTimer = 5000;
         AttackTimer = 5000;
         EnrageTimer = 30000;
+    }
+
+    void EnterCombat(UnitPtr& pEnemy)
+    {
+        pCreature->Say(TEXT_ENTER_COMBAT);
+    }
+
+    void SpellHit(SpellBoxPtr& pSpellBox)
+    {
+        pCreature->Say(TEXT_HIT);
     }
 
     void UpdateAI(int32 diff)
