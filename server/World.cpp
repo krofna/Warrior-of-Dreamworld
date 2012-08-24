@@ -127,10 +127,7 @@ void World::ConsoleInput()
 
         if (Input == "exit")
             break;
-        else if (!HandleCommand(Input))
-            sLog.Write("Unknown command!");
-        else
-            sLog.Write("WARN()");
+        HandleCommand(Input);
     }
     IsRunning = false;
 }
@@ -171,7 +168,7 @@ MapPtr World::GetMap(uint16 MapID)
 
     return MapPtr();
 }
-bool World::HandleCommand(std::string& Command)
+void World::HandleCommand(std::string& Command)
 {
     CommandHandler Handler(Command);
 
@@ -181,13 +178,11 @@ bool World::HandleCommand(std::string& Command)
     }
     catch(CommandHandler::BadCommand& e)
     {
-        sLog.Write("something went wrong with command");
+        sLog.Write("Unknown command !");
     }
     catch(sql::SQLException& e)
     {
         sLog.Write(e.what());
         sLog.Flush();
     }
-
-    return true;
 }

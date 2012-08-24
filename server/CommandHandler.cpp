@@ -27,7 +27,8 @@ ChatCommand* CommandHandler::GetCommandTable()
 {
     static ChatCommand AccountSetCommandTable[] =
     {
-        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $seclevel(0-4)",NULL },
+        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $username $seclevel(0-4)",NULL },
+        { "password",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetPasswordCommand,   "Usage: account set password $username $newpassword", NULL },
         { NULL,         0,          false,  NULL,                                               "",                                          NULL }
     };
 
@@ -100,7 +101,6 @@ void CommandHandler::ExtractArg(std::string& Arg)
     if(TokIter == Tokenizer.end())
         throw BadCommand();
 
-
     Arg = *TokIter++;
 }
 
@@ -110,7 +110,7 @@ void CommandHandler::HandleAccountCreateCommand()
     ExtractArg(Username);
     ExtractArg(Password);
 
-    sDatabase.PExecute("INSERT INTO `players` VALUES (%u, '%s', '%s', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0", Generate64BitsGUID(), Username.c_str(), Password.c_str());
+    sDatabase.PExecute("INSERT INTO `players` VALUES (%u, '%s', '%s', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0)", Generate64BitsGUID(), Username.c_str(), Password.c_str());
 
     sLog.Write("Account %s successfully created.", Username.c_str());
 }
@@ -120,14 +120,10 @@ void CommandHandler::HandleAccountDeleteCommand()
     std::string Username;
     ExtractArg(Username);
 
-    QueryResult Result = sDatabase.PQuery("SELECT `guid`, `online` WHERE `username` = '%s' LIMIT 1", Username.c_str());
-    uint64 GUID = Result->getUInt(0);
-    bool IsConnected = (Result->getUInt(1) == 1);
-
 /*    if (IsConnected)
         pWorld->KickPlayer(GUID);*/
 
-    sDatabase.PExecute("DELETE FROM `players` WHERE `guid` = %u", GUID);
+    sDatabase.PExecute("DELETE FROM `players` WHERE `username` = '%s'", Username.c_str());
 }
 
 void CommandHandler::HandleAccountSetSecLevelCommand()
@@ -140,4 +136,15 @@ void CommandHandler::HandleAccountSetSecLevelCommand()
     ExtractArg(SecLevel);
 
     sDatabase.PExecute("UPDATE `players` SET `seclevel` = %s WHERE `username` = '%s'", SecLevel.c_str(), Username.c_str());
+}
+
+void CommandHandler::HandleAccountSetPasswordCommand()
+{
+    std::string Username;
+    std::string Password;
+
+    ExtractArg(Username);
+    ExtractArg(Password);
+
+    sDatabase.PExecute("UPDATE `players` SET `password` = %s WHERE `username` = '%s'", Password.c_str(), Username.c_str());
 }
