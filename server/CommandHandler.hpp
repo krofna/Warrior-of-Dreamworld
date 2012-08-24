@@ -45,6 +45,7 @@ private:
     void HandleAccountSetPasswordCommand();
 
     void ExtractArg(std::string& Arg);
+    void ExtractArg(uint32& Arg);
 
     PlayerPtr pPlayer;
     boost::tokenizer<> Tokenizer;
