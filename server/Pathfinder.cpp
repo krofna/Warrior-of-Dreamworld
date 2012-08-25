@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 TODO:
 - Bounds checking
 - Diagonal movement ( no cutting )
+- case (uint8)OPEN:
 */
 
 boost::shared_array<PathfinderNode> Pathfinder::PathfindingGrid;
