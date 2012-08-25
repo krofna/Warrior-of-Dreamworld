@@ -213,6 +213,8 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
+    SendLogOutPacket();
+
     Connected = false;
 }
 

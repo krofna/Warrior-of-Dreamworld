@@ -18,7 +18,6 @@ Consider using either raw pointers or home brew non reference counting pointers 
 to improve server performance.
 
 Code:
-- Handle case where we haven't variadic template and vsnprintf_s available
 - GUI System for Chat (Fullmetal-Alchimist assigned)
 - Some data may/should be Uint8 instead of Uint16
 - Cleanup Includes/forward declares...
