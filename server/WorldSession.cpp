@@ -41,17 +41,15 @@ PlayerPtr WorldSession::GetPlayer()
 void WorldSession::Start()
 {
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Header, 4),
+        boost::asio::buffer(Packet.GetDataWithHeader(), WorldPacket::HEADER_SIZE),
         boost::bind(&WorldSession::HandleHeader, this));
 }
 
 void WorldSession::HandleHeader()
 {
-    uint16 Size = Header[0];
-    Packet.SetOpcode(Header[1]);
-    Packet.Resize(Size);
+    Packet.ReadHeader();
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Packet.GetByteBuffer(), Size),
+        boost::asio::buffer(Packet.GetDataWithoutHeader(), Packet.GetSizeWithoutHeader()),
         boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
 }
 
@@ -79,16 +77,16 @@ void WorldSession::Send(WorldPacket& Packet)
 {
     sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
-    MessageQueue.push(Packet.GetData());
+    MessageQueue.push(Packet.GetDataWithHeader());
     if(MessageQueue.size() == 1)
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), Packet.GetSize() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front(), Packet.GetSizeWithHeader()),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
 
-void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error)
+void WorldSession::HandleSend(void* Data, const boost::system::error_code& Error)
 {
     if(!Error)
     {
@@ -105,6 +103,7 @@ void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
+            // Not sure about this
             boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
