@@ -71,8 +71,6 @@ void Creature::SpellHit(SpellBoxPtr pSpellBox)
     pAI->SpellHit(pSpellBox);
 }
 
-
-
 CreatureAI* Creature::GetAI()
 {
     return pAI;

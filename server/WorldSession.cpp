@@ -64,7 +64,7 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     if(Packet.GetOpcode() >= MSG_COUNT)
     {
         sLog.Write("Received %u: Bad opcode!", Packet.GetOpcode());
-        return; // This has effect of disconnecting - TODO: do proper cleanup
+        return; // This has effect of disconnecting - TODO: do proper cleanup (likely leaks)
     }
     sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
@@ -103,7 +103,6 @@ void WorldSession::HandleSend(void* Data, const boost::system::error_code& Error
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
-            // Not sure about this
             boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }

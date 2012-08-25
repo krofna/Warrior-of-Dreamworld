@@ -58,12 +58,11 @@ public:
 
 private:
     void Start();
-    void HandlePacket(const boost::system::error_code& Error);
+    void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader();
-    void HandleSend(char* Data, const boost::system::error_code& Error);
+    void HandleSend(void* Data, const boost::system::error_code& Error);
 
     tcp::socket Socket;
-    uint16 Header[2];
     WorldPacket Packet;
 
     boost::shared_ptr<boost::asio::io_service::work> Work;
@@ -72,7 +71,7 @@ private:
     Game* sGame;
     World* pWorld;
 
-    std::queue<char*> MessageQueue;
+    std::queue<void*> MessageQueue;
     boost::mutex MessageQueueMutex;
 };
 
