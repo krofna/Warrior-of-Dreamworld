@@ -26,6 +26,7 @@ Login::Login() : m_CurrentFocus(None)
     Window->resetGLStates();
     Create();
 }
+
 Login::~Login()
 {
     sDesktop.Remove(m_LoginWindow);
@@ -114,6 +115,7 @@ void Login::onConnectButtonPressed()
     Session->SendAuthRequest(m_UsernameEntry->GetText(), m_PasswordEntry->GetText());
     m_CurrentState->SetText("Logging in progress...");
 }
+
 void Login::GrabNextFocus()
 {
     switch (m_CurrentFocus)

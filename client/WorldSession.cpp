@@ -77,9 +77,9 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
 
 void WorldSession::Send(WorldPacket& Packet)
 {
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     boost::mutex::scoped_lock lock(MessageQueueMutex);
-    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     MessageQueue.push(Packet.GetDataWithHeader());
     if(MessageQueue.size() == 1)

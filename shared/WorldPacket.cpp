@@ -20,8 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Opcodes.hpp"
 
 WorldPacket::WorldPacket(uint16 Opcode) :
-ByteBuffer              (2+2)
+ByteBuffer              (HEADER_SIZE)
 {
+    ResetReadPos();
+    UpdateWritePos();
     std::memcpy((void*)&ByteBuffer[2], &Opcode, 2);
 }
 
