@@ -64,14 +64,14 @@ void Database::Connect()
 }
 
 #ifndef HAVE_VARIADIC_TEMPLATES
-    #define MAX_QUERY_LEN 3*1024 // this is so wrong in so many ways
+    #define MAX_QUERY_LEN 1024 // this is so wrong in so many ways
     void Database::PExecute(const char* sql, ...)
     {
         va_list ArgList;
         char CQuery[MAX_QUERY_LEN];
 
         va_start(ArgList, sql);
-        secure_vsnprintf(CQuery, MAX_QUERY_LEN, sql, ArgList);
+        secure_vsnprintf(CQuery, sizeof(CQuery), sql, ArgList);
         va_end(ArgList);
 
         Execute(CQuery);

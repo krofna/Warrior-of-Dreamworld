@@ -128,8 +128,7 @@ void CommandHandler::HandleAccountCreateCommand()
     ExtractArg(Username);
     ExtractArg(Password);
 
-    sDatabase.PExecute("INSERT INTO `players` VALUES (%u, '%s', '%s', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0)", Generate64BitsGUID(), Username.c_str(), Password.c_str());
-
+    sDatabase.PExecute("INSERT INTO `players` VALUES (%llu, '%s', '%s', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0)", Generate64BitsGUID(), Username.c_str(), Password.c_str());
     sLog.Write("Account %s successfully created.", Username.c_str());
 }
 
