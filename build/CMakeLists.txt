@@ -5,3 +5,4 @@ Project(Warrior-of-Dreamworld)
 
 include(Server/CMakeLists.txt)
 include(Client/CMakeLists.txt)
+include(WorldEdit/CMakeLists.txt)

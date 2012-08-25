@@ -18,7 +18,6 @@ Consider using either raw pointers or home brew non reference counting pointers 
 to improve server performance.
 
 Code:
-- Command system for creating accounts, modifying password accounts, more...
 - Handle case where we haven't variadic template and vsnprintf_s available
 - GUI System for Chat (Fullmetal-Alchimist assigned)
 - Some data may/should be Uint8 instead of Uint16
@@ -31,7 +30,8 @@ Code:
 - Move spells to DB
 - Items
 - Combat stats (health, mana..)
-- ObjID => GUID
+- ObjID => GUID (Need to check if everything is passed to uint64)
+- More commands !
 
 Art:
 - Terrain
