@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 2.8)
+
+if (GLOBAL_COMPILATION)
+    set(ADD_PATH .)
+else (GLOBAL_COMPILATION)
+    set(ADD_PATH ..)
+endif (GLOBAL_COMPILATION)
+
+file(GLOB_RECURSE CLIENT_FILES ${ADD_PATH}/../client/Release/*)
+
+file(MAKE_DIRECTORY ${ADD_PATH}/bin/Client/${CMAKE_BUILD_TYPE})
+file(COPY ${CLIENT_FILES} DESTINATION ${ADD_PATH}/bin/Client/${CMAKE_BUILD_TYPE})
