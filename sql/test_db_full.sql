@@ -27,8 +27,8 @@ CREATE TABLE `spells`
     PRIMARY KEY(entry)
 );
 
-INSERT INTO `spells` VALUES (DEFAULT, 0, 0, 30, 15, 'Bolt');
-INSERT INTO `spells` VALUES (DEFAULT, 0, 1, 0, 0, 'Quadruple Accel No Interval');
+INSERT INTO `spells` VALUES (DEFAULT, 1, 0, 10, 10, 'Bolt');
+INSERT INTO `spells` VALUES (DEFAULT, 1, 1, 0, 0, 'Quadruple Accel No Interval');
 
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template`
