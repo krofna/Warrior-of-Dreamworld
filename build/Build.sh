@@ -9,12 +9,8 @@ make
 cd ..
 
 # Copy Client's data in Client bin folder
-cd ClientFiles
-cmake . -DCMAKE_BUILD_TYPE=Debug
-make
-cmake . -DCMAKE_BUILD_TYPE=Release
-make
-cd ..
+cp -R ../client/Release/* bin/Client/Debug/
+cp -R ../client/Release/* bin/Client/Release/
 
 # Build Server
 cd Server
