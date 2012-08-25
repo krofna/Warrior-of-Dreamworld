@@ -15,9 +15,10 @@ spawning SPELL_BOLTs
 5) [strike]Shit I forgot...[/strike]
 I remembered!
 Consider using either raw pointers or home brew non reference counting pointers (with owner)
-to improve server performance.
+to improve server performance
 
 Code:
+- SpellMgr and SpellEffect
 - GUI System for Chat (Fullmetal-Alchimist assigned)
 - Some data may/should be Uint8 instead of Uint16
 - Cleanup Includes/forward declares...
@@ -26,11 +27,12 @@ Code:
 - site to register accounts (RenaissanceinCroatia working on it)
 - Melee attack
 - Finish animations
-- Move spells to DB
 - Items
+- Money ?
 - Combat stats (health, mana..)
 - ObjID => GUID (Need to check if everything is passed to uint64)
-- More commands !
+- A little more commands !
+- A script language for creating new AI ? (Boost.Python ?)
 
 Art:
 - Terrain
@@ -44,7 +46,7 @@ Story:
 - Story
 
 Music:
-- ??
+- SoundEngine client-side (SFML Audio ?)
 
 Game mechanics:
 - ??
