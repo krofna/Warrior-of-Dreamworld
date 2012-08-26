@@ -53,7 +53,7 @@ public:
     PlayerPtr GetPlayer();
 
 private:
-    void HandleSend(void* Data, const boost::system::error_code& Error);
+    void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
     void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader();
 

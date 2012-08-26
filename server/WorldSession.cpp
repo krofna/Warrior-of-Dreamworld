@@ -91,7 +91,7 @@ void WorldSession::Send(WorldPacket* Packet)
     }
 }
 
-void WorldSession::HandleSend(void* Data, const boost::system::error_code& Error)
+void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_code& Error)
 {
     if(!Error)
     {
@@ -102,7 +102,7 @@ void WorldSession::HandleSend(void* Data, const boost::system::error_code& Error
         sLog.Write("Failed!");
     }
 
-    delete Data;
+    delete Packet;
 
     MessageQueue.pop();
     if(!MessageQueue.empty())
