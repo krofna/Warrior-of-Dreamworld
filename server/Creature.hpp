@@ -37,6 +37,9 @@ public:
     WorldPacket PackData();
 
     void SpellHit(SpellBoxPtr pSpellBox);
+    void TakeDamage(int32 Damage, UnitPtr pAttacker);
+    void DealDamage(int32 Damage, UnitPtr pTarget);
+    int32 GetMeleeDamage() const { return 5; }
 
     CreatureAI* GetAI();
 private:

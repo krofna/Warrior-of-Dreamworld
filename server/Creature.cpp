@@ -72,7 +72,20 @@ void Creature::SpellHit(SpellBoxPtr pSpellBox)
     pAI->SpellHit(pSpellBox);
 }
 
-
+void Creature::DealDamage(int32 Damage, UnitPtr pTarget)
+{
+    Unit::DealDamage(Damage, pTarget);
+    if (pTarget->IsDead())
+        pAI->KilledUnit(pTarget);
+}
+void Creature::TakeDamage(int32 Damage, UnitPtr pAttacker)
+{
+    Unit::TakeDamage(Damage, pAttacker);
+    if (IsDead())
+        pAI->JustDied(pAttacker);
+    else
+        pAI->Hit(pAttacker, Damage);
+}
 
 CreatureAI* Creature::GetAI()
 {

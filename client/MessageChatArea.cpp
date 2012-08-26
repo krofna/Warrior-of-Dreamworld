@@ -21,7 +21,11 @@ void MessageChatArea::Draw(int32 UpdateTime)
     for (int i = 0 ; i < m_Messages.size() ; ++i)
     {
         if (m_Messages[i].TimeDisplay - UpdateTime <= 0)
+        {
+            m_Messages.erase(m_Messages.begin() + i);
+            i--;
             continue;
+        }
         else
             m_Messages[i].TimeDisplay -= UpdateTime;
 
@@ -29,7 +33,7 @@ void MessageChatArea::Draw(int32 UpdateTime)
 
         sf::Text text(StringMessage);
         text.setFont(m_DefaultFont);
-        text.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y * float(i / 24));
+        text.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y - float(i * 50));
 
         Window->draw(text);
     }

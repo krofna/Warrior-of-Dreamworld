@@ -47,7 +47,7 @@ public:
     virtual void KilledUnit(UnitPtr& pVictim){}; // -- NYI
 
     // Called when creature is hit by melee attack
-    virtual void Hit(UnitPtr& pAttacker, uint32& Damage){}; // -- NYI
+    virtual void Hit(UnitPtr& pAttacker, int32& Damage){}; // -- NYI
 
     // Called when creature is hit by spell
     virtual void SpellHit(SpellBoxPtr& pSpellBox){};
