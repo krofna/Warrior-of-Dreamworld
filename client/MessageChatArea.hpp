@@ -3,20 +3,26 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "../shared/Defines.hpp"
 
 #define MESSAGE_POS_X 0
 #define MESSAGE_POS_Y (WindowHeight / 6) * 5
 
 class MessageChatArea
 {
+    struct Message
+    {
+        int32 TimeDisplay;
+        std::string StringMessage;
+    };
     public:
     MessageChatArea();
 
-    void AddMessage(std::string const& ObjectName, std::string const& Content);
-    void Draw();
+    void AddMessage(std::string const& ObjectName, std::string const& Content, int32 SecondsTime = 5);
+    void Draw(int32 UpdateTime);
 
     private:
-    std::vector<std::string> m_Messages;
+    std::vector<Message> m_Messages;
     sf::Font m_DefaultFont;
 };
 

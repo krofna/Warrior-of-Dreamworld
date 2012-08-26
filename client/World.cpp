@@ -148,7 +148,7 @@ void World::Draw()
     }
 
     // Draw chat GUI
-    m_MessageArea->Draw();
+    m_MessageArea->Draw(50);
 }
 
 void World::HandleEvent(sf::Event Event)
