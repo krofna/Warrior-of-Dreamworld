@@ -86,7 +86,7 @@ void WorldSession::Send(WorldPacket* Packet)
     if(MessageQueue.size() == 1)
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), Packet->GetSizeWithHeader()),
+            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), Packet->GetSizeWithHeader()),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
@@ -108,7 +108,7 @@ void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_co
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }

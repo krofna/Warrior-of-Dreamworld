@@ -57,7 +57,9 @@ void* WorldPacket::GetDataWithHeader()
 
 void* WorldPacket::GetDataWithoutHeader()
 {
-    return &ByteBuffer[2];
+    uint16 SizeWithoutHeader = GetSizeWithoutHeader();
+    std::memcpy((void*)&ByteBuffer, &SizeWithoutHeader, 2);
+    return &ByteBuffer[4];
 }
 
 uint16 WorldPacket::GetOpcode()
