@@ -182,7 +182,12 @@ void CommandHandler::HandleKillCommand()
 
     PlayerPtr pPlayer = sObjectMgr.GetPlayer(PlayerName);
     if (pPlayer)
-        pPlayer->Kill();
+    {
+        if (pPlayer->IsInWorld())
+            pPlayer->Kill();
+        else
+            sLog.Write("Player is not in world !");
+    }
     else
         sLog.Write("Unknown player !");
 }
