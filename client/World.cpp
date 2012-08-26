@@ -206,7 +206,7 @@ void World::HandleEvent(sf::Event Event)
 
     case sf::Event::MouseButtonPressed:
         // PH
-        Session->SendCastSpellRequest(0, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
+        Session->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:

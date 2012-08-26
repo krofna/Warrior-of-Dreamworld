@@ -36,7 +36,7 @@ class Map : public enable_shared_from_this<Map>
     void AddPlayer(PlayerPtr& pPlayer);
     void AddSpell(UnitPtr& pCaster, SpellPtr& pSpell, float Angle);
     virtual void Update(int32 diff);
-    void UnitUpdate(UnitPtr pVictim);
+    void UnitUpdate(UnitPtr pVictim, int32 diff);
 
     void SendToPlayers(WorldPacket& Packet);
 
@@ -49,7 +49,6 @@ class Map : public enable_shared_from_this<Map>
 
     uint16 MapID;
     uint32 NewSpellBoxID;
-    int32 diff;
 
     // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObjectPtr
     std::vector<std::vector<WorldObjectPtr> > TileGrid;

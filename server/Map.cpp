@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../client/ResourceManager.hpp"
 #include "../shared/Config.hpp"
 #include "../shared/Log.hpp"
+#include <boost/bind.hpp>
 #include "Player.hpp"
 #include "Database.hpp"
 #include "Pathfinder.hpp"
@@ -67,11 +68,11 @@ void Map::Update(int32 diff)
         (*SpellBoxIter)->Update(diff);
     }
 
-    std::for_each(Players.begin(), Players.end(), std::bind1st(std::mem_fun(&Map::UnitUpdate), this));
-    std::for_each(Creatures.begin(), Creatures.end(), std::bind1st(std::mem_fun(&Map::UnitUpdate), this));
+    std::for_each(Players.begin(), Players.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
+    std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
 }
 
-void Map::UnitUpdate(UnitPtr pUnit)
+void Map::UnitUpdate(UnitPtr pUnit, int32 diff)
 {
     // Check if unit got hit by spell
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)

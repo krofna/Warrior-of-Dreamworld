@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 enum
 {
-    SPELL_QUADRUPLE_ACCEL_NO_INTERVAL = 1
+    SPELL_QUADRUPLE_ACCEL_NO_INTERVAL = 2
 };
 
 #define TEXT_SPECIAL_ATTACK "Dark Repulser, Quadruple Accel, No Interval !"
@@ -40,7 +40,7 @@ public:
 
     void Reset()
     {
-        AttackSpecialTimer = 3000;
+        AttackSpecialTimer = 9000;
     }
 
     void EnterCombat(UnitPtr& pEnemy)
@@ -65,7 +65,7 @@ public:
             AttackSpecialTimer = 3000;
         }
         else
-            AttackSpecialTimer -= diff;
+            AttackSpecialTimer += diff;
 
         pCreature->DoMeleeAttackIfReady(diff);
     }

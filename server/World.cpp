@@ -141,6 +141,7 @@ void World::Update()
     }
     auto now = boost::chrono::high_resolution_clock::now();
     ms NewTime = boost::chrono::duration_cast<ms>(boost::chrono::high_resolution_clock::now() - OldTime);
+
     #ifdef DEBUG_UPDATE_TIME
     sLog.Write("World::Update(now: %u, old: %u, new: %u)", now, OldTime, NewTime);
     #endif
