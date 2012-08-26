@@ -40,8 +40,6 @@ public:
     WorldPacket();
     WorldPacket(uint16 Opcode);
 
-    void Clear();
-
     void* GetDataWithHeader();
     void* GetDataWithoutHeader();
     uint16 GetOpcode();
@@ -49,6 +47,7 @@ public:
     uint16 GetSizeWithHeader();
     uint16 GetSizeWithoutHeader();
     void ReadHeader();
+    void UpdateSizeData();
     void UpdateWritePos();
     void ResetReadPos();
 

@@ -82,6 +82,7 @@ void WorldSession::Send(WorldPacket* Packet)
 {
     sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
+    Packet->UpdateSizeData();
     MessageQueue.push(Packet);
     if(MessageQueue.size() == 1)
     {
@@ -162,9 +163,9 @@ void WorldSession::HandleLoginOpcode()
         pPlayer->LoadFromDB();
 
     // Tell the client that he logged in sucessfully
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_LOGIN);
-    *Packet << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
-    Send(Packet);
+    WorldPacket* LoginPacket = new WorldPacket((uint16)MSG_LOGIN);
+    *LoginPacket << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
+    Send(LoginPacket);
 
     // Add player to the world
     pPlayer->BindSession(this);

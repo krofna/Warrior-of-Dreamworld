@@ -84,6 +84,8 @@ void WorldSession::Send(WorldPacket* Packet)
 {
     sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
+    Packet->UpdateSizeData();
+
     boost::mutex::scoped_lock lock(MessageQueueMutex);
 
     MessageQueue.push(Packet);

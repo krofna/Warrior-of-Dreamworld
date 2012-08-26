@@ -34,12 +34,6 @@ ByteBuffer              (HEADER_SIZE)
     std::memcpy((void*)&ByteBuffer[2], &Opcode, 2);
 }
 
-void WorldPacket::Clear()
-{
-    ByteBuffer.clear();
-    ReadPos = WritePos = 0;
-}
-
 uint16 WorldPacket::GetSizeWithHeader()
 {
     return ByteBuffer.size();
@@ -57,8 +51,6 @@ void* WorldPacket::GetDataWithHeader()
 
 void* WorldPacket::GetDataWithoutHeader()
 {
-    uint16 SizeWithoutHeader = GetSizeWithoutHeader();
-    std::memcpy((void*)&ByteBuffer, &SizeWithoutHeader, 2);
     return &ByteBuffer[4];
 }
 
@@ -75,6 +67,12 @@ void WorldPacket::SetOpcode(uint16 Opcode)
 void WorldPacket::ReadHeader()
 {
     ByteBuffer.resize(HEADER_SIZE + *(uint16*)&ByteBuffer[0]);
+}
+
+void WorldPacket::UpdateSizeData()
+{
+    uint16 SizeWithoutHeader = GetSizeWithoutHeader();
+    std::memcpy((void*)&ByteBuffer[0], &SizeWithoutHeader, 2);
 }
 
 void WorldPacket::UpdateWritePos()
