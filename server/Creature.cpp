@@ -48,7 +48,6 @@ Creature::~Creature()
 
 void Creature::Update(int32 diff)
 {
-    sLog.Write("Creature::Update(%u)", diff);
     MovementGenerator->Update(diff);
     pAI->UpdateAI(diff);
 }

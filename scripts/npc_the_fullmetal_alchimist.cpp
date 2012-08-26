@@ -65,7 +65,7 @@ public:
             AttackSpecialTimer = 3000;
         }
         else
-            AttackSpecialTimer += diff;
+            AttackSpecialTimer -= diff;
 
         pCreature->DoMeleeAttackIfReady(diff);
     }
