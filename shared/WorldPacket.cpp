@@ -19,6 +19,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldPacket.hpp"
 #include "Opcodes.hpp"
 
+WorldPacket::WorldPacket() :
+ByteBuffer              (HEADER_SIZE)
+{
+    ResetReadPos();
+    UpdateWritePos();
+}
+
 WorldPacket::WorldPacket(uint16 Opcode) :
 ByteBuffer              (HEADER_SIZE)
 {

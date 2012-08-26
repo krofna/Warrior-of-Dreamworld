@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WOD_DLL_DECL WorldPacket
 {
 public:
+    WorldPacket();
     WorldPacket(uint16 Opcode);
 
     void Clear();

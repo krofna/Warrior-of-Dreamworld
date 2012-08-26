@@ -108,14 +108,14 @@ void Player::SaveToDB()
     sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, map=%u WHERE guid=%u", Position.x, Position.y, pMap->MapID, GetObjectID());
 }
 
-WorldPacket Player::PackData()
+WorldPacket* Player::PackData()
 {
-    WorldPacket Packet((uint16)MSG_ADD_OBJECT);
-    Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_ADD_OBJECT);
+    *Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }
 
-void Player::SendPacket(WorldPacket Packet)
+void Player::SendPacket(WorldPacket* Packet)
 {
     pWorldSession->Send(Packet);
 }

@@ -33,7 +33,7 @@ public:
     virtual ~WorldObject() {}
 
     virtual void Update(int32 diff) = 0;
-    virtual WorldPacket PackData() = 0;
+    virtual WorldPacket* PackData() = 0;
 
     bool UpdateCoordinates(uint8 Direction);
     void UpdatePosition(Vector2i Position);

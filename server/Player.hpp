@@ -50,8 +50,8 @@ public:
 
     void Update(int32 diff);
 
-    void SendPacket(WorldPacket Packet);
-    WorldPacket PackData();
+    void SendPacket(WorldPacket* Packet);
+    WorldPacket* PackData();
     void BindSession(WorldSession* pWorldSession);
 
     void LogOut();

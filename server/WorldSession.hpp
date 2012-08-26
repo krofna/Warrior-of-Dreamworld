@@ -36,7 +36,7 @@ public:
     ~WorldSession();
 
     void Start();
-    void Send(WorldPacket& Packet);
+    void Send(WorldPacket* Packet);
 
     void SendLogOutPacket();
     void SendChatMessage(uint64 FromID, std::string const& Message);
@@ -61,12 +61,12 @@ private:
 
     TSocket Socket;
 
-    WorldPacket Packet;
+    WorldPacket* Packet;
     PlayerPtr pPlayer;
 
     bool Connected;
 
-    std::queue<void*> MessageQueue;
+    std::queue<WorldPacket*> MessageQueue;
 };
 
 #endif
