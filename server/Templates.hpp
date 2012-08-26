@@ -31,4 +31,17 @@ struct CreatureTemplate
     std::string ScriptName;
 };
 
+enum InventoryType
+{
+    INV_TYPE_BAG
+};
+
+struct ItemTemplate
+{
+    uint64 Entry;
+    std::string Name;
+    uint16 DisplayID;
+    InventoryType Type;
+};
+
 #endif

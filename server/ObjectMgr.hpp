@@ -33,17 +33,21 @@ class ObjectMgr
 public:
     ~ObjectMgr();
 
-    CreatureTemplate* GetCreatureTemplate(uint32 Entry);
+    CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
+    ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
+
     SpellPtr GetSpell(uint16 ID);
+    PlayerPtr GetPlayer(std::string& Username);
 
     void LoadSpells();
     void LoadCreatureTemplates();
+    void LoadItemsTemplates();
     void LoadPlayersLoginInfo();
-    PlayerPtr GetPlayer(std::string& Username);
-
+   
 private:
     std::vector<SpellPtr> Spells;
-    std::map<uint32, CreatureTemplate*> CreatureTemplates;
+    std::map<uint64, CreatureTemplate*> CreatureTemplates;
+    std::map<uint64, ItemTemplate*> ItemTemplates;
     std::vector<PlayerPtr> Players;
 };
 
