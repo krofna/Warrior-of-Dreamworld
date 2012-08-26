@@ -149,7 +149,9 @@ void WorldSession::HandleAddObjectOpcode()
 {
     uint64 ObjID;
     Packet >> ObjID;
+
     WorldObject* pNewObject = new WorldObject;
+
     sGame->AddToLoadQueue(pNewObject, Packet);
     pWorld->AddObject(pNewObject, ObjID);
     sLog.Write("Packet is good!");

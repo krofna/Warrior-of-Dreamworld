@@ -49,7 +49,7 @@ int main()
     catch(std::exception const
           & e)
     {
-        sLog.Write("%s", e.what());
+        sLog.Write("EXCEPTION occured: %s", e.what());
     }
     catch(...)
     {

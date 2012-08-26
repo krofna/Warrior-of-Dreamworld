@@ -17,43 +17,40 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include <fstream>
+#include <iostream>
 #include <sstream>
-#include <boost/archive/binary_oarchive.hpp>
+#include <string>
 
-template<typename T>
-std::string ToString(T const& Number)
+std::string ToString(int n)
 {
     std::ostringstream out;
-    out << Number;
+    out << n;
     return out.str();
 }
 
 int main()
 {
+    int MapID;
     std::cout << "Map ID: ";
-    int mapID;
-    std::cin >> mapID;
+    std::cin >> MapID;
 
-    std::string fileName = "map" + ToString(mapID) + ".map";
+    std::string fileName = "map" + ToString(MapID) + ".map";
     std::ofstream File(fileName);
+
     if (File)
     {
-        boost::archive::binary_oarchive out(File);
-
-        int sizeY, sizeX;
-        std::cout << "Size: ";
-        std::cin >> sizeY >> sizeX;
+        float SizeX, SizeY;
+        std::cout << "Size (x, y): ";
+        std::cin >> SizeX >> SizeY;
+        File << SizeX << " " << SizeY;
 
         std::string fileNameTileset;
         std::cout << "Tileset Filename: ";
         std::cin >> fileNameTileset;
+        File << " " << fileNameTileset << " ";
 
-        out << fileNameTileset;
-
-        for (int y = 0 ; y < sizeY ; ++y)
-            for (int x = 0 ; x < sizeX ; ++x)
-                File << x << " " << y << " 1 15";
+        for (float y = 0 ; y < SizeY ; ++y)
+            for (float x = 0 ; x < SizeX ; ++x)
+                File << y << " " << x << " 1 15 ";
     }
-    else
-        std::cerr << "Error when opening: " << fileName << std::endl;
 }

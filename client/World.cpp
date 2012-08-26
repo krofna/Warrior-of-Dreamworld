@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "MessageChatArea.hpp"
 #include "ResourceManager.hpp"
-#include <boost/archive/binary_iarchive.hpp>
 #include "../shared/Math.hpp"
 #include <cassert>
 
@@ -59,39 +58,39 @@ void World::Load(WorldPacket Argv)
 
     uint16 MapID;
     Argv >> MapID;
+
     ResourceManager::RemoveTileset(TilesetFileName);
     std::string Path = "data/maps/map" + IntToString(MapID) + ".map";
 
     std::ifstream File(Path);
     assert(File.good());
-    boost::archive::binary_iarchive in(File);
-
-    float x, y, tx, ty;
+    
     int index = 0;
 
-    in >> TilesetFileName >> MapWidth >> MapHeight;
+    File >> MapWidth >> MapHeight;
+    File >> TilesetFileName;
+
+    float x, y, tx, ty;
+
     TileMap.resize(MapWidth * MapHeight * 4);
     MapWidth *= TILE_SIZE;
     MapHeight *= TILE_SIZE;
     MapStates.texture = ResourceManager::GetTileset(TilesetFileName);
 
-    for (int y = 0 ; y < MapHeight ; ++y)
-        for (int x = 0 ; x < MapWidth ; ++x)
-        {
-            in >> x >> y >> tx >> ty;
+    while (File >> x >> y >> tx >> ty)
+    {
+        TileMap[index + 0].position = sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE);
+        TileMap[index + 1].position = sf::Vector2f(x * TILE_SIZE, (y + 1) * TILE_SIZE);
+        TileMap[index + 2].position = sf::Vector2f((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
+        TileMap[index + 3].position = sf::Vector2f((x + 1) * TILE_SIZE, y * TILE_SIZE);
 
-            TileMap[index + 0].position = sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE);
-            TileMap[index + 1].position = sf::Vector2f(x * TILE_SIZE, (y + 1) * TILE_SIZE);
-            TileMap[index + 2].position = sf::Vector2f((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
-            TileMap[index + 3].position = sf::Vector2f((x + 1) * TILE_SIZE, y * TILE_SIZE);
+        TileMap[index + 0].texCoords = sf::Vector2f(tx * TILE_SIZE, ty * TILE_SIZE);
+        TileMap[index + 1].texCoords = sf::Vector2f(tx * TILE_SIZE, (ty + 1) * TILE_SIZE);
+        TileMap[index + 2].texCoords = sf::Vector2f((tx + 1) * TILE_SIZE, (ty + 1) * TILE_SIZE);
+        TileMap[index + 3].texCoords = sf::Vector2f((tx + 1) * TILE_SIZE, ty * TILE_SIZE);
 
-            TileMap[index + 0].texCoords = sf::Vector2f(tx * TILE_SIZE, ty * TILE_SIZE);
-            TileMap[index + 1].texCoords = sf::Vector2f(tx * TILE_SIZE, (ty + 1) * TILE_SIZE);
-            TileMap[index + 2].texCoords = sf::Vector2f((tx + 1) * TILE_SIZE, (ty + 1) * TILE_SIZE);
-            TileMap[index + 3].texCoords = sf::Vector2f((tx + 1) * TILE_SIZE, ty * TILE_SIZE);
-
-            index += 4;
-        }
+        index += 4;
+    }
 
     sGame->PopState();
     sGame->PushState(this);
@@ -101,7 +100,6 @@ void World::Draw()
 {
     // Network thread shouldn't add new stuff while drawing
     boost::mutex::scoped_lock lock(DrawingMutex);
-
 
     if(MoveWorldView != MOVE_STOP)
     {

@@ -31,7 +31,7 @@ class WOD_DLL_DECL Player : public Unit
     friend class WorldSession;
 
 public:
-    Player(std::string Username, std::string Password, uint32 ObjID);
+    Player(std::string Username, std::string Password, uint64 ObjID);
     ~Player();
 
     // TODO

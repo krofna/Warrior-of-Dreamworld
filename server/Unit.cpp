@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Math.hpp"
 #include "ObjectMgr.hpp"
 
-Unit::Unit      (uint32 ObjID) :
+Unit::Unit      (uint64 ObjID) :
 WorldObject     (ObjID),
 MeeleAttackCooldown(0)
 {

@@ -15,6 +15,9 @@ void MessageChatArea::AddMessage(std::string const& ObjectName, std::string cons
 
 void MessageChatArea::Draw()
 {
+    if (m_Messages.empty())
+        return;
+
     int iMessage = m_Messages.size();
     while (iMessage > (m_Messages.size() - 5))
     {

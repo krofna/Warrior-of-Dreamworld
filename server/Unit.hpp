@@ -27,7 +27,7 @@ class SpellBox;
 class WOD_DLL_DECL Unit : public WorldObject
 {
 public:
-    Unit(uint32 ObjID);
+    Unit(uint64 ObjID);
     virtual ~Unit() { } 
 
     virtual void Update(int32 diff) = 0;

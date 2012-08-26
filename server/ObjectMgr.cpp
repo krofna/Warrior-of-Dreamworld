@@ -80,7 +80,7 @@ void ObjectMgr::LoadSpells()
 
     while (Result->next())
     {
-        Spells.push_back(SpellPtr(new Spell(Result->getUInt(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6))));
+        Spells.push_back(SpellPtr(new Spell(Result->getUInt64(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6))));
     }
 }
 
@@ -88,9 +88,9 @@ void ObjectMgr::LoadPlayersLoginInfo()
 {
     QueryResult Result(sDatabase.Query("SELECT username, password, guid FROM `players`"));
 
-    while(Result->next())
+    while (Result->next())
     {
-        Players.push_back(PlayerPtr(new Player(Result->getString(1), Result->getString(2), Result->getUInt(3))));
+        Players.push_back(PlayerPtr(new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3))));
     }
 }
 

@@ -20,6 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/WorldPacket.hpp"
 #include "ResourceManager.hpp"
 
+WorldObject::WorldObject()
+{
+
+}
+
 void WorldObject::Load(WorldPacket Argv)
 {
     std::string Tileset;
