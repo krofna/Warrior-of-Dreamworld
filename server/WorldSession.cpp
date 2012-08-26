@@ -24,7 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-Packet                    ((uint16)MSG_NULL),
 Connected(true)
 {
 }
@@ -50,6 +49,7 @@ void WorldSession::Start()
 void WorldSession::HandleHeader()
 {
     Packet->ReadHeader();
+
     boost::asio::async_read(Socket,
         boost::asio::buffer(Packet->GetDataWithoutHeader(), Packet->GetSizeWithoutHeader()),
         boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
