@@ -58,7 +58,6 @@ public:
     void Kick();
     bool IsInWorld();
 
-
     int GetSecLevel() const { return SecLevel;}
     std::string GetUsername() const { return Username; }
 

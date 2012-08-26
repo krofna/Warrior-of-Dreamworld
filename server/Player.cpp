@@ -105,7 +105,7 @@ void Player::Update(int32 diff)
 
 void Player::SaveToDB()
 {
-    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, mapid=%u WHERE guid=%u", Position.x, Position.y, pMap->MapID, GetObjectID());
+    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, mapid=%u WHERE guid=%llu", Position.x, Position.y, pMap->MapID, GetObjectID());
 }
 
 WorldPacket Player::PackData()

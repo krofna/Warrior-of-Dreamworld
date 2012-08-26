@@ -202,6 +202,7 @@ void WorldSession::HandleCastSpellOpcode()
     if(!pSpell)
     {
         sLog.Write("Invalid Spell ID!");
+        SendNotification("Unknown Spell!");
         return;
     }
 
