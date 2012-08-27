@@ -75,6 +75,7 @@ private:
     std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint64 MeID;
 
+    sf::Clock m_UpdateClock;
     boost::mutex DrawingMutex;
 };
 
