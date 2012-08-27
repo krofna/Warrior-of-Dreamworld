@@ -181,7 +181,7 @@ bool Player::HasItem(uint8 Bag, uint8 Slot, uint64 ItemID) const
 
     Item* pItem = m_Bags[Bag]->GetItemBySlot(Slot);
     
-    return pItem->GetEntry() == ItemID;
+    return pItem->GetItemID() == ItemID;
 }
 
 bool Player::IsValidPos(uint8 Bag, uint8 Slot) const

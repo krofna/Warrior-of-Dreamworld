@@ -75,12 +75,12 @@ void ObjectMgr::LoadCreatureTemplates()
     {
         pTemplate = new CreatureTemplate;
 
-        pTemplate->Entry = Result->getUInt64(1);
-        pTemplate->Name = Result->getString(2);
-        pTemplate->Tileset = Result->getString(3);
-        pTemplate->tx = Result->getUInt(4);
-        pTemplate->ty = Result->getUInt(5);
-        pTemplate->ScriptName = Result->getString(6);
+        pTemplate->Entry      = Result->getUInt64 (1);
+        pTemplate->Name       = Result->getString (2);
+        pTemplate->Tileset    = Result->getString (3);
+        pTemplate->tx         = Result->getUInt   (4);
+        pTemplate->ty         = Result->getUInt   (5);
+        pTemplate->ScriptName = Result->getString (6);
 
         CreatureTemplates[pTemplate->Entry] = pTemplate;
     }
@@ -96,11 +96,17 @@ void ObjectMgr::LoadItemTemplates()
     {
         pTemplate = new ItemTemplate;
 
-        pTemplate->Entry = Result->getUInt64(1);
-        pTemplate->Name = Result->getString(2);
-        pTemplate->DisplayID = Result->getUInt(3);
+        pTemplate->ItemID         = Result->getUInt64 (1);
+        pTemplate->Class          = Result->getUInt   (2);
+        pTemplate->SubClass       = Result->getUInt   (3);
+        pTemplate->Name           = Result->getString (4);
+        pTemplate->DisplayInfoID  = Result->getUInt   (5);
+        pTemplate->InventoryType  = Result->getUInt   (6);
+        pTemplate->ContainerSlots = Result->getUInt   (7);
+        pTemplate->Description    = Result->getString (8);
 
-        ItemTemplates[pTemplate->Entry] = pTemplate;
+
+        ItemTemplates[pTemplate->ItemID] = pTemplate;
     }
 }
 void ObjectMgr::LoadSpells()

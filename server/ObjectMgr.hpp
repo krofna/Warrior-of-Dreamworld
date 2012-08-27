@@ -34,10 +34,10 @@ public:
     ~ObjectMgr();
 
     CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
-    ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
+    ItemTemplate    * GetItemTemplate     (uint64 Entry) const;
 
-    SpellPtr GetSpell(uint16 ID);
-    PlayerPtr GetPlayer(std::string& Username);
+    SpellPtr  GetSpell  (uint16 ID);
+    PlayerPtr GetPlayer (std::string& Username);
 
     void LoadSpells();
     void LoadCreatureTemplates();

@@ -43,7 +43,9 @@ class SpellBox;
 
 #ifdef USE_BOOST
         #include <boost/shared_ptr.hpp>
+        #include <boost/array.hpp>
         #include <boost/enable_shared_from_this.hpp>
+
         typedef boost::shared_ptr<Player> PlayerPtr;
         typedef boost::shared_ptr<Unit> UnitPtr;
         typedef boost::shared_ptr<Creature> CreaturePtr;
@@ -53,9 +55,12 @@ class SpellBox;
         typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
         using boost::enable_shared_from_this;
         using boost::static_pointer_cast;
+
+        #define boost::array array
 #else
         #ifndef SMART_PTR_TR1_INCLUDE
             #include <memory>
+            #include <array>
         #else
             #include <tr1/memory>
         #endif 
@@ -80,6 +85,8 @@ class SpellBox;
             typedef std::shared_ptr<SpellBox> SpellBoxPtr;
             using std::enable_shared_from_this;
             using std::static_pointer_cast;
+
+            #define std::array array
        #endif
 
 #endif
