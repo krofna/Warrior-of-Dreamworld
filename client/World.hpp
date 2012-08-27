@@ -53,8 +53,6 @@ protected:
     void ReceiveNewMessage(uint64 ObjID, std::string const& Message);
 
 private:
-    void HandleTyping(sf::Event Event);
-
     MessageChatAreaPtr m_MessageArea;
 
     // TODO: Map?

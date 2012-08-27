@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Math.hpp"
 #include "ObjectMgr.hpp"
 
-Unit::Unit      (uint32 ObjID) :
+Unit::Unit      (uint64 ObjID) :
 WorldObject     (ObjID),
 MeeleAttackCooldown(0)
 {
@@ -63,7 +63,7 @@ void Unit::DoMeleeAttackIfReady(int32 diff)
 
     if(MeeleAttackCooldown <= diff)
     {
-        //TODO: actually attack
+        DealDamage(GetMeleeDamage(), pVictim);
         MeeleAttackCooldown = 3000; // random blah
     }
     else
@@ -86,6 +86,25 @@ void Unit::CastSpell(uint16 Entry, float Angle)
 void Unit::Kill()
 {
     Health = 0; // :)
+}
+
+void Unit::DealDamage(int32 Damage, UnitPtr pTarget)
+{
+    UnitPtr me = static_pointer_cast<Unit>(shared_from_this());
+    pTarget->TakeDamage(Damage, me);
+}
+
+void Unit::TakeDamage(int32 Damage, UnitPtr pAttacker)
+{
+    if (Health - Damage <= 0)
+        Health = 0;
+    else
+        Health -= Damage;
+}
+
+int32 Unit::GetMeleeDamage() const
+{
+    return 1; // TODO: Use stats
 }
 
 UnitPtr Unit::GetVictim()

@@ -33,6 +33,7 @@ class WorldPacket;
 class WorldObject : public Loadable
 {
 public:
+    WorldObject();
     virtual ~WorldObject(){}
     virtual void Draw();
     virtual void Load(WorldPacket Argv);

@@ -62,6 +62,7 @@ void ObjectMgr::LoadCreatureTemplates()
     while(Result->next())
     {
         pTemplate = new CreatureTemplate;
+
         pTemplate->Entry = Result->getUInt(1);
         pTemplate->Name = Result->getString(2);
         pTemplate->Tileset = Result->getString(3);
@@ -75,18 +76,11 @@ void ObjectMgr::LoadCreatureTemplates()
 
 void ObjectMgr::LoadSpells()
 {
-    std::ifstream File("SpellDB.txt");
+    QueryResult Result(sDatabase.Query("SELECT * FROM `spells`"));
 
-    uint16 ID;
-    uint16 DisplayID;
-    uint16 Effect;
-    uint16 Value;
-    uint16 Cost;
-    std::string Name;
-
-    while(File >> ID >> DisplayID >> Effect >> Value >> Cost >> Name)
+    while (Result->next())
     {
-        Spells.push_back(SpellPtr(new Spell(ID, DisplayID, Effect, Value, Cost, Name)));
+        Spells.push_back(SpellPtr(new Spell(Result->getUInt64(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6))));
     }
 }
 
@@ -94,9 +88,9 @@ void ObjectMgr::LoadPlayersLoginInfo()
 {
     QueryResult Result(sDatabase.Query("SELECT username, password, guid FROM `players`"));
 
-    while(Result->next())
+    while (Result->next())
     {
-        Players.push_back(PlayerPtr(new Player(Result->getString(1), Result->getString(2), Result->getUInt(3))));
+        Players.push_back(PlayerPtr(new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3))));
     }
 }
 

@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 enum
 {
-    SPELL_FIREBALL = 0
+    SPELL_FIREBALL = 1
 };
 
 // It's not FullMetal-Alchimist who have write this :P

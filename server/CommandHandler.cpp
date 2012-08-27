@@ -19,18 +19,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "CommandHandler.hpp"
 #include "Database.hpp"
 #include "Player.hpp"
+#include "ObjectMgr.hpp"
 #include "../shared/Log.hpp"
 #include "GUID.hpp"
-#include "boost/lexical_cast.hpp"
+#include <boost/lexical_cast.hpp>
 #include <cctype>
+
+#define NullCommand { NULL, 0, false, NULL, "", NULL }
 
 ChatCommand* CommandHandler::GetCommandTable()
 {
     static ChatCommand AccountSetCommandTable[] =
     {
-        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $username $seclevel(0-4)",NULL },
+        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $username $seclevel(0-4)", NULL },
         { "password",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetPasswordCommand,   "Usage: account set password $username $newpassword", NULL },
-        { NULL,         0,          false,  NULL,                                               "",                                          NULL }
+        NullCommand
     };
 
     static ChatCommand AccountCommandTable[] =
@@ -38,13 +41,15 @@ ChatCommand* CommandHandler::GetCommandTable()
         { "create",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountCreateCommand,    "Usage: account create $username $password",    NULL },
         { "delete",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountDeleteCommand,    "Usage: account delete $username $password",    NULL },
         { "set",        SEC_ADMIN,  true,   NULL,                                           "Usage: account set <what> <new value>",        AccountSetCommandTable },
-        { NULL,         0,          false,  NULL,                                           "",                                             NULL }
+        NullCommand
     };
 
     static ChatCommand CommandTable[] =
     {
         { "account",    SEC_PLAYER, true,   NULL,                                           "Usage: account <command> <argv>",              AccountCommandTable },
-        { NULL,         0,          false,  NULL,                                           "",                                             NULL }
+        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",
+        NULL },
+        NullCommand
     };
 
     return CommandTable;
@@ -137,8 +142,9 @@ void CommandHandler::HandleAccountDeleteCommand()
     std::string Username;
     ExtractArg(Username);
 
-/*    if (IsConnected)
-        pWorld->KickPlayer(GUID);*/
+    PlayerPtr pPlayer = sObjectMgr.GetPlayer(Username);
+    if (pPlayer->IsInWorld())
+        pPlayer->Kick();
 
     sDatabase.PExecute("DELETE FROM `players` WHERE `username` = '%s'", Username.c_str());
 }
@@ -166,4 +172,22 @@ void CommandHandler::HandleAccountSetPasswordCommand()
     ExtractArg(Password);
 
     sDatabase.PExecute("UPDATE `players` SET `password` = %s WHERE `username` = '%s'", Password.c_str(), Username.c_str());
+}
+
+void CommandHandler::HandleKillCommand()
+{
+    std::string PlayerName;
+
+    ExtractArg(PlayerName);
+
+    PlayerPtr pPlayer = sObjectMgr.GetPlayer(PlayerName);
+    if (pPlayer)
+    {
+        if (pPlayer->IsInWorld())
+            pPlayer->Kill();
+        else
+            sLog.Write("Player is not in world !");
+    }
+    else
+        sLog.Write("Unknown player !");
 }

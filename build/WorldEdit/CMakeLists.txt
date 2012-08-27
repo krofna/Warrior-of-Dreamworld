@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 2.8)
 
 Project(WorldEdit)
 
+if( NOT CMAKE_BUILD_TYPE )
+    set( CMAKE_BUILD_TYPE Debug CACHE STRING
+            "Choose the type of build, options are: None Debug Release RelWithDebInfo
+            MinSizeRel."
+            FORCE )
+endif()
+
 if (GLOBAL_COMPILATION)
     set(ADD_PATH .)
 else (GLOBAL_COMPILATION)
@@ -10,7 +17,7 @@ endif (GLOBAL_COMPILATION)
 
 add_definitions(-std=gnu++0x)
 
-set(EXECUTABLE_OUTPUT_PATH ${ADD_PATH}/bin/${CMAKE_BUILD_TYPE})
+set(EXECUTABLE_OUTPUT_PATH ${ADD_PATH}/bin/WorldEdit/${CMAKE_BUILD_TYPE})
 
 FIND_PACKAGE(Boost COMPONENTS system serialization REQUIRED)
 

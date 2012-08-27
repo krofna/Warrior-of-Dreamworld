@@ -15,6 +15,21 @@ CREATE TABLE `players`
 	PRIMARY KEY(guid)
 );
 
+DROP TABLE IF EXISTS `spells`;
+CREATE TABLE `spells`
+(
+    `entry` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `displayid` INT UNSIGNED NOT NULL,
+    `effect` SMALLINT UNSIGNED NOT NULL,
+    `value` SMALLINT UNSIGNED NOT NULL,
+    `cost` SMALLINT UNSIGNED NOT NULL,
+    `name` CHAR(192) NOT NULL,
+    PRIMARY KEY(entry)
+);
+
+INSERT INTO `spells` VALUES (DEFAULT, 1, 0, 10, 10, 'Bolt');
+INSERT INTO `spells` VALUES (DEFAULT, 1, 1, 0, 0, 'Quadruple Accel No Interval');
+
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template`
 (

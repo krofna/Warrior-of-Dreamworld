@@ -3,29 +3,38 @@
 
 MessageChatArea::MessageChatArea()
 {
-    //if (!m_DefaultFont.loadFromFile("arial.ttf"))
-        //throw std::runtime_error("Impossible to load arial.ttf font");
+    if (!m_DefaultFont.loadFromFile("arial.ttf"))
+        throw std::runtime_error("Impossible to load arial.ttf font");
 }
 
-void MessageChatArea::AddMessage(std::string const& ObjectName, std::string const& Content)
+void MessageChatArea::AddMessage(std::string const& ObjectName, std::string const& Content, int32 SecondsTime)
 {
-    std::string Message = ObjectName + ": " + Content;
-    m_Messages.push_back(Message);
+    std::string StringMessage = ObjectName + ": " + Content;
+    //m_Messages.push_back({SecondsTime * 1000, StringMessage });
 }
 
-void MessageChatArea::Draw()
+void MessageChatArea::Draw(int32 UpdateTime)
 {
-    int iMessage = m_Messages.size();
-    while (iMessage > (m_Messages.size() - 5))
+    if (m_Messages.empty())
+        return;
+
+    for (int i = 0 ; i < m_Messages.size() ; ++i)
     {
-        std::string Message = m_Messages[iMessage - 1];
+        if (m_Messages[i].TimeDisplay - UpdateTime <= 0)
+        {
+            m_Messages.erase(m_Messages.begin() + i);
+            i--;
+            continue;
+        }
+        else
+            m_Messages[i].TimeDisplay -= UpdateTime;
 
-        sf::Text text(Message);
+        std::string StringMessage = m_Messages[i].StringMessage;
+
+        sf::Text text(StringMessage);
         text.setFont(m_DefaultFont);
-        text.setPosition(MESSAGE_POS_X * iMessage, MESSAGE_POS_Y * iMessage);
+        text.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y - float(i * 50));
 
         Window->draw(text);
-
-        --iMessage;
     }
 }

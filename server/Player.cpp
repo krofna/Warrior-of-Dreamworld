@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "World.hpp"
 
-Player::Player(std::string Username, std::string Password, uint32 ObjID) :
+Player::Player(std::string Username, std::string Password, uint64 ObjID) :
 Unit         (ObjID),
 pWorldSession(nullptr),
 Username     (Username),
@@ -51,7 +51,7 @@ void Player::RemoveFromWorld()
 
 void Player::LoadFromDB()
 {
-    QueryResult Result(sDatabase.PQuery("SELECT `seclevel`, `tileset`, `tx`, `ty`, `mapid`, `x`, `y` FROM `players` WHERE guid='%u'", ObjID));
+    QueryResult Result(sDatabase.PQuery("SELECT `seclevel`, `tileset`, `tx`, `ty`, `mapid`, `x`, `y` FROM `players` WHERE guid='%llu'", ObjID));
     Result->next();
 
     SecLevel    = Result->getUInt(1);
@@ -62,7 +62,7 @@ void Player::LoadFromDB()
     Position.x  = Result->getUInt(6);
     Position.y  = Result->getUInt(7);
 
-    sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %u", ObjID);
+    sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %llu", ObjID);
 
     LoadedFromDB = true;
 }
@@ -105,7 +105,7 @@ void Player::Update(int32 diff)
 
 void Player::SaveToDB()
 {
-    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, map=%u WHERE guid=%u", Position.x, Position.y, pMap->MapID, GetObjectID());
+    sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, mapid=%u WHERE guid=%llu", Position.x, Position.y, pMap->MapID, GetObjectID());
 }
 
 WorldPacket* Player::PackData()
@@ -132,7 +132,6 @@ bool Player::IsInWorld()
 
 void Player::Kick()
 {
-    pWorldSession->SendLogOutPacket();
     LogOut();
 }
 

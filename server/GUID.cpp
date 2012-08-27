@@ -5,5 +5,5 @@ uint64 Generate64BitsGUID()
     QueryResult result = sDatabase.PQuery("SELECT UUID_SHORT();");
     result->next();
 
-    return result->getUInt(1);
+    return result->getUInt64(1);
 }

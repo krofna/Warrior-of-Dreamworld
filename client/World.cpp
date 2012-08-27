@@ -58,22 +58,26 @@ void World::Load(WorldPacket Argv)
 
     uint16 MapID;
     Argv >> MapID;
+
     ResourceManager::RemoveTileset(TilesetFileName);
-    std::string Path = "data/maps/map" + IntToString(MapID) + ".txt";
+    std::string Path = "data/maps/map" + IntToString(MapID) + ".map";
 
     std::ifstream File(Path);
     assert(File.good());
-
-    float x, y, tx, ty;
+    
     int index = 0;
 
-    File >> TilesetFileName >> MapWidth >> MapHeight;
+    File >> MapWidth >> MapHeight;
+    File >> TilesetFileName;
+
+    float x, y, tx, ty;
+
     TileMap.resize(MapWidth * MapHeight * 4);
     MapWidth *= TILE_SIZE;
     MapHeight *= TILE_SIZE;
     MapStates.texture = ResourceManager::GetTileset(TilesetFileName);
 
-    while(File >> x >> y >> tx >> ty)
+    while (File >> x >> y >> tx >> ty)
     {
         TileMap[index + 0].position = sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE);
         TileMap[index + 1].position = sf::Vector2f(x * TILE_SIZE, (y + 1) * TILE_SIZE);
@@ -96,7 +100,6 @@ void World::Draw()
 {
     // Network thread shouldn't add new stuff while drawing
     boost::mutex::scoped_lock lock(DrawingMutex);
-
 
     if(MoveWorldView != MOVE_STOP)
     {
@@ -145,7 +148,7 @@ void World::Draw()
     }
 
     // Draw chat GUI
-    m_MessageArea->Draw();
+    m_MessageArea->Draw(50);
 }
 
 void World::HandleEvent(sf::Event Event)
@@ -203,7 +206,7 @@ void World::HandleEvent(sf::Event Event)
 
     case sf::Event::MouseButtonPressed:
         // PH
-        Session->SendCastSpellRequest(0, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
+        Session->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:

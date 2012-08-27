@@ -44,6 +44,8 @@ private:
     void HandleAccountSetSecLevelCommand();
     void HandleAccountSetPasswordCommand();
 
+    void HandleKillCommand();
+
     void ExtractArg(std::string& Arg);
     void ExtractArg(uint32& Arg);
 

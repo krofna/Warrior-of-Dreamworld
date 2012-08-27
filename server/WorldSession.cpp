@@ -201,6 +201,7 @@ void WorldSession::HandleCastSpellOpcode()
     if(!pSpell)
     {
         sLog.Write("Invalid Spell ID!");
+        SendNotification("Unknown Spell!");
         return;
     }
 
@@ -212,6 +213,8 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
+    SendLogOutPacket();
+
     Connected = false;
 }
 

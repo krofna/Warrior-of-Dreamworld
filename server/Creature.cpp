@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "CreatureAIFactory.hpp"
 #include "../shared/Opcodes.hpp"
+#include "../shared/Log.hpp"
 #include "../shared/Math.hpp"
 
 Creature::Creature(uint64 ObjID, MapPtr pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate) :
@@ -69,6 +70,22 @@ void Creature::SpellHit(SpellBoxPtr pSpellBox)
         pAI->EnterCombat(pVictim);
     }
     pAI->SpellHit(pSpellBox);
+}
+
+void Creature::DealDamage(int32 Damage, UnitPtr pTarget)
+{
+    Unit::DealDamage(Damage, pTarget);
+    if (pTarget->IsDead())
+        pAI->KilledUnit(pTarget);
+}
+
+void Creature::TakeDamage(int32 Damage, UnitPtr pAttacker)
+{
+    Unit::TakeDamage(Damage, pAttacker);
+    if (IsDead())
+        pAI->JustDied(pAttacker);
+    else
+        pAI->Hit(pAttacker, Damage);
 }
 
 CreatureAI* Creature::GetAI()

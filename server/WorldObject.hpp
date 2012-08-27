@@ -29,7 +29,7 @@ class WOD_DLL_DECL WorldObject : public enable_shared_from_this<WorldObject>
 {
     friend class Pathfinder;
 public:
-    WorldObject(uint32 ObjID);
+    WorldObject(uint64 ObjID);
     virtual ~WorldObject() {}
 
     virtual void Update(int32 diff) = 0;
