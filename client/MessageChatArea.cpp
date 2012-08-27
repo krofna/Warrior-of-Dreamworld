@@ -10,7 +10,12 @@ MessageChatArea::MessageChatArea()
 void MessageChatArea::AddMessage(std::string const& ObjectName, std::string const& Content, int32 SecondsTime)
 {
     std::string StringMessage = ObjectName + ": " + Content;
-    //m_Messages.push_back({SecondsTime * 1000, StringMessage });
+    Message message;
+
+    message.TimeDisplay = SecondsTime * 1000;
+    message.StringMessage = StringMessage;
+
+    m_Messages.push_back(message);
 }
 
 void MessageChatArea::Draw(int32 UpdateTime)
