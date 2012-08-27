@@ -62,8 +62,8 @@ private:
     sf::View WorldView;
     uint8 MoveWorldView;
 
-    int MapWidth;
-    int MapHeight;
+    uint16 MapWidth;
+    uint16 MapHeight;
 
     int CameraLeft;
     int CameraTop;

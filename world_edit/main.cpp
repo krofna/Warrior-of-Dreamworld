@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstdint>
 
 std::string ToString(int n)
 {
@@ -39,7 +40,7 @@ int main()
 
     if (File)
     {
-        float SizeX, SizeY;
+        uint16_t SizeX, SizeY;
         std::cout << "Size (x, y): ";
         std::cin >> SizeX >> SizeY;
         File << SizeX << " " << SizeY;
