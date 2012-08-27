@@ -82,10 +82,9 @@ void Creature::DealDamage(int32 Damage, UnitPtr pTarget)
 void Creature::TakeDamage(int32 Damage, UnitPtr pAttacker)
 {
     Unit::TakeDamage(Damage, pAttacker);
+    pAI->Hit(pAttacker, Damage);
     if (IsDead())
         pAI->JustDied(pAttacker);
-    else
-        pAI->Hit(pAttacker, Damage);
 }
 
 CreatureAI* Creature::GetAI()
