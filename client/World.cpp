@@ -153,6 +153,9 @@ void World::Draw()
 
 void World::HandleEvent(sf::Event Event)
 {
+    if (m_MessageArea->HandleTyping(Event))
+        return;
+
     switch(Event.type)
     {
     case sf::Event::KeyPressed:

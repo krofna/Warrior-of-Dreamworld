@@ -254,3 +254,10 @@ void WorldSession::SendLogOutRequest()
     //sGame->ChangeState(new Login());
     //Window->setView(Window->getDefaultView());
 }
+
+void WorldSession::SendChatMessage(std::string const& Message)
+{
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_CHAT_MESSAGE);
+    *Packet << Message;
+    Send(Packet);
+}

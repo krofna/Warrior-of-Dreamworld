@@ -1,7 +1,8 @@
 #include "MessageChatArea.hpp"
 #include "World.hpp"
+#include "WorldSession.hpp"
 
-MessageChatArea::MessageChatArea()
+MessageChatArea::MessageChatArea() : m_IsTyping(false)
 {
     if (!m_DefaultFont.loadFromFile("arial.ttf"))
         throw std::runtime_error("Impossible to load arial.ttf font");
@@ -42,4 +43,28 @@ void MessageChatArea::Draw(int32 UpdateTime)
 
         Window->draw(text);
     }
+}
+
+bool MessageChatArea::HandleTyping(sf::Event event)
+{
+    if (event.type == sf::Event::TextEntered && m_IsTyping)
+        m_Message += event.text.unicode;
+
+    if (event.type == sf::Event::KeyPressed)
+    {
+        if (event.key.code == sf::Keyboard::Return)
+        {
+            if (m_IsTyping)
+            {
+                Session->SendChatMessage(m_Message);
+                m_Message.clear();
+                m_IsTyping = false;
+            }
+            else
+                m_IsTyping = true;
+        }
+    }
+
+    
+    return m_IsTyping;
 }
