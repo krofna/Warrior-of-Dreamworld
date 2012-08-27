@@ -49,6 +49,8 @@ public:
 
     void AddAnimation(Animation* pAnimation);
 
+    Inventory* GetInventory() ;
+
 protected:
     void ReceiveNewMessage(uint64 ObjID, std::string const& Message);
 
@@ -70,6 +72,9 @@ private:
     int CameraRight;
     int CameraBottom;
     // END TODO
+    
+    // Inventory
+    Inventory* pInventory;
 
     std::map<uint64, WorldObject*> WorldObjectMap;
     std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e

@@ -32,5 +32,11 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
     { "MSG_CAST_SPELL", &WorldSession::HandleCastSpellOpcode },
     { "MSG_LOG_OUT", &WorldSession::HandleLogOutOpcode },
     { "MSG_SYSTEM_MESSAGE", &WorldSession::HandleSystemMessageOpcode }, // SMSG
-    { "MSG_CHAT_MESSAGE", &WorldSession::HandleChatMessageOpcode }
+    { "MSG_CHAT_MESSAGE", &WorldSession::HandleChatMessageOpcode },
+    { "MSG_AUTO_EQUIP_ITEM", &WorldSession::HandleNULL }, // CMSG
+    { "MSG_USE_ITEM", &WorldSession::HandleUseItemOpcode },
+    { "MSG_EQUIP_ITEM", &WorldSession::HandleEquipItemOpcode },
+    { "MSG_SWAP_ITEM", &WorldSession::HandleSwapItemOpcode },
+    { "MSG_DELETE_ITEM", &WorldSession::HandleDeleteItemOpcode },
+    { "MSG_CREATE_ITEM", &WorldSession::HandleCreateItemOpcode }
 };

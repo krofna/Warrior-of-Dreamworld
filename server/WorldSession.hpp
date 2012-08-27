@@ -53,6 +53,12 @@ public:
     void HandleLoginOpcode();
     void HandleChatMessageOpcode();
 
+    void HandleAutoEquipItemOpcode();
+    void HandleUseItemOpcode();
+    void HandleEquipItemOpcode();
+    void HandleSwapItemOpcode();
+    void HandleDeleteItemOpcode();
+
     PlayerPtr GetPlayer();
 
 private:

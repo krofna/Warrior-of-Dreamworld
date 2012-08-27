@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Unit.hpp"
 #include "WorldSession.hpp"
 #include "Spell.hpp"
+#include "Bag.hpp"
 
 class WorldSession;
 
@@ -61,6 +62,29 @@ public:
     int GetSecLevel() const { return SecLevel;}
     std::string GetUsername() const { return Username; }
 
+    bool HasItem(uint8 Bag, uint8 Slot, uint64 ItemID) const;
+    bool IsValidPos(uint8 Bag, uint8 Slot) const;
+    bool CanUnequipItem(uint8 Bag, uint8 Slot) const;
+
+    Item* GetItemByPos(uint8 SrcBag, uint8 SrcSlot) const;
+
+    void AutoEquipItem(uint8 Bag, uint8 Slot);
+    void EquipItem(uint8 SourceBag, uint8 SourceSlot, uint8 DestSlot);
+    void EquipItem(Item* pItem, uint8 DestSlot);
+
+    void EquipBag(Bag* pBag);
+
+    void StoreItem(Item* pItem, uint8 DstBag, uint8 DstSlot);
+
+    void UnequipItem(uint8 SrcSlot);
+    void UnequipBag(uint8 SrcSlot);
+
+    void UseItem(uint8 Bag, uint8 Slot);
+
+    void SwapItem(uint8 SrcBag, uint8 SrcSlot, uint8 DstBag, uint8 DstSlot);
+
+    void DestroyItem(uint8 SrcBag, uint8 SrcSlot);
+
 private:
     WorldSession* pWorldSession;
 
@@ -79,6 +103,8 @@ private:
 
     bool LoadedFromDB;
     bool m_IsMute;
+
+    Bag* m_Bags[4];
 };
 
 #endif

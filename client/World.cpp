@@ -92,6 +92,8 @@ void World::Load(WorldPacket Argv)
         index += 4;
     }
 
+    pInventory = new Inventory;
+
     sGame->PopState();
     sGame->PushState(this);
 }
@@ -149,6 +151,9 @@ void World::Draw()
 
     // Draw chat GUI
     m_MessageArea->Draw(50);
+
+    // Draw Iventory
+    pInventory->Draw();
 }
 
 void World::HandleEvent(sf::Event Event)
@@ -212,6 +217,8 @@ void World::HandleEvent(sf::Event Event)
     default:
         break;
     }
+
+    pInventory->HandleEvent(Event);
 }
 
 void World::AddObject(WorldObject* pWorldObject, uint64 ObjectID)
@@ -244,4 +251,9 @@ void World::AddAnimation(Animation* pAnimation)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);
     Animations.push_back(pAnimation);
+}
+
+Inventory* World::GetInventory() 
+{
+    return pInventory;
 }

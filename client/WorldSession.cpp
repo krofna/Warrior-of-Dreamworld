@@ -205,6 +205,7 @@ void WorldSession::HandleSystemMessageOpcode()
     sLog.Write("System Msg: %s", Message);
     sLog.Write("Packet is good!");
 }
+
 void WorldSession::HandleChatMessageOpcode()
 {
     uint64 ObjID;
@@ -214,6 +215,31 @@ void WorldSession::HandleChatMessageOpcode()
 
     pWorld->ReceiveNewMessage(ObjID, Message);
     sLog.Write("Packet is good!");
+}
+
+void WorldSession::HandleSwapItemOpcode()
+{
+    uint8 srcbag, dstbag, srcslot, dstslot;
+    Packet >> srcbag >> dstbag >> srcslot >> dstslot;
+
+    pWorld->GetInventory()->Swap(srcbag, dstbag, srcslot, dstslot);
+}
+
+void WorldSession::HandleDeleteItemOpcode()
+{
+    uint8 srcslot, count;
+
+    pWorld->GetInventory()->Destroy(srcslot, count);
+}
+
+void WorldSession::HandleCreateItemOpcode()
+{
+    uint8 dstslot, dstbag, count;
+    uint64 entry;
+
+    Packet >> dstslot >> dstbag >> count >> entry;
+
+    pWorld->GetInventory()->Create(dstbag, dstslot, entry, count);
 }
 
 void WorldSession::SendMovementRequest(uint8 Direction)

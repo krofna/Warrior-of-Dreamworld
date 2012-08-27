@@ -33,15 +33,20 @@ struct CreatureTemplate
 
 enum InventoryType
 {
-    INV_TYPE_BAG
+    INVTYPE_NON_EQUIP,
+    INVTYPE_BAG
 };
 
 struct ItemTemplate
 {
-    uint64 Entry;
+    uint64 ItemID;
+    uint32 Class;
+    uint32 SubClass;
     std::string Name;
-    uint16 DisplayID;
-    InventoryType Type;
+    uint32 DisplayInfoID;
+    uint32 InventoryType;
+    uint8 ContainerSlots;
+    std::string Description;
 };
 
 #endif
