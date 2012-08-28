@@ -137,7 +137,6 @@ void Player::Kick()
 
 void Player::LogOut()
 {
-    delete pWorldSession;
     pWorldSession = nullptr;
     this->RemoveFromWorld();
     this->SaveToDB();

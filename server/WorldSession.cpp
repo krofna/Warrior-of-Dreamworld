@@ -23,7 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Log.hpp"
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
-Socket                    (io)
+Socket                    (io),
+Connected                 (true)
 {
 }
 
@@ -49,11 +50,13 @@ void WorldSession::HandleHeader()
 {
     Packet->ReadHeader();
 
-    // This is a hack by Krofna
+    // Hack by Krofna
+    // Do not question
     // MSG_LOG_OUT is a header-only packet
     if(Packet->GetSizeWithoutHeader() < 1)
     {
         pPlayer->LogOut();
+        delete this;
         return;
     }
 
@@ -80,6 +83,14 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
 
     delete Packet;
+
+    // Hack by Krofna
+    // Do not question
+    if(!Connected)
+    {
+        delete this;
+        return;
+    }
 
     Start();
 }
@@ -219,6 +230,7 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
+    Connected = false;
 }
 
 void WorldSession::HandleChatMessageOpcode()
