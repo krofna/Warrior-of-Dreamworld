@@ -23,8 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Log.hpp"
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
-Socket                    (io),
-Connected(true)
+Socket                    (io)
 {
 }
 
@@ -50,6 +49,14 @@ void WorldSession::HandleHeader()
 {
     Packet->ReadHeader();
 
+    // This is a hack by Krofna
+    // MSG_LOG_OUT is a header-only packet
+    if(Packet->GetSizeWithoutHeader() < 1)
+    {
+        pPlayer->LogOut();
+        return;
+    }
+
     boost::asio::async_read(Socket,
         boost::asio::buffer(Packet->GetDataWithoutHeader(), Packet->GetSizeWithoutHeader()),
         boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
@@ -61,21 +68,18 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     if(Error)
     {
         sLog.Write("Failed to receive packet");
-        return; // This has effect of disconnecting - TODO: do proper cleanup
+        pPlayer->LogOut();
     }
     if(Packet->GetOpcode() >= MSG_COUNT)
     {
         sLog.Write("Received %u: Bad opcode!", Packet->GetOpcode());
-        return; // This has effect of disconnecting - TODO: do proper cleanup (likely leaks)
+        pPlayer->LogOut();
     }
     sLog.Write("Received Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
     (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
 
     delete Packet;
-
-    if (Connected)
-        Start();
 }
 
 void WorldSession::Send(WorldPacket* Packet)
@@ -213,9 +217,6 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
-    SendLogOutPacket();
-
-    Connected = false;
 }
 
 void WorldSession::HandleChatMessageOpcode()
