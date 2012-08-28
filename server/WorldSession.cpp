@@ -80,6 +80,8 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
 
     delete Packet;
+
+    Start();
 }
 
 void WorldSession::Send(WorldPacket* Packet)
