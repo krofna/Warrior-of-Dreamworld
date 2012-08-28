@@ -41,12 +41,14 @@ public:
     int32 FireballTimer;
     int32 AttackTimer;
     int32 EnrageTimer;
+    int32 HitTimer;
 
     void Reset()
     {
         FireballTimer = 5000;
         AttackTimer = 5000;
         EnrageTimer = 30000;
+        HitTimer = 8000;
     }
 
     void EnterCombat(UnitPtr& pEnemy)
@@ -56,7 +58,13 @@ public:
 
     void SpellHit(SpellBoxPtr& pSpellBox)
     {
-        pCreature->Say(TEXT_HIT);
+        if (HitTimer - 1000 <= 0)
+        {
+            pCreature->Say(TEXT_HIT);
+            HitTimer = 8000;
+        }
+        else
+            HitTimer -= 1000;
     }
 
     void UpdateAI(int32 diff)

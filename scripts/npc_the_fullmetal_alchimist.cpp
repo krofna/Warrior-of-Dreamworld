@@ -37,10 +37,14 @@ public:
     }
 
     int32 AttackSpecialTimer;
+    int32 HitTimer;
+    float Multiplier;
 
     void Reset()
     {
-        AttackSpecialTimer = 9000;
+        AttackSpecialTimer = 10000;
+        HitTimer = 30000;
+        Multiplier = 1.5f;
     }
 
     void EnterCombat(UnitPtr& pEnemy)
@@ -50,7 +54,15 @@ public:
 
     void SpellHit(SpellBoxPtr& pSpellBox)
     {
-        pCreature->Say(TEXT_HIT);
+        if (HitTimer - 1000 <= 0)
+        {
+            pCreature->Say(TEXT_HIT);
+            // TODO: Make Spell no damage
+            HitTimer = 30000 * Multiplier;
+            Multiplier++;
+        }
+        else
+            HitTimer -= 1000;
     }
 
     void UpdateAI(int32 diff)

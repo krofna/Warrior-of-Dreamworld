@@ -55,6 +55,7 @@ public:
     void SendMovementRequest(uint8 Direction);
     void SendCastSpellRequest(uint16 SpellID, float Angle);
     void SendLogOutRequest();
+    void SendChatMessage(std::string const& Message);
 
 private:
     void Start();
