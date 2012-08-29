@@ -1,23 +1,22 @@
-URGENT TODOS:
-Branch asio TODO:
-Consider using boost::pool on both server and client to allocate memory
-for WorldPackets ONLY!!
+URGENT/ASIO TODOS: (Krofna assigned)
+1) Consider using boost::pool on both server and client to allocate memory
+for WorldPackets!
 
-2) Fix log out on both server and client. This worked in [90]
-but seems like boost & thread branches broke it.
-We need to do proper cleanup
+2) Propertly clean up stuff on log out
 
-3) Propertly clean up SPELL_BOLT on client side when its erased from server
-
-4) Send unix time stamp in packet header and take it into consideration when
+3) Send unix time stamp in packet header and take it into consideration when
 spawning SPELL_BOLTs
 
-5) [strike]Shit I forgot...[/strike]
-I remembered!
-Consider using either raw pointers or home brew non reference counting pointers (with owner)
-to improve server performance
+4) Use raw pointers for WorldObject* on server side
+
+5) Implement reconnect
+
+6) class WorldSession : public shared_from_this()
+bind shared_from_this() instead of this as param to async operations
+in case that there is still async read going on after session is destroyed
 
 Code:
+- Propertly clean up SPELL_BOLT on client side when its erased from server
 - SpellMgr and SpellEffect
 - GUI System for Chat (Fullmetal-Alchimist assigned)
 - Some data may/should be Uint8 instead of Uint16
