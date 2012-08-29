@@ -37,7 +37,8 @@ boost::shared_array<uint8> Pathfinder::PathfindingStatusGrid;
 
 Pathfinder::Pathfinder(WorldObject* pOrigin) :
 pOrigin               (pOrigin),
-pMap                  (pOrigin->GetMap())
+pMap                  (pOrigin->GetMap()),
+pTarget               (nullptr)
 {
     pTileGrid =  &pMap->TileGrid;
     MovementCooldown = 1000;

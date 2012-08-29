@@ -44,6 +44,7 @@ void Creature::InitializeAI()
 Creature::~Creature()
 {
     delete pAI;
+    delete MovementGenerator;
 }
 
 void Creature::Update(int32 diff)
