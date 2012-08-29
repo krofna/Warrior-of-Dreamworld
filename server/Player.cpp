@@ -62,25 +62,24 @@ void Player::LoadFromDB()
     Position.x  = Result->getUInt(6);
     Position.y  = Result->getUInt(7);
 
-    sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %llu", ObjID);
-
-
     // Load bags
-    /*
-    QueryResult Result(sDatabase.PQuery("SELECT `guid`, `itemid` FROM `bags` WHERE `owner_guid` = %llu", ObjID);
-    
-    uint8 curBag = 0;
+    QueryResult Result(sDatabase.PQuery("SELECT `guid`, `idx`, `item_id` FROM `character_bags` WHERE `owner_guid` = %llu", m_GUID));
+
     while (Result->next())
     {
-        uint64 GUID   = Result->getUInt64(1);
-        uint64 ItemID = Result->getUInt64(2);
-
-        m_Bags[curBag] = new Bag;
-        m_Bags[curBag]->LoadFromDB(GUID, ObjID, ItemID);
-
-        ++curBag;
+        int idxBag = Result->getUInt(2);
+        if (idxBag >= 4)
+        {
+            sLog.Write("Corrumpted database, invalid index bag !");
+            break;
+        }
+        m_Bags[idxBag] = new Bag;
+        m_Bags[idxBag]->LoadFromDB(Result->getUInt64(1), m_GUID, Result->getUInt64(3));
     }
-    */
+
+    // SendInventoryInformation();
+
+    sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %llu", ObjID);
 
     LoadedFromDB = true;
 }

@@ -25,12 +25,15 @@ void Bag::LoadFromDB(uint64 GUID, uint64 OwnerGUID, uint64 ItemID)
 
     QueryResult Result(sDatabase.PQuery("SELECT * FROM `items` WHERE `bagid` = %llu", GUID));
 
+    // TODO: Use only needed row.
+
     while (Result->next())
     {
-        uint64 ItemGUID = Result->getUInt64(1);
-        uint64 BagGUID  = Result->getUInt64(2);
-        uint8 Slot      = Result->getUInt(3);
-        uint64 ItemID   = Result->getUInt64(4);
+        uint64 ItemGUID     = Result->getUInt64 (1);
+        uint64 DB_OwnerGUID = Result->getUInt64 (2);
+        uint64 BagGUID      = Result->getUInt64 (3);
+        uint8  Slot         = Result->getUInt   (4);
+        uint64 ItemID       = Result->getUInt64 (5);
 
         Item* pNewItem = new Item;
         pNewItem->LoadFromDB(ItemGUID, OwnerGUID, ItemID);

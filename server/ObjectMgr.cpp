@@ -105,7 +105,6 @@ void ObjectMgr::LoadItemTemplates()
         pTemplate->ContainerSlots = Result->getUInt   (7);
         pTemplate->Description    = Result->getString (8);
 
-
         ItemTemplates[pTemplate->ItemID] = pTemplate;
     }
 }
