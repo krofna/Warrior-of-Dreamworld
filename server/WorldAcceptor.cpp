@@ -30,7 +30,6 @@ Acceptor                (io, Endpoint)
 
 WorldAcceptor::~WorldAcceptor()
 {
-	delete NewSession;
 }
 
 void WorldAcceptor::HandleAccept(WorldSession* Session, const boost::system::error_code& error)
@@ -38,7 +37,7 @@ void WorldAcceptor::HandleAccept(WorldSession* Session, const boost::system::err
     if(!error)
     {
         Session->Start();
-        NewSession = new WorldSession(Acceptor.get_io_service());
+        NewSession = make_shared<WorldSession>(Acceptor.get_io_service());
         Acceptor.async_accept(NewSession->Socket,
             boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
             boost::asio::placeholders::error));
@@ -47,7 +46,7 @@ void WorldAcceptor::HandleAccept(WorldSession* Session, const boost::system::err
 
 void WorldAcceptor::Accept()
 {
-    NewSession = new WorldSession(Acceptor.get_io_service());
+    NewSession = make_shared<WorldSession>(Acceptor.get_io_service());
     Acceptor.async_accept(NewSession->Socket,
         boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
         boost::asio::placeholders::error));

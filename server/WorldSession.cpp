@@ -43,7 +43,7 @@ void WorldSession::Start()
 
     boost::asio::async_read(Socket,
         boost::asio::buffer(Packet->GetDataWithHeader(), WorldPacket::HEADER_SIZE),
-        boost::bind(&WorldSession::HandleHeader, this));
+        boost::bind(&WorldSession::HandleHeader, shared_from_this()));
 }
 
 void WorldSession::HandleHeader()
@@ -62,7 +62,7 @@ void WorldSession::HandleHeader()
 
     boost::asio::async_read(Socket,
         boost::asio::buffer(Packet->GetDataWithoutHeader(), Packet->GetSizeWithoutHeader()),
-        boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
+        boost::bind(&WorldSession::HandleReceive, shared_from_this(), boost::asio::placeholders::error));
 }
 
 void WorldSession::HandleReceive(const boost::system::error_code& Error)
@@ -105,7 +105,7 @@ void WorldSession::Send(WorldPacket* Packet)
     {
         boost::asio::async_write(Socket,
             boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), Packet->GetSizeWithHeader()),
-            boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
+            boost::bind(&WorldSession::HandleSend, shared_from_this(), MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
 
@@ -127,7 +127,7 @@ void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_co
     {
         boost::asio::async_write(Socket,
             boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), MessageQueue.front()->GetSizeWithHeader()),
-            boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
+            boost::bind(&WorldSession::HandleSend, shared_from_this(), MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
 

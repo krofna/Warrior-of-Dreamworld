@@ -26,9 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <queue>
 
 typedef boost::asio::ip::tcp::socket TSocket;
-typedef boost::shared_ptr<boost::asio::ip::tcp::socket> SocketPtr;
 
-class WorldSession
+class WorldSession : public shared_from_this<WorldSession>
 {
     friend class WorldAcceptor;
 public:
