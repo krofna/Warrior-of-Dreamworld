@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/bind.hpp"
 
 WorldAcceptor::WorldAcceptor(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
-NewSocket               (new TSocket(io)),
 Acceptor                (io, Endpoint)
 {
 
@@ -31,6 +30,7 @@ Acceptor                (io, Endpoint)
 
 WorldAcceptor::~WorldAcceptor()
 {
+	delete NewSession;
 }
 
 void WorldAcceptor::HandleAccept(WorldSession* Session, const boost::system::error_code& error)
@@ -38,7 +38,7 @@ void WorldAcceptor::HandleAccept(WorldSession* Session, const boost::system::err
     if(!error)
     {
         Session->Start();
-        WorldSession* NewSession(new WorldSession(Acceptor.get_io_service()));
+        NewSession = new WorldSession(Acceptor.get_io_service());
         Acceptor.async_accept(NewSession->Socket,
             boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
             boost::asio::placeholders::error));
@@ -47,7 +47,7 @@ void WorldAcceptor::HandleAccept(WorldSession* Session, const boost::system::err
 
 void WorldAcceptor::Accept()
 {
-    WorldSession* NewSession(new WorldSession(Acceptor.get_io_service()));
+    NewSession = new WorldSession(Acceptor.get_io_service());
     Acceptor.async_accept(NewSession->Socket,
         boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
         boost::asio::placeholders::error));

@@ -45,6 +45,7 @@ Timer       (io)
 World::~World()
 {
     delete AIFactory;
+    delete pWorldAcceptor;
 }
 
 CreatureAIFactory* World::GetAIFactory()
