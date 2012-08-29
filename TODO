@@ -11,10 +11,6 @@ spawning SPELL_BOLTs
 
 5) Implement reconnect
 
-6) class WorldSession : public shared_from_this()
-bind shared_from_this() instead of this as param to async operations
-in case that there is still async read going on after session is destroyed
-
 Code:
 - Propertly clean up SPELL_BOLT on client side when its erased from server
 - SpellMgr and SpellEffect
