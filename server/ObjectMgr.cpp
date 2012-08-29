@@ -31,6 +31,11 @@ ObjectMgr::~ObjectMgr()
     {
         delete iter->second;
     }
+
+    for(auto iter = Players.begin(); iter != Players.end(); ++iter)
+    {
+        delete *iter;
+    }
 }
 
 CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint32 Entry)

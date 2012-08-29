@@ -43,6 +43,11 @@ Map::~Map()
         if((*PlayerIter)->IsInWorld())
             (*PlayerIter)->Kick();
     }
+
+    for(auto Iter = Creatures.begin(); Iter != Creatures.end(); ++Iter)
+    {
+        delete *Iter;
+    }
     sLog.Write("Map %u destroyed.", MapID);
 }
 
