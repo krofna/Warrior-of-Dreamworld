@@ -45,7 +45,7 @@ public:
 
     const uint16 GetMapID() const;
 
-    MapPtr GetMap() const
+    Map* GetMap() const
     {
         return pMap;
     }
@@ -66,7 +66,7 @@ public:
     }
 
 protected:
-    MapPtr pMap;
+    Map* pMap;
     Vector2i Position;
 
     const uint64 ObjID;

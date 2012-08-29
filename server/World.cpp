@@ -44,6 +44,10 @@ Timer       (io)
 
 World::~World()
 {
+    for(uint16 i = 0; i < MAP_COUNT; ++i)
+    {
+        delete Maps[i];
+    }
     delete AIFactory;
     delete pWorldAcceptor;
 }
@@ -86,7 +90,7 @@ void World::Load()
         sLog.Write("Loading maps...");
         for(uint16 i = 0; i < MAP_COUNT; ++i)
         {
-            MapPtr pMap(new Map(i));
+            Map* pMap(new Map(i));
             sLog.Write("Loading creatures' map (%d)", i);
             pMap->LoadCreatures();
             sLog.Write("Creatures' map loaded (%d)", i);
@@ -163,12 +167,12 @@ void World::AddSession(WorldSession* pWorldSession)
     Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
 }
 
-MapPtr World::GetMap(uint16 MapID)
+Map* World::GetMap(uint16 MapID)
 {
     if(MapID < Maps.size())
         return Maps[MapID];
 
-    return MapPtr();
+    return nullptr;
 }
 
 void World::HandleCommand(std::string& Command)

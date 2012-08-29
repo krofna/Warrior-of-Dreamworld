@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Player;
 
-class Map : public enable_shared_from_this<Map>
+class Map
 {
     public:
     Map(uint16 TMapID);

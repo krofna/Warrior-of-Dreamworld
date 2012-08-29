@@ -28,7 +28,7 @@ class CreatureAI;
 class WOD_DLL_DECL Creature : public Unit
 {
 public:
-    Creature(uint64 ObjID, MapPtr pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate);
+    Creature(uint64 ObjID, Map* pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate);
     ~Creature();
     void InitializeAI();
 

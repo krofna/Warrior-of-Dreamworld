@@ -90,7 +90,7 @@ class Pathfinder
         std::stack<Vector2i> Path;
 
         // Pointer to map on which pOrigin is
-        MapPtr pMap;
+        Map* pMap;
 
         // Pointer to 2D array of static world objects in pMap
         std::vector<std::vector<WorldObjectPtr> >* pTileGrid;
