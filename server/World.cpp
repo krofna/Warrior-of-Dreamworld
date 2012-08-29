@@ -169,6 +169,7 @@ MapPtr World::GetMap(uint16 MapID)
 
     return MapPtr();
 }
+
 void World::HandleCommand(std::string& Command)
 {
     CommandHandler Handler(Command);

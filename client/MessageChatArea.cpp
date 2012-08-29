@@ -45,8 +45,7 @@ void MessageChatArea::Draw(int32 UpdateTime)
 
         std::string StringMessage = m_Messages[i].StringMessage;
 
-        sf::Text text(StringMessage);
-        text.setFont(m_DefaultFont);
+        sf::Text text(StringMessage, m_DefaultFont);
         text.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y - float(i * 50));
 
         Window->draw(text);
