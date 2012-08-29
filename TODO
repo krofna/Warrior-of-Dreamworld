@@ -1,7 +1,7 @@
 URGENT TODOS:
-1) ByteBuffer in WorldPacket should contain header data as well, 
-this is better idea than dynamically allocating char* whenever
-i want to send a packet. Too much memcpy-ing is going on
+Branch asio TODO:
+Consider using boost::pool on both server and client to allocate memory
+for WorldPackets ONLY!!
 
 2) Fix log out on both server and client. This worked in [90]
 but seems like boost & thread branches broke it.

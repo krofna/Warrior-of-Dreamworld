@@ -21,12 +21,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Defines.hpp"
 #include "Game.hpp"
 #include "Login.hpp"
-#include "boost/bind.hpp"
+#include <boost/bind.hpp>
 #include <cstring>
 
 WorldSession::WorldSession(boost::asio::io_service& io, Game* sGame) :
 Socket                    (io),
-Packet                    ((uint16)MSG_NULL),
 sGame                     (sGame),
 pWorld                    (nullptr),
 Resolver                  (io),
@@ -43,58 +42,62 @@ void WorldSession::Connect(std::string Ip, std::string Port)
 
 void WorldSession::Start()
 {
+    Packet = new WorldPacket;
+
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Header, 4),
+        boost::asio::buffer(Packet->GetDataWithHeader(), WorldPacket::HEADER_SIZE),
         boost::bind(&WorldSession::HandleHeader, this));
 }
 
 void WorldSession::HandleHeader()
 {
-    sLog.Write("Got packet, size: %u", Header[0]);
+    Packet->ReadHeader();
 
-    Packet.Resize(Header[0]);
-    Packet.SetOpcode(Header[1]);
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Packet.GetByteBuffer(), Header[0]),
-        boost::bind(&WorldSession::HandlePacket, this, boost::asio::placeholders::error));
+        boost::asio::buffer(Packet->GetDataWithoutHeader(), Packet->GetSizeWithoutHeader()),
+        boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
 }
 
-void WorldSession::HandlePacket(const boost::system::error_code& Error)
+void WorldSession::HandleReceive(const boost::system::error_code& Error)
 {
-    Packet.ResetReadPos();
+    Packet->ResetReadPos();
     if(Error)
     {
         sLog.Write("Failed to receive packet");
         return;
     }
-    if(Packet.GetOpcode() >= MSG_COUNT)
+    if(Packet->GetOpcode() >= MSG_COUNT)
     {
-        sLog.Write("Received %u: Bad opcode!", Packet.GetOpcode());
+        sLog.Write("Received %u: Bad opcode!", Packet->GetOpcode());
         return;
     }
-    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
+    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
-    (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
+    (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
+
+    delete Packet;
+
     Start();
 }
 
-void WorldSession::Send(WorldPacket& Packet)
+void WorldSession::Send(WorldPacket* Packet)
 {
-    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
+
+    Packet->UpdateSizeData();
 
     boost::mutex::scoped_lock lock(MessageQueueMutex);
 
-    MessageQueue.push(Packet.GetData());
-
+    MessageQueue.push(Packet);
     if(MessageQueue.size() == 1)
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), Packet->GetSizeWithHeader()),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
 
-void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error)
+void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_code& Error)
 {
     if(!Error)
     {
@@ -104,7 +107,7 @@ void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error
     {
         sLog.Write("Failed!");
     }
-    delete Data;
+    delete Packet;
 
     boost::mutex::scoped_lock lock(MessageQueueMutex);
     MessageQueue.pop();
@@ -112,7 +115,7 @@ void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), MessageQueue.front()->GetSizeWithHeader()),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
@@ -124,7 +127,7 @@ void WorldSession::HandleNULL()
 void WorldSession::HandleLoginOpcode()
 {
     uint16 Status;
-    Packet >> Status;
+    *Packet >> Status;
 
     if(Status != (uint16)LOGIN_SUCCESS)
     {
@@ -135,11 +138,11 @@ void WorldSession::HandleLoginOpcode()
 
     uint16 MapID;
     uint64 MeID;
-    Packet >> MapID >> MeID;
+    *Packet >> MapID >> MeID;
 
     World* pWorld = new World(MeID);
     this->pWorld = pWorld;
-    WorldPacket Argv(0);
+    WorldPacket Argv;
     Argv << MapID;
     sGame->AddToLoadQueue(pWorld, Argv);
     sLog.Write("Packet is good!");
@@ -148,10 +151,9 @@ void WorldSession::HandleLoginOpcode()
 void WorldSession::HandleAddObjectOpcode()
 {
     uint64 ObjID;
-    Packet >> ObjID;
-
+    *Packet >> ObjID;
     WorldObject* pNewObject = new WorldObject;
-
+    WorldPacket Packet = *this->Packet;
     sGame->AddToLoadQueue(pNewObject, Packet);
     pWorld->AddObject(pNewObject, ObjID);
     sLog.Write("Packet is good!");
@@ -160,7 +162,7 @@ void WorldSession::HandleAddObjectOpcode()
 void WorldSession::HandleRemoveObjectOpcode()
 {
     uint64 ObjID;
-    Packet >> ObjID;
+    *Packet >> ObjID;
 
     pWorld->RemoveObject(ObjID);
 }
@@ -169,7 +171,7 @@ void WorldSession::HandleMoveObjectOpcode()
 {
     uint64 ObjID;
     uint16 x, y;
-    Packet >> ObjID >> x >> y;
+    *Packet >> ObjID >> x >> y;
 
     pWorld->DrawingMutex.lock();
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
@@ -179,14 +181,16 @@ void WorldSession::HandleMoveObjectOpcode()
 
 void WorldSession::HandleCastSpellOpcode()
 {
+    // I dont even...
     uint64 CasterID;
-    Packet >> CasterID;
-    Packet.UpdateWritePos();
+    *Packet >> CasterID;
+    Packet->UpdateWritePos();
     pWorld->DrawingMutex.lock();
     WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
     pWorld->DrawingMutex.unlock();
-    Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
+    *Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
     Animation* pAnim = new Animation;
+    WorldPacket Packet = *this->Packet;
     sGame->AddToLoadQueue(pAnim, Packet);
     pWorld->AddAnimation(pAnim);
     sLog.Write("Packet is good!");
@@ -200,7 +204,7 @@ void WorldSession::HandleLogOutOpcode()
 void WorldSession::HandleSystemMessageOpcode()
 {
     std::string Message;
-    Packet >> Message;
+    *Packet >> Message;
 
     sLog.Write("System Msg: %s", Message);
     sLog.Write("Packet is good!");
@@ -211,7 +215,7 @@ void WorldSession::HandleChatMessageOpcode()
     uint64 ObjID;
     std::string Message;
 
-    Packet >> ObjID >> Message;
+    *Packet >> ObjID >> Message;
 
     pWorld->ReceiveNewMessage(ObjID, Message);
     sLog.Write("Packet is good!");
@@ -244,34 +248,41 @@ void WorldSession::HandleCreateItemOpcode()
 
 void WorldSession::SendMovementRequest(uint8 Direction)
 {
-    WorldPacket Packet((uint16)MSG_MOVE_OBJECT);
-    Packet << Direction;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_MOVE_OBJECT);
+    *Packet << Direction;
     Send(Packet);
 }
 
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
-    WorldPacket Packet((uint16)MSG_LOGIN);
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_LOGIN);
 
     //EncryptSHA512(Password);
 
-    Packet << Username << Password;
+    *Packet << Username << Password;
     Send(Packet);
 }
 
 void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
 {
-    WorldPacket Packet((uint16)MSG_CAST_SPELL);
-    Packet << SpellID << Angle;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_CAST_SPELL);
+    *Packet << SpellID << Angle;
     Send(Packet);
 }
 
 void WorldSession::SendLogOutRequest()
 {
-    WorldPacket Packet((uint16)MSG_LOG_OUT);
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_LOG_OUT);
     Send(Packet);
 
     // Back to login screen?
     //sGame->ChangeState(new Login());
     //Window->setView(Window->getDefaultView());
+}
+
+void WorldSession::SendChatMessage(std::string const& Message)
+{
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_CHAT_MESSAGE);
+    *Packet << Message;
+    Send(Packet);
 }

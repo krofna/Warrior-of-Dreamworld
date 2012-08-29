@@ -32,7 +32,7 @@ public:
 
     virtual void Update(int32 diff) = 0;
 
-    virtual WorldPacket PackData() = 0;
+    virtual WorldPacket* PackData() = 0;
 
     virtual void Say(const char* Text);
 

@@ -39,8 +39,8 @@ void Unit::SpellHit(SpellBoxPtr pSpellBox)
 void Unit::CastSpell(SpellPtr pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
-    WorldPacket Packet((uint16)MSG_CAST_SPELL);
-    Packet << ObjID << pSpell->Effect << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_CAST_SPELL);
+    *Packet << ObjID << pSpell->Effect << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     pMap->SendToPlayers(Packet);
     UnitPtr me = static_pointer_cast<Unit>(shared_from_this());
 
@@ -49,8 +49,8 @@ void Unit::CastSpell(SpellPtr pSpell, float Angle)
 
 void Unit::Say(const char* Text)
 {
-    WorldPacket SayPacket((uint16)MSG_CHAT_MESSAGE);
-    SayPacket << GetObjectID() << std::string(Text);
+    WorldPacket* SayPacket = new WorldPacket((uint16)MSG_CHAT_MESSAGE);
+    *SayPacket << GetObjectID() << std::string(Text);
 
     pMap->SendToPlayers(SayPacket);
 }

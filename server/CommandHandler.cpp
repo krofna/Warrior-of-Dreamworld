@@ -157,7 +157,7 @@ void CommandHandler::HandleAccountSetSecLevelCommand()
     uint32 SecLevel;
     ExtractArg(SecLevel);
 
-    if(SecLevel > 4 || SecLevel < 0)
+    if(SecLevel > SEC_ADMIN || SecLevel < SEC_PLAYER)
         throw BadCommand();
 
     sDatabase.PExecute("UPDATE `players` SET `seclevel` = %u WHERE `username` = '%s'", SecLevel, Username.c_str());

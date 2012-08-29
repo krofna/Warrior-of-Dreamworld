@@ -52,10 +52,10 @@ void Creature::Update(int32 diff)
     pAI->UpdateAI(diff);
 }
 
-WorldPacket Creature::PackData()
+WorldPacket* Creature::PackData()
 {
-    WorldPacket Packet((uint16)MSG_ADD_OBJECT);
-    Packet << ObjID << pTemplate->Tileset << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_ADD_OBJECT);
+    *Packet << ObjID << pTemplate->Tileset << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
     return Packet;
 }
 
@@ -78,13 +78,13 @@ void Creature::DealDamage(int32 Damage, UnitPtr pTarget)
     if (pTarget->IsDead())
         pAI->KilledUnit(pTarget);
 }
+
 void Creature::TakeDamage(int32 Damage, UnitPtr pAttacker)
 {
     Unit::TakeDamage(Damage, pAttacker);
+    pAI->Hit(pAttacker, Damage);
     if (IsDead())
         pAI->JustDied(pAttacker);
-    else
-        pAI->Hit(pAttacker, Damage);
 }
 
 CreatureAI* Creature::GetAI()

@@ -19,54 +19,60 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldPacket.hpp"
 #include "Opcodes.hpp"
 
+WorldPacket::WorldPacket() :
+ByteBuffer              (HEADER_SIZE)
+{
+    ResetReadPos();
+    UpdateWritePos();
+}
+
 WorldPacket::WorldPacket(uint16 Opcode) :
-Opcode                  (Opcode)
+ByteBuffer              (HEADER_SIZE)
 {
-    ReadPos = WritePos = 0;
+    ResetReadPos();
+    UpdateWritePos();
+    std::memcpy((void*)&ByteBuffer[2], &Opcode, 2);
 }
 
-void WorldPacket::Clear()
-{
-    ByteBuffer.clear();
-    ReadPos = WritePos = 0;
-    Opcode = (uint16)MSG_NULL;
-}
-
-uint16 WorldPacket::GetSize()
+uint16 WorldPacket::GetSizeWithHeader()
 {
     return ByteBuffer.size();
 }
 
-void* WorldPacket::GetByteBuffer()
+uint16 WorldPacket::GetSizeWithoutHeader()
+{
+    return ByteBuffer.size() - HEADER_SIZE;
+}
+
+void* WorldPacket::GetDataWithHeader()
 {
     return &ByteBuffer[0];
 }
 
-char* WorldPacket::GetData()
+void* WorldPacket::GetDataWithoutHeader()
 {
-    char* Data = (char*)operator new(ByteBuffer.size() + HEADER_SIZE);
-    uint16 Size = GetSize();
-
-    std::memcpy((void*)&Data[0], &Size, 2);
-    std::memcpy((void*)&Data[2], &Opcode, 2);
-    std::memcpy((void*)&Data[4], &ByteBuffer[0], ByteBuffer.size());
-
-    return Data;
+    return &ByteBuffer[4];
 }
 
 uint16 WorldPacket::GetOpcode()
 {
-    return Opcode;
+    return *(uint16*)&ByteBuffer[2];
 }
 
 void WorldPacket::SetOpcode(uint16 Opcode)
 {
-    this->Opcode = Opcode;
+    std::memcpy((void*)&ByteBuffer[2], &Opcode, 2);
 }
 
-void WorldPacket::Resize(uint16 Size)
+void WorldPacket::ReadHeader()
 {
-    ByteBuffer.resize(Size);
+    ByteBuffer.resize(HEADER_SIZE + *(uint16*)&ByteBuffer[0]);
+}
+
+void WorldPacket::UpdateSizeData()
+{
+    uint16 SizeWithoutHeader = GetSizeWithoutHeader();
+    std::memcpy((void*)&ByteBuffer[0], &SizeWithoutHeader, 2);
 }
 
 void WorldPacket::UpdateWritePos()
@@ -76,7 +82,7 @@ void WorldPacket::UpdateWritePos()
 
 void WorldPacket::ResetReadPos()
 {
-    ReadPos = 0;
+    ReadPos = HEADER_SIZE;
 }
 
 WorldPacket& WorldPacket::operator <<(uint8 data)   { Append<uint8>(data);  return *this; }

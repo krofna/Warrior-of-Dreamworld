@@ -24,8 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-Packet                    ((uint16)MSG_NULL),
-Connected(true)
+Connected                 (true)
 {
 }
 
@@ -40,55 +39,77 @@ PlayerPtr WorldSession::GetPlayer()
 
 void WorldSession::Start()
 {
+    Packet = new WorldPacket;
+
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Header, 4),
+        boost::asio::buffer(Packet->GetDataWithHeader(), WorldPacket::HEADER_SIZE),
         boost::bind(&WorldSession::HandleHeader, this));
 }
 
 void WorldSession::HandleHeader()
 {
-    uint16 Size = Header[0];
-    Packet.SetOpcode(Header[1]);
-    Packet.Resize(Size);
+    Packet->ReadHeader();
+
+    // Hack by Krofna
+    // Do not question
+    // MSG_LOG_OUT is a header-only packet
+    if(Packet->GetSizeWithoutHeader() < 1)
+    {
+        pPlayer->LogOut();
+        delete this;
+        return;
+    }
+
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Packet.GetByteBuffer(), Size),
+        boost::asio::buffer(Packet->GetDataWithoutHeader(), Packet->GetSizeWithoutHeader()),
         boost::bind(&WorldSession::HandleReceive, this, boost::asio::placeholders::error));
 }
 
 void WorldSession::HandleReceive(const boost::system::error_code& Error)
 {
-    Packet.ResetReadPos();
+    Packet->ResetReadPos();
     if(Error)
     {
         sLog.Write("Failed to receive packet");
-        return; // This has effect of disconnecting - TODO: do proper cleanup
+        pPlayer->LogOut();
     }
-    if(Packet.GetOpcode() >= MSG_COUNT)
+    if(Packet->GetOpcode() >= MSG_COUNT)
     {
-        sLog.Write("Received %u: Bad opcode!", Packet.GetOpcode());
-        return; // This has effect of disconnecting - TODO: do proper cleanup
+        sLog.Write("Received %u: Bad opcode!", Packet->GetOpcode());
+        pPlayer->LogOut();
     }
-    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
+    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
-    (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
-    if (Connected)
-        Start();
+    (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
+
+    delete Packet;
+
+    // Hack by Krofna
+    // Do not question
+    if(!Connected)
+    {
+        delete this;
+        return;
+    }
+
+    Start();
 }
 
-void WorldSession::Send(WorldPacket& Packet)
+void WorldSession::Send(WorldPacket* Packet)
 {
-    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
-    MessageQueue.push(Packet.GetData());
+    Packet->UpdateSizeData();
+    MessageQueue.push(Packet);
     if(MessageQueue.size() == 1)
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), Packet.GetSize() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), Packet->GetSizeWithHeader()),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
 
-void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error)
+void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_code& Error)
 {
     if(!Error)
     {
@@ -99,32 +120,29 @@ void WorldSession::HandleSend(char* Data, const boost::system::error_code& Error
         sLog.Write("Failed!");
     }
 
-    delete Data;
+    delete Packet;
 
     MessageQueue.pop();
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front(), *(uint16*)MessageQueue.front() + WorldPacket::HEADER_SIZE),
+            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), MessageQueue.front()->GetSizeWithHeader()),
             boost::bind(&WorldSession::HandleSend, this, MessageQueue.front(), boost::asio::placeholders::error));
     }
 }
 
 void WorldSession::SendLoginFailPacket(uint16 Reason)
 {
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_LOGIN);
-    Packet << Reason;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_LOGIN);
+    *Packet << Reason;
     Send(Packet);
     Socket.close();
 }
 
 void WorldSession::SendChatMessage(uint64 FromID, std::string const& Message)
 {
-    Packet.Clear();
-
-    Packet.SetOpcode((uint16)MSG_CHAT_MESSAGE);
-    Packet << FromID << Message;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_CHAT_MESSAGE);
+    *Packet << FromID << Message;
     Send(Packet);
 }
 
@@ -136,7 +154,7 @@ void WorldSession::HandleLoginOpcode()
 {
     // Check if username exists
     std::string Username;
-    Packet >> Username;
+    *Packet >> Username;
     pPlayer = sObjectMgr.GetPlayer(Username);
     if(!pPlayer)
     {
@@ -147,7 +165,7 @@ void WorldSession::HandleLoginOpcode()
 
     // Check if passwords match
     std::string Password;
-    Packet >> Password;
+    *Packet >> Password;
     if(pPlayer->Password != Password)
     {
         // Invalid password, send response
@@ -162,10 +180,9 @@ void WorldSession::HandleLoginOpcode()
         pPlayer->LoadFromDB();
 
     // Tell the client that he logged in sucessfully
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_LOGIN);
-    Packet << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
-    Send(Packet);
+    WorldPacket* LoginPacket = new WorldPacket((uint16)MSG_LOGIN);
+    *LoginPacket << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
+    Send(LoginPacket);
 
     // Add player to the world
     pPlayer->BindSession(this);
@@ -176,7 +193,7 @@ void WorldSession::HandleLoginOpcode()
 void WorldSession::HandleMoveObjectOpcode()
 {
     uint8 Direction;
-    Packet >> Direction;
+    *Packet >> Direction;
 
     sLog.Write("Packet is good!");
 
@@ -185,9 +202,8 @@ void WorldSession::HandleMoveObjectOpcode()
         return;
 
     // Send movement update to all players in the map
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_MOVE_OBJECT);
-    Packet << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_MOVE_OBJECT);
+    *Packet << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
     sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
 
@@ -195,7 +211,7 @@ void WorldSession::HandleCastSpellOpcode()
 {
     uint16 SpellID;
     float Angle;
-    Packet >> SpellID >> Angle;
+    *Packet >> SpellID >> Angle;
 
     SpellPtr pSpell = sObjectMgr.GetSpell(SpellID);
 
@@ -214,15 +230,13 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
-    SendLogOutPacket();
-
     Connected = false;
 }
 
 void WorldSession::HandleChatMessageOpcode()
 {
     std::string Message;
-    Packet >> Message;
+    *Packet >> Message;
 
     if (!pPlayer->CanSpeak())
     {
@@ -338,16 +352,14 @@ a    if (Count)
 
 void WorldSession::SendLogOutPacket()
 {
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_LOG_OUT);
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_LOG_OUT);
     Send(Packet);
 }
 
 void WorldSession::SendNotification(std::string const& NotificationMessage)
 {
-    Packet.Clear();
-    Packet.SetOpcode((uint16)MSG_SYSTEM_MESSAGE);
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_SYSTEM_MESSAGE);
 
-    Packet << NotificationMessage;
+    *Packet << NotificationMessage;
     Send(Packet);
 }

@@ -64,8 +64,8 @@ private:
     sf::View WorldView;
     uint8 MoveWorldView;
 
-    int MapWidth;
-    int MapHeight;
+    uint16 MapWidth;
+    uint16 MapHeight;
 
     int CameraLeft;
     int CameraTop;
@@ -80,6 +80,7 @@ private:
     std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint64 MeID;
 
+    sf::Clock m_UpdateClock;
     boost::mutex DrawingMutex;
 };
 

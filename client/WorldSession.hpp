@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_SESSION_H
 #define WORLD_SESSION_H
 
-#include "../shared/Hash/SHA512.hpp"
 #include "../shared/WorldPacket.hpp"
 #include "World.hpp"
 #include "boost/asio.hpp"
@@ -37,7 +36,7 @@ public:
 
     void Connect(std::string Ip, std::string Port);
 
-    void Send(WorldPacket& Packet);
+    void Send(WorldPacket* Packet);
 
     // Opcode handlers
     void HandleNULL();
@@ -58,16 +57,16 @@ public:
     void SendMovementRequest(uint8 Direction);
     void SendCastSpellRequest(uint16 SpellID, float Angle);
     void SendLogOutRequest();
+    void SendChatMessage(std::string const& Message);
 
 private:
     void Start();
-    void HandlePacket(const boost::system::error_code& Error);
+    void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader();
-    void HandleSend(char* Data, const boost::system::error_code& Error);
+    void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
 
     tcp::socket Socket;
-    uint16 Header[2];
-    WorldPacket Packet;
+    WorldPacket* Packet;
 
     boost::shared_ptr<boost::asio::io_service::work> Work;
     tcp::resolver Resolver;
@@ -75,7 +74,7 @@ private:
     Game* sGame;
     World* pWorld;
 
-    std::queue<char*> MessageQueue;
+    std::queue<WorldPacket*> MessageQueue;
     boost::mutex MessageQueueMutex;
 };
 

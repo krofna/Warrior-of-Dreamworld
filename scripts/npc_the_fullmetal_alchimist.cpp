@@ -24,9 +24,14 @@ enum
     SPELL_QUADRUPLE_ACCEL_NO_INTERVAL = 2
 };
 
-#define TEXT_SPECIAL_ATTACK "Dark Repulser, Quadruple Accel, No Interval !"
-#define TEXT_ENTER_COMBAT "FullMetal Alchimist: Enabling combat mode."
-#define TEXT_HIT "FullMetal Alchimist: Missed."
+#define TEXT_SPECIAL_ATTACK "Brust Link !"
+
+#define TEXT_ACCEL "First, ACCEL !"
+#define TEXT_DOUBLE_ACCEL "Second, DOUBLE ACCEL !"
+#define TEXT_TRIPLE_ACCEL "I NEED MORE POWER, THIRD ! TRIPLE ACCEL !"
+#define TEXT_QUADRUPLE_ACCEL "YAAAAAAAAA, FINAL QUADRUPLE ACCEL, NO INTERVAL !"
+
+#define TEXT_ULTIMATE_ATTACK "Physical Full Brust !"
 
 class WOD_DLL_DECL npc_the_fullmetal_alchimistAI : public CreatureAI
 {
@@ -37,20 +42,25 @@ public:
     }
 
     int32 AttackSpecialTimer;
+    int32 AttackUltimateTimer;
+    int32 PhysicalFullBrustTimer;
+    int32 SpellAccelState;
+    int32 NanoIntervalDiff;
+
+    bool UsingSpecialAttack;
+    bool IsInPhysicalFullBrust;
 
     void Reset()
     {
-        AttackSpecialTimer = 9000;
-    }
+        AttackSpecialTimer = 15000;
+        AttackUltimateTimer = 50000;
+        PhysicalFullBrustTimer = 30000;
+        NanoIntervalDiff = 300;
 
-    void EnterCombat(UnitPtr& pEnemy)
-    {
-        pCreature->Say(TEXT_ENTER_COMBAT);
-    }
+        SpellAccelState = 1;
 
-    void SpellHit(SpellBoxPtr& pSpellBox)
-    {
-        pCreature->Say(TEXT_HIT);
+        UsingSpecialAttack = false;
+        IsInPhysicalFullBrust = false;
     }
 
     void UpdateAI(int32 diff)
@@ -58,16 +68,87 @@ public:
         if(!pCreature->GetVictim())
             return;
 
-        if(AttackSpecialTimer <= diff)
+        if (IsInPhysicalFullBrust)
         {
             pCreature->CastSpell(SPELL_QUADRUPLE_ACCEL_NO_INTERVAL, pCreature->GetVictim());
+            PhysicalFullBrustTimer -= diff;
+        }
+
+        if (PhysicalFullBrustTimer <= diff)
+            IsInPhysicalFullBrust = false;
+        else
+            PhysicalFullBrustTimer -= diff;
+
+        if(AttackSpecialTimer <= diff)
+        {
             pCreature->Say(TEXT_SPECIAL_ATTACK);
-            AttackSpecialTimer = 3000;
+            ActivateAcceleration();
         }
         else
             AttackSpecialTimer -= diff;
 
+        if (UsingSpecialAttack)
+            UpdateQuadrupleAccel(diff);
+    
+        if (AttackUltimateTimer <= diff)
+        {
+            pCreature->Say(TEXT_ULTIMATE_ATTACK);
+            IsInPhysicalFullBrust = true;
+            AttackUltimateTimer = 40000;
+        }
+        else
+            AttackUltimateTimer -= diff;
+
         pCreature->DoMeleeAttackIfReady(diff);
+    }
+
+    void UpdateQuadrupleAccel(int32 diff)
+    {
+        if (NanoIntervalDiff <= diff)
+        {
+            switch(SpellAccelState)
+            {
+                case 1:
+                    pCreature->Say(TEXT_ACCEL);
+                    break;
+                case 2:
+                    pCreature->Say(TEXT_DOUBLE_ACCEL);
+                    break;
+                case 3:
+                    pCreature->Say(TEXT_TRIPLE_ACCEL);
+                    break;
+                case 4:
+                    pCreature->Say(TEXT_QUADRUPLE_ACCEL);
+                    break;
+            }
+
+            pCreature->CastSpell(SPELL_QUADRUPLE_ACCEL_NO_INTERVAL, pCreature->GetVictim());
+            SpellAccelState++;
+            NoInterval();
+        }
+        else
+            NanoIntervalDiff -= diff;
+
+        if (SpellAccelState > 4)
+            ResetAcceleration();
+    }
+
+    void NoInterval()
+    {
+        NanoIntervalDiff = 300 * SpellAccelState;
+    }
+
+    void ActivateAcceleration()
+    {
+        NanoIntervalDiff = 300;
+        SpellAccelState = 1;
+        UsingSpecialAttack = true;
+        AttackSpecialTimer = 7000;
+    }
+
+    void ResetAcceleration()
+    {
+        UsingSpecialAttack = false;
     }
 };
 

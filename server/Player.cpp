@@ -133,14 +133,14 @@ void Player::SaveToDB()
     */
 }
 
-WorldPacket Player::PackData()
+WorldPacket* Player::PackData()
 {
-    WorldPacket Packet((uint16)MSG_ADD_OBJECT);
-    Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_ADD_OBJECT);
+    *Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }
 
-void Player::SendPacket(WorldPacket Packet)
+void Player::SendPacket(WorldPacket* Packet)
 {
     pWorldSession->Send(Packet);
 }
@@ -162,7 +162,6 @@ void Player::Kick()
 
 void Player::LogOut()
 {
-    delete pWorldSession;
     pWorldSession = nullptr;
     this->RemoveFromWorld();
     this->SaveToDB();

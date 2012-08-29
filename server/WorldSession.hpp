@@ -25,9 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/asio.hpp"
 #include <queue>
 
-class Player;
-class WorldPacket;
-
 typedef boost::asio::ip::tcp::socket TSocket;
 typedef boost::shared_ptr<boost::asio::ip::tcp::socket> SocketPtr;
 
@@ -39,7 +36,7 @@ public:
     ~WorldSession();
 
     void Start();
-    void Send(WorldPacket& Packet);
+    void Send(WorldPacket* Packet);
 
     void SendLogOutPacket();
     void SendChatMessage(uint64 FromID, std::string const& Message);
@@ -62,7 +59,7 @@ public:
     PlayerPtr GetPlayer();
 
 private:
-    void HandleSend(char* Data, const boost::system::error_code& Error);
+    void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
     void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader();
 
@@ -70,14 +67,12 @@ private:
 
     TSocket Socket;
 
-    uint16 Header[2];
-
-    WorldPacket Packet;
+    WorldPacket* Packet;
     PlayerPtr pPlayer;
 
     bool Connected;
 
-    std::queue<char*> MessageQueue;
+    std::queue<WorldPacket*> MessageQueue;
 };
 
 #endif

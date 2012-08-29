@@ -149,15 +149,18 @@ void World::Draw()
         (*i)->Update();
     }
 
-    // Draw chat GUI
-    m_MessageArea->Draw(50);
-
-    // Draw Iventory
+    // Draw Inventory
     pInventory->Draw();
+
+    // Draw chat GUI
+    m_MessageArea->Draw(m_UpdateClock.restart().asMilliseconds());
 }
 
 void World::HandleEvent(sf::Event Event)
 {
+    if (m_MessageArea->HandleTyping(Event))
+        return;
+
     switch(Event.type)
     {
     case sf::Event::KeyPressed:

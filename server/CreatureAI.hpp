@@ -41,13 +41,13 @@ public:
     virtual void ReachedHome(){}; // -- NYI
 
     //Called when creature dies
-    virtual void JustDied(UnitPtr& pKiller){}; // -- NYI
+    virtual void JustDied(UnitPtr& pKiller){};
 
     // Called when creature kills unit
-    virtual void KilledUnit(UnitPtr& pVictim){}; // -- NYI
+    virtual void KilledUnit(UnitPtr& pVictim){};
 
     // Called when creature is hit by melee attack
-    virtual void Hit(UnitPtr& pAttacker, int32& Damage){}; // -- NYI
+    virtual void Hit(UnitPtr& pAttacker, int32& Damage){};
 
     // Called when creature is hit by spell
     virtual void SpellHit(SpellBoxPtr& pSpellBox){};

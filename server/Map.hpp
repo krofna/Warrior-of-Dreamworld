@@ -38,7 +38,7 @@ class Map : public enable_shared_from_this<Map>
     virtual void Update(int32 diff);
     void UnitUpdate(UnitPtr pVictim, int32 diff);
 
-    void SendToPlayers(WorldPacket& Packet);
+    void SendToPlayers(WorldPacket* Packet);
 
     bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
 

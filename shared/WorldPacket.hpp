@@ -37,16 +37,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WOD_DLL_DECL WorldPacket
 {
 public:
+    WorldPacket();
     WorldPacket(uint16 Opcode);
 
-    void Clear();
-
-    void* GetByteBuffer();
-    char* GetData();
+    void* GetDataWithHeader();
+    void* GetDataWithoutHeader();
     uint16 GetOpcode();
     void SetOpcode(uint16 Opcode);
-    uint16 GetSize();
-    void Resize(uint16 Size);
+    uint16 GetSizeWithHeader();
+    uint16 GetSizeWithoutHeader();
+    void ReadHeader();
+    void UpdateSizeData();
     void UpdateWritePos();
     void ResetReadPos();
 
@@ -84,15 +85,17 @@ private:
     template<class T> void Append(T data);
     template<class T> T Read();
 
-    uint16 Opcode;
     size_t ReadPos, WritePos;
 
+    //|   0,1   |   2,3   | 4,5,6,7...
+    //|   - -   |   - -   | - - - -...
+    //|  Size   | Opcode  | Data   ...
     std::vector<char> ByteBuffer;
 };
 
 template<class T> void WorldPacket::ReadSkip()
 {
-    ReadPos +=  sizeof(T);
+    ReadPos += sizeof(T);
 }
 
 template<class T> void WorldPacket::Append(T data)
