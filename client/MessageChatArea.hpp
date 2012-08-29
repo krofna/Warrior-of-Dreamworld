@@ -25,6 +25,7 @@ class MessageChatArea
     private:
     std::string m_Message;
     bool m_IsTyping;
+    bool m_StartCharacter;
     std::vector<Message> m_Messages;
     sf::Font m_DefaultFont;
 };

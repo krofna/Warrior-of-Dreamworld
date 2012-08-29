@@ -45,10 +45,10 @@ public:
 
     void Reset()
     {
-        FireballTimer = 5000;
-        AttackTimer = 5000;
+        FireballTimer = 8000;
+        AttackTimer = 9000;
         EnrageTimer = 30000;
-        HitTimer = 8000;
+        HitTimer = 38000;
     }
 
     void EnterCombat(UnitPtr& pEnemy)
@@ -61,7 +61,7 @@ public:
         if (HitTimer - 1000 <= 0)
         {
             pCreature->Say(TEXT_HIT);
-            HitTimer = 8000;
+            HitTimer = 38000;
         }
         else
             HitTimer -= 1000;
@@ -75,7 +75,7 @@ public:
         if(FireballTimer <= diff)
         {
             pCreature->CastSpell(SPELL_FIREBALL, pCreature->GetVictim());
-            FireballTimer = 5000;
+            FireballTimer = 6000;
         }
         else
             FireballTimer -= diff;
@@ -83,7 +83,7 @@ public:
         if (AttackTimer <= diff)
         {
             pCreature->Say(TEXT_ATTACK);
-            AttackTimer = 5000;
+            AttackTimer = 8000;
         }
         else
             AttackTimer -= diff;
@@ -91,7 +91,7 @@ public:
         if (EnrageTimer <= diff)
         {
             pCreature->Say(TEXT_ENRAGE);
-            EnrageTimer = 30000;
+            EnrageTimer = 40000;
         }
         else
             EnrageTimer -= diff;

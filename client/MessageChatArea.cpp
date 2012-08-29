@@ -21,6 +21,14 @@ void MessageChatArea::AddMessage(std::string const& ObjectName, std::string cons
 
 void MessageChatArea::Draw(int32 UpdateTime)
 {
+    if (m_IsTyping)
+    {
+        sf::Text plrText(m_Message);
+        plrText.setFont(m_DefaultFont);
+        plrText.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y + 50); // Would you take a little more of voodo ?
+        Window->draw(plrText);
+    }
+
     if (m_Messages.empty())
         return;
 
@@ -47,8 +55,22 @@ void MessageChatArea::Draw(int32 UpdateTime)
 
 bool MessageChatArea::HandleTyping(sf::Event event)
 {
+    if (event.type == sf::Event::KeyPressed)
+    {
+        if (event.key.code == sf::Keyboard::BackSpace)
+            m_Message.erase(m_Message.end() - 1);
+    }
+
     if (event.type == sf::Event::TextEntered && m_IsTyping)
-        m_Message += event.text.unicode;
+    {
+        if (!m_StartCharacter)
+        {
+            if (event.text.unicode != 8)
+                m_Message += event.text.unicode;
+        }
+        else
+            m_StartCharacter = false;
+    }
 
     if (event.type == sf::Event::KeyPressed)
     {
@@ -61,7 +83,10 @@ bool MessageChatArea::HandleTyping(sf::Event event)
                 m_IsTyping = false;
             }
             else
+            {
                 m_IsTyping = true;
+                m_StartCharacter = true;
+            }
         }
     }
 
