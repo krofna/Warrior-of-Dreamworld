@@ -32,7 +32,7 @@ WorldSession::~WorldSession()
 {
 }
 
-PlayerPtr WorldSession::GetPlayer()
+Player* WorldSession::GetPlayer()
 {
     return pPlayer;
 }

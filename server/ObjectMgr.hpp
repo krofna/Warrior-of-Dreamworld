@@ -39,12 +39,12 @@ public:
     void LoadSpells();
     void LoadCreatureTemplates();
     void LoadPlayersLoginInfo();
-    PlayerPtr GetPlayer(std::string& Username);
+    Player* GetPlayer(std::string& Username);
 
 private:
     std::vector<SpellPtr> Spells;
     std::map<uint32, CreatureTemplate*> CreatureTemplates;
-    std::vector<PlayerPtr> Players;
+    std::vector<Player*> Players;
 };
 
 extern ObjectMgr sObjectMgr; // todo: *

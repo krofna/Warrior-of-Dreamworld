@@ -44,9 +44,8 @@ void Player::AddToWorld()
 // PH: needs more work
 void Player::RemoveFromWorld()
 {
-    pMap->TileGrid[Position.y][Position.x].reset();
-    PlayerPtr me = static_pointer_cast<Player>(shared_from_this());
-    pMap->RemovePlayer(me);
+    pMap->TileGrid[Position.y][Position.x] = nullptr;
+    pMap->RemovePlayer(this);
 }
 
 void Player::LoadFromDB()

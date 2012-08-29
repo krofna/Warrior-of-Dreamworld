@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Map::Map     (uint16 TMapID) : 
 NewSpellBoxID(0),
 // [PH] This only works for map0, cause its size is 50x50 tiles
-TileGrid     (50, std::vector<WorldObjectPtr>(50, WorldObjectPtr()))
+TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 {
     MapID = TMapID;
     sLog.Write("Map %u loaded.", MapID);
@@ -49,11 +49,11 @@ Map::~Map()
 void Map::LoadCreatures()
 {
     QueryResult Result(sDatabase.PQuery("SELECT * FROM `creature` WHERE map='%u'", MapID));
-    CreaturePtr pCreature;
+    Creature* pCreature;
 
     while(Result->next())
     {
-        pCreature = CreaturePtr(new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2))));
+        pCreature = new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2)));
         pCreature->InitializeAI();
         Creatures.push_back(pCreature);
     }
@@ -71,7 +71,7 @@ void Map::Update(int32 diff)
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
 }
 
-void Map::UnitUpdate(UnitPtr pUnit, int32 diff)
+void Map::UnitUpdate(Unit* pUnit, int32 diff)
 {
     // Check if unit got hit by spell
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)
@@ -89,7 +89,7 @@ void Map::UnitUpdate(UnitPtr pUnit, int32 diff)
     pUnit->Update(diff);
 }
 
-void Map::AddPlayer(PlayerPtr& pPlayer)
+void Map::AddPlayer(Player* pPlayer)
 {
     // Pack & send all data about world objects to new player
     for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
@@ -112,7 +112,7 @@ void Map::AddPlayer(PlayerPtr& pPlayer)
     Players.push_back(pPlayer);
 }
 
-void Map::AddSpell(UnitPtr& pCaster, SpellPtr& pSpell, float Angle)
+void Map::AddSpell(Unit* pCaster, SpellPtr& pSpell, float Angle)
 {
     // PLACEHOLDER
     Spells.push_back(SpellBoxPtr(new SpellBox(pSpell, pCaster, FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID)));
@@ -127,7 +127,7 @@ void Map::SendToPlayers(WorldPacket* Packet)
     }
 }
 
-void Map::RemovePlayer(PlayerPtr& pPlayer)
+void Map::RemovePlayer(Player* pPlayer)
 {
     WorldPacket* Packet = new WorldPacket((uint16)MSG_REMOVE_OBJECT);
     *Packet << pPlayer->GetObjectID();

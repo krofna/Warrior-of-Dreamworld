@@ -163,7 +163,7 @@ void World::Update()
 
 void World::AddSession(WorldSession* pWorldSession)
 {
-    PlayerPtr pPlayer = pWorldSession->GetPlayer();
+    Player* pPlayer = pWorldSession->GetPlayer();
     Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
 }
 

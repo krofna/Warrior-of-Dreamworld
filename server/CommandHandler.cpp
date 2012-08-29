@@ -142,7 +142,7 @@ void CommandHandler::HandleAccountDeleteCommand()
     std::string Username;
     ExtractArg(Username);
 
-    PlayerPtr pPlayer = sObjectMgr.GetPlayer(Username);
+    Player* pPlayer = sObjectMgr.GetPlayer(Username);
     if (pPlayer->IsInWorld())
         pPlayer->Kick();
 
@@ -180,7 +180,7 @@ void CommandHandler::HandleKillCommand()
 
     ExtractArg(PlayerName);
 
-    PlayerPtr pPlayer = sObjectMgr.GetPlayer(PlayerName);
+    Player* pPlayer = sObjectMgr.GetPlayer(PlayerName);
     if (pPlayer)
     {
         if (pPlayer->IsInWorld())

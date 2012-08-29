@@ -32,7 +32,7 @@ WorldAcceptor::~WorldAcceptor()
 {
 }
 
-void WorldAcceptor::HandleAccept(WorldSession* Session, const boost::system::error_code& error)
+void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::error_code& error)
 {
     if(!error)
     {

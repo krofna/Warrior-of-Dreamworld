@@ -29,11 +29,11 @@ class Creature;
 class CreatureAIFactory
 {
 public:
-    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(CreaturePtr pCreature));
-    CreatureAI* CreateAI(const std::string& AIName, CreaturePtr pCreature);
+    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
+    CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature);
 
 private:
-    std::map<std::string, CreatureAI*(*)(CreaturePtr pCreature)> Registry;
+    std::map<std::string, CreatureAI*(*)(Creature* pCreature)> Registry;
 };
 
 #endif

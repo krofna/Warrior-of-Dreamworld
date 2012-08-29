@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 typedef boost::asio::ip::tcp::socket TSocket;
 
-class WorldSession : public shared_from_this<WorldSession>
+class WorldSession : public enable_shared_from_this<WorldSession>
 {
     friend class WorldAcceptor;
 public:
@@ -49,7 +49,7 @@ public:
     void HandleLoginOpcode();
     void HandleChatMessageOpcode();
 
-    PlayerPtr GetPlayer();
+    Player* GetPlayer();
 
 private:
     void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
@@ -61,7 +61,7 @@ private:
     TSocket Socket;
 
     WorldPacket* Packet;
-    PlayerPtr pPlayer;
+    Player* pPlayer;
 
     bool Connected;
 

@@ -36,7 +36,7 @@ public:
     void Accept();
 
 private:
-    void HandleAccept(WorldSession* Session, const boost::system::error_code& error);
+    void HandleAccept(WorldSessionPtr Session, const boost::system::error_code& error);
 
     TAcceptor Acceptor;
     WorldSessionPtr NewSession;

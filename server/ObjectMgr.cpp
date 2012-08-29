@@ -90,11 +90,11 @@ void ObjectMgr::LoadPlayersLoginInfo()
 
     while (Result->next())
     {
-        Players.push_back(PlayerPtr(new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3))));
+        Players.push_back(new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3)));
     }
 }
 
-PlayerPtr ObjectMgr::GetPlayer(std::string& Username)
+Player* ObjectMgr::GetPlayer(std::string& Username)
 {
     for(auto iter = Players.begin(); iter != Players.end(); ++iter)
     {
@@ -104,5 +104,5 @@ PlayerPtr ObjectMgr::GetPlayer(std::string& Username)
         }
     }
 
-    return PlayerPtr();
+    return nullptr;
 }

@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         #define secure_vsnprintf vsnprintf_s
         #pragma warning(disable : 4251)
 
-        #if(_MSC_VER >= 1500)
+        #if(_MSC_VER == 1500)
             #define SMART_PTR_TR1
         #else
             #define USE_BOOST

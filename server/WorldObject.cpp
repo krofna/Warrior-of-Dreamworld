@@ -61,7 +61,7 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
         break;
     }
 
-    pMap->TileGrid[OldY][OldX].reset();
+    pMap->TileGrid[OldY][OldX] = nullptr;
 
     return true;
 }

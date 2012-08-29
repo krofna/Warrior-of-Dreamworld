@@ -38,12 +38,12 @@ public:
 
     virtual void SpellHit(SpellBoxPtr pSpellBox);
     virtual void CastSpell(SpellPtr pSpell, float Angle);
-    void CastSpell(uint16 Entry, UnitPtr pVictim);
+    void CastSpell(uint16 Entry, Unit* pVictim);
     void CastSpell(uint16 Entry, float Angle);
 
     virtual int32 GetMeleeDamage() const;
-    virtual void DealDamage(int32 Damage, UnitPtr pTarget);
-    virtual void TakeDamage(int32 Damage, UnitPtr pAttacker);
+    virtual void DealDamage(int32 Damage, Unit* pTarget);
+    virtual void TakeDamage(int32 Damage, Unit* pAttacker);
 
     void DoMeleeAttackIfReady(int32 diff);
     void Kill();
@@ -51,14 +51,14 @@ public:
     bool IsDead() const { return Health >= 1; }
     bool IsAlive() const { return !IsDead(); }
 
-    UnitPtr GetVictim();
+    Unit* GetVictim();
 
 protected:
     uint32 Health;
     uint32 Power;
     int32 MeeleAttackCooldown;
 
-    UnitPtr pVictim;
+    Unit* pVictim;
 };
 
 #endif

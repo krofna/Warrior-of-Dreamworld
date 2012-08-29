@@ -37,8 +37,8 @@ pTemplate         (pTemplate)
 
 void Creature::InitializeAI()
 {
-    pAI = CreateAI(pTemplate->ScriptName, static_pointer_cast<Creature>(shared_from_this()));
-    MovementGenerator = new Pathfinder(shared_from_this());
+    pAI = CreateAI(pTemplate->ScriptName, this);
+    MovementGenerator = new Pathfinder(this);
 }
 
 Creature::~Creature()
@@ -72,14 +72,14 @@ void Creature::SpellHit(SpellBoxPtr pSpellBox)
     pAI->SpellHit(pSpellBox);
 }
 
-void Creature::DealDamage(int32 Damage, UnitPtr pTarget)
+void Creature::DealDamage(int32 Damage, Unit* pTarget)
 {
     Unit::DealDamage(Damage, pTarget);
     if (pTarget->IsDead())
         pAI->KilledUnit(pTarget);
 }
 
-void Creature::TakeDamage(int32 Damage, UnitPtr pAttacker)
+void Creature::TakeDamage(int32 Damage, Unit* pAttacker)
 {
     Unit::TakeDamage(Damage, pAttacker);
     pAI->Hit(pAttacker, Damage);

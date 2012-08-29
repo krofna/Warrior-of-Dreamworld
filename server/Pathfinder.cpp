@@ -35,7 +35,7 @@ TODO:
 boost::shared_array<PathfinderNode> Pathfinder::PathfindingGrid;
 boost::shared_array<uint8> Pathfinder::PathfindingStatusGrid;
 
-Pathfinder::Pathfinder(WorldObjectPtr pOrigin) :
+Pathfinder::Pathfinder(WorldObject* pOrigin) :
 pOrigin               (pOrigin),
 pMap                  (pOrigin->GetMap())
 {
@@ -78,7 +78,7 @@ void Pathfinder::Update(int32 diff)
     }
 }
 
-void Pathfinder::UpdateTarget(WorldObjectPtr pNewTarget)
+void Pathfinder::UpdateTarget(WorldObject* pNewTarget)
 {
     this->pTarget = pNewTarget;
     this->Target = Vector2i(pTarget->GetX(), pTarget->GetY());
