@@ -42,6 +42,20 @@ CREATE TABLE `creature_template`
 	PRIMARY KEY(entry)
 );
 
+DROP TABLE IF EXISTS `item_template`;
+CREATE TABLE `item_template`
+(
+    `entry` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `class` INT UNSIGNED NOT NULL,
+    `subclass` INT UNSIGNED NOT NULL,
+    `name` CHAR(192) NOT NULL,
+    `displayid` INT UNSIGNED NOT NULL,
+    `inventory_type` INT UNSIGNED NOT NULL,
+    `container_slots` SMALLINT UNSIGNED,
+    `description` LONGTEXT,
+    PRIMARY KEY(entry)
+);
+
 INSERT INTO `creature_template` VALUES (0, 'krofnica', 'dg_classm32.gif', 7, 10, 'npc_krofnica');
 INSERT INTO `creature_template` VALUES (1, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 'npc_the_fullmetal_alchimist');
 
