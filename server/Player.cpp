@@ -77,11 +77,18 @@ void Player::LoadFromDB()
         m_Bags[idxBag]->LoadFromDB(Result->getUInt64(1), m_GUID, Result->getUInt64(3));
     }
 
-    // SendInventoryInformation();
+    SendInventoryData();
 
     sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %llu", ObjID);
 
     LoadedFromDB = true;
+}
+
+void Player::SendInventoryData()
+{
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_INVENTORY_DATA);
+    // TODO: What data are needed from client ?
+    SendPacket(Packet);
 }
 
 bool Player::IsLoaded()

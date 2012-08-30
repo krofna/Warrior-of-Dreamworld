@@ -51,6 +51,8 @@ public:
     void HandleSwapItemOpcode();
     void HandleDeleteItemOpcode();
     void HandleCreateItemOpcode();
+    void HandleUseItemOpcode();
+    void HandleEquipItemOpcode();
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);

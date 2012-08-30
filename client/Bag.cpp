@@ -1,7 +1,7 @@
 #include "Bag.hpp"
 #include "Item.hpp"
 
-Bag::Bag()
+Bag::Bag() : m_Capacity(0)
 {
 
 }
@@ -36,4 +36,9 @@ void Bag::Destroy(uint8 SrcSlot)
 void Bag::Create(uint8 DestSlot, uint64 Entry)
 {
     m_Slots[DestSlot] = Item::Create(Entry);
+}
+
+Item* Bag::GetItem(uint8 SrcSlot) const
+{
+    return m_Slots.at(SrcSlot);
 }

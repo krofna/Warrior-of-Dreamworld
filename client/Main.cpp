@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Login.hpp"
 #include "Game.hpp"
 #include "WorldSession.hpp"
+#include "ObjectMgr.hpp"
 #include "boost/scoped_ptr.hpp"
 
 #include <stdexcept>
@@ -26,6 +27,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 int main()
 {
     using namespace std;
+
+    sObjectMgr = new ObjectMgr("data/tilesets", "data/displayid", "data/items.data");
+    sObjectMgr->Initialize();
 
     Window = new sf::RenderWindow();
     sSFGUI = new sfg::SFGUI();

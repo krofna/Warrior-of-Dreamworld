@@ -56,7 +56,7 @@ class SpellBox;
         using boost::enable_shared_from_this;
         using boost::static_pointer_cast;
 
-        #define boost::array array
+        #define static_template_array boost::array 
 #else
         #ifndef SMART_PTR_TR1_INCLUDE
             #include <memory>
@@ -86,7 +86,7 @@ class SpellBox;
             using std::enable_shared_from_this;
             using std::static_pointer_cast;
 
-            #define std::array array
+            #define static_template_array std::array
        #endif
 
 #endif

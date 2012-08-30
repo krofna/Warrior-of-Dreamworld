@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "../shared/Defines.hpp"
 #include "Game.hpp"
 #include "Login.hpp"
+#include "Inventory.hpp"
 #include <boost/bind.hpp>
 #include <cstring>
 
@@ -224,7 +225,7 @@ void WorldSession::HandleChatMessageOpcode()
 void WorldSession::HandleSwapItemOpcode()
 {
     uint8 srcbag, dstbag, srcslot, dstslot;
-    Packet >> srcbag >> dstbag >> srcslot >> dstslot;
+    *Packet >> srcbag >> dstbag >> srcslot >> dstslot;
 
     pWorld->GetInventory()->Swap(srcbag, dstbag, srcslot, dstslot);
 }
@@ -238,12 +239,22 @@ void WorldSession::HandleDeleteItemOpcode()
 
 void WorldSession::HandleCreateItemOpcode()
 {
-    uint8 dstslot, dstbag, count;
+    uint8 dstslot, dstbag;
     uint64 entry;
 
-    Packet >> dstslot >> dstbag >> count >> entry;
+    *Packet >> dstslot >> dstbag >> entry;
 
-    pWorld->GetInventory()->Create(dstbag, dstslot, entry, count);
+    pWorld->GetInventory()->Create(dstbag, dstslot, entry);
+}
+
+void WorldSession::HandleUseItemOpcode()
+{
+
+}
+
+void WorldSession::HandleEquipItemOpcode()
+{
+
 }
 
 void WorldSession::SendMovementRequest(uint8 Direction)

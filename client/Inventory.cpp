@@ -1,4 +1,8 @@
 #include "Inventory.hpp"
+#include "Item.hpp"
+#include "Bag.hpp"
+
+#include <SFML/Window/Event.hpp>
 
 Inventory::Inventory()
 {
@@ -19,7 +23,7 @@ void Inventory::Draw()
 
 void Inventory::DrawBagOpen()
 {
-    if (m_AllIsOpen)
+    if (m_IsAllOpen)
     {
         for (int iBag = 0 ; iBag < 4 ; ++iBag)
         {

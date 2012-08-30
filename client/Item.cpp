@@ -1,5 +1,5 @@
 #include "Item.hpp"
-#include "ObjectMgr.hpp"
+#include "Globals.hpp"
 #include "Templates.hpp"
 
 Item::Item()
@@ -10,7 +10,7 @@ Item::Item()
 Item* Item::Create(uint64 Entry)
 {
     Item* newItem = new Item;
-    ItemTemplate const* itemProto = ObjectMgr::GetItemTemplate(Entry);
+    ItemTemplate const* itemProto = sObjectMgr->GetItemData(Entry);
 
     if (!itemProto)
         return nullptr;

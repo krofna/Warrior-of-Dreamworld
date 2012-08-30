@@ -1,10 +1,13 @@
 #ifndef ITEM_DEFINED
 #define ITEM_DEFINED
 
+#include "../shared/Defines.hpp"
+
 class ItemTemplate;
 class Item
 {
     public:
+    Item();
     static Item* Create(uint64 Entry);
 
     void Draw();

@@ -17,20 +17,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Game.hpp"
-#include "ResourceManager.hpp"
 
 Game::Game  (bool FullScreen)
 {
     Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", sf::Style::Close);
     Window->setFramerateLimit(60);
-
-    ResourceManager::Init();
 }
 
 Game::~Game()
 {
     PopAllStates();
-    ResourceManager::Destroy();
 }
 
 void Game::Run()

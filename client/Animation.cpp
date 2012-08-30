@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Animation.hpp"
 #include "Globals.hpp"
 #include <cmath>
-#include "ResourceManager.hpp"
 
 void Animation::Load(WorldPacket Argv)
 {
@@ -27,7 +26,7 @@ void Animation::Load(WorldPacket Argv)
     Argv.ReadSkip<uint16>(); // Effect
     Argv.ReadSkip<uint16>(); // DisplayID
     Argv >> Angle >> ID >> Position.x >> Position.y;
-    Sprite.setTexture(*ResourceManager::GetTileset("t.png"));
+    Sprite.setTexture(*sObjectMgr->GetTileset("t.png"));
     Sprite.setPosition(Position);
     Time = sf::microseconds(0);
 }

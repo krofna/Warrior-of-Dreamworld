@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class GameState;
 class WorldObject;
+class Inventory;
 class MessageChatArea;
 
 typedef boost::shared_ptr<MessageChatArea> MessageChatAreaPtr;
@@ -49,7 +50,7 @@ public:
 
     void AddAnimation(Animation* pAnimation);
 
-    Inventory* GetInventory() ;
+    Inventory* GetInventory();
 
 protected:
     void ReceiveNewMessage(uint64 ObjID, std::string const& Message);

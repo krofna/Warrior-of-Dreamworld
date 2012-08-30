@@ -18,11 +18,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
 #include "Utilities.hpp"
+
 #include "Globals.hpp"
 #include "Game.hpp"
+
 #include "WorldSession.hpp"
 #include "MessageChatArea.hpp"
-#include "ResourceManager.hpp"
+
+#include "Inventory.hpp"
+
 #include "../shared/Math.hpp"
 #include <cassert>
 
@@ -59,7 +63,6 @@ void World::Load(WorldPacket Argv)
     uint16 MapID;
     Argv >> MapID;
 
-    ResourceManager::RemoveTileset(TilesetFileName);
     std::string Path = "data/maps/map" + IntToString(MapID) + ".map";
 
     std::ifstream File(Path);
@@ -75,7 +78,7 @@ void World::Load(WorldPacket Argv)
     TileMap.resize(MapWidth * MapHeight * 4);
     MapWidth *= TILE_SIZE;
     MapHeight *= TILE_SIZE;
-    MapStates.texture = ResourceManager::GetTileset(TilesetFileName);
+    MapStates.texture = sObjectMgr->GetTileset(TilesetFileName);
 
     while (File >> x >> y >> tx >> ty)
     {

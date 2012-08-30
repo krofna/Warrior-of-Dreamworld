@@ -1,6 +1,9 @@
 #ifndef INVENTORY_DEFINED
 #define INVENTORY_DEFINED
 
+#include "../shared/Defines.hpp"
+
+namespace sf { struct Event; }
 class Bag;
 class Inventory
 {
@@ -12,7 +15,7 @@ class Inventory
 
     void Swap(uint8 SrcBag, uint8 DestBag, uint8 SrcSlot, uint8 DestSlot);
     void Destroy(uint8 SrcBag, uint8 SrcSlot);
-    void Create(uint8 DestBag, uint8 DestSlot, uin64 Entry);
+    void Create(uint8 DestBag, uint8 DestSlot, uint64 Entry);
 
     protected:
     void DrawBagOpen();

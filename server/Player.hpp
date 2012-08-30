@@ -86,6 +86,8 @@ public:
     void DestroyItem(uint8 SrcBag, uint8 SrcSlot);
 
 private:
+    void SendInventoryData();
+
     WorldSession* pWorldSession;
 
     std::string Username;
