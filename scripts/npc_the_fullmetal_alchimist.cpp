@@ -71,7 +71,7 @@ public:
         if (IsInPhysicalFullBrust)
         {
             pCreature->CastSpell(SPELL_QUADRUPLE_ACCEL_NO_INTERVAL, pCreature->GetVictim());
-            PhysicalFullBrustTimer -= diff;
+            // TODO: Reduce speed of movement due to hyper speed.
         }
 
         if (PhysicalFullBrustTimer <= diff)
