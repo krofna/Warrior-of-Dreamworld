@@ -24,14 +24,14 @@ enum
     SPELL_QUADRUPLE_ACCEL_NO_INTERVAL = 2
 };
 
-#define TEXT_SPECIAL_ATTACK "Brust Link !"
+#define TEXT_SPECIAL_ATTACK "Burst Link !"
 
 #define TEXT_ACCEL "First, ACCEL !"
 #define TEXT_DOUBLE_ACCEL "Second, DOUBLE ACCEL !"
 #define TEXT_TRIPLE_ACCEL "I NEED MORE POWER, THIRD ! TRIPLE ACCEL !"
 #define TEXT_QUADRUPLE_ACCEL "YAAAAAAAAA, FINAL QUADRUPLE ACCEL, NO INTERVAL !"
 
-#define TEXT_ULTIMATE_ATTACK "Physical Full Brust !"
+#define TEXT_ULTIMATE_ATTACK "Physical Full Burst !"
 
 class WOD_DLL_DECL npc_the_fullmetal_alchimistAI : public CreatureAI
 {
