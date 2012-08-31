@@ -31,9 +31,7 @@ MeeleAttackCooldown(0)
 
 void Unit::SpellHit(SpellBoxPtr pSpellBox)
 {
-    // PH - reduce health and do shit
-    // Threat checks etc?
-    // TODO: Send a packet to players in map
+    DealDamage(pSpellBox->pSpell->Value);
 }
 
 void Unit::CastSpell(SpellPtr pSpell, float Angle)
