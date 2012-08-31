@@ -23,7 +23,8 @@ void MessageChatArea::Draw(int32 UpdateTime)
 {
     if (m_IsTyping)
     {
-        sf::Text plrText(m_Message);
+        sf::Text plrText;
+        plrText.setString(m_Message);
         plrText.setFont(m_DefaultFont);
         plrText.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y + 50); // Would you take a little more of voodo ?
         Window->draw(plrText);
