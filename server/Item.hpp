@@ -1,6 +1,9 @@
 #ifndef ITEM_DEFINED
 #define ITEM_DEFINED
 
+class Bag;
+struct ItemTemplate;
+
 class Item
 {
     enum ItemUpdateState

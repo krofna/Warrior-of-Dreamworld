@@ -250,8 +250,8 @@ void WorldSession::HandleChatMessageOpcode()
 void WorldSession::HandleAutoEquipItemOpcode()
 {
     uint64 ItemGUID;
-    uint8 SourceBag, SourceSlot
-    Packet >> ItemGUID >> SourceBag >> SourceSlot;
+    uint8 SourceBag, SourceSlot;
+    *Packet >> ItemGUID >> SourceBag >> SourceSlot;
 
     // Cheating attempt
     if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
@@ -268,7 +268,7 @@ void WorldSession::HandleUseItemOpcode()
     uint64 ItemGUID;
     uint8 SourceBag, SourceSlot;
 
-    Packet >> ItemGUID >> SourceBag >> SourceSlot;
+    *Packet >> ItemGUID >> SourceBag >> SourceSlot;
 
     // Cheating attempt
     if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
@@ -285,7 +285,7 @@ void WorldSession::HandleEquipItemOpcode()
     uint8 SourceSlot, SourceBag, DestEquipementSlot;
     uint64 ItemGUID;
 
-    Packet >> ItemGUID >> SourceBag >> SourceSlot >> DestEquipementSlot;
+    *Packet >> ItemGUID >> SourceBag >> SourceSlot >> DestEquipementSlot;
 
     if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
     {
@@ -305,7 +305,7 @@ void WorldSession::HandleEquipItemOpcode()
 void WorldSession::HandleSwapItemOpcode()
 {
     uint8 SourceBag, SourceSlot, DestinationBag, DestinationSlot;
-    Packet >> SourceBag >> DestinationBag >> SourceSlot >> DestinationSlot;
+    *Packet >> SourceBag >> DestinationBag >> SourceSlot >> DestinationSlot;
 
     if (SourceSlot == DestinationSlot && SourceBag == DestinationBag)
         return;
@@ -328,7 +328,7 @@ void WorldSession::HandleSwapItemOpcode()
 void WorldSession::HandleDeleteItemOpcode()
 {
     uint8 Bag, Slot, Count;
-    Packet >> Bag >> Slot >> Count;
+    *Packet >> Bag >> Slot >> Count;
 
     if (!pPlayer->CanUnequipItem(Bag, Slot))
     {
@@ -344,7 +344,7 @@ void WorldSession::HandleDeleteItemOpcode()
         return;
     }
 
-a    if (Count)
+    if (Count)
         pPlayer->DestroyItemCount(pItem, Count);
     else
         pPlayer->DestroyItem(Bag, Slot);

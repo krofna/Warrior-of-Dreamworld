@@ -31,7 +31,7 @@ MeeleAttackCooldown(0)
 
 void Unit::SpellHit(SpellBoxPtr pSpellBox)
 {
-    DealDamage(pSpellBox->pSpell->Value);
+    TakeDamage(pSpellBox->pSpell->Value, pSpellBox->pCaster);
 }
 
 void Unit::CastSpell(SpellPtr pSpell, float Angle)

@@ -54,6 +54,7 @@ class WorldSession;
         using boost::enable_shared_from_this;
         using boost::make_shared;
         using boost::static_pointer_cast;
+        using boost::array;
 
         #define static_template_array boost::array
 #else
@@ -78,6 +79,7 @@ class WorldSession;
             using std::enable_shared_from_this;
             using std::make_shared;
             using std::static_pointer_cast;
+            using std::array;
 
             #define static_template_array std::array
        #endif
