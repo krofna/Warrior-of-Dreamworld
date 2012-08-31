@@ -1,2 +1,2 @@
-cp -R ../client/Release/* bin/Client/Debug/
-cp -R ../client/Release/* bin/Client/Release/
+cp -R ../client/Release/* ClientData/* bin/Client/Debug/
+cp -R ../client/Release/* ClientData/* bin/Client/Release/

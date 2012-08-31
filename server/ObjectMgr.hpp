@@ -27,24 +27,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Player;
 class Spell;
 
-// TODO: Use this for spell/gameobject/creature templates
 class ObjectMgr
 {
 public:
     ~ObjectMgr();
 
-    CreatureTemplate* GetCreatureTemplate(uint32 Entry);
-    SpellPtr GetSpell(uint16 ID);
+    CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
+    ItemTemplate    * GetItemTemplate     (uint64 Entry) const;
+
+    SpellPtr  GetSpell  (uint16 ID);
 
     void LoadSpells();
     void LoadCreatureTemplates();
+    void LoadItemsTemplates();
     void LoadPlayersLoginInfo();
+
     Player* GetPlayer(std::string& Username);
 
 private:
-    std::vector<SpellPtr> Spells;
-    std::map<uint32, CreatureTemplate*> CreatureTemplates;
     std::vector<Player*> Players;
+    std::vector<SpellPtr> Spells;
+    std::map<uint64, CreatureTemplate*> CreatureTemplates;
+    std::map<uint64, ItemTemplate*> ItemTemplates;
 };
 
 extern ObjectMgr sObjectMgr; // todo: *

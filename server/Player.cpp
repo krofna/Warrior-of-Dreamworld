@@ -61,9 +61,33 @@ void Player::LoadFromDB()
     Position.x  = Result->getUInt(6);
     Position.y  = Result->getUInt(7);
 
+    // Load bags
+    QueryResult Result(sDatabase.PQuery("SELECT `guid`, `idx`, `item_id` FROM `character_bags` WHERE `owner_guid` = %llu", m_GUID));
+
+    while (Result->next())
+    {
+        int idxBag = Result->getUInt(2);
+        if (idxBag >= 4)
+        {
+            sLog.Write("Corrumpted database, invalid index bag !");
+            break;
+        }
+        m_Bags[idxBag] = new Bag;
+        m_Bags[idxBag]->LoadFromDB(Result->getUInt64(1), m_GUID, Result->getUInt64(3));
+    }
+
+    SendInventoryData();
+
     sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %llu", ObjID);
 
     LoadedFromDB = true;
+}
+
+void Player::SendInventoryData()
+{
+    WorldPacket* Packet = new WorldPacket((uint16)MSG_INVENTORY_DATA);
+    // TODO: What data are needed from client ?
+    SendPacket(Packet);
 }
 
 bool Player::IsLoaded()
@@ -105,6 +129,14 @@ void Player::Update(int32 diff)
 void Player::SaveToDB()
 {
     sDatabase.PExecute("UPDATE `players` SET x=%u, y=%u, mapid=%u WHERE guid=%llu", Position.x, Position.y, pMap->MapID, GetObjectID());
+    // Save bags
+    /*
+
+    for (int i = 0 ; i < 4 ; ++i)
+        if (m_Bags[i])
+            m_Bags[i]->SaveToDB();
+
+    */
 }
 
 WorldPacket* Player::PackData()
@@ -144,4 +176,161 @@ void Player::LogOut()
 bool Player::CanSpeak() const
 {
     return !m_IsMute;
+}
+
+bool Player::HasItem(uint8 Bag, uint8 Slot, uint64 ItemID) const
+{
+    if (!IsValidPos(Bag, Slot))
+        return false;
+
+    Item* pItem = m_Bags[Bag]->GetItemBySlot(Slot);
+    
+    return pItem->GetItemID() == ItemID;
+}
+
+bool Player::IsValidPos(uint8 Bag, uint8 Slot) const
+{
+    if (Bag >= 4)
+        return false;
+
+    if (!m_Bags[Bag]->IsValidSlot(Slot))
+        return false;
+
+    return true;
+}
+
+bool Player::CanUnequipItem(uint8 Bag, uint8 Slot) const
+{
+    Item* pItem = GetItemByPos(Bag, Slot);
+    if (!pItem)
+        return false;
+
+    // TODO: What are conditions for an item is unequipable ? (Combat ?)
+
+    return true;
+}
+
+Item* Player::GetItemByPos(uint8 Bag, uint8 Slot) const
+{
+    if (!IsValidPos(Bag, Slot))
+        return nullptr;
+
+    return m_Bags[Bag]->GetItemBySlot(Slot);
+}
+
+void Player::AutoEquipItem(uint8 Bag, uint8 Slot)
+{
+    if (!IsValidPos(Bag, Slot))
+        return;
+
+    Item* pItem = GetItemByPos(Bag, Slot);
+
+    // TODO: Find the best slot for the item
+
+    if (pItem->IsBag())
+    {
+        Bag* pBag = pItem->ToBag();
+        if (FreeSlotBags() == 0)
+        {
+            pWorldSession->SendNotification("You haven't free slots for equip a new bag !");
+            return;
+        }
+        else
+        {
+            EquipBag(pBag);
+        }
+    }
+    else
+    {
+
+    }
+
+    // EquipItem(pItem, bestDstSlot);
+}
+
+void Player::EquipBag(Bag* pBag)
+{
+    if (FreeSlotBags() == 0)
+        return;
+
+    for (int i = 0 ; i < 4 ; ++i)
+    {
+        if (!m_Bags[i])
+        {
+            m_Bags[i] = pBag;
+            return;
+        }
+    }
+}
+
+void Player::EquipItem(uint8 SrcBag, uint8 SrcSlot, uint8 DstSlot)
+{
+    Item* pItem = GetItemByPos(SrcBag, SrcSlot);
+    if (!pItem)
+        return;
+
+    EquipItem(pItem, DstSlot);
+}
+
+void Player::EquipItem(Item* pItem, uint8 DstSlot)
+{
+    // TODO: Equip item
+}
+
+void Player::UnequipItem(uint8 SrcSlot)
+{
+    // TODO: Unequip item
+}
+
+void Player::UnequipBag(uint8 SrcBag)
+{
+    if (!m_Bags[SrcBag])
+        return;
+
+    if (FreeSlotBags() == 3)
+    {
+        pWorldSession->SendNotification("You can't unequip your last bag !");
+        return;
+    }
+
+    Bag* pBag = m_Bags[SrcBag];
+    m_Bags[SrcBag] = nullptr;
+
+    uint8 BagSlot = FindFreeBag();
+    uint8 Slot = m_Bags[BagSlot]->FindFreeSlot();
+
+    StoreItem(pBag, BagSlot, Slot);
+}
+
+void Player::StoreItem(Item* pItem, uint8 DstBag, uint8 DstSlot)
+{
+    if (!pItem || !IsValidPos(DstBag, DstSlot))
+        return;
+
+    m_Bags[DstBag]->Store(pItem, DstSlot);
+}
+
+void Player::UseItem(uint8 Bag, uint8 Slot)
+{
+    if (!IsValidPos(Bag, Slot))
+        return;
+}
+
+void Player::SwapItem(uint8 SrcBag, uint8 SrcSlot, uint8 DstBag, uint8 DstSlot)
+{
+    if (!IsValidPos(SrcBag, SrcSlot) || !IsValidPos(DstBag, DstSlot))
+        return;
+
+    Item* pSrcItem = GetItemByPos(SrcBag, SrcSlot);
+    Item* pDstItem = GetItemByPos(DstBag, DstSlot);
+
+    std::swap(&pSrcItem, &pDstItem); // [To check]: Should work 
+}
+ 
+void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)
+{
+    if (!IsValidPos(SrcBag, SrcSlot))
+        return;
+    
+    m_Bags[SrcBag]->Destroy(SrcSlot);
 }

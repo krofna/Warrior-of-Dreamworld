@@ -44,16 +44,22 @@ class WorldSession;
 
 #ifdef USE_BOOST
         #include <boost/shared_ptr.hpp>
+        #include <boost/array.hpp>
         #include <boost/enable_shared_from_this.hpp>
         #include <boost/make_shared.hpp>
+        
         typedef boost::shared_ptr<Spell> SpellPtr;
         typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
         typedef boost::shared_ptr<WorldSession> WorldSessionPtr;
         using boost::enable_shared_from_this;
         using boost::make_shared;
+        using boost::static_pointer_cast;
+
+        #define static_template_array boost::array
 #else
         #ifndef SMART_PTR_TR1_INCLUDE
             #include <memory>
+            #include <array>
         #else
             #include <tr1/memory>
         #endif 
@@ -71,6 +77,9 @@ class WorldSession;
             typedef std::shared_ptr<WorldSession> WorldSessionPtr;
             using std::enable_shared_from_this;
             using std::make_shared;
+            using std::static_pointer_cast;
+
+            #define static_template_array std::array
        #endif
 
 #endif

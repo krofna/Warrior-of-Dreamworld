@@ -24,5 +24,6 @@ Game* sGame;
 WorldSession* Session;
 sfg::SFGUI* sSFGUI;
 sfg::Desktop sDesktop;
+ObjectMgr* sObjectMgr;
 uint16 WindowWidth;
 uint16 WindowHeight;

@@ -36,15 +36,28 @@ ObjectMgr::~ObjectMgr()
     {
         delete *iter;
     }
+    
+    for(auto iter = ItemTemplates.begin(); iter != ItemTemplates.end(); ++iter)
+    {
+        delete iter->second;
+    }
 }
 
-CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint32 Entry)
+CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry)
 {
     auto CTemplate = CreatureTemplates.find(Entry);
     if(CTemplate != CreatureTemplates.end())
         return CTemplate->second;
 
     throw std::runtime_error("Bad creature entry. Could not find template.");
+}
+ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry)
+{
+    auto CTemplate = ItemTemplates.find(Entry);
+    if (CTemplate != ItemTemplates.end())
+        return CTemplate->second;
+
+    throw std::runtime_error("Bad item entry. Could not find template.");
 }
 
 SpellPtr ObjectMgr::GetSpell(uint16 ID)
@@ -68,17 +81,39 @@ void ObjectMgr::LoadCreatureTemplates()
     {
         pTemplate = new CreatureTemplate;
 
-        pTemplate->Entry = Result->getUInt(1);
-        pTemplate->Name = Result->getString(2);
-        pTemplate->Tileset = Result->getString(3);
-        pTemplate->tx = Result->getUInt(4);
-        pTemplate->ty = Result->getUInt(5);
-        pTemplate->ScriptName = Result->getString(6);
+        pTemplate->Entry      = Result->getUInt64 (1);
+        pTemplate->Name       = Result->getString (2);
+        pTemplate->Tileset    = Result->getString (3);
+        pTemplate->tx         = Result->getUInt   (4);
+        pTemplate->ty         = Result->getUInt   (5);
+        pTemplate->ScriptName = Result->getString (6);
 
-        CreatureTemplates[Result->getUInt(1)] = pTemplate;
+        CreatureTemplates[pTemplate->Entry] = pTemplate;
     }
 }
 
+void ObjectMgr::LoadItemTemplates()
+{
+    QueryResult Result(sDatabase.Query("SELECT * FROM `item_template`"));
+
+    ItemTemplate* pTemplate;
+
+    while (Result->next())
+    {
+        pTemplate = new ItemTemplate;
+
+        pTemplate->ItemID         = Result->getUInt64 (1);
+        pTemplate->Class          = Result->getUInt   (2);
+        pTemplate->SubClass       = Result->getUInt   (3);
+        pTemplate->Name           = Result->getString (4);
+        pTemplate->DisplayInfoID  = Result->getUInt   (5);
+        pTemplate->InventoryType  = Result->getUInt   (6);
+        pTemplate->ContainerSlots = Result->getUInt   (7);
+        pTemplate->Description    = Result->getString (8);
+
+        ItemTemplates[pTemplate->ItemID] = pTemplate;
+    }
+}
 void ObjectMgr::LoadSpells()
 {
     QueryResult Result(sDatabase.Query("SELECT * FROM `spells`"));

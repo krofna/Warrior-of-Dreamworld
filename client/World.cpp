@@ -18,11 +18,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
 #include "Utilities.hpp"
+
 #include "Globals.hpp"
 #include "Game.hpp"
+
 #include "WorldSession.hpp"
 #include "MessageChatArea.hpp"
-#include "ResourceManager.hpp"
+
+#include "Inventory.hpp"
+
 #include "../shared/Math.hpp"
 #include <cassert>
 
@@ -59,7 +63,6 @@ void World::Load(WorldPacket Argv)
     uint16 MapID;
     Argv >> MapID;
 
-    ResourceManager::RemoveTileset(TilesetFileName);
     std::string Path = "data/maps/map" + IntToString(MapID) + ".map";
 
     std::ifstream File(Path);
@@ -75,7 +78,7 @@ void World::Load(WorldPacket Argv)
     TileMap.resize(MapWidth * MapHeight * 4);
     MapWidth *= TILE_SIZE;
     MapHeight *= TILE_SIZE;
-    MapStates.texture = ResourceManager::GetTileset(TilesetFileName);
+    MapStates.texture = sObjectMgr->GetTileset(TilesetFileName);
 
     while (File >> x >> y >> tx >> ty)
     {
@@ -91,6 +94,8 @@ void World::Load(WorldPacket Argv)
 
         index += 4;
     }
+
+    pInventory = new Inventory;
 
     sGame->PopState();
     sGame->PushState(this);
@@ -146,6 +151,9 @@ void World::Draw()
     {
         (*i)->Update();
     }
+
+    // Draw Inventory
+    pInventory->Draw();
 
     // Draw chat GUI
     m_MessageArea->Draw(m_UpdateClock.restart().asMilliseconds());
@@ -215,6 +223,8 @@ void World::HandleEvent(sf::Event Event)
     default:
         break;
     }
+
+    pInventory->HandleEvent(Event);
 }
 
 void World::AddObject(WorldObject* pWorldObject, uint64 ObjectID)
@@ -247,4 +257,9 @@ void World::AddAnimation(Animation* pAnimation)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);
     Animations.push_back(pAnimation);
+}
+
+Inventory* World::GetInventory() 
+{
+    return pInventory;
 }

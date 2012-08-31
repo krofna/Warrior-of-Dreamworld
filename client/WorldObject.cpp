@@ -17,8 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldObject.hpp"
+#include "Globals.hpp"
 #include "../shared/WorldPacket.hpp"
-#include "ResourceManager.hpp"
 
 WorldObject::WorldObject()
 {
@@ -32,7 +32,7 @@ void WorldObject::Load(WorldPacket Argv)
     uint16 x, y, tx, ty;
     Argv >> x >> y >> tx >> ty;
 
-    ObjectSprite.setTexture(*ResourceManager::GetTileset(Tileset));
+    ObjectSprite.setTexture(*sObjectMgr->GetTileset(Tileset));
     ObjectSprite.setTextureRect(sf::IntRect(tx * TILE_SIZE, ty * TILE_SIZE, TILE_SIZE, TILE_SIZE));
     ObjectSprite.setPosition((float)x * TILE_SIZE, (float)y * TILE_SIZE);
 }

@@ -247,6 +247,109 @@ void WorldSession::HandleChatMessageOpcode()
     pPlayer->Say(Message.c_str());
 }
 
+void WorldSession::HandleAutoEquipItemOpcode()
+{
+    uint64 ItemGUID;
+    uint8 SourceBag, SourceSlot
+    Packet >> ItemGUID >> SourceBag >> SourceSlot;
+
+    // Cheating attempt
+    if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
+    {
+        SendNotification("Item not found!");
+        return;
+    }
+
+    pPlayer->AutoEquipItem(SourceBag, SourceSlot);
+}
+
+void WorldSession::HandleUseItemOpcode()
+{
+    uint64 ItemGUID;
+    uint8 SourceBag, SourceSlot;
+
+    Packet >> ItemGUID >> SourceBag >> SourceSlot;
+
+    // Cheating attempt
+    if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
+    {
+        SendNotification("Item not found!");
+        return;
+    }
+
+    pPlayer->UseItem(SourceBag, SourceSlot);
+}
+
+void WorldSession::HandleEquipItemOpcode()
+{
+    uint8 SourceSlot, SourceBag, DestEquipementSlot;
+    uint64 ItemGUID;
+
+    Packet >> ItemGUID >> SourceBag >> SourceSlot >> DestEquipementSlot;
+
+    if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
+    {
+        SendNotification("Item not found!");
+        return;
+    }
+
+    if (!pPlayer->CanEquip(SourceBag, SourceSlot, DestEquipementSlot))
+    {
+        SendNotification("Can't equip this item !");
+        return;
+    }
+
+    pPlayer->EquipItem(SourceBag, SourceSlot, DestEquipementSlot);
+}
+
+void WorldSession::HandleSwapItemOpcode()
+{
+    uint8 SourceBag, SourceSlot, DestinationBag, DestinationSlot;
+    Packet >> SourceBag >> DestinationBag >> SourceSlot >> DestinationSlot;
+
+    if (SourceSlot == DestinationSlot && SourceBag == DestinationBag)
+        return;
+
+    if (!pPlayer->IsValidPos(SourceBag, SourceSlot))
+    {
+        SendNotification("Item not found!");
+        return;
+    }
+
+    if (!pPlayer->IsValidPos(DestinationBag, DestinationSlot))
+    {
+        SendNotification("Item can't go in this slot !");
+        return;
+    }
+
+    pPlayer->SwapItem(SourceBag, SourceSlot, DestinationBag, DestinationSlot);
+}
+
+void WorldSession::HandleDeleteItemOpcode()
+{
+    uint8 Bag, Slot, Count;
+    Packet >> Bag >> Slot >> Count;
+
+    if (!pPlayer->CanUnequipItem(Bag, Slot))
+    {
+        SendNotification("You can't currently destroy this item !");
+        return;
+    }
+
+    Item* pItem = pPlayer->GetItemByPos(Bag, Slot);
+
+    if (!pItem)
+    {
+        SendNotification("Item not found!");
+        return;
+    }
+
+a    if (Count)
+        pPlayer->DestroyItemCount(pItem, Count);
+    else
+        pPlayer->DestroyItem(Bag, Slot);
+}
+
 void WorldSession::SendLogOutPacket()
 {
     WorldPacket* Packet = new WorldPacket((uint16)MSG_LOG_OUT);

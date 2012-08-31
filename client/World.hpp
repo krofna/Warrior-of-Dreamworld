@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class GameState;
 class WorldObject;
+class Inventory;
 class MessageChatArea;
 
 typedef boost::shared_ptr<MessageChatArea> MessageChatAreaPtr;
@@ -48,6 +49,8 @@ public:
     void RemoveObject(uint64 ObjectID);
 
     void AddAnimation(Animation* pAnimation);
+
+    Inventory* GetInventory();
 
 protected:
     void ReceiveNewMessage(uint64 ObjID, std::string const& Message);
@@ -70,6 +73,9 @@ private:
     int CameraRight;
     int CameraBottom;
     // END TODO
+    
+    // Inventory
+    Inventory* pInventory;
 
     std::map<uint64, WorldObject*> WorldObjectMap;
     std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
