@@ -36,7 +36,7 @@ enum
 class WOD_DLL_DECL npc_the_fullmetal_alchimistAI : public CreatureAI
 {
 public:
-    npc_the_fullmetal_alchimistAI(CreaturePtr& pCreature) : CreatureAI(pCreature)
+    npc_the_fullmetal_alchimistAI(Creature* pCreature) : CreatureAI(pCreature)
     {
         Reset();
     }
@@ -152,7 +152,7 @@ public:
     }
 };
 
-CreatureAI* GetAI_npc_the_fullmetal_alchimist(CreaturePtr pCreature)
+CreatureAI* GetAI_npc_the_fullmetal_alchimist(Creature* pCreature)
 {
     return new npc_the_fullmetal_alchimistAI(pCreature);
 }

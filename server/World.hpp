@@ -37,7 +37,7 @@ public:
     void ConsoleInput();
 
     void AddSession(WorldSession* pWorldSession);
-    MapPtr GetMap(uint16 MapID);
+    Map* GetMap(uint16 MapID);
 
     CreatureAIFactory* GetAIFactory();
 
@@ -46,7 +46,7 @@ private:
     void HandleCommand(std::string& Command);
 
     WorldAcceptor* pWorldAcceptor;
-    std::vector<MapPtr> Maps;
+    std::vector<Map*> Maps;
 
     CreatureAIFactory* AIFactory;
 

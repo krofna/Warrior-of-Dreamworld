@@ -42,9 +42,7 @@ void Unit::CastSpell(SpellPtr pSpell, float Angle)
     WorldPacket* Packet = new WorldPacket((uint16)MSG_CAST_SPELL);
     *Packet << ObjID << pSpell->Effect << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
     pMap->SendToPlayers(Packet);
-    UnitPtr me = static_pointer_cast<Unit>(shared_from_this());
-
-    pMap->AddSpell(me, pSpell, Angle);
+    pMap->AddSpell(this, pSpell, Angle);
 }
 
 void Unit::Say(const char* Text)
@@ -72,7 +70,7 @@ void Unit::DoMeleeAttackIfReady(int32 diff)
     }
 }
 
-void Unit::CastSpell(uint16 Entry, UnitPtr pVictim)
+void Unit::CastSpell(uint16 Entry, Unit* pVictim)
 {
     // TODO: Angle is bugged because client side GetAngle works differently
     CastSpell(sObjectMgr.GetSpell(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->GetPosition() * TILE_SIZE));
@@ -88,13 +86,12 @@ void Unit::Kill()
     Health = 0; // :)
 }
 
-void Unit::DealDamage(int32 Damage, UnitPtr pTarget)
+void Unit::DealDamage(int32 Damage, Unit* pTarget)
 {
-    UnitPtr me = static_pointer_cast<Unit>(shared_from_this());
-    pTarget->TakeDamage(Damage, me);
+    pTarget->TakeDamage(Damage, this);
 }
 
-void Unit::TakeDamage(int32 Damage, UnitPtr pAttacker)
+void Unit::TakeDamage(int32 Damage, Unit* pAttacker)
 {
     if (Health - Damage <= 0)
         Health = 0;
@@ -107,7 +104,7 @@ int32 Unit::GetMeleeDamage() const
     return 1; // TODO: Use stats
 }
 
-UnitPtr Unit::GetVictim()
+Unit* Unit::GetVictim()
 {
     return pVictim;
 }

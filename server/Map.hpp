@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Player;
 
-class Map : public enable_shared_from_this<Map>
+class Map
 {
     public:
     Map(uint16 TMapID);
@@ -32,26 +32,26 @@ class Map : public enable_shared_from_this<Map>
 
     void LoadCreatures();
 
-    void RemovePlayer(PlayerPtr& pPlayer);
-    void AddPlayer(PlayerPtr& pPlayer);
-    void AddSpell(UnitPtr& pCaster, SpellPtr& pSpell, float Angle);
+    void RemovePlayer(Player* pPlayer);
+    void AddPlayer(Player* pPlayer);
+    void AddSpell(Unit* pCaster, SpellPtr& pSpell, float Angle);
     virtual void Update(int32 diff);
-    void UnitUpdate(UnitPtr pVictim, int32 diff);
+    void UnitUpdate(Unit* pVictim, int32 diff);
 
     void SendToPlayers(WorldPacket* Packet);
 
     bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
 
     // Entities
-    std::vector<CreaturePtr> Creatures;
-    std::vector<PlayerPtr> Players;
+    std::vector<Creature*> Creatures;
+    std::vector<Player*> Players;
     std::vector<SpellBoxPtr> Spells;
 
     uint16 MapID;
     uint32 NewSpellBoxID;
 
-    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObjectPtr
-    std::vector<std::vector<WorldObjectPtr> > TileGrid;
+    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
+    std::vector<std::vector<WorldObject*> > TileGrid;
 };
 
 #endif

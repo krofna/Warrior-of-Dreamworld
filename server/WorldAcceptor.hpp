@@ -16,8 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef AUTH_SESSION_H
-#define AUTH_SESSION_H
+#ifndef WORLD_ACCEPTOR_H
+#define WORLD_ACCEPTOR_H
 
 #include "../shared/Opcodes.hpp"
 #include "../shared/Defines.hpp"
@@ -26,8 +26,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using boost::asio::ip::tcp;
 typedef boost::asio::ip::tcp::acceptor TAcceptor;
-typedef boost::asio::ip::tcp::socket TSocket;
-typedef boost::shared_ptr<boost::asio::ip::tcp::socket> SocketPtr;
 
 class WorldAcceptor
 {
@@ -38,10 +36,10 @@ public:
     void Accept();
 
 private:
-    void HandleAccept(WorldSession* Session, const boost::system::error_code& error);
+    void HandleAccept(WorldSessionPtr Session, const boost::system::error_code& error);
 
     TAcceptor Acceptor;
-    SocketPtr NewSocket;
+    WorldSessionPtr NewSession;
 };
 
 #endif

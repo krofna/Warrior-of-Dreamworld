@@ -33,7 +33,7 @@ enum
 class WOD_DLL_DECL npc_krofnicaAI : public CreatureAI
 {
 public:
-    npc_krofnicaAI(CreaturePtr& pCreature) : CreatureAI(pCreature)
+    npc_krofnicaAI(Creature* pCreature) : CreatureAI(pCreature)
     {
         Reset();
     }
@@ -51,7 +51,7 @@ public:
         HitTimer = 38000;
     }
 
-    void EnterCombat(UnitPtr& pEnemy)
+    void EnterCombat(Unit* pEnemy)
     {
         pCreature->Say(TEXT_ENTER_COMBAT);
     }
@@ -100,7 +100,7 @@ public:
     }
 };
 
-CreatureAI* GetAI_npc_krofnica(CreaturePtr pCreature)
+CreatureAI* GetAI_npc_krofnica(Creature* pCreature)
 {
     return new npc_krofnicaAI(pCreature);
 }

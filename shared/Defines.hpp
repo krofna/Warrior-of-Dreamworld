@@ -38,21 +38,19 @@ class Creature;
 class Map;
 class Spell;
 class SpellBox;
+class WorldSession;
 
 #include "Config.hpp"
 
 #ifdef USE_BOOST
         #include <boost/shared_ptr.hpp>
         #include <boost/enable_shared_from_this.hpp>
-        typedef boost::shared_ptr<Player> PlayerPtr;
-        typedef boost::shared_ptr<Unit> UnitPtr;
-        typedef boost::shared_ptr<Creature> CreaturePtr;
-        typedef boost::shared_ptr<WorldObject> WorldObjectPtr;
-        typedef boost::shared_ptr<Map> MapPtr;
+        #include <boost/make_shared.hpp>
         typedef boost::shared_ptr<Spell> SpellPtr;
         typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
+        typedef boost::shared_ptr<WorldSession> WorldSessionPtr;
         using boost::enable_shared_from_this;
-        using boost::static_pointer_cast;
+        using boost::make_shared;
 #else
         #ifndef SMART_PTR_TR1_INCLUDE
             #include <memory>
@@ -61,25 +59,18 @@ class SpellBox;
         #endif 
 
         #ifdef SMART_PTR_TR1
-            typedef std::tr1::shared_ptr<Player> PlayerPtr;
-            typedef std::tr1::shared_ptr<Unit> UnitPtr;
-            typedef std::tr1::shared_ptr<Creature> CreaturePtr;
-            typedef std::tr1::shared_ptr<WorldObject> WorldObjectPtr;
-            typedef std::tr1::shared_ptr<Map> MapPtr;
             typedef std::tr1::shared_ptr<Spell> SpellPtr;
             typedef std::tr1::shared_ptr<SpellBox> SpellBoxPtr;
+            typedef std::tr1::shared_ptr<WorldSession> WorldSessionPtr;
             using std::tr1::enable_shared_from_this;
-            using std::tr1::static_pointer_cast;
+            using std::tr1::shared_from_this;
+            using std::tr1::make_shared;
         #else
-            typedef std::shared_ptr<Player> PlayerPtr;
-            typedef std::shared_ptr<Unit> UnitPtr;
-            typedef std::shared_ptr<Creature> CreaturePtr;
-            typedef std::shared_ptr<WorldObject> WorldObjectPtr;
-            typedef std::shared_ptr<Map> MapPtr;
             typedef std::shared_ptr<Spell> SpellPtr;
             typedef std::shared_ptr<SpellBox> SpellBoxPtr;
+            typedef std::shared_ptr<WorldSession> WorldSessionPtr;
             using std::enable_shared_from_this;
-            using std::static_pointer_cast;
+            using std::make_shared;
        #endif
 
 #endif

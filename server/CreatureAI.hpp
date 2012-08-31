@@ -25,14 +25,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WOD_DLL_DECL CreatureAI
 {
 public:
-    explicit CreatureAI(CreaturePtr& pCreature) : pCreature(pCreature) {}
+    explicit CreatureAI(Creature* pCreature) : pCreature(pCreature) {}
     virtual ~CreatureAI() {};
 
     // Called on World::Update
     virtual void UpdateAI(int32 diff);
 
     // Called when creature enters combat
-    virtual void EnterCombat(UnitPtr& pEnemy){};
+    virtual void EnterCombat(Unit* pEnemy){};
 
     // Called when creature starts running home
     virtual void RunHome(){}; // -- NYI
@@ -41,22 +41,22 @@ public:
     virtual void ReachedHome(){}; // -- NYI
 
     //Called when creature dies
-    virtual void JustDied(UnitPtr& pKiller){};
+    virtual void JustDied(Unit* pKiller){};
 
     // Called when creature kills unit
-    virtual void KilledUnit(UnitPtr& pVictim){};
+    virtual void KilledUnit(Unit* pVictim){};
 
     // Called when creature is hit by melee attack
-    virtual void Hit(UnitPtr& pAttacker, int32& Damage){};
+    virtual void Hit(Unit* pAttacker, int32& Damage){};
 
     // Called when creature is hit by spell
     virtual void SpellHit(SpellBoxPtr& pSpellBox){};
 
     // Creature controlled by this AI
-    CreaturePtr pCreature;
+    Creature* pCreature;
 };
 
-CreatureAI* CreateAI(const std::string& AIName, CreaturePtr pCreature);
-WOD_DLL_DECL void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(CreaturePtr pCreature));
+CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature);
+WOD_DLL_DECL void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
 
 #endif

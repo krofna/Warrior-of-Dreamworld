@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "CreatureAIFactory.hpp"
 #include "World.hpp"
 
-CreatureAI* CreateAI(const std::string& AIName, CreaturePtr pCreature)
+CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature)
 {
     return sWorld->GetAIFactory()->CreateAI(AIName, pCreature);
 }
 
-void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(CreaturePtr pCreature))
+void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature))
 {
     sWorld->GetAIFactory()->RegisterAI(AIName, Creator);
 }

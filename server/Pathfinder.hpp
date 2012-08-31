@@ -50,10 +50,10 @@ class Pathfinder
         // Called once to init static members
         static void Init();
 
-        Pathfinder(WorldObjectPtr pOrigin);
+        Pathfinder(WorldObject* pOrigin);
 
         void Update(int32 diff);
-        void UpdateTarget(WorldObjectPtr pNewTarget);
+        void UpdateTarget(WorldObject* pNewTarget);
 
     private:
         // Status of tile used by this Pathfinder
@@ -75,10 +75,10 @@ class Pathfinder
         void CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost);
 
         // WorldObject controlled by this pathfinder
-        WorldObjectPtr pOrigin;
+        WorldObject* pOrigin;
 
         // WorldObject chased by pOrigin
-        WorldObjectPtr pTarget;
+        WorldObject* pTarget;
 
         // Position of pTarget when path was last generated
         // If it is different from pTarget->Position,
@@ -90,10 +90,10 @@ class Pathfinder
         std::stack<Vector2i> Path;
 
         // Pointer to map on which pOrigin is
-        MapPtr pMap;
+        Map* pMap;
 
         // Pointer to 2D array of static world objects in pMap
-        std::vector<std::vector<WorldObjectPtr> >* pTileGrid;
+        std::vector<std::vector<WorldObject*> >* pTileGrid;
 
         // Pointer to 2D array of pre-allocated nodes used by pathfinder
         // Its size same as size of largest map

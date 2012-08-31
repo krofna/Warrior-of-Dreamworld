@@ -28,7 +28,7 @@ class CreatureAI;
 class WOD_DLL_DECL Creature : public Unit
 {
 public:
-    Creature(uint64 ObjID, MapPtr pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate);
+    Creature(uint64 ObjID, Map* pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate);
     ~Creature();
     void InitializeAI();
 
@@ -37,8 +37,8 @@ public:
     WorldPacket* PackData();
 
     void SpellHit(SpellBoxPtr pSpellBox);
-    void TakeDamage(int32 Damage, UnitPtr pAttacker);
-    void DealDamage(int32 Damage, UnitPtr pTarget);
+    void TakeDamage(int32 Damage, Unit* pAttacker);
+    void DealDamage(int32 Damage, Unit* pTarget);
     int32 GetMeleeDamage() const { return 5; }
 
     CreatureAI* GetAI();

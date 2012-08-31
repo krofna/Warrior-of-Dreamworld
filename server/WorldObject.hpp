@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Map;
 class Pathfinder;
 
-class WOD_DLL_DECL WorldObject : public enable_shared_from_this<WorldObject>
+class WOD_DLL_DECL WorldObject
 {
     friend class Pathfinder;
 public:
@@ -45,7 +45,7 @@ public:
 
     const uint16 GetMapID() const;
 
-    MapPtr GetMap() const
+    Map* GetMap() const
     {
         return pMap;
     }
@@ -66,7 +66,7 @@ public:
     }
 
 protected:
-    MapPtr pMap;
+    Map* pMap;
     Vector2i Position;
 
     const uint64 ObjID;

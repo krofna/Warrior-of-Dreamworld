@@ -28,7 +28,7 @@ class CommandHandler
 {
 public:
     CommandHandler(std::string& Msg) : Console(true), Tokenizer(Msg), TokIter(Tokenizer.begin()) { }
-    CommandHandler(PlayerPtr& pPlayer, std::string Msg) : pPlayer(pPlayer), Console(false), Tokenizer(Msg), TokIter(Tokenizer.begin()) { }
+    CommandHandler(Player* pPlayer, std::string Msg) : pPlayer(pPlayer), Console(false), Tokenizer(Msg), TokIter(Tokenizer.begin()) { }
 
     // @return: true if command was executed
     //          false if its not a command
@@ -49,7 +49,7 @@ private:
     void ExtractArg(std::string& Arg);
     void ExtractArg(uint32& Arg);
 
-    PlayerPtr pPlayer;
+    Player* pPlayer;
     boost::tokenizer<> Tokenizer;
     boost::tokenizer<>::iterator TokIter;
     bool Console;
