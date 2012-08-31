@@ -344,10 +344,7 @@ void WorldSession::HandleDeleteItemOpcode()
         return;
     }
 
-    if (Count) // @Alchimist: Count > 1??
-        pPlayer->DestroyItemCount(pItem, Count);
-    else
-        pPlayer->DestroyItem(Bag, Slot);
+    pPlayer->DestroyItem(Bag, Slot);
 }
 
 void WorldSession::SendLogOutPacket()

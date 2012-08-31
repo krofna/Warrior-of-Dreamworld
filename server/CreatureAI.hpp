@@ -29,7 +29,7 @@ public:
     virtual ~CreatureAI() {};
 
     // Called on World::Update
-    virtual void UpdateAI(int32 diff);
+    virtual void UpdateAI(int64 diff);
 
     // Called when creature enters combat
     virtual void EnterCombat(Unit* pEnemy){};

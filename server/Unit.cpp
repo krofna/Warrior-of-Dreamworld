@@ -51,7 +51,7 @@ void Unit::Say(const char* Text)
     pMap->SendToPlayers(SayPacket);
 }
 
-void Unit::DoMeleeAttackIfReady(int32 diff)
+void Unit::DoMeleeAttackIfReady(int64 diff)
 {
     // If there is no victim, or victim is too far away, return
     if(!pVictim || math::GetManhattanDistance(Position, pVictim->GetPosition()) > 1)

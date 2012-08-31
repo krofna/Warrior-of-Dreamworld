@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Player.hpp"
 #include "../shared/Opcodes.hpp"
+#include "../shared/Log.hpp"
 #include "Database.hpp"
 #include "World.hpp"
 
@@ -62,9 +63,9 @@ void Player::LoadFromDB()
     Position.y  = Result->getUInt(7);
 
     // Load bags
-    QueryResult Result(sDatabase.PQuery("SELECT `guid`, `idx`, `item_id` FROM `character_bags` WHERE `owner_guid` = %llu", m_GUID));
+    QueryResult BagResult(sDatabase.PQuery("SELECT `guid`, `idx`, `item_id` FROM `character_bags` WHERE `owner_guid` = %llu", ObjID));
 
-    while (Result->next())
+    while (BagResult->next())
     {
         int idxBag = Result->getUInt(2);
         if (idxBag >= 4)
@@ -73,7 +74,7 @@ void Player::LoadFromDB()
             break;
         }
         m_Bags[idxBag] = new Bag;
-        m_Bags[idxBag]->LoadFromDB(Result->getUInt64(1), m_GUID, Result->getUInt64(3));
+        m_Bags[idxBag]->LoadFromDB(Result->getUInt64(1), ObjID, Result->getUInt64(3));
     }
 
     SendInventoryData();
@@ -122,8 +123,9 @@ bool Player::LearnedSpell(uint8 ID)
     return false;
 }
 
-void Player::Update(int32 diff)
+void Player::Update(int64 diff)
 {
+
 }
 
 void Player::SaveToDB()
@@ -199,6 +201,18 @@ bool Player::IsValidPos(uint8 Bag, uint8 Slot) const
     return true;
 }
 
+bool Player::CanEquip(uint8 Bag, uint8 Slot, uint8 DestSlot) const
+{
+	Item* pItem = GetItemByPos(Bag, Slot);
+
+	if (!pItem)
+		return false;
+
+	// TODO: Check if it's a weapon, and the dest slot is reserved for weapons, blah blah
+
+	return true;
+}
+
 bool Player::CanUnequipItem(uint8 Bag, uint8 Slot) const
 {
     Item* pItem = GetItemByPos(Bag, Slot);
@@ -210,6 +224,18 @@ bool Player::CanUnequipItem(uint8 Bag, uint8 Slot) const
     return true;
 }
 
+uint8 Player::FreeSlotBags() const
+{
+	uint8 Accumulator = 0;
+	for (int iBag = 0 ; iBag < 4 ; ++iBag)
+	{
+		if (m_Bags[iBag])
+			Accumulator += m_Bags[iBag]->NumberFreeSlots();
+	}
+
+	return Accumulator;
+}
+
 Item* Player::GetItemByPos(uint8 Bag, uint8 Slot) const
 {
     if (!IsValidPos(Bag, Slot))
@@ -218,12 +244,12 @@ Item* Player::GetItemByPos(uint8 Bag, uint8 Slot) const
     return m_Bags[Bag]->GetItemBySlot(Slot);
 }
 
-void Player::AutoEquipItem(uint8 Bag, uint8 Slot)
+void Player::AutoEquipItem(uint8 SrcBag, uint8 Slot)
 {
-    if (!IsValidPos(Bag, Slot))
+    if (!IsValidPos(SrcBag, Slot))
         return;
 
-    Item* pItem = GetItemByPos(Bag, Slot);
+    Item* pItem = GetItemByPos(SrcBag, Slot);
 
     // TODO: Find the best slot for the item
 
@@ -296,8 +322,17 @@ void Player::UnequipBag(uint8 SrcBag)
     Bag* pBag = m_Bags[SrcBag];
     m_Bags[SrcBag] = nullptr;
 
-    uint8 BagSlot = FindFreeBag();
-    uint8 Slot = m_Bags[BagSlot]->FindFreeSlot();
+    uint8 BagSlot, Slot;
+	for (uint8 iBag = 0 ; iBag < 4 ; ++iBag)
+	{
+		if (!m_Bags[iBag])
+			continue;
+
+		BagSlot = iBag;
+		Slot = m_Bags[BagSlot]->FindFreeSlot();
+		if (Slot != BAG_FULL_SLOT)
+			break;
+	}
 
     StoreItem(pBag, BagSlot, Slot);
 }
@@ -321,10 +356,13 @@ void Player::SwapItem(uint8 SrcBag, uint8 SrcSlot, uint8 DstBag, uint8 DstSlot)
     if (!IsValidPos(SrcBag, SrcSlot) || !IsValidPos(DstBag, DstSlot))
         return;
 
-    Item* pSrcItem = GetItemByPos(SrcBag, SrcSlot);
-    Item* pDstItem = GetItemByPos(DstBag, DstSlot);
+	Item* pSrcItem = GetItemByPos(SrcBag, SrcSlot);
+	Item* pDstItem = GetItemByPos(DstBag, DstSlot);
 
-    std::swap(&pSrcItem, &pDstItem); // [To check]: Should work 
+    Item** ppSrcItem = &pSrcItem;
+    Item** ppDstItem = &pDstItem;
+
+    std::swap(ppSrcItem, ppDstItem); // [To check]: Should work 
 }
  
 void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)

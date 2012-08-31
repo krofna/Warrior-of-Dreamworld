@@ -47,7 +47,7 @@ Creature::~Creature()
     delete MovementGenerator;
 }
 
-void Creature::Update(int32 diff)
+void Creature::Update(int64 diff)
 {
     MovementGenerator->Update(diff);
     pAI->UpdateAI(diff);

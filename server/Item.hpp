@@ -1,6 +1,8 @@
 #ifndef ITEM_DEFINED
 #define ITEM_DEFINED
 
+#include "../shared/Defines.hpp"
+
 class Bag;
 struct ItemTemplate;
 
@@ -48,6 +50,9 @@ class Item
     void SetItemID(uint64 ItemID);
     uint64 GetItemID() const;
 
+	bool IsBag() const;
+	Bag* ToBag();
+
     private:
     uint64 m_GUID;
     std::string m_Text;
@@ -58,7 +63,7 @@ class Item
     ItemUpdateState m_uState;
     ItemChangedState m_cState;
 
-    ItemTemplate* m_Template;
+    ItemTemplate const* m_Template;
 };
 
 #endif

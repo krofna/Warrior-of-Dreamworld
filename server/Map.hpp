@@ -35,8 +35,8 @@ class Map
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
     void AddSpell(Unit* pCaster, SpellPtr& pSpell, float Angle);
-    virtual void Update(int32 diff);
-    void UnitUpdate(Unit* pVictim, int32 diff);
+    virtual void Update(int64 diff);
+    void UnitUpdate(Unit* pVictim, int64 diff);
 
     void SendToPlayers(WorldPacket* Packet);
 

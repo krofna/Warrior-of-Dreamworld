@@ -38,11 +38,11 @@ bool SpellBox::CollidesWith(Unit* pObject)
     return Hitbox.intersects(Obj);
 }
 
-void SpellBox::Update(int32 diff)
+void SpellBox::Update(int64 diff)
 {
     // TODO: This is completly random...
     diff += _Diff;
-    int Multiplier = diff / 15;
+    int64 Multiplier = diff / 15;
     _Diff = diff - Multiplier * 15;
 
     Hitbox.left += (std::sin(this->Angle) / TILE_SIZE) * Multiplier;

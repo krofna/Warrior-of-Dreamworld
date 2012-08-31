@@ -60,7 +60,7 @@ void Pathfinder::Init()
     PathfindingStatusGrid.reset(new uint8[MAX_MAP_HEIGHT * MAX_MAP_WIDTH]);
 }
 
-void Pathfinder::Update(int32 diff)
+void Pathfinder::Update(int64 diff)
 {
     if(pTarget && pTarget->Position != Target)
     {

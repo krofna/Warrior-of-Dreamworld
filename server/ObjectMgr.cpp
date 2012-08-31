@@ -43,7 +43,7 @@ ObjectMgr::~ObjectMgr()
     }
 }
 
-CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry)
+CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const
 {
     auto CTemplate = CreatureTemplates.find(Entry);
     if(CTemplate != CreatureTemplates.end())
@@ -51,7 +51,7 @@ CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry)
 
     throw std::runtime_error("Bad creature entry. Could not find template.");
 }
-ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry)
+ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry) const
 {
     auto CTemplate = ItemTemplates.find(Entry);
     if (CTemplate != ItemTemplates.end())
@@ -139,10 +139,19 @@ Player* ObjectMgr::GetPlayer(std::string& Username)
     for(auto iter = Players.begin(); iter != Players.end(); ++iter)
     {
         if((*iter)->GetUsername() == Username)
-        {
-            return *iter;
-        }
+			return *iter;
     }
 
     return nullptr;
+}
+
+Player* ObjectMgr::GetPlayer(uint64 ObjectID)
+{
+	for (auto iter = Players.begin() ; iter != Players.end() ; ++iter)
+	{
+		if ((*iter)->GetObjectID() == ObjectID)
+			return *iter;
+	}
+
+	return nullptr;
 }

@@ -49,7 +49,7 @@ public:
 
     void CastSpell(SpellPtr pSpell, float Angle);
 
-    void Update(int32 diff);
+    void Update(int64 diff);
 
     void SendPacket(WorldPacket* Packet);
     WorldPacket* PackData();
@@ -65,6 +65,9 @@ public:
     bool HasItem(uint8 Bag, uint8 Slot, uint64 ItemID) const;
     bool IsValidPos(uint8 Bag, uint8 Slot) const;
     bool CanUnequipItem(uint8 Bag, uint8 Slot) const;
+	bool CanEquip(uint8 Bag, uint8 Slot, uint8 DestSlot) const;
+
+	uint8 FreeSlotBags() const;
 
     Item* GetItemByPos(uint8 SrcBag, uint8 SrcSlot) const;
 

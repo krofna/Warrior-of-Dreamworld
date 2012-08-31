@@ -52,7 +52,7 @@ class Pathfinder
 
         Pathfinder(WorldObject* pOrigin);
 
-        void Update(int32 diff);
+        void Update(int64 diff);
         void UpdateTarget(WorldObject* pNewTarget);
 
     private:
@@ -102,7 +102,7 @@ class Pathfinder
         static boost::shared_array<uint8> PathfindingStatusGrid;    // 2D (but 1D in real)
 
         // Time between moving onto next tile in path in miliseconds
-        int32 MovementCooldown;
+        int64 MovementCooldown;
 
         // Priority queue of nodes to be checked by CheckNode()
         std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode> OpenList;

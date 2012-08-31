@@ -64,7 +64,7 @@ void Map::LoadCreatures()
     }
 }
 
-void Map::Update(int32 diff)
+void Map::Update(int64 diff)
 {
     // Update spell box positions
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end(); ++SpellBoxIter)
@@ -76,7 +76,7 @@ void Map::Update(int32 diff)
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
 }
 
-void Map::UnitUpdate(Unit* pUnit, int32 diff)
+void Map::UnitUpdate(Unit* pUnit, int64 diff)
 {
     // Check if unit got hit by spell
     for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end();)

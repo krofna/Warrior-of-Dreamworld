@@ -32,7 +32,7 @@ public:
     ~Creature();
     void InitializeAI();
 
-    void Update(int32 diff);
+    void Update(int64 diff);
 
     WorldPacket* PackData();
 

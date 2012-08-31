@@ -30,7 +30,7 @@ public:
     Unit(uint64 ObjID);
     virtual ~Unit() { } 
 
-    virtual void Update(int32 diff) = 0;
+    virtual void Update(int64 diff) = 0;
 
     virtual WorldPacket* PackData() = 0;
 
@@ -45,7 +45,7 @@ public:
     virtual void DealDamage(int32 Damage, Unit* pTarget);
     virtual void TakeDamage(int32 Damage, Unit* pAttacker);
 
-    void DoMeleeAttackIfReady(int32 diff);
+    void DoMeleeAttackIfReady(int64 diff);
     void Kill();
 
     bool IsDead() const { return Health >= 1; }
@@ -56,7 +56,7 @@ public:
 protected:
     uint32 Health;
     uint32 Power;
-    int32 MeeleAttackCooldown;
+    int64 MeeleAttackCooldown;
 
     Unit* pVictim;
 };

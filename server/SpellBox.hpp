@@ -31,7 +31,7 @@ public:
     SpellBox(SpellPtr& pSpell, Unit* pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID);
 
     bool CollidesWith(Unit* pObject);
-    void Update(int32 diff);
+    void Update(int64 diff);
 
     SpellPtr pSpell;
     Unit* pCaster;

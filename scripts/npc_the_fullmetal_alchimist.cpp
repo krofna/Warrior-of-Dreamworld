@@ -41,11 +41,11 @@ public:
         Reset();
     }
 
-    int32 AttackSpecialTimer;
-    int32 AttackUltimateTimer;
-    int32 PhysicalFullBrustTimer;
-    int32 SpellAccelState;
-    int32 NanoIntervalDiff;
+    int64 AttackSpecialTimer;
+    int64 AttackUltimateTimer;
+    int64 PhysicalFullBrustTimer;
+    int64 SpellAccelState;
+    int64 NanoIntervalDiff;
 
     bool UsingSpecialAttack;
     bool IsInPhysicalFullBrust;
@@ -63,7 +63,7 @@ public:
         IsInPhysicalFullBrust = false;
     }
 
-    void UpdateAI(int32 diff)
+    void UpdateAI(int64 diff)
     {
         if(!pCreature->GetVictim())
             return;
@@ -102,7 +102,7 @@ public:
         pCreature->DoMeleeAttackIfReady(diff);
     }
 
-    void UpdateQuadrupleAccel(int32 diff)
+    void UpdateQuadrupleAccel(int64 diff)
     {
         if (NanoIntervalDiff <= diff)
         {

@@ -33,16 +33,17 @@ public:
     ~ObjectMgr();
 
     CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
-    ItemTemplate    * GetItemTemplate     (uint64 Entry) const;
+    ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
 
     SpellPtr  GetSpell  (uint16 ID);
 
     void LoadSpells();
     void LoadCreatureTemplates();
-    void LoadItemsTemplates();
+    void LoadItemTemplates();
     void LoadPlayersLoginInfo();
 
     Player* GetPlayer(std::string& Username);
+	Player* GetPlayer(uint64 ObjectID);
 
 private:
     std::vector<Player*> Players;

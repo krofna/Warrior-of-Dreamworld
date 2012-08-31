@@ -1,5 +1,12 @@
 #include "Item.hpp"
+
 #include "Database.hpp"
+#include "Templates.hpp"
+#include "GUID.hpp"
+#include "ObjectMgr.hpp"
+#include "Player.hpp"
+
+#include "../shared/Log.hpp"
 
 Item::Item()
 {
@@ -22,7 +29,7 @@ bool Item::Create(uint64 ItemID, Player const* Owner)
     m_Text      = itemProto->Name;
     m_Container = nullptr;
     m_Slot      = 0;
-    m_OwnerGUID = Owner ? Owner->GetGUID() : 0;
+    m_OwnerGUID = Owner ? Owner->GetObjectID() : 0;
     m_Template  = itemProto;
 
     return true;
@@ -35,25 +42,10 @@ void Item::SaveToDB()
         sDatabase.PExecute("INSERT INTO `items` VALUES(%llu, %llu, %llu, %llu)", m_GUID, m_OwnerGUID, m_Container ? m_Container->GetGUID() : 0, m_Slot, GetItemID());
     }
     else if (m_uState == ITEM_CHANGED)
-    {
-        std::string ModificationQuery;
+	{
+        // TODO: Make update flag and others thing.
 
-        if (m_cState & SLOT_MOVED)
-        {
-            ModificationQuery += "SET `slots` = %u";
-            ModificationQuery = Format(ModificationQuery, m_Slot);
-        }
-        else if (m_cState & BAG_MOVED)
-        {
-            if (m_cState & SLOT_MOVED)
-                ModificationQuery += " ";
-            ModificationQuery += "SET `bagid` = %u":
-            Format(ModificationQuery, m_Container->GetGUID());
-        }
-        else
-            return;
-
-        sDatabase.PExecute("UPDATE %s WHERE `guid` = %llu", ModificationQuery);
+        // sDatabase.PExecute("UPDATE %s WHERE `guid` = %llu", ModificationQuery);
     }
     else if (m_uState == ITEM_DELETED)
     {
@@ -157,4 +149,14 @@ ItemTemplate const* Item::GetTemplate() const
 uint64 Item::GetItemID() const
 {
     return m_Template->ItemID;
+}
+
+bool Item::IsBag() const
+{
+	return m_Template->InventoryType == INVTYPE_BAG;
+}
+
+Bag* Item::ToBag()
+{
+	return (IsBag() ? dynamic_cast<Bag* >(this) : nullptr);
 }

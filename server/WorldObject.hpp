@@ -32,7 +32,7 @@ public:
     WorldObject(uint64 ObjID);
     virtual ~WorldObject() {}
 
-    virtual void Update(int32 diff) = 0;
+    virtual void Update(int64 diff) = 0;
     virtual WorldPacket* PackData() = 0;
 
     bool UpdateCoordinates(uint8 Direction);

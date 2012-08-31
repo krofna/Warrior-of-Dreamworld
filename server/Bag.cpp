@@ -1,5 +1,8 @@
 #include "Bag.hpp"
 
+#include "Database.hpp"
+#include "ObjectMgr.hpp"
+
 Bag::Bag()
 {
     for (uint8 iSlot = 0 ; iSlot < MAX_BAG_SIZE ; ++iSlot)
@@ -17,6 +20,8 @@ bool Bag::Create(uint64 ItemID, Player const* Owner)
     
     SetItemID(ItemID);
     m_Capacity = itemProto->ContainerSlots;
+
+	return true;
 }
 
 void Bag::LoadFromDB(uint64 GUID, uint64 OwnerGUID, uint64 ItemID)
@@ -37,7 +42,7 @@ void Bag::LoadFromDB(uint64 GUID, uint64 OwnerGUID, uint64 ItemID)
 
         Item* pNewItem = new Item;
         pNewItem->LoadFromDB(ItemGUID, OwnerGUID, ItemID);
-        m_Bags[Slot] = pNewItem;
+        m_Items[Slot] = pNewItem;
     }
 }
 
@@ -66,6 +71,18 @@ uint8 Bag::FindFreeSlot() const
         if (!m_Items[iSlot])
             return iSlot;
     }
+
+	return BAG_FULL_SLOT;
+}
+
+uint8 Bag::NumberFreeSlots() const
+{
+	uint8 Free = 0;
+	for (uint8 iSlot = 0 ; iSlot < m_Capacity ; ++iSlot)
+		if (!m_Items[iSlot])
+			Free++;
+
+	return Free;
 }
 
 void Bag::Store(Item* pItem, uint8 Slot)
