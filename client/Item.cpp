@@ -16,6 +16,7 @@ Item* Item::Create(uint64 Entry)
         return nullptr;
 
     newItem->m_Template = itemProto;
+    return newItem;
 }
 
 void Item::Draw()

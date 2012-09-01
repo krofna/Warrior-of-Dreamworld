@@ -3,7 +3,8 @@
 
 #include "../shared/Defines.hpp"
 
-class ItemTemplate;
+struct ItemTemplate;
+
 class Item
 {
     public:

@@ -233,6 +233,7 @@ void WorldSession::HandleSwapItemOpcode()
 void WorldSession::HandleDeleteItemOpcode()
 {
     uint8 srcslot, count;
+    *Packet >> srcslot >> count;
 
     pWorld->GetInventory()->Destroy(srcslot, count);
 }
