@@ -51,7 +51,7 @@ void WorldSession::HandleHeader()
     Packet->ReadHeader();
 
     // Drop the packet?
-    if(Packet->GetSizeWithoutHeader() <= 1)
+    if(Packet->GetSizeWithoutHeader() < 1)
     {
         delete Packet;
         Start();
@@ -80,14 +80,6 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
 
     delete Packet;
-
-    // Hack by Krofna
-    // Do not question
-    if(!Connected)
-    {
-        delete this;
-        return;
-    }
 
     Start();
 }
