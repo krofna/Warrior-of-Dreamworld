@@ -28,7 +28,7 @@ int main()
 {
     using namespace std;
 
-    sObjectMgr = new ObjectMgr("data/tilesets", "data/displayid", "data/items.data");
+    sObjectMgr = new ObjectMgr("data/tileset", "data/displayid", "data/items.data");
     //sObjectMgr->Initialize();
 
     Window = new sf::RenderWindow();

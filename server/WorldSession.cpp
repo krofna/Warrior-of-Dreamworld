@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
+pPlayer				      (nullptr),
 Connected                 (true)
 {
 }
@@ -68,13 +69,19 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     if(Error)
     {
         sLog.Write("Failed to receive packet");
-        pPlayer->LogOut();
+		if (pPlayer)
+	        pPlayer->LogOut();
     }
     if(Packet->GetOpcode() >= MSG_COUNT)
     {
         sLog.Write("Received %u: Bad opcode!", Packet->GetOpcode());
-        pPlayer->LogOut();
+		if (pPlayer)
+	        pPlayer->LogOut();
     }
+	if (Packet->GetOpcode() == MSG_NULL)
+	{
+		sLog.Write("Received a MSG_NULL, strange...");
+	}
     sLog.Write("Received Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
     (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
