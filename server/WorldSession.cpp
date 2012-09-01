@@ -50,14 +50,11 @@ void WorldSession::HandleHeader()
 {
     Packet->ReadHeader();
 
-    // Hack by Krofna
-    // Do not question
-    // MSG_LOG_OUT is a header-only packet
-    if(Packet->GetSizeWithoutHeader() < 1)
+    // Drop the packet?
+    if(Packet->GetSizeWithoutHeader() <= 1)
     {
-        pPlayer->LogOut();
-        delete this;
-        return;
+        delete Packet;
+        Start();
     }
 
     boost::asio::async_read(Socket,

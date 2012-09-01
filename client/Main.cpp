@@ -29,7 +29,7 @@ int main()
     using namespace std;
 
     sObjectMgr = new ObjectMgr("data/tilesets", "data/displayid", "data/items.data");
-    sObjectMgr->Initialize();
+    //sObjectMgr->Initialize();
 
     Window = new sf::RenderWindow();
     sSFGUI = new sfg::SFGUI();
@@ -62,6 +62,7 @@ int main()
 
     sLog.Flush();
 
+    delete sObjectMgr;
     delete sGame;
     delete Session;
     delete sSFGUI;

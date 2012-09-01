@@ -88,7 +88,9 @@ void Player::SendInventoryData()
 {
     WorldPacket* Packet = new WorldPacket((uint16)MSG_INVENTORY_DATA);
     // TODO: What data are needed from client ?
-    SendPacket(Packet);
+    // entry, bag, slot
+    // @Alchimist: NEVER SEND INVALID PACKETS!
+    //SendPacket(Packet);
 }
 
 bool Player::IsLoaded()
