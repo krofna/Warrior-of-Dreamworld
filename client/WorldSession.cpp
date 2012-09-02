@@ -30,7 +30,7 @@ Socket                    (io),
 sGame                     (sGame),
 pWorld                    (nullptr),
 Resolver                  (io),
-Work                      (new boost::asio::io_service::work(io))
+Work                      (make_shared<boost::asio::io_service::work>(io))
 {
 }
 

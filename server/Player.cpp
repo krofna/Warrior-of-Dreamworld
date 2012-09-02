@@ -24,7 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Player::Player(std::string Username, std::string Password, uint64 ObjID) :
 Unit         (ObjID),
-pWorldSession(nullptr),
 Username     (Username),
 Password     (Password),
 LoadedFromDB (false),
@@ -35,17 +34,9 @@ m_IsMute     (false)
 Player::~Player()
 {
 }
-
-// This is bugged cause there may someone already be on the tile player wants to spawn on
-void Player::AddToWorld()
-{
-    //pMap->TileGrid[Position.y][Position.x] = this;
-}
-
 // PH: needs more work
 void Player::RemoveFromWorld()
 {
-    pMap->TileGrid[Position.y][Position.x] = nullptr;
     pMap->RemovePlayer(this);
 }
 
@@ -115,14 +106,7 @@ void Player::CastSpell(SpellPtr pSpell, float Angle)
 
 bool Player::LearnedSpell(uint8 ID)
 {
-    for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
-    {
-        if(*SpellIter == ID)
-        {
-            return true;
-        }
-    }
-    return false;
+    return Spells.find(ID) != Spells.end();
 }
 
 void Player::Update(int64 diff)
@@ -155,7 +139,7 @@ void Player::SendPacket(WorldPacket* Packet)
     pWorldSession->Send(Packet);
 }
 
-void Player::BindSession(WorldSession* pWorldSession)
+void Player::BindSession(WorldSessionPtr pWorldSession)
 {
     this->pWorldSession = pWorldSession;
 }
@@ -172,7 +156,7 @@ void Player::Kick()
 
 void Player::LogOut()
 {
-    pWorldSession = nullptr;
+    pWorldSession = WorldSessionPtr();
     this->RemoveFromWorld();
     this->SaveToDB();
 }

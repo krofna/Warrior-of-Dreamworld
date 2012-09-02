@@ -24,8 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-pPlayer				      (nullptr),
-Connected                 (true)
+pPlayer				      (nullptr)
 {
 }
 
@@ -44,18 +43,18 @@ void WorldSession::Start()
 
     boost::asio::async_read(Socket,
         boost::asio::buffer(Packet->GetDataWithHeader(), WorldPacket::HEADER_SIZE),
-        boost::bind(&WorldSession::HandleHeader, shared_from_this()));
+        boost::bind(&WorldSession::HandleHeader, shared_from_this(), boost::asio::placeholders::error));
 }
 
-void WorldSession::HandleHeader()
+void WorldSession::HandleHeader(const boost::system::error_code& Error)
 {
     Packet->ReadHeader();
 
-    // Drop the packet?
-    if(Packet->GetSizeWithoutHeader() < 1)
+    // Header only packet
+    if(Packet->GetSizeWithoutHeader() < 1 || Error)
     {
-        delete Packet;
-        Start();
+        HandleReceive(Error);
+        return;
     }
 
     boost::asio::async_read(Socket,
@@ -68,17 +67,17 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     Packet->ResetReadPos();
     if(Error)
     {
-        sLog.Write("Failed to receive packet");
-		if (pPlayer)
-	        pPlayer->LogOut();
+        sLog.Write("Failed to receive packet. Kicking player. TODO: Try Reconnect");
+        pPlayer->LogOut();
+        return;
     }
     if(Packet->GetOpcode() >= MSG_COUNT)
     {
-        sLog.Write("Received %u: Bad opcode!", Packet->GetOpcode());
-		if (pPlayer)
-	        pPlayer->LogOut();
+        sLog.Write("Received %u: Bad opcode! Kicking player.", Packet->GetOpcode());
+        pPlayer->LogOut();
+        return;
     }
-	if (Packet->GetOpcode() == MSG_NULL)
+	if(Packet->GetOpcode() == MSG_NULL)
 	{
 		sLog.Write("Received a MSG_NULL, strange...");
 	}
@@ -181,8 +180,8 @@ void WorldSession::HandleLoginOpcode()
     Send(LoginPacket);
 
     // Add player to the world
-    pPlayer->BindSession(this);
-    sWorld->AddSession(this);
+    pPlayer->BindSession(shared_from_this());
+    sWorld->AddPlayer(pPlayer);
     sLog.Write("Packet is good!");
 }
 
@@ -226,7 +225,6 @@ void WorldSession::HandleCastSpellOpcode()
 void WorldSession::HandleLogOutOpcode()
 {
     pPlayer->LogOut();
-    Connected = false;
 }
 
 void WorldSession::HandleChatMessageOpcode()

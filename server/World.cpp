@@ -37,7 +37,6 @@ World::World(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
 IsRunning   (true),
 io          (io),
 Timer       (io)
-
 {
     pWorldAcceptor = new WorldAcceptor(io, Endpoint);
 }
@@ -161,9 +160,8 @@ void World::Update()
     Timer.async_wait(boost::bind(&World::Update, this));
 }
 
-void World::AddSession(WorldSession* pWorldSession)
+void World::AddPlayer(Player* pPlayer)
 {
-    Player* pPlayer = pWorldSession->GetPlayer();
     Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
 }
 

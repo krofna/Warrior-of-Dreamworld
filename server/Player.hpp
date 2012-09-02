@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define PLAYER_H
 
 #include <string>
+#include <set>
 #include "Unit.hpp"
 #include "WorldSession.hpp"
 #include "Spell.hpp"
@@ -35,8 +36,6 @@ public:
     Player(std::string Username, std::string Password, uint64 ObjID);
     ~Player();
 
-    // TODO
-    void AddToWorld();
     void RemoveFromWorld();
 
     void LoadFromDB();
@@ -53,7 +52,7 @@ public:
 
     void SendPacket(WorldPacket* Packet);
     WorldPacket* PackData();
-    void BindSession(WorldSession* pWorldSession);
+    void BindSession(WorldSessionPtr pWorldSession);
 
     void LogOut();
     void Kick();
@@ -91,7 +90,7 @@ public:
 private:
     void SendInventoryData();
 
-    WorldSession* pWorldSession;
+    WorldSessionPtr pWorldSession;
 
     std::string Username;
     std::string Password;
@@ -102,7 +101,7 @@ private:
     uint16 tx;
     uint16 ty;
 
-    std::vector<uint16> Spells;
+    std::set<uint16> Spells;
 
     bool LearnedSpell(uint8 ID);
 
