@@ -36,7 +36,7 @@ public:
     int Run();
     void ConsoleInput();
 
-    void AddSession(WorldSession* pWorldSession);
+    void AddPlayer(Player* pPlayer);
     Map* GetMap(uint16 MapID);
 
     CreatureAIFactory* GetAIFactory();

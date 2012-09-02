@@ -60,7 +60,7 @@ public:
 private:
     void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
     void HandleReceive(const boost::system::error_code& Error);
-    void HandleHeader();
+    void HandleHeader(const boost::system::error_code& Error);
 
     void SendLoginFailPacket(uint16 Reason);
 
@@ -68,8 +68,6 @@ private:
 
     WorldPacket* Packet;
     Player* pPlayer;
-
-    bool Connected;
 
     std::queue<WorldPacket*> MessageQueue;
 };
