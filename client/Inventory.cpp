@@ -64,3 +64,21 @@ void Inventory::Create(uint8 DestBag, uint8 DestSlot, uint64 Entry)
 {
     m_Bags[DestBag]->Create(DestSlot, Entry);
 }
+
+void Inventory::Create(uint8 DestBag, uint64 Entry)
+{
+    m_Bags[DestBag]->Create(Entry);
+}
+
+bool Inventory::AutoCreateBag(uint64 Entry)
+{
+    for (int i = 0 ; i < 4 ; ++i)
+    {
+        if (!m_Bags[i]->IsCreated())
+        {
+            m_Bags[i]->Create(Entry);
+            return true;
+        }
+    }
+    return false;
+}

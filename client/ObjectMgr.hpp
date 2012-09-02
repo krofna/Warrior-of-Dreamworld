@@ -23,6 +23,7 @@ class ObjectMgr
     ItemTemplate* GetItemData(uint64 ItemID);
     sf::Texture* GetDisplayInfoID(uint16 DisplayInfoID);
     sf::Texture* GetTileset(std::string const& TilesetName);
+    sf::Texture* GetTileset(std::string const& TilesetName, sf::Color const& MaskColor, uint8 alpha = 0);
 
     bool FindItemData(uint64 ItemID) const;
     bool SearchDisplayID(uint16 DisplayInfoID) const;

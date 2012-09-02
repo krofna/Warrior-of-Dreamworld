@@ -14,9 +14,11 @@ class Bag
     public:
     Bag(int idxBag, std::string const& FileNameIcon);
 
+    void Create(uint64 Entry);
+
     void Draw();
     void DrawIcon();
-    void DrawEmptySlot();
+    void DrawEmptySlot(int idx);
 
     Item* GetItem(uint8 SrcSlot) const;
 
@@ -24,7 +26,10 @@ class Bag
     void Destroy(uint8 SrcSlot);
     void Create(uint8 DestSlot, uint64 Entry);
 
+    bool IsCreated() const;
+
     private:
+    bool m_IsCreated;
     uint8 m_Capacity;
     static_template_array<Item*, MAX_BAG_SIZE> m_Slots;
 

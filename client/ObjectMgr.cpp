@@ -109,6 +109,21 @@ sf::Texture* ObjectMgr::GetTileset(std::string const& TilesetName)
     }
 }
 
+sf::Texture* ObjectMgr::GetTileset(std::string const& TilesetName, sf::Color const& Mask, uint8 alpha)
+{
+    if (SearchTileset(TilesetName))
+        return m_Tilesets[TilesetName];
+    else
+    {
+        LoadTileset(TilesetName);
+        sf::Texture* tileset = m_Tilesets[TilesetName];
+        sf::Image imageTexture = tileset->copyToImage();
+        imageTexture.createMaskFromColor(Mask, alpha);
+        tileset->update(imageTexture);
+        return tileset;
+    }
+}
+
 sf::Texture* ObjectMgr::GetTexture(std::string const& TextureName, std::string const& TexturePath)
 {
     auto TextureIt = m_Textures.find(TextureName);

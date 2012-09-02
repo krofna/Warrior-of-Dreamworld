@@ -43,24 +43,24 @@ public:
 
     int64 AttackSpecialTimer;
     int64 AttackUltimateTimer;
-    int64 PhysicalFullBrustTimer;
+    int64 PhysicalFullBurstTimer;
     int64 SpellAccelState;
     int64 NanoIntervalDiff;
 
     bool UsingSpecialAttack;
-    bool IsInPhysicalFullBrust;
+    bool IsInPhysicalFullBurst;
 
     void Reset()
     {
         AttackSpecialTimer = 15000;
         AttackUltimateTimer = 50000;
-        PhysicalFullBrustTimer = 30000;
+        PhysicalFullBurstTimer = 30000;
         NanoIntervalDiff = 300;
 
         SpellAccelState = 1;
 
         UsingSpecialAttack = false;
-        IsInPhysicalFullBrust = false;
+        IsInPhysicalFullBurst = false;
     }
 
     void UpdateAI(int64 diff)
@@ -68,16 +68,18 @@ public:
         if(!pCreature->GetVictim())
             return;
 
-        if (IsInPhysicalFullBrust)
+        if (IsInPhysicalFullBurst)
         {
             pCreature->CastSpell(SPELL_QUADRUPLE_ACCEL_NO_INTERVAL, pCreature->GetVictim());
-            // TODO: Reduce speed of movement due to hyper speed.
-        }
 
-        if (PhysicalFullBrustTimer <= diff)
-            IsInPhysicalFullBrust = false;
-        else
-            PhysicalFullBrustTimer -= diff;
+            if (PhysicalFullBurstTimer <= diff)
+            {
+                PhysicalFullBurstTimer = 30000;
+                IsInPhysicalFullBurst = false;
+            }
+            else
+                PhysicalFullBurstTimer -= diff;
+        }
 
         if(AttackSpecialTimer <= diff)
         {
@@ -93,7 +95,7 @@ public:
         if (AttackUltimateTimer <= diff)
         {
             pCreature->Say(TEXT_ULTIMATE_ATTACK);
-            IsInPhysicalFullBrust = true;
+            IsInPhysicalFullBurst = true;
             AttackUltimateTimer = 40000;
         }
         else

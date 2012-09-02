@@ -32,7 +32,7 @@ void WorldObject::Load(WorldPacket Argv)
     uint16 x, y, tx, ty;
     Argv >> x >> y >> tx >> ty;
 
-    ObjectSprite.setTexture(*sObjectMgr->GetTileset(Tileset));
+    ObjectSprite.setTexture(*sObjectMgr->GetTileset(Tileset, sf::Color::White));
     ObjectSprite.setTextureRect(sf::IntRect(tx * TILE_SIZE, ty * TILE_SIZE, TILE_SIZE, TILE_SIZE));
     ObjectSprite.setPosition((float)x * TILE_SIZE, (float)y * TILE_SIZE);
 }
