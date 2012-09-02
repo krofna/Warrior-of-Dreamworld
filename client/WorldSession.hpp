@@ -35,7 +35,6 @@ public:
     WorldSession(boost::asio::io_service& io, Game* sGame);
 
     void Connect(std::string Ip, std::string Port);
-
     void Send(WorldPacket* Packet);
 
     // Opcode handlers
@@ -64,7 +63,7 @@ public:
 private:
     void Start();
     void HandleReceive(const boost::system::error_code& Error);
-    void HandleHeader();
+    void HandleHeader(const boost::system::error_code& Error);
     void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
 
     tcp::socket Socket;

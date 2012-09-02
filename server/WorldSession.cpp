@@ -113,6 +113,8 @@ void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_co
     else
     {
         sLog.Write("Failed!");
+        // Return packet to queue
+        // It will be sent after reconnect
     }
 
     delete Packet;
@@ -224,6 +226,7 @@ void WorldSession::HandleCastSpellOpcode()
 
 void WorldSession::HandleLogOutOpcode()
 {
+    SendLogOutPacket();
     pPlayer->LogOut();
 }
 

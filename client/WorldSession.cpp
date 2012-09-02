@@ -47,12 +47,19 @@ void WorldSession::Start()
 
     boost::asio::async_read(Socket,
         boost::asio::buffer(Packet->GetDataWithHeader(), WorldPacket::HEADER_SIZE),
-        boost::bind(&WorldSession::HandleHeader, this));
+        boost::bind(&WorldSession::HandleHeader, this, boost::asio::placeholders::error));
 }
 
-void WorldSession::HandleHeader()
+void WorldSession::HandleHeader(const boost::system::error_code& Error)
 {
     Packet->ReadHeader();
+
+    // Header only packet
+    if(Packet->GetSizeWithoutHeader() < 1 || Error)
+    {
+        HandleReceive(Error);
+        return;
+    }
 
     boost::asio::async_read(Socket,
         boost::asio::buffer(Packet->GetDataWithoutHeader(), Packet->GetSizeWithoutHeader()),
@@ -199,7 +206,7 @@ void WorldSession::HandleCastSpellOpcode()
 
 void WorldSession::HandleLogOutOpcode()
 {
-    sGame->AddToLoadQueue(new Login(), WorldPacket(0));
+    //... Not sure yet
 }
 
 void WorldSession::HandleSystemMessageOpcode()
@@ -268,8 +275,6 @@ void WorldSession::SendMovementRequest(uint8 Direction)
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
     WorldPacket* Packet = new WorldPacket((uint16)MSG_LOGIN);
-
-    //EncryptSHA512(Password);
 
     *Packet << Username << Password;
     Send(Packet);

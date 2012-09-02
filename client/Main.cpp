@@ -48,6 +48,7 @@ int main()
 
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
+        io.stop();
         NetworkThread.join();
     }
     catch(std::exception const
