@@ -14,6 +14,26 @@ void Inventory::HandleEvent(sf::Event& e)
 {
     // TODO: Check if click on Inventory menu or check if Inventory menu is already open and clicked on item
     // and do something with...
+
+    if (e.type == sf::Event::KeyPressed)
+    {
+        if (e.key.code == sf::Keyboard::B && e.key.shift)
+            m_IsAllOpen = !m_IsAllOpen;
+    }
+
+    if (e.type == sf::Event::MouseButtonPressed)
+    {
+        sf::Vector2i mousePos(e.mouseButton.x, e.mouseButton.y);
+
+        for (int iBag = 0 ; iBag < 4 ; ++iBag)
+        {
+            if (m_Bags[iBag]->IsInArea(mousePos))
+            {
+                m_IsBagOpen[iBag] = true;
+                break;
+            }
+        }
+    }
 }
 
 void Inventory::Draw()

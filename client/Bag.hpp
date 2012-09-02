@@ -28,6 +28,8 @@ class Bag
 
     bool IsCreated() const;
 
+    bool IsInArea(sf::Vector2i const& point) const;
+
     private:
     bool m_IsCreated;
     uint8 m_Capacity;
