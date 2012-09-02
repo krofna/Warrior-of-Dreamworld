@@ -2,6 +2,7 @@
 
 #include "Database.hpp"
 #include "ObjectMgr.hpp"
+#include "../shared/WorldPacket.hpp"
 
 Bag::Bag()
 {
@@ -49,6 +50,20 @@ void Bag::LoadFromDB(uint64 GUID, uint64 OwnerGUID, uint64 ItemID)
 void Bag::SaveToDB()
 {
     Item::SaveToDB();
+}
+
+void Bag::BuildPacketData(WorldPacket* Packet)
+{
+    uint64 ItemID = GetItemID();
+    // Bag item ID
+    *Packet << ItemID;
+    // Bag slots used
+    *Packet << m_Capacity - NumberFreeSlots();
+    for (uint8 iSlot = 0 ; iSlot < m_Capacity ; ++iSlot)
+    {
+        if (m_Items[iSlot])
+            m_Items[iSlot]->BuildPacketData(Packet);
+    }
 }
 
 Item* Bag::GetItemBySlot(uint8 Slot) const

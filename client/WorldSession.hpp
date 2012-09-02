@@ -52,6 +52,7 @@ public:
     void HandleCreateItemOpcode();
     void HandleUseItemOpcode();
     void HandleEquipItemOpcode();
+    void HandleInventoryDataOpcode();
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);

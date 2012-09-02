@@ -38,5 +38,6 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
     { "MSG_EQUIP_ITEM", &WorldSession::HandleEquipItemOpcode },
     { "MSG_SWAP_ITEM", &WorldSession::HandleSwapItemOpcode },
     { "MSG_DELETE_ITEM", &WorldSession::HandleDeleteItemOpcode },
-    { "MSG_CREATE_ITEM", &WorldSession::HandleCreateItemOpcode }
+    { "MSG_CREATE_ITEM", &WorldSession::HandleCreateItemOpcode },
+    { "MSG_INVENTORY_DATA", &WorldSession::HandleInventoryDataOpcode }
 };

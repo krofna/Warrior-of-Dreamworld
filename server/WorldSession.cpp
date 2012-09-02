@@ -181,8 +181,13 @@ void WorldSession::HandleLoginOpcode()
     *LoginPacket << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
     Send(LoginPacket);
 
-    // Add player to the world
+    // Bind WorldSession to Player
     pPlayer->BindSession(shared_from_this());
+
+    // Send inventory data to client
+    pPlayer->SendInventoryData();
+
+    // Add player to the world
     sWorld->AddPlayer(pPlayer);
     sLog.Write("Packet is good!");
 }

@@ -25,6 +25,8 @@ Bag::Bag(int idxBag, std::string const& FileNameIcon) : m_Capacity(0), m_IsCreat
 
 void Bag::Create(uint64 Entry)
 {
+    ItemTemplate const* proto = sObjectMgr->GetItemData(Entry);
+    m_Capacity = proto->ContainerSlots;
     m_IsCreated = true;
 }
 
@@ -85,6 +87,11 @@ Item* Bag::GetItem(uint8 SrcSlot) const
 bool Bag::IsCreated() const
 {
     return m_IsCreated;
+}
+
+uint8 Bag::GetNumSlots() const
+{
+    return m_Capacity;
 }
 
 bool Bag::IsInArea(sf::Vector2i const& point) const

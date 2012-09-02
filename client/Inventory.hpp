@@ -20,6 +20,8 @@ class Inventory
 
     bool AutoCreateBag(uint64 Entry);
 
+    uint8 GetNumSlots(uint8 BagPos) const;
+
     protected:
     void DrawBagOpen();
     void DrawBagIcon();

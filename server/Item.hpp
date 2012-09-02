@@ -4,6 +4,7 @@
 #include "../shared/Defines.hpp"
 
 class Bag;
+class WorldPacket;
 struct ItemTemplate;
 
 class Item
@@ -31,6 +32,8 @@ class Item
 
     virtual void SaveToDB();
     virtual void LoadFromDB(uint64 GUID, uint64 OwnerGUID, uint64 ItemID);
+
+    virtual void BuildPacketData(WorldPacket* Packet);
 
     void SetContainer(Bag* pContainer);
     Bag* GetContainer() const;

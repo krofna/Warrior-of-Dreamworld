@@ -265,6 +265,31 @@ void WorldSession::HandleEquipItemOpcode()
 
 }
 
+void WorldSession::HandleInventoryDataOpcode()
+{
+    uint8 nBags;
+    *Packet >> nBags;
+    for (uint8 i = 0 ; i < nBags ; ++i)
+    {
+        uint8 iBag;
+        *Packet >> iBag;
+        uint64 bagEntry;
+        *Packet >> bagEntry;
+        uint8 nUsed;
+        *Packet >> nUsed;
+
+        pWorld->GetInventory()->Create(iBag, bagEntry);
+        for (uint8 i = 0 ; i < nUsed ; ++i)
+        {
+            uint64 itemEntry;
+            uint8 iSlot;
+            *Packet >> iSlot >> itemEntry;
+
+            pWorld->GetInventory()->Create(iBag, iSlot, itemEntry);
+        }
+    }
+}
+
 void WorldSession::SendMovementRequest(uint8 Direction)
 {
     WorldPacket* Packet = new WorldPacket((uint16)MSG_MOVE_OBJECT);

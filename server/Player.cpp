@@ -29,6 +29,8 @@ Password     (Password),
 LoadedFromDB (false),
 m_IsMute     (false)
 {
+    for (int i = 0 ; i < 4 ; ++i)
+        m_Bags[i] = nullptr;
 }
 
 Player::~Player()
@@ -68,8 +70,6 @@ void Player::LoadFromDB()
         m_Bags[idxBag]->LoadFromDB(Result->getUInt64(1), ObjID, Result->getUInt64(3));
     }
 
-    SendInventoryData();
-
     sDatabase.PExecute("UPDATE `players` SET `online` = 1 WHERE `guid` = %llu", ObjID);
 
     LoadedFromDB = true;
@@ -78,10 +78,30 @@ void Player::LoadFromDB()
 void Player::SendInventoryData()
 {
     WorldPacket* Packet = new WorldPacket((uint16)MSG_INVENTORY_DATA);
-    // TODO: What data are needed from client ?
-    // entry, bag, slot
-    // @Alchimist: NEVER SEND INVALID PACKETS!
-    //SendPacket(Packet);
+
+    // Calculate number of bags
+    uint8 nBags;
+    for (int i = 0 ; i < 4 ; ++i)
+    {
+        if (m_Bags[i])
+            nBags++;
+    }
+
+    *Packet << nBags;
+
+    // Writing bags data
+    for (int i = 0 ; i < 4 ; ++i)
+    {
+        if (m_Bags[i])
+        {
+            // Bag index
+            *Packet << i;
+            // Bag data
+            m_Bags[i]->BuildPacketData(Packet);
+        }
+    }
+
+    SendPacket(Packet);
 }
 
 bool Player::IsLoaded()

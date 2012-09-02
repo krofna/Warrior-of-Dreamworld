@@ -91,6 +91,12 @@ void Item::LoadFromDB(uint64 GUID, uint64 OwnerGUID, uint64 ItemID)
     m_cState   = NONE;
 }
 
+void Item::BuildPacketData(WorldPacket* Packet)
+{
+    uint64 ItemID = GetItemID();
+    *Packet << m_Slot << ItemID;
+}
+
 void Item::SetContainer(Bag* pContainer)
 {
     m_Container = pContainer;

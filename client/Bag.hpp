@@ -31,6 +31,8 @@ class Bag
     bool IsCreated() const;
 
     bool IsInArea(sf::Vector2i const& point) const;
+    
+    uint8 GetNumSlots() const; 
 
     static void InitializePositionsBag();
 

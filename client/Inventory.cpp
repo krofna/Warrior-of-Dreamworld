@@ -108,3 +108,8 @@ bool Inventory::AutoCreateBag(uint64 Entry)
     }
     return false;
 }
+
+uint8 Inventory::GetNumSlots(uint8 Bag) const
+{
+    return m_Bags[Bag]->GetNumSlots();
+}
