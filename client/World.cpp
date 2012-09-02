@@ -153,7 +153,7 @@ void World::Draw()
     }
 
     // Draw Inventory
-    pInventory->Draw();
+    //pInventory->Draw();
 
     // Draw chat GUI
     m_MessageArea->Draw(m_UpdateClock.restart().asMilliseconds());
