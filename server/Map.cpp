@@ -134,6 +134,7 @@ void Map::SendToPlayers(WorldPacket* Packet)
 
 void Map::RemovePlayer(Player* pPlayer)
 {
+    bool Sent = false;
     WorldPacket* Packet = new WorldPacket((uint16)MSG_REMOVE_OBJECT);
     *Packet << pPlayer->GetObjectID();
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)
@@ -145,8 +146,16 @@ void Map::RemovePlayer(Player* pPlayer)
         else
         {
             (*PlayerIterator)->SendPacket(Packet);
+            Sent = true;
             ++PlayerIterator;
         }
+    }
+    
+    // In case that last player in the world is being removed
+    // We must delete packet here, since its never sent (or removed)
+    if(!Sent)
+    {
+        delete Packet;
     }
 }
 

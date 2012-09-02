@@ -24,12 +24,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-pPlayer				      (nullptr)
+pPlayer                   (nullptr),
+Packet                    (nullptr)
 {
 }
 
 WorldSession::~WorldSession()
 {
+    delete Packet;
 }
 
 Player* WorldSession::GetPlayer()
