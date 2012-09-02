@@ -33,6 +33,7 @@ class WorldSession
 {
 public:
     WorldSession(boost::asio::io_service& io, Game* sGame);
+    ~WorldSession();
 
     void Connect(std::string Ip, std::string Port);
     void Send(WorldPacket* Packet);

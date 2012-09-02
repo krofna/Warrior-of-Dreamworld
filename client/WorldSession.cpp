@@ -34,6 +34,11 @@ Work                      (make_shared<boost::asio::io_service::work>(io))
 {
 }
 
+WorldSession::~WorldSession()
+{
+    delete Packet;
+}
+
 void WorldSession::Connect(std::string Ip, std::string Port)
 {
     tcp::resolver::query Query(Ip.c_str(), Port.c_str());
