@@ -4,10 +4,10 @@
 
 #include <SFML/Window/Event.hpp>
 
-Inventory::Inventory()
+Inventory::Inventory(std::string const& FileNameIcon)
 {
 	for (int i = 0 ; i < 4 ; ++i)
-        m_Bags[iBag] = new Bag;
+        m_Bags[i] = new Bag(i, FileNameIcon);
 }
 
 void Inventory::HandleEvent(sf::Event& e)
@@ -43,7 +43,10 @@ void Inventory::DrawBagOpen()
 
 void Inventory::DrawBagIcon()
 {
-    // TODO: Draw a GUI for Inventory
+    for (int iBag = 0 ; iBag < 4 ; ++iBag)
+    {
+        m_Bags[iBag]->DrawIcon();
+    }
 }
 
 void Inventory::Swap(uint8 SrcBag, uint8 DestBag, uint8 SrcSlot, uint8 DestSlot)

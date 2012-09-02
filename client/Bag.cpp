@@ -1,10 +1,24 @@
 #include "Bag.hpp"
 #include "Item.hpp"
 
-Bag::Bag() : m_Capacity(0)
+// TODO: Write the good positions :D
+// And please, not voodoo again :)
+const sf::Vector2f Bag::PositionsBag[4] =
+{
+    sf::Vector2f(0, 0),
+    sf::Vector2f(0, 0),
+    sf::Vector2f(0, 0),
+    sf::Vector2f(0, 0)
+};
+
+
+Bag::Bag(int idxBag, std::string const& FileNameIcon) : m_Capacity(0)
 {
     for (int i = 0 ; i < MAX_BAG_SIZE ; ++i)
         m_Slots[i] = nullptr;
+
+    m_IconSprite = new sf::Sprite(*sObjectMgr->GetTexture("BagIcon", FileNameIcon));
+    m_IconSprite->setPosition(PositionsBag[idxBag]);
 }
 
 void Bag::Draw()
@@ -16,6 +30,11 @@ void Bag::Draw()
         else
             DrawEmptySlot();
     }
+}
+
+void Bag::DrawIcon()
+{
+    Window->draw(*m_IconSprite);
 }
 
 void Bag::DrawEmptySlot()

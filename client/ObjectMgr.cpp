@@ -31,6 +31,11 @@ void ObjectMgr::Cleanup()
     {
         delete it->second;
     }
+
+    for (auto it = m_Textures.begin() ; it != m_Textures.end() ; ++it)
+    {
+        delete it->second;
+    }
 }
 
 void ObjectMgr::LoadTileset(std::string const& FileName)
@@ -102,6 +107,24 @@ sf::Texture* ObjectMgr::GetTileset(std::string const& TilesetName)
         LoadTileset(TilesetName);
         return m_Tilesets[TilesetName];
     }
+}
+
+sf::Texture* ObjectMgr::GetTexture(std::string const& TextureName, std::string const& TexturePath)
+{
+    auto TextureIt = m_Textures.find(TextureName);
+    if (TextureIt != m_Textures.end())
+        return TextureIt->second;
+
+    sf::Texture* Tex = new sf::Texture;
+    if (!Tex->loadFromFile(TexturePath))
+    {
+        sLog.Write("Failed to load texture (texture name: %s, texture path: %s)", TextureName, TexturePath);
+        throw std::runtime_error("Failed to load texture.");
+    }
+
+    m_Textures[TextureName] = Tex;
+
+    return Tex;
 }
 
 bool ObjectMgr::FindItemData(uint64 ItemID) const

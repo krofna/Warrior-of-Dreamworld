@@ -28,6 +28,8 @@ class ObjectMgr
     bool SearchDisplayID(uint16 DisplayInfoID) const;
     bool SearchTileset(std::string const& FileName) const;
 
+    sf::Texture* GetTexture(std::string const& TextureName, std::string const& TexturePath);
+
     private:
     std::string FindDisplayID_Filename(uint16 DisplayInfoID);
     bool FindDisplayID_Information(uint16 DisplayInfoID) const;
@@ -38,6 +40,7 @@ class ObjectMgr
     std::map<uint64, ItemTemplate* > m_ItemsData;
     std::map<uint16, sf::Texture* > m_DisplayInfoIDs;
     std::map<std::string, sf::Texture* > m_Tilesets;
+    std::map<std::string, sf::Texture* > m_Textures;
 
     std::map<uint16, std::string> m_DisplayID_Filenames_Table;
 
