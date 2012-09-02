@@ -8,18 +8,18 @@ spawning SPELL_BOLTs
 
 4) Implement reconnect
 
+5) Finish movement system (Or Remake it)
 
 URGENT TODOs: (FullMetal-Alchimist assigned)
 
-1) Fix all crashes/bugs
+1) Fix all crashes/bugs (Report them by issue or sending a email at masterancpp at gmail dot com, except krofna, who can
+    report them by "Fix that slave!")
 
-2) Finish movement system (Or Remake it)
+2) Finish melee system
 
-3) Finish melee system
+3) Finish chat system
 
-4) Finish chat system
-
-5) Finish inventory system
+4) Finish inventory system
 
 Code:
 - Propertly clean up SPELL_BOLT on client side when its erased from server

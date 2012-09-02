@@ -10,7 +10,7 @@ class Inventory
     public:
     Inventory(std::string const& FileNameIcon);
 
-    void HandleEvent(sf::Event& e);
+    bool HandleEvent(sf::Event& e);
     void Draw();
 
     void Swap(uint8 SrcBag, uint8 DestBag, uint8 SrcSlot, uint8 DestSlot);

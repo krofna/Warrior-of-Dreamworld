@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "MessageChatArea.hpp"
 
 #include "Inventory.hpp"
+#include "Bag.hpp"
 
 #include "../shared/Math.hpp"
 #include <cassert>
@@ -39,7 +40,8 @@ CameraLeft    (WorldView.getCenter().x - WindowWidth / 2),
 CameraTop     (WorldView.getCenter().y - WindowHeight / 2),
 CameraRight   (WindowWidth),
 CameraBottom  (WindowHeight),
-MeID          (MeID)
+MeID          (MeID),
+m_PointMode   (false)
 {
 }
 
@@ -95,6 +97,8 @@ void World::Load(WorldPacket Argv)
         index += 4;
     }
 
+
+    Bag::InitializePositionsBag();
     pInventory = new Inventory("data/icons/bag.png");
 
     sGame->PopState();
@@ -161,7 +165,7 @@ void World::Draw()
 
 void World::HandleEvent(sf::Event Event)
 {
-    if (m_MessageArea->HandleTyping(Event))
+    if (m_MessageArea->HandleTyping(Event) || pInventory->HandleEvent(Event))
         return;
 
     switch(Event.type)
@@ -192,6 +196,9 @@ void World::HandleEvent(sf::Event Event)
             Session->SendLogOutRequest();
             Window->close();
             return;
+        case sf::Keyboard::P:
+            m_PointMode = !m_PointMode;
+            return;
 
         default:
             break;
@@ -217,14 +224,15 @@ void World::HandleEvent(sf::Event Event)
 
     case sf::Event::MouseButtonPressed:
         // PH
-        Session->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
+        if (m_PointMode)
+            std::cout << Event.mouseButton.x << ";" << Event.mouseButton.y << std::endl;
+        else
+            Session->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:
         break;
     }
-
-    pInventory->HandleEvent(Event);
 }
 
 void World::AddObject(WorldObject* pWorldObject, uint64 ObjectID)

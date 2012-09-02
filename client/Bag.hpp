@@ -7,6 +7,8 @@
 
 #define MAX_BAG_SIZE 36
 
+#define BASE_SLOT_POS(x, y) sf::Vector2f(x, y) // ??
+#define SLOT_SHAPE sf::Vector2f(15, 15)
 
 class Item;
 class Bag
@@ -18,7 +20,7 @@ class Bag
 
     void Draw();
     void DrawIcon();
-    void DrawEmptySlot(int idx);
+    void DrawEmptySlot(sf::Vector2f const& baseSlotPos, int idx);
 
     Item* GetItem(uint8 SrcSlot) const;
 
@@ -30,6 +32,8 @@ class Bag
 
     bool IsInArea(sf::Vector2i const& point) const;
 
+    static void InitializePositionsBag();
+
     private:
     bool m_IsCreated;
     uint8 m_Capacity;
@@ -38,7 +42,7 @@ class Bag
     // GUI Stuff
     sf::Sprite* m_IconSprite;
 
-    static const sf::Vector2f PositionsBag[4];
+    static sf::Vector2f PositionsBag[4];
 };
 
 #endif

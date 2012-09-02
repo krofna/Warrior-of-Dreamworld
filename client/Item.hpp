@@ -2,6 +2,7 @@
 #define ITEM_DEFINED
 
 #include "../shared/Defines.hpp"
+#include <SFML/System.hpp>
 
 struct ItemTemplate;
 
@@ -11,7 +12,7 @@ class Item
     Item();
     static Item* Create(uint64 Entry);
 
-    void Draw();
+    void Draw(sf::Vector2f const& baseSlotPos, int idx);
     void DrawInformation();
 
     void Use();

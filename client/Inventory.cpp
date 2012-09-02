@@ -10,15 +10,17 @@ Inventory::Inventory(std::string const& FileNameIcon)
         m_Bags[i] = new Bag(i, FileNameIcon);
 }
 
-void Inventory::HandleEvent(sf::Event& e)
+bool Inventory::HandleEvent(sf::Event& e)
 {
-    // TODO: Check if click on Inventory menu or check if Inventory menu is already open and clicked on item
-    // and do something with...
+    bool Modification = false;
 
     if (e.type == sf::Event::KeyPressed)
     {
         if (e.key.code == sf::Keyboard::B && e.key.shift)
+        {
             m_IsAllOpen = !m_IsAllOpen;
+            Modification = true;
+        }
     }
 
     if (e.type == sf::Event::MouseButtonPressed)
@@ -27,13 +29,17 @@ void Inventory::HandleEvent(sf::Event& e)
 
         for (int iBag = 0 ; iBag < 4 ; ++iBag)
         {
+            // TODO: Check if function is correct
             if (m_Bags[iBag]->IsInArea(mousePos))
             {
                 m_IsBagOpen[iBag] = true;
+                Modification = true;
                 break;
             }
         }
     }
+
+    return Modification;
 }
 
 void Inventory::Draw()

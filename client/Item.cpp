@@ -2,6 +2,7 @@
 #include "Globals.hpp"
 #include "Templates.hpp"
 
+
 Item::Item()
 {
 
@@ -19,7 +20,7 @@ Item* Item::Create(uint64 Entry)
     return newItem;
 }
 
-void Item::Draw()
+void Item::Draw(sf::Vector2f const& baseSlotPos, int idx)
 {
     // TODO: Draw icon display ID.
 }

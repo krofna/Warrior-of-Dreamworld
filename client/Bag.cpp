@@ -2,14 +2,17 @@
 #include "Item.hpp"
 
 // TODO: Write the good positions :D
-// Y is inverted in SFML :) I love that.
-const sf::Vector2f Bag::PositionsBag[4] =
+#define BAG_POS_Y ((WindowHeight / 6) * 5)
+
+sf::Vector2f Bag::PositionsBag[4];
+
+void Bag::InitializePositionsBag()
 {
-    sf::Vector2f(WindowWidth + 200, 10),
-    sf::Vector2f(WindowWidth + 150, 10),
-    sf::Vector2f(WindowWidth + 100, 10),
-    sf::Vector2f(WindowWidth + 50, 10)
-};
+    PositionsBag[0] = sf::Vector2f(WindowWidth - 200, BAG_POS_Y + 50);
+    PositionsBag[1] = sf::Vector2f(WindowWidth - 150, BAG_POS_Y + 50);
+    PositionsBag[2] = sf::Vector2f(WindowWidth - 100, BAG_POS_Y + 50);
+    PositionsBag[3] = sf::Vector2f(WindowWidth - 50, BAG_POS_Y + 50);
+}
 
 Bag::Bag(int idxBag, std::string const& FileNameIcon) : m_Capacity(0), m_IsCreated(false)
 {
@@ -27,12 +30,13 @@ void Bag::Create(uint64 Entry)
 
 void Bag::Draw()
 {
+    sf::Vector2f baseSlotPos (BASE_SLOT_POS(m_IconSprite->getPosition().x, m_IconSprite->getPosition().y));
     for (int i = 0 ; i < m_Capacity ; ++i)
     {
         if (m_Slots[i])
-            m_Slots[i]->Draw();
+            m_Slots[i]->Draw(baseSlotPos, i);
         else
-            DrawEmptySlot(i);
+            DrawEmptySlot(baseSlotPos, i);
     }
 }
 
@@ -41,9 +45,20 @@ void Bag::DrawIcon()
     Window->draw(*m_IconSprite);
 }
 
-void Bag::DrawEmptySlot(int idx)
+void Bag::DrawEmptySlot(sf::Vector2f const& baseSlotPos, int idx)
 {
-    // TODO: What should we draw ?
+    sf::RectangleShape shape(SLOT_SHAPE);
+    shape.setTexture(sObjectMgr->GetTexture("EmptySlotIcon", "data/icon/empty_slot.png"));
+    // TODO: Where should we draw ?
+    
+    /*
+    sf::Vector2f SlotPos (baseSlotPos);
+
+    Hahahaha... Where?
+
+    shape.setPosition(SlotPos);
+    Window->Draw(shape);
+       */
 }
 
 void Bag::Store(uint8 DestSlot, Item* pItem)
@@ -74,7 +89,7 @@ bool Bag::IsCreated() const
 
 bool Bag::IsInArea(sf::Vector2i const& point) const
 {
-    sf::FloatRect rect = sf::FloatRect(m_IconSprite->getPosition().x, m_IconSprite->getPosition().y, 0, 0);
+    sf::FloatRect rect = sf::FloatRect(m_IconSprite->getPosition(), m_IconSprite->getScale());
 
     return rect.contains(sf::Vector2f(point));
 }

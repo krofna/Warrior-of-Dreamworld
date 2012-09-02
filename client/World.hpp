@@ -77,6 +77,8 @@ private:
     // Inventory
     Inventory* pInventory;
 
+    // Debug purpose (For stopping voodoo)
+    bool m_PointMode;
     std::map<uint64, WorldObject*> WorldObjectMap;
     std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint64 MeID;
