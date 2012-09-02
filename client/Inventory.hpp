@@ -8,7 +8,7 @@ class Bag;
 class Inventory
 {
     public:
-    Inventory();
+    Inventory(std::string const& FileNameIcon);
 
     void HandleEvent(sf::Event& e);
     void Draw();
@@ -25,6 +25,8 @@ class Inventory
     Bag* m_Bags[4]; 
     bool m_IsBagOpen[4];
     bool m_IsAllOpen;
+
+    // GUI Stuff
 };
 
 #endif

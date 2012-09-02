@@ -95,7 +95,7 @@ void World::Load(WorldPacket Argv)
         index += 4;
     }
 
-    pInventory = new Inventory;
+    pInventory = new Inventory("data/icons/bag.png");
 
     sGame->PopState();
     sGame->PushState(this);

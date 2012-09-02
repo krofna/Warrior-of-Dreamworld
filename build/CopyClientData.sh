@@ -1,2 +1,3 @@
-cp -R ../client/Release/* ClientData/* bin/Client/Debug/
-cp -R ../client/Release/* ClientData/* bin/Client/Release/
+#!/bin/sh
+cp -R ClientData/* bin/Client/Debug/
+cp -R ClientData/* bin/Client/Release/

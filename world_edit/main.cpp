@@ -176,6 +176,8 @@ void EditDisplayIDMasterFile()
     std::cout << "How many display ID texture have you ?" << std::endl;
     std::cin >> nFilenames;
 
+	out << nFilenames;
+
     for (int i = 0 ; i < nFilenames ; ++i)
     {
         uint16_t DisplayInfoID;

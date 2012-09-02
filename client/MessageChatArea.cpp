@@ -4,7 +4,7 @@
 
 MessageChatArea::MessageChatArea() : m_IsTyping(false)
 {
-    if (!m_DefaultFont.loadFromFile("arial.ttf"))
+    if (!m_DefaultFont.loadFromFile("data/fonts/arial.ttf"))
         throw std::runtime_error("Impossible to load arial.ttf font");
 }
 
