@@ -3,7 +3,8 @@
 
 Bag::Bag() : m_Capacity(0)
 {
-
+    for (int i = 0 ; i < MAX_BAG_SIZE ; ++i)
+        m_Slots[i] = nullptr;
 }
 
 void Bag::Draw()

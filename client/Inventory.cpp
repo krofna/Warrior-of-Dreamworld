@@ -6,7 +6,8 @@
 
 Inventory::Inventory()
 {
-
+	for (int i = 0 ; i < 4 ; ++i)
+        m_Bags[iBag] = new Bag;
 }
 
 void Inventory::HandleEvent(sf::Event& e)
