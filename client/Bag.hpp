@@ -15,6 +15,7 @@ class Bag
 {
     public:
     Bag(int idxBag, std::string const& FileNameIcon);
+    ~Bag();
 
     void Create(uint64 Entry);
 

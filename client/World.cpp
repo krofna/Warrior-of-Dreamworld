@@ -56,6 +56,8 @@ World::~World()
     {
         delete *AnimIter;
     }
+
+    delete pInventory;
 }
 
 void World::Load(WorldPacket Argv)

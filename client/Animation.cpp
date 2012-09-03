@@ -19,7 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Animation.hpp"
 #include "Globals.hpp"
 #include <cmath>
+ 
+Animation::Animation() : Time(sf::microseconds(0)), Angle(0.f), ID(0)
+{
 
+}
 void Animation::Load(WorldPacket Argv)
 {
     sf::Vector2f Position;

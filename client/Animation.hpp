@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Animation : public Loadable
 {
 public:
+    Animation();
     void Update();
     virtual void Load(WorldPacket Argv);
     uint32 GetID() const

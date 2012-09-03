@@ -70,13 +70,15 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
     if(Error)
     {
         sLog.Write("Failed to receive packet. Kicking player. TODO: Try Reconnect");
-        pPlayer->LogOut();
+        if (pPlayer)
+            pPlayer->LogOut();
         return;
     }
     if(Packet->GetOpcode() >= MSG_COUNT)
     {
         sLog.Write("Received %u: Bad opcode! Kicking player.", Packet->GetOpcode());
-        pPlayer->LogOut();
+        if (pPlayer)
+            pPlayer->LogOut();
         return;
     }
 	if(Packet->GetOpcode() == MSG_NULL)
@@ -187,7 +189,7 @@ void WorldSession::HandleLoginOpcode()
     pPlayer->BindSession(shared_from_this());
 
     // Send inventory data to client
-    pPlayer->SendInventoryData();
+    //pPlayer->SendInventoryData();
 
     // Add player to the world
     sWorld->AddPlayer(pPlayer);

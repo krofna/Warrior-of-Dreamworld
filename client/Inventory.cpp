@@ -4,10 +4,19 @@
 
 #include <SFML/Window/Event.hpp>
 
-Inventory::Inventory(std::string const& FileNameIcon)
+Inventory::Inventory(std::string const& FileNameIcon) : m_IsAllOpen(false)
 {
 	for (int i = 0 ; i < 4 ; ++i)
+    {
         m_Bags[i] = new Bag(i, FileNameIcon);
+        m_IsBagOpen[i] = false;
+    }
+}
+
+Inventory::~Inventory()
+{
+    for (int i = 0 ; i < 4 ; ++i)
+        delete m_Bags[i];
 }
 
 bool Inventory::HandleEvent(sf::Event& e)

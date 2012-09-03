@@ -63,6 +63,8 @@ int main()
 
     sLog.Flush();
 
+    sObjectMgr->Cleanup();
+
     delete sObjectMgr;
     delete sGame;
     delete Session;

@@ -9,6 +9,7 @@ class Inventory
 {
     public:
     Inventory(std::string const& FileNameIcon);
+    ~Inventory();
 
     bool HandleEvent(sf::Event& e);
     void Draw();

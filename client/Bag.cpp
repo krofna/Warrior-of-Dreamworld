@@ -23,6 +23,11 @@ Bag::Bag(int idxBag, std::string const& FileNameIcon) : m_Capacity(0), m_IsCreat
     m_IconSprite->setPosition(PositionsBag[idxBag]);
 }
 
+Bag::~Bag()
+{
+    delete m_IconSprite;
+}
+
 void Bag::Create(uint64 Entry)
 {
     ItemTemplate const* proto = sObjectMgr->GetItemData(Entry);
