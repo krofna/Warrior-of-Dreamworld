@@ -127,7 +127,7 @@ void Pathfinder::GeneratePath()
             }
 
             // Destroy open list
-            OpenList = std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode>();
+            OpenList.clear();
             return;
         }
 
@@ -214,16 +214,17 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
             // If it is already on open list
         case (uint8)OPEN:
             // Check if G path of pCurrent is better than G path of pAdjacent
-            // TODO: Re-sort list?
-            /*if((pCurrent->G + Cost) < pAdjacent->G)
+            if((pCurrent->G + Cost) < pAdjacent->G)
             {
-            // Make pCurrent parent of pAdjacent
-            pAdjacent->pParent = pCurrent;
+                // Make pCurrent parent of pAdjacent
+                pAdjacent->pParent = pCurrent;
 
-            // Recalculate distance
-            pAdjacent->G = pCurrent->G + Cost;
-            pAdjacent->H = 10 * math::GetManhattanDistance(Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
-            }*/
+                // Recalculate distance
+                pAdjacent->G = pCurrent->G + Cost;
+                pAdjacent->H = 10 * math::GetManhattanDistance(Vector2i(pAdjacent->Position.x, pAdjacent->Position.y), Target);
+
+                OpenList.re_insert(pAdjacent);
+            }
 
             // If its closed, ignore it
         case (uint8)CLOSED:

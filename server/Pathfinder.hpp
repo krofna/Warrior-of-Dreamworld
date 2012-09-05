@@ -44,6 +44,22 @@ struct CompareNode : public std::binary_function<PathfinderNode*, PathfinderNode
     }
 };
 
+class my_priority_queue :
+    public std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode>
+{
+public:
+    void re_insert(PathfinderNode* what)
+    {
+        this->c.erase(std::find(this->c.begin(), this->c.end(), what));
+        this->push(what);
+    }
+
+    void clear()
+    {
+        this->c.clear();
+    }
+};
+
 class Pathfinder
 {
     public:
@@ -105,7 +121,7 @@ class Pathfinder
         int64 MovementCooldown;
 
         // Priority queue of nodes to be checked by CheckNode()
-        std::priority_queue<PathfinderNode*, std::vector<PathfinderNode*>, CompareNode> OpenList;
+        my_priority_queue OpenList;
 
         //std::stack<Vector2i> PathToHome; // NYI - maybe calculate path to home but store only home coord in ctor
 };

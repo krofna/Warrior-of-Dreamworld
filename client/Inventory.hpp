@@ -3,7 +3,7 @@
 
 #include "../shared/Defines.hpp"
 
-namespace sf { struct Event; }
+namespace sf { class Event; }
 class Bag;
 class Inventory
 {
