@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Pathfinder.hpp"
 #include "Map.hpp"
-#include "WorldObject.hpp"
+#include "Unit.hpp"
 #include "../shared/Math.hpp"
 #include "../shared/Log.hpp"
 
@@ -35,10 +35,12 @@ TODO:
 boost::shared_array<PathfinderNode> Pathfinder::PathfindingGrid;
 boost::shared_array<uint8> Pathfinder::PathfindingStatusGrid;
 
-Pathfinder::Pathfinder(WorldObject* pOrigin) :
+Pathfinder::Pathfinder(Unit* pOrigin) :
 pOrigin               (pOrigin),
 pMap                  (pOrigin->GetMap()),
-pTarget               (nullptr)
+pTarget               (nullptr),
+Target                (-1, -1),
+Home                  (pOrigin->GetPosition())
 {
     pTileGrid =  &pMap->TileGrid;
     MovementCooldown = 1000;
@@ -62,11 +64,21 @@ void Pathfinder::Init()
 
 void Pathfinder::Update(int64 diff)
 {
-    if(pTarget && pTarget->Position != Target)
+    // Go home if target is either dead or not on this map
+    if(pTarget && (pTarget->IsDead() || pTarget->GetMap() != pMap || !pTarget->IsInWorld()))
     {
-        this->Target = Vector2i(pTarget->GetX(), pTarget->GetY());
+        pTarget = nullptr;
+        Target = Home;
         GeneratePath();
     }
+    // If target moved since last path generate, generate new path
+    else if(pTarget && pTarget->Position != Target)
+    {
+        this->Target = pTarget->GetPosition();
+        GeneratePath();
+    }
+
+    // If not arrived to destination and can move, move
     if(!Path.empty() && (MovementCooldown <= diff))
     {
         pOrigin->UpdatePosition(Path.top());
@@ -79,15 +91,15 @@ void Pathfinder::Update(int64 diff)
     }
 }
 
-void Pathfinder::UpdateTarget(WorldObject* pNewTarget)
+void Pathfinder::UpdateTarget(Unit* pNewTarget)
 {
     this->pTarget = pNewTarget;
-    this->Target = Vector2i(pTarget->GetX(), pTarget->GetY());
-    GeneratePath();
 }
 
 void Pathfinder::GeneratePath()
 {
+    sLog.Write("Generating new path");
+
     // Destroy old path
     Path = std::stack<Vector2i>();
 

@@ -48,8 +48,10 @@ public:
     void DoMeleeAttackIfReady(int64 diff);
     void Kill();
 
-    bool IsDead() const { return Health >= 1; }
-    bool IsAlive() const { return !IsDead(); }
+    bool IsAlive() const { return Health > 0; }
+    bool IsDead() const { return !IsAlive(); }
+
+    virtual bool IsInWorld() const { return true; /*??*/ }
 
     Unit* GetVictim();
 

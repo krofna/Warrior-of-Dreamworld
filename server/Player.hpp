@@ -56,7 +56,7 @@ public:
 
     void LogOut();
     void Kick();
-    bool IsInWorld();
+    virtual bool IsInWorld() const;
 
     int GetSecLevel() const { return SecLevel;}
     std::string GetUsername() const { return Username; }

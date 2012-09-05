@@ -80,7 +80,7 @@ void Player::SendInventoryData()
     WorldPacket* Packet = new WorldPacket((uint16)MSG_INVENTORY_DATA);
 
     // Calculate number of bags
-    uint8 nBags;
+    uint8 nBags = 0;
     for (int i = 0 ; i < 4 ; ++i)
     {
         if (m_Bags[i])
@@ -164,7 +164,7 @@ void Player::BindSession(WorldSessionPtr pWorldSession)
     this->pWorldSession = pWorldSession;
 }
 
-bool Player::IsInWorld()
+bool Player::IsInWorld() const
 {
     return pWorldSession != nullptr;
 }

@@ -11,6 +11,7 @@ class Vector2
     public:
         Vector2();
         Vector2(NumberType x, NumberType y);
+        Vector2(const Vector2& v);
 
         template<typename OtherType>
         int GetManhattanDistance(Vector2<OtherType> const& Target);
@@ -27,13 +28,13 @@ class Vector2
 template<typename NumberType>
 bool operator ==(Vector2<NumberType> const& Left, Vector2<NumberType> const& Right)
 {
-    return Left.x == Right.x && Left.y == Right.y;
+    return (Left.x == Right.x) && (Left.y == Right.y);
 }
 
 template<typename NumberType>
 bool operator !=(Vector2<NumberType> const& Left, Vector2<NumberType> const& Right)
 {
-    return Left.x != Right.x && Left.y != Right.y;
+    return (Left.x != Right.x) || (Left.y != Right.y);
 }
 
 template<typename NumberType>
@@ -52,6 +53,13 @@ template<typename NumberType>
 Vector2<NumberType>::Vector2(NumberType px, NumberType py) : x(px), y(py)
 {
 
+}
+
+template<typename NumberType>
+Vector2<NumberType>::Vector2(const Vector2& v)
+{
+    this->x = v.x;
+    this->y = v.y;
 }
 
 template<typename NumberType>
