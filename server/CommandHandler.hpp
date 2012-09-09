@@ -70,7 +70,9 @@ void CommandHandler::ExtractArg(T& Arg)
 {
     try
     {
-        Arg = boost::lexical_cast<T>(*TokIter++);
+        std::string TempArg;
+        ExtractArg(TempArg);
+        Arg = boost::lexical_cast<T>(TempArg);
     }
     catch(boost::bad_lexical_cast& e)
     {
