@@ -50,8 +50,6 @@ private:
 
     void HandleShutdownCommand();
 
-    //void ExtractArg(std::string& Arg);
-    
     template <class T>
     void ExtractArg(T& Arg);
 
@@ -65,13 +63,7 @@ public:
 };
 
 template<>
-void CommandHandler::ExtractArg<std::string>(std::string& Arg)
-{
-    if(TokIter == Tokenizer.end())
-        throw BadCommand();
-
-    Arg = *TokIter++;
-}
+void CommandHandler::ExtractArg<std::string>(std::string& Arg);
 
 template <class T>
 void CommandHandler::ExtractArg(T& Arg)

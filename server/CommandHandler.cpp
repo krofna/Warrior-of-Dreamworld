@@ -104,6 +104,15 @@ bool CommandHandler::ExecuteCommand()
     return true;
 }
 
+template<>
+void CommandHandler::ExtractArg<std::string>(std::string& Arg)
+{
+    if(TokIter == Tokenizer.end())
+        throw BadCommand();
+
+    Arg = *TokIter++;
+}
+
 void CommandHandler::HandleAccountCreateCommand()
 {
     std::string Username, Password;
