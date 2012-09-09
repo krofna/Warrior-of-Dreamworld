@@ -126,6 +126,10 @@ void Map::AddSpell(Unit* pCaster, SpellPtr& pSpell, float Angle)
 
 void Map::SendToPlayers(WorldPacket* Packet)
 {
+    if(Players.empty())
+    {
+        delete Packet;
+    }
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
     {
         (*PlayerIterator)->SendPacket(Packet);

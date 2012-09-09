@@ -253,6 +253,7 @@ void World::RemoveObject(uint64 ObjectID)
     delete Iter->second;
     WorldObjectMap.erase(Iter);
 }
+
 void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);
