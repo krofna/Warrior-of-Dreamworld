@@ -28,7 +28,6 @@ bool Inventory::HandleEvent(sf::Event& e)
         if ((e.key.code == sf::Keyboard::B && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) ||
         (e.key.code == sf::Keyboard::LShift && sf::Keyboard::isKeyPressed(sf::Keyboard::B)))
         {
-            fflush(stdout);
             m_IsAllOpen = !m_IsAllOpen;
             Modification = true;
         }
