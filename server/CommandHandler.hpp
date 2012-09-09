@@ -46,6 +46,8 @@ private:
 
     void HandleKillCommand();
 
+    void HandleShutdownCommand();
+
     void ExtractArg(std::string& Arg);
     void ExtractArg(uint32& Arg);
 

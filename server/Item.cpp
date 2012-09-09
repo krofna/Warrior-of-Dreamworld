@@ -94,7 +94,7 @@ void Item::LoadFromDB(uint64 GUID, uint64 OwnerGUID, uint64 ItemID)
 void Item::BuildPacketData(WorldPacket* Packet)
 {
     uint64 ItemID = GetItemID();
-    *Packet << m_Slot << ItemID;
+    *Packet << ItemID;
 }
 
 void Item::SetContainer(Bag* pContainer)

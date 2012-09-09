@@ -56,14 +56,17 @@ void Bag::BuildPacketData(WorldPacket* Packet)
 {
     uint64 ItemID = GetItemID();
     // Bag item ID
-    *Packet << ItemID;
-    // Bag slots used
-    *Packet << m_Capacity - NumberFreeSlots();
+    *Packet << ItemID << (uint8)m_Capacity;
 
     for (uint8 iSlot = 0 ; iSlot < m_Capacity ; ++iSlot)
     {
         if (m_Items[iSlot])
+        {
+            *Packet << (uint8)Item::ITEM_USED;
             m_Items[iSlot]->BuildPacketData(Packet);
+        }
+        else
+            *Packet << (uint8)Item::ITEM_UNUSED;
     }
 }
 

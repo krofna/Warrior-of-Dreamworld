@@ -24,7 +24,14 @@ class Item
     };
 
     public:
-    Item();
+    enum ItemBlockStatus
+    {
+        ITEM_USED,
+        ITEM_UNUSED,
+        ITEM_ERROR
+    };
+
+   Item();
 
     static Item* CreateItem(uint64 ItemID, Player const* Owner = nullptr);
 

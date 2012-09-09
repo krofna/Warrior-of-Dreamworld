@@ -10,6 +10,12 @@
 class Bag : public Item
 {
     public:
+    enum BagBlockStatus
+    {
+        BAG_USED,
+        BAG_UNUSED,
+        BAG_ERROR
+    };
     Bag();
 
     virtual bool Create(uint64 ItemID, Player const* Owner = nullptr);

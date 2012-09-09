@@ -47,8 +47,8 @@ ChatCommand* CommandHandler::GetCommandTable()
     static ChatCommand CommandTable[] =
     {
         { "account",    SEC_PLAYER, true,   NULL,                                           "Usage: account <command> <argv>",              AccountCommandTable },
-        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",
-        NULL },
+        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>", NULL },
+        { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>" },
         NullCommand
     };
 
@@ -190,4 +190,11 @@ void CommandHandler::HandleKillCommand()
     }
     else
         sLog.Write("Unknown player !");
+}
+
+void CommandHandler::HandleShutdownCommand()
+{
+    uint32 time;
+
+    ExtractArg(time);
 }

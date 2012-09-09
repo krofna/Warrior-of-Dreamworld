@@ -79,26 +79,17 @@ void Player::SendInventoryData()
 {
     WorldPacket* Packet = new WorldPacket((uint16)MSG_INVENTORY_DATA);
 
-    // Calculate number of bags
-    uint8 nBags = 0;
-    for (int i = 0 ; i < 4 ; ++i)
-    {
-        if (m_Bags[i])
-            nBags++;
-    }
-
-    *Packet << nBags;
-
     // Writing bags data
     for (int i = 0 ; i < 4 ; ++i)
     {
         if (m_Bags[i])
         {
-            // Bag index
-            *Packet << i;
+            *Packet << (uint8)Bag::BAG_USED;
             // Bag data
             m_Bags[i]->BuildPacketData(Packet);
         }
+        else
+            *Packet << (uint8)Bag::BAG_UNUSED;
     }
 
     SendPacket(Packet);

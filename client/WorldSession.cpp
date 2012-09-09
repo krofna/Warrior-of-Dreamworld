@@ -272,25 +272,28 @@ void WorldSession::HandleEquipItemOpcode()
 
 void WorldSession::HandleInventoryDataOpcode()
 {
-    uint8 nBags;
-    *Packet >> nBags;
-    for (uint8 i = 0 ; i < nBags ; ++i)
+    for (uint8 i = 0 ; i < 4 ; ++i)
     {
-        uint8 iBag;
-        *Packet >> iBag;
+        uint8 bagStatus;
+        *Packet >> bagStatus;
+        if (bagStatus != BAG_USED)
+            continue;
+
         uint64 bagEntry;
-        *Packet >> bagEntry;
-        uint8 nUsed;
-        *Packet >> nUsed;
+        uint8 bagSlots;
+        *Packet >> bagEntry >> bagSlots;
 
-        pWorld->GetInventory()->Create(iBag, bagEntry);
-        for (uint8 i = 0 ; i < nUsed ; ++i)
+        pWorld->GetInventory()->Create(i, bagEntry);
+        for (uint8 k = 0 ; k < bagSlots ; ++k)
         {
-            uint64 itemEntry;
-            uint8 iSlot;
-            *Packet >> iSlot >> itemEntry;
+            uint8 itemStatus;
+            if (itemStatus != ITEM_USED)
+                continue;
 
-            pWorld->GetInventory()->Create(iBag, iSlot, itemEntry);
+            uint64 itemEntry;
+            *Packet >> itemEntry;
+
+            pWorld->GetInventory()->Create(i, k, itemEntry);
         }
     }
 }

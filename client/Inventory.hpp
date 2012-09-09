@@ -5,6 +5,20 @@
 
 namespace sf { class Event; }
 class Bag;
+
+enum BagBlockStatus
+{
+    BAG_USED,
+    BAG_UNUSED,
+    BAG_ERROR
+};
+enum ItemBlockStatus
+{
+    ITEM_USED,
+    ITEM_UNUSED,
+    ITEM_ERROR
+};
+
 class Inventory
 {
     public:

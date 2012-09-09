@@ -189,7 +189,7 @@ void WorldSession::HandleLoginOpcode()
     pPlayer->BindSession(shared_from_this());
 
     // Send inventory data to client
-    //pPlayer->SendInventoryData();
+    pPlayer->SendInventoryData();
 
     // Add player to the world
     sWorld->AddPlayer(pPlayer);
