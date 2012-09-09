@@ -21,6 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "../shared/Defines.hpp"
 #include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
+#include "../shared/Log.hpp"
 
 struct ChatCommand;
 
@@ -48,8 +50,10 @@ private:
 
     void HandleShutdownCommand();
 
-    void ExtractArg(std::string& Arg);
-    void ExtractArg(uint32& Arg);
+    //void ExtractArg(std::string& Arg);
+    
+    template <class T>
+    void ExtractArg(T& Arg);
 
     Player* pPlayer;
     boost::tokenizer<> Tokenizer;
@@ -59,6 +63,29 @@ private:
 public:
     class BadCommand {};
 };
+
+template<>
+void CommandHandler::ExtractArg<std::string>(std::string& Arg)
+{
+    if(TokIter == Tokenizer.end())
+        throw BadCommand();
+
+    Arg = *TokIter++;
+}
+
+template <class T>
+void CommandHandler::ExtractArg(T& Arg)
+{
+    try
+    {
+        Arg = boost::lexical_cast<T>(*TokIter++);
+    }
+    catch(boost::bad_lexical_cast& e)
+    {
+        sLog.Write(e.what());
+        throw BadCommand();
+    }
+}
 
 #include <string>
 

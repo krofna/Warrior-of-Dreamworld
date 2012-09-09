@@ -20,9 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "Player.hpp"
 #include "ObjectMgr.hpp"
-#include "../shared/Log.hpp"
 #include "GUID.hpp"
-#include <boost/lexical_cast.hpp>
 #include <cctype>
 
 #define NullCommand { NULL, 0, false, NULL, "", NULL }
@@ -104,27 +102,6 @@ bool CommandHandler::ExecuteCommand()
     }
 
     return true;
-}
-
-void CommandHandler::ExtractArg(std::string& Arg)
-{
-    if(TokIter == Tokenizer.end())
-        throw BadCommand();
-
-    Arg = *TokIter++;
-}
-
-void CommandHandler::ExtractArg(uint32& Arg)
-{
-    try
-    {
-        Arg = boost::lexical_cast<uint32>(*TokIter++);
-    }
-    catch(boost::bad_lexical_cast& e)
-    {
-        sLog.Write(e.what());
-        throw BadCommand();
-    }
 }
 
 void CommandHandler::HandleAccountCreateCommand()
