@@ -29,6 +29,7 @@ WorldSession::WorldSession(boost::asio::io_service& io, Game* sGame) :
 Socket                    (io),
 sGame                     (sGame),
 pWorld                    (nullptr),
+Packet                    (nullptr),
 Resolver                  (io),
 Work                      (make_shared<boost::asio::io_service::work>(io))
 {
