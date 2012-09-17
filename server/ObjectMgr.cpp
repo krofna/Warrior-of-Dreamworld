@@ -41,6 +41,11 @@ ObjectMgr::~ObjectMgr()
     {
         delete iter->second;
     }
+    
+    for(auto iter = QuestTemplates.begin(); iter != QuestTemplates.end(); ++iter)
+    {
+        delete iter->second;
+    }
 }
 
 CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const
@@ -51,6 +56,7 @@ CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const
 
     throw std::runtime_error("Bad creature entry. Could not find template.");
 }
+
 ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry) const
 {
     auto CTemplate = ItemTemplates.find(Entry);
@@ -114,6 +120,26 @@ void ObjectMgr::LoadItemTemplates()
         ItemTemplates[pTemplate->ItemID] = pTemplate;
     }
 }
+
+void ObjectMgr::LoadQuestTemplates()
+{
+    QueryResult Result(sDatabase.Query("SELECT * FROM `quest_template`"));
+    
+    QuestTemplate* pTemplate;
+    
+    while (Result->next())
+    {
+        pTemplate = new QuestTemplate;
+        
+        pTemplate->QuestID   = Result->getUint64 (1);
+        pTemplate->Title     = Result->getString (2);
+        pTemplate->Details   = Result->getString (3);
+        pTemplate->Objective = Result->getString (4);
+        
+        QuestTemplates[pTemplate->QuestID] = pTemplate;
+    }
+}
+
 void ObjectMgr::LoadSpells()
 {
     QueryResult Result(sDatabase.Query("SELECT * FROM `spells`"));

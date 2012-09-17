@@ -20,6 +20,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define TEMPLATES_H
 
 #include <string>
+#include <cstdint>
+
+typedef uint64_t uint64;
 
 struct CreatureTemplate
 {
@@ -47,6 +50,14 @@ struct ItemTemplate
     uint32 InventoryType;
     uint8 ContainerSlots;
     std::string Description;
+};
+
+struct QuestTemplate
+{
+    uint64 QuestID;
+    std::string Title;
+    std::string Details;
+    std::string Objective;
 };
 
 #endif

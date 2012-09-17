@@ -87,6 +87,16 @@ CREATE TABLE `items`
     PRIMARY KEY(guid)
 );
 
+DROP TABLE IF EXISTS `quest_template`
+CREATE TABLE `quest_template`
+(
+    `entry` BIGINT UNSIGNED NOT NULL,
+    `title` CHAR(192) NOT NULL,
+    `details` CHAR(192) NOT NULL,
+    `objective` CHAR(192) NOT NULL
+    PRIMARY KEY(entry)
+);
+
 DROP TABLE IF EXISTS `character_bags`;
 CREATE TABLE `character_bags`
 (

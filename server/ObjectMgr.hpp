@@ -34,12 +34,14 @@ public:
 
     CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
     ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
+    QuestTemplate*    GetQuestTemplate    (uint64 Entry) const;
 
     SpellPtr  GetSpell  (uint16 ID);
 
     void LoadSpells();
     void LoadCreatureTemplates();
     void LoadItemTemplates();
+    void LoadQuestTemplates();
     void LoadPlayersLoginInfo();
 
     Player* GetPlayer(std::string& Username);
@@ -50,6 +52,7 @@ private:
     std::vector<SpellPtr> Spells;
     std::map<uint64, CreatureTemplate*> CreatureTemplates;
     std::map<uint64, ItemTemplate*> ItemTemplates;
+    std::map<uint64, QuestTemplate*> QuestTemplates;
 };
 
 extern ObjectMgr sObjectMgr; // todo: *
