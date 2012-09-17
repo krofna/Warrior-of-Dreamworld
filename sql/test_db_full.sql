@@ -87,15 +87,17 @@ CREATE TABLE `items`
     PRIMARY KEY(guid)
 );
 
-DROP TABLE IF EXISTS `quest_template`
+DROP TABLE IF EXISTS `quest_template`;
 CREATE TABLE `quest_template`
 (
-    `entry` BIGINT UNSIGNED NOT NULL,
+    `entry` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` CHAR(192) NOT NULL,
     `details` CHAR(192) NOT NULL,
     `objective` CHAR(192) NOT NULL
     PRIMARY KEY(entry)
 );
+
+INSERT INTO `quest_template` VALUES(DEFAULT, "Help!", "One of our developers, has gone rogue! Find and eliminate him!", "Kill FullMetal-Alchimist");
 
 DROP TABLE IF EXISTS `character_bags`;
 CREATE TABLE `character_bags`
