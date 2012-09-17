@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define LOG_H
 
 #include <fstream>
+#include <iostream>
 #include "boost/thread/mutex.hpp"
 #include "Config.hpp"
 
