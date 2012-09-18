@@ -63,7 +63,7 @@ void Player::LoadFromDB()
         int idxBag = Result->getUInt(2);
         if (idxBag >= 4)
         {
-            sLog.Write("Corrumpted database, invalid index bag !");
+            sLog.Write("Corrupted database, invalid index bag !");
             break;
         }
         m_Bags[idxBag] = new Bag;
