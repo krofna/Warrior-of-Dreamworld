@@ -24,14 +24,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-pPlayer                   (nullptr),
-Packet                    (nullptr)
+pPlayer                   (nullptr)
 {
 }
 
 WorldSession::~WorldSession()
 {
-    delete Packet;
 }
 
 Player* WorldSession::GetPlayer()
@@ -41,26 +39,26 @@ Player* WorldSession::GetPlayer()
 
 void WorldSession::Start()
 {
-    Packet = new WorldPacket;
+    Packet = WorldPacket((uint16)MSG_NULL);
 
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Packet->GetDataWithHeader(), WorldPacket::HEADER_SIZE),
+        boost::asio::buffer(Packet.GetDataWithHeader(), WorldPacket::HEADER_SIZE),
         boost::bind(&WorldSession::HandleHeader, shared_from_this(), boost::asio::placeholders::error));
 }
 
 void WorldSession::HandleHeader(const boost::system::error_code& Error)
 {
-    Packet->ReadHeader();
+    Packet.ReadHeader();
 
     // Header only packet
-    if(Packet->GetSizeWithoutHeader() < 1 || Error)
+    if(Error || Packet.GetSizeWithoutHeader() < 1)
     {
         HandleReceive(Error);
         return;
     }
 
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Packet->GetDataWithoutHeader(), Packet->GetSizeWithoutHeader()),
+        boost::asio::buffer(Packet.GetDataWithoutHeader(), Packet.GetSizeWithoutHeader()),
         boost::bind(&WorldSession::HandleReceive, shared_from_this(), boost::asio::placeholders::error));
 }
 
@@ -89,12 +87,10 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
 
     (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
 
-    delete Packet;
-
     Start();
 }
 
-void WorldSession::Send(WorldPacket* Packet)
+void WorldSession::Send(WorldPacket& Packet)
 {
     sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
 
@@ -103,12 +99,12 @@ void WorldSession::Send(WorldPacket* Packet)
     if(MessageQueue.size() == 1)
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), Packet->GetSizeWithHeader()),
-            boost::bind(&WorldSession::HandleSend, shared_from_this(), MessageQueue.front(), boost::asio::placeholders::error));
+            boost::asio::buffer(Packet.GetDataWithHeader(), Packet.GetSizeWithHeader()),
+            boost::bind(&WorldSession::HandleSend, shared_from_this(), boost::asio::placeholders::error));
     }
 }
 
-void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_code& Error)
+void WorldSession::HandleSend(const boost::system::error_code& Error)
 {
     if(!Error)
     {
@@ -121,29 +117,27 @@ void WorldSession::HandleSend(WorldPacket* Packet, const boost::system::error_co
         // It will be sent after reconnect
     }
 
-    delete Packet;
-
     MessageQueue.pop();
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
             boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), MessageQueue.front()->GetSizeWithHeader()),
-            boost::bind(&WorldSession::HandleSend, shared_from_this(), MessageQueue.front(), boost::asio::placeholders::error));
+            boost::bind(&WorldSession::HandleSend, shared_from_this(), boost::asio::placeholders::error));
     }
 }
 
 void WorldSession::SendLoginFailPacket(uint16 Reason)
 {
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_LOGIN);
-    *Packet << Reason;
+    WorldPacket Packet((uint16)MSG_LOGIN);
+    Packet << Reason;
     Send(Packet);
     Socket.close();
 }
 
 void WorldSession::SendChatMessage(uint64 FromID, std::string const& Message)
 {
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_CHAT_MESSAGE);
-    *Packet << FromID << Message;
+    WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
+    Packet << FromID << Message;
     Send(Packet);
 }
 
@@ -155,7 +149,7 @@ void WorldSession::HandleLoginOpcode()
 {
     // Check if username exists
     std::string Username;
-    *Packet >> Username;
+    Packet >> Username;
     pPlayer = sObjectMgr.GetPlayer(Username);
     if(!pPlayer)
     {
@@ -166,7 +160,7 @@ void WorldSession::HandleLoginOpcode()
 
     // Check if passwords match
     std::string Password;
-    *Packet >> Password;
+    Packet >> Password;
     if(pPlayer->Password != Password)
     {
         // Invalid password, send response
@@ -181,8 +175,8 @@ void WorldSession::HandleLoginOpcode()
         pPlayer->LoadFromDB();
 
     // Tell the client that he logged in sucessfully
-    WorldPacket* LoginPacket = new WorldPacket((uint16)MSG_LOGIN);
-    *LoginPacket << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
+    WorldPacket LoginPacket((uint16)MSG_LOGIN);
+    LoginPacket << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
     Send(LoginPacket);
 
     // Bind WorldSession to Player
@@ -199,7 +193,7 @@ void WorldSession::HandleLoginOpcode()
 void WorldSession::HandleMoveObjectOpcode()
 {
     uint8 Direction;
-    *Packet >> Direction;
+    Packet >> Direction;
 
     sLog.Write("Packet is good!");
 
@@ -208,8 +202,8 @@ void WorldSession::HandleMoveObjectOpcode()
         return;
 
     // Send movement update to all players in the map
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_MOVE_OBJECT);
-    *Packet << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
+    WorldPacket Packet((uint16)MSG_MOVE_OBJECT);
+    Packet << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
     sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
 }
 
@@ -217,7 +211,7 @@ void WorldSession::HandleCastSpellOpcode()
 {
     uint16 SpellID;
     float Angle;
-    *Packet >> SpellID >> Angle;
+    Packet >> SpellID >> Angle;
 
     SpellPtr pSpell = sObjectMgr.GetSpell(SpellID);
 
@@ -242,7 +236,7 @@ void WorldSession::HandleLogOutOpcode()
 void WorldSession::HandleChatMessageOpcode()
 {
     std::string Message;
-    *Packet >> Message;
+    Packet >> Message;
 
     if (!pPlayer->CanSpeak())
     {
@@ -257,7 +251,7 @@ void WorldSession::HandleAutoEquipItemOpcode()
 {
     uint64 ItemGUID;
     uint8 SourceBag, SourceSlot;
-    *Packet >> ItemGUID >> SourceBag >> SourceSlot;
+    Packet >> ItemGUID >> SourceBag >> SourceSlot;
 
     // Cheating attempt
     if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
@@ -274,7 +268,7 @@ void WorldSession::HandleUseItemOpcode()
     uint64 ItemGUID;
     uint8 SourceBag, SourceSlot;
 
-    *Packet >> ItemGUID >> SourceBag >> SourceSlot;
+    Packet >> ItemGUID >> SourceBag >> SourceSlot;
 
     // Cheating attempt
     if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
@@ -291,7 +285,7 @@ void WorldSession::HandleEquipItemOpcode()
     uint8 SourceSlot, SourceBag, DestEquipementSlot;
     uint64 ItemGUID;
 
-    *Packet >> ItemGUID >> SourceBag >> SourceSlot >> DestEquipementSlot;
+    Packet >> ItemGUID >> SourceBag >> SourceSlot >> DestEquipementSlot;
 
     if (!pPlayer->HasItem(SourceBag, SourceSlot, ItemGUID))
     {
@@ -311,7 +305,7 @@ void WorldSession::HandleEquipItemOpcode()
 void WorldSession::HandleSwapItemOpcode()
 {
     uint8 SourceBag, SourceSlot, DestinationBag, DestinationSlot;
-    *Packet >> SourceBag >> DestinationBag >> SourceSlot >> DestinationSlot;
+    Packet >> SourceBag >> DestinationBag >> SourceSlot >> DestinationSlot;
 
     if (SourceSlot == DestinationSlot && SourceBag == DestinationBag)
         return;
@@ -334,7 +328,7 @@ void WorldSession::HandleSwapItemOpcode()
 void WorldSession::HandleDeleteItemOpcode()
 {
     uint8 Bag, Slot, Count;
-    *Packet >> Bag >> Slot >> Count;
+    Packet >> Bag >> Slot >> Count;
 
     if (!pPlayer->CanUnequipItem(Bag, Slot))
     {
@@ -355,14 +349,14 @@ void WorldSession::HandleDeleteItemOpcode()
 
 void WorldSession::SendLogOutPacket()
 {
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_LOG_OUT);
+    WorldPacket Packet((uint16)MSG_LOG_OUT);
     Send(Packet);
 }
 
 void WorldSession::SendNotification(std::string const& NotificationMessage)
 {
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_SYSTEM_MESSAGE);
+    WorldPacket Packet((uint16)MSG_SYSTEM_MESSAGE);
 
-    *Packet << NotificationMessage;
+    Packet << NotificationMessage;
     Send(Packet);
 }

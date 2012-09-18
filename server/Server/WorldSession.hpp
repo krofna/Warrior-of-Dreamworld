@@ -35,7 +35,7 @@ public:
     ~WorldSession();
 
     void Start();
-    void Send(WorldPacket* Packet);
+    void Send(WorldPacket& Packet);
 
     void SendLogOutPacket();
     void SendChatMessage(uint64 FromID, std::string const& Message);
@@ -58,7 +58,7 @@ public:
     Player* GetPlayer();
 
 private:
-    void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
+    void HandleSend(const boost::system::error_code& Error);
     void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader(const boost::system::error_code& Error);
 
@@ -66,10 +66,10 @@ private:
 
     TSocket Socket;
 
-    WorldPacket* Packet;
+    WorldPacket Packet;
     Player* pPlayer;
 
-    std::queue<WorldPacket*> MessageQueue;
+    std::queue<WorldPacket> MessageQueue;
 };
 
 #endif
