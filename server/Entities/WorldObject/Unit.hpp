@@ -44,6 +44,9 @@ public:
     virtual int32 GetMeleeDamage() const;
     virtual void DealDamage(int32 Damage, Unit* pTarget);
     virtual void TakeDamage(int32 Damage, Unit* pAttacker);
+    
+    //NOTE: THIS FUNCTION IS NOT TO BE FUCKED WITH
+    void ClearVictim() { this->pVictim = nullptr }
 
     void DoMeleeAttackIfReady(int64 diff);
     void Kill();

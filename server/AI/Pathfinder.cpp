@@ -71,6 +71,7 @@ void Pathfinder::Update(int64 diff)
         pTarget = nullptr;
         Target = Home;
         GeneratePath();
+        pOrigin->ClearVictim();
     }
     // If target moved since last path generate, generate new path
     else if(pTarget && pTarget->Position != Target)
