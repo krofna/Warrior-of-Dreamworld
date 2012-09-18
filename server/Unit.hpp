@@ -52,7 +52,7 @@ public:
     bool IsDead() const { return !IsAlive(); }
     
     //NOTE: THIS FUNCTION IS NOT TO BE FUCKED WITH
-    void ClearVictim() { this->pVictim = nullptr }
+    void ClearVictim() { this->pVictim = nullptr; }
 
     virtual bool IsInWorld() const { return true; /*??*/ }
 
