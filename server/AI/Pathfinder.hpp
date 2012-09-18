@@ -21,9 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <stack>
 #include <queue>
-#include "../shared/Defines.hpp"
-#include "../shared/Vector2.hpp"
 #include <boost/shared_array.hpp>
+#include "shared/Defines.hpp"
+#include "shared/Vector2.hpp"
 
 /*
 TODO: Instead of *50 use map width: see Map.cpp Map::{ctor}

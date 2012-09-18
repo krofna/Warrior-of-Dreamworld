@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "SpellBox.hpp"
 #include "Unit.hpp"
 #include "Spell.hpp"
-#include "../shared/Opcodes.hpp"
+#include "shared/Opcodes.hpp"
 
 SpellBox::SpellBox(SpellPtr& pSpell, Unit* pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID) :
 pSpell            (pSpell),

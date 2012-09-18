@@ -2,11 +2,10 @@
 
 #include "Database.hpp"
 #include "Templates.hpp"
-#include "GUID.hpp"
 #include "ObjectMgr.hpp"
 #include "Player.hpp"
 
-#include "../shared/Log.hpp"
+#include "shared/Log.hpp"
 
 Item::Item()
 {
@@ -25,7 +24,7 @@ bool Item::Create(uint64 ItemID, Player const* Owner)
     if (!itemProto)
         return false;
 
-    m_GUID      = Generate64BitsGUID();
+    m_GUID      = sDatabase.Generate64BitsGUID();
     m_Text      = itemProto->Name;
     m_Container = nullptr;
     m_Slot      = 0;

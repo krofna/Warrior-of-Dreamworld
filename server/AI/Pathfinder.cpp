@@ -19,8 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Pathfinder.hpp"
 #include "Map.hpp"
 #include "Unit.hpp"
-#include "../shared/Math.hpp"
-#include "../shared/Log.hpp"
+
+#include "shared/Math.hpp"
+#include "shared/Log.hpp"
 
 #define MAX_MAP_WIDTH 50
 #define MAX_MAP_HEIGHT 50

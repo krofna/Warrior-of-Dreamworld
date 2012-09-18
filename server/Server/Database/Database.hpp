@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include "../shared/Config.hpp"
+#include "shared/Defines.hpp"
 
 #include "mysql_connection.h"
 

@@ -19,8 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Unit.hpp"
 #include "Spell.hpp"
 #include "Map.hpp"
-#include "../shared/Opcodes.hpp"
-#include "../shared/Math.hpp"
+#include "shared/Opcodes.hpp"
+#include "shared/Math.hpp"
 #include "ObjectMgr.hpp"
 
 Unit::Unit      (uint64 ObjID) :

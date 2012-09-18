@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 2.8)
+
+if( NOT CMAKE_BUILD_TYPE )
+    set( CMAKE_BUILD_TYPE Debug CACHE STRING
+            "Choose the type of build, options are: None Debug Release RelWithDebInfo
+            MinSizeRel."
+            FORCE )
+endif()
+
+if (CMAKE_COMPILER_IS_GNUCXX)
+    add_definitions(-std=gnu++0x)
+endif()
+
+set(EXECUTABLE_OUTPUT_PATH bin/${CMAKE_BUILD_TYPE})
+
+add_subdirectory(Server)
+add_subdirectory(Client)
+add_subdirectory(WorldEdit)

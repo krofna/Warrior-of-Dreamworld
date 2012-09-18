@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef CREATURE_AI_H
 #define CREATURE_AI_H
 
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 #include <string>
 
 class WOD_DLL_DECL CreatureAI

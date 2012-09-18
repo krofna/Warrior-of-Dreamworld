@@ -19,8 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_OBJECT_H
 #define WORLD_OBJECT_H
 
-#include "../shared/WorldPacket.hpp"
-#include "../shared/Vector2.hpp"
+#include "shared/WorldPacket.hpp"
+#include "shared/Vector2.hpp"
 
 class Map;
 class Pathfinder;

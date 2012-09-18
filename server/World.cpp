@@ -16,17 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/bind.hpp>
+
 #include "World.hpp"
 #include "WorldSession.hpp"
-#include "../shared/Log.hpp"
+#include "shared/Log.hpp"
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
-#include "../scripts/ScriptLoader.hpp"
+#include "scripts/ScriptLoader.hpp"
 #include "CreatureAIFactory.hpp"
 #include "Pathfinder.hpp"
-#include "boost/date_time/posix_time/posix_time.hpp"
-#include "boost/bind.hpp"
-#include "../shared/Log.hpp"
+#include "shared/Log.hpp"
 #include "CommandHandler.hpp"
 
 #define SERVER_HEARTBEAT 50

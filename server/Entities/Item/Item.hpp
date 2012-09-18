@@ -1,7 +1,7 @@
 #ifndef ITEM_DEFINED
 #define ITEM_DEFINED
 
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 
 class Bag;
 class WorldPacket;

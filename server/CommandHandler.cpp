@@ -16,13 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
+#include <boost/lexical_cast.hpp>
+
 #include "CommandHandler.hpp"
 #include "Database.hpp"
 #include "Player.hpp"
 #include "ObjectMgr.hpp"
-#include "../shared/Log.hpp"
-#include "GUID.hpp"
-#include <boost/lexical_cast.hpp>
+#include "shared/Log.hpp"
 #include <cctype>
 
 #define NullCommand { NULL, 0, false, NULL, "", NULL }

@@ -17,10 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldSession.hpp"
-#include "../shared/Opcodes.hpp"
+#include "shared/Opcodes.hpp"
 #include "World.hpp"
 #include "boost/bind.hpp"
-#include "../shared/Log.hpp"
+#include "shared/Log.hpp"
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),

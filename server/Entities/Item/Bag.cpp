@@ -2,7 +2,7 @@
 
 #include "Database.hpp"
 #include "ObjectMgr.hpp"
-#include "../shared/WorldPacket.hpp"
+#include "shared/WorldPacket.hpp"
 
 Bag::Bag()
 {

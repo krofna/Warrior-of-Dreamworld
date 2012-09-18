@@ -1,7 +1,7 @@
 #ifndef BAG_DEFINED
 #define BAG_DEFINED
 
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 #include "Item.hpp"
 
 #define MAX_BAG_SIZE 36
