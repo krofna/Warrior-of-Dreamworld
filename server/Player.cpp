@@ -368,7 +368,8 @@ void Player::SwapItem(uint8 SrcBag, uint8 SrcSlot, uint8 DstBag, uint8 DstSlot)
     Item** ppSrcItem = &pSrcItem;
     Item** ppDstItem = &pDstItem;
 
-    std::swap(ppSrcItem, ppDstItem); // [To check]: Should work 
+    std::swap(ppSrcItem, ppDstItem); // [To check]: Should work
+    // Comment by krofna: What? No, this wont work
 }
  
 void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)

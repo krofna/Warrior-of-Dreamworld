@@ -33,6 +33,8 @@ pTemplate         (pTemplate)
 {
     Position = Vector2i(x, y);
     this->pMap = pMap;
+    this->Health = pTemplate->MaxHealth;
+    this->Power = pTemplate->MaxPower;
 }
 
 void Creature::InitializeAI()

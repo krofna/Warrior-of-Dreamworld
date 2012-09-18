@@ -20,9 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define TEMPLATES_H
 
 #include <string>
-#include <cstdint>
-
-typedef uint64_t uint64;
 
 struct CreatureTemplate
 {
@@ -31,6 +28,9 @@ struct CreatureTemplate
     std::string Tileset;
     uint16 tx;
     uint16 ty;
+    uint16 NpcFlag;
+    uint32 MaxHealth;
+    uint32 MaxPower;
     std::string ScriptName;
 };
 

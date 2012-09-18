@@ -92,7 +92,10 @@ void ObjectMgr::LoadCreatureTemplates()
         pTemplate->Tileset    = Result->getString (3);
         pTemplate->tx         = Result->getUInt   (4);
         pTemplate->ty         = Result->getUInt   (5);
-        pTemplate->ScriptName = Result->getString (6);
+        pTemplate->NpcFlag    = Result->getUInt   (6);
+        pTemplate->MaxHealth  = Result->getUInt   (7);
+        pTemplate->MaxPower   = Result->getUInt   (8);
+        pTemplate->ScriptName = Result->getString (9);
 
         CreatureTemplates[pTemplate->Entry] = pTemplate;
     }
@@ -131,7 +134,7 @@ void ObjectMgr::LoadQuestTemplates()
     {
         pTemplate = new QuestTemplate;
         
-        pTemplate->QuestID   = Result->getUint64 (1);
+        pTemplate->QuestID   = Result->getUInt64 (1);
         pTemplate->Title     = Result->getString (2);
         pTemplate->Details   = Result->getString (3);
         pTemplate->Objective = Result->getString (4);
