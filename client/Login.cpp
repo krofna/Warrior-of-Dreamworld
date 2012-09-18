@@ -39,6 +39,8 @@ void Login::HandleEvent(sf::Event Event)
         GrabNextFocus();
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Return)
         onConnectButtonPressed();
+    if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Escape)
+        Window->close();
 }
 
 void Login::Draw()
