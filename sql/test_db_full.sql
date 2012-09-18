@@ -62,8 +62,8 @@ CREATE TABLE `item_template`
 
 INSERT INTO `item_template` VALUES(DEFAULT, 1, 1, "Krofna's bag", 1, 1, 36, "The bottom of the crate is leaking. Leaking tears...");
 
-INSERT INTO `creature_template` VALUES (DEFAULT, 'krofnica', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_krofnica');
-INSERT INTO `creature_template` VALUES (DEFAULT, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_the_fullmetal_alchimist');
+INSERT INTO `creature_template` VALUES (1, 'krofnica', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_krofnica');
+INSERT INTO `creature_template` VALUES (2, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_the_fullmetal_alchimist');
 
 DROP TABLE IF EXISTS `creature`;
 CREATE TABLE `creature`
@@ -76,8 +76,8 @@ CREATE TABLE `creature`
     PRIMARY KEY(guid)
 );
 
-INSERT INTO `creature` VALUES (UUID_SHORT(), 0, 0, 10, 10);
-INSERT INTO `creature` VALUES (UUID_SHORT(), 1, 0, 11, 11);
+INSERT INTO `creature` VALUES (UUID_SHORT(), 1, 0, 10, 10);
+INSERT INTO `creature` VALUES (UUID_SHORT(), 2, 0, 11, 11);
 
 DROP TABLE IF EXISTS `items`;
 CREATE TABLE `items`
@@ -96,7 +96,7 @@ CREATE TABLE `quest_template`
     `entry` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` CHAR(192) NOT NULL,
     `details` CHAR(192) NOT NULL,
-    `objective` CHAR(192) NOT NULL
+    `objective` CHAR(192) NOT NULL,
     PRIMARY KEY(entry)
 );
 

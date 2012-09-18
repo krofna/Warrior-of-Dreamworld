@@ -11,7 +11,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-std=gnu++0x)
 endif()
 
-set(EXECUTABLE_OUTPUT_PATH bin/${CMAKE_BUILD_TYPE})
+set(EXECUTABLE_OUTPUT_PATH ./bin/${CMAKE_BUILD_TYPE})
 
 add_subdirectory(Server)
 add_subdirectory(Client)
