@@ -1,0 +1,2 @@
+**under construction**
+sudo apt-get install cmake git make gcc libboost-all-dev libmysqlcppconn-dev mysql-server
