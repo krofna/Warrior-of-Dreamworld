@@ -1,10 +1,4 @@
-#if( NOT CMAKE_BUILD_TYPE )
- #   set( CMAKE_BUILD_TYPE Debug CACHE STRING
-  #          "Choose the type of build, options are: None Debug Release RelWithDebInfo
-   #         MinSizeRel."
-    #        FORCE )
-#endif()
-
+set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/Client/${CMAKE_BUILD_TYPE})
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/Modules)
 
 include(FindThreads)

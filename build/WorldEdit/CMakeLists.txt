@@ -1,3 +1,4 @@
+set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/WorldEdit/${CMAKE_BUILD_TYPE})
 FIND_PACKAGE(Boost COMPONENTS system serialization REQUIRED)
 
 link_directories(${Boost_LIBRARY_DIRS})
