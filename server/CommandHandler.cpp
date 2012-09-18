@@ -47,8 +47,7 @@ ChatCommand* CommandHandler::GetCommandTable()
     static ChatCommand CommandTable[] =
     {
         { "account",    SEC_PLAYER, true,   NULL,                                           "Usage: account <command> <argv>",              AccountCommandTable },
-        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",
-        NULL },
+        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",                    NULL },
         NullCommand
     };
 
@@ -133,7 +132,7 @@ void CommandHandler::HandleAccountCreateCommand()
     ExtractArg(Username);
     ExtractArg(Password);
 
-    sDatabase.PExecute("INSERT INTO `players` VALUES (%llu, '%s', '%s', 'none', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0)", Generate64BitsGUID(), Username.c_str(), Password.c_str());
+    sDatabase.PExecute("INSERT INTO `players` VALUES (%llu, '%s', '%s', 'none', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0)", sDatabase.Generate64BitsGUID(), Username.c_str(), Password.c_str());
     sLog.Write("Account %s successfully created.", Username.c_str());
 }
 

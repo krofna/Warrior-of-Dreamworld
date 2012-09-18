@@ -49,7 +49,7 @@ ${ADD_PATH}/../scripts/*
 )
 
 file(
-GLOB
+GLOB_RECURSE
 SERVER_SRC
 ${ADD_PATH}/../server/*.cpp
 ${ADD_PATH}/../server/*.hpp

@@ -56,6 +56,8 @@ public:
         void PExecute(const char* sql, ...);
         QueryResult PQuery(const char* sql, ...);
     #endif
+    
+    uint64 Generate64BitsGUID();
 
 private:
     sql::Driver* Driver; // has protected destructor

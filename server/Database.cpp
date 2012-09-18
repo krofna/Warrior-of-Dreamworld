@@ -101,3 +101,11 @@ QueryResult Database::Query(const char* sql)
         return Query(CQuery);
     }
 #endif
+
+uint64 Database::Generate64BitsGUID()
+{
+    QueryResult result = sDatabase.PQuery("SELECT UUID_SHORT();");
+    result->next();
+
+    return result->getUInt64(1);
+}

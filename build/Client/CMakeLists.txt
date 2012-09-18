@@ -45,7 +45,7 @@ ${ADD_PATH}/../shared/*
 )
 
 file(
-GLOB
+GLOB_RECURSE
 CLIENT_SRC
 ${ADD_PATH}/../client/*.cpp
 ${ADD_PATH}/../client/*.hpp
