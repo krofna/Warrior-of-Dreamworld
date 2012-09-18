@@ -50,6 +50,9 @@ public:
 
     bool IsAlive() const { return Health > 0; }
     bool IsDead() const { return !IsAlive(); }
+    
+    //NOTE: THIS FUNCTION IS NOT TO BE FUCKED WITH
+    void ClearVictim() { this->pVictim = nullptr }
 
     virtual bool IsInWorld() const { return true; /*??*/ }
 
