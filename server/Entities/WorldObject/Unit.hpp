@@ -53,6 +53,12 @@ public:
 
     bool IsAlive() const { return Health > 0; }
     bool IsDead() const { return !IsAlive(); }
+<<<<<<< HEAD:server/Entities/WorldObject/Unit.hpp
+=======
+    
+    //NOTE: THIS FUNCTION IS NOT TO BE FUCKED WITH
+    void ClearVictim() { this->pVictim = nullptr; }
+>>>>>>> 86bdf0393542ebad3efabe76fd1c422feed81086:server/Unit.hpp
 
     virtual bool IsInWorld() const { return true; /*??*/ }
 
