@@ -1,2 +1,53 @@
-**under construction**
-sudo apt-get install cmake git make gcc libboost-all-dev libmysqlcppconn-dev mysql-server
+**under construction** (!! Need SFML and SFGUI part !!)
+(Incomplete)
+
+How to compile Warrior-of-Dreamworld:
+    First, you need some packets:
+    type in a terminal: sudo apt-get install cmake git make gcc libboost-all-dev libmysqlcppconn-dev mysql-server
+    (Note: You need to type a superuser password for MySQL Server)
+
+    Now, clone Warrior-of-Dreamworld's repositorie
+    type in a terminal: git clone git://github.com/krofna/Warrior-of-Dreamworld
+
+    Now, go in repositorie folder
+    type in a terminal: cd yourrepofolder (Default: Warrior-of-Dreamworld)
+    type in a terminal: cd build && cmake . -DCMAKE_BUILD_TYPE=Debug && make
+    This will build Client, Server and WorldEdit in Debug mode.
+
+        For profiling code using gprof:
+        (Assume you're in repofolder)
+        type in a terminal: cd build
+        type in a terminal: cmake . -DCMAKE_BUILD_TYPE=Debug -DPROFILE_MODE=TRUE && make
+        Run Client or Server or WorldEdit, and your gmon.out will be in executable folder.
+
+How to import SQL database of Warrior-of-Dreamworld:
+    First, you need to have installed mysql-server packet.
+    So, now go to repo folder and type in terminal:
+    cd sql && mysql -u root -p
+    He will asks for your root password (for MySQL, not system account)
+    type in MySQL prompt: CREATE DATABASE world;
+    type in MySQL prompt: source test_db_full.sql;
+    You have imported SQL Database needed for Warrior-of-Dreamworld
+    (For exit from prompt, type exit :) )
+
+How to configure and run Warrior-of-Dreamworld server:
+    First, you need to have compiled server and imported SQL database.
+    Now, go in binaries folder.
+    
+    You need to edit WorldServerConfig.conf
+    
+    Remove all and add:
+    tcp://<address_of_mysql_server>:<port_of_mysql_server>/ (Default: tcp://127.0.0.1:3306/)
+    <mysql_user_name> (Default: root)
+    <mysql_password_name>
+    <database_where_you_have_imported_test_db_full.sql> (Default: world)
+
+    Now, you can launch Server by typing: "./Server" in terminal
+
+How to configure and run Warrior-of-Dreamworld client:
+    First, you need to have compiled client
+    Now, go in binaries folder
+
+    No configuration required currently
+    Launch client by typing: "./Client" in terminal
+
