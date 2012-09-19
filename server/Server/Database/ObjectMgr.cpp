@@ -54,7 +54,7 @@ CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const
     if(CTemplate != CreatureTemplates.end())
         return CTemplate->second;
 
-    throw std::runtime_error("Bad creature entry. Could not find template.");
+    return nullptr;
 }
 
 ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry) const
@@ -63,7 +63,7 @@ ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry) const
     if (CTemplate != ItemTemplates.end())
         return CTemplate->second;
 
-    throw std::runtime_error("Bad item entry. Could not find template.");
+    return nullptr;
 }
 
 SpellPtr ObjectMgr::GetSpell(uint16 ID)
