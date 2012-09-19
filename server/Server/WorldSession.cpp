@@ -51,7 +51,7 @@ void WorldSession::HandleHeader(const boost::system::error_code& Error)
     Packet.ReadHeader();
 
     // Header only packet
-    if(Error || Packet.GetSizeWithoutHeader() < 1)
+    if(Packet.GetSizeWithoutHeader() < 1 || Error)
     {
         HandleReceive(Error);
         return;
