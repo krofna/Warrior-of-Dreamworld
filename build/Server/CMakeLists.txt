@@ -1,28 +1,5 @@
-cmake_minimum_required(VERSION 2.8)
-
-Project(Server)
-
-if( NOT CMAKE_BUILD_TYPE )
-    set( CMAKE_BUILD_TYPE Debug CACHE STRING
-            "Choose the type of build, options are: None Debug Release RelWithDebInfo
-            MinSizeRel."
-            FORCE )
-endif()
-
-if (GLOBAL_COMPILATION)
-    set(ADD_PATH .)
-else (GLOBAL_COMPILATION)
-    set(ADD_PATH ..)
-endif (GLOBAL_COMPILATION)
-
-add_definitions(-std=gnu++0x)
-
-set(EXECUTABLE_OUTPUT_PATH ${ADD_PATH}/bin/Server/${CMAKE_BUILD_TYPE})
-IF (NOT GLOBAL_COMPILATION)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ../Modules)
-ELSE (NOT GLOBAL_COMPILATION)
-    set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ./Modules)
-ENDIF(NOT GLOBAL_COMPILATION)
+set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/Server/${CMAKE_BUILD_TYPE})
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/Modules)
 
 include(FindThreads)
 
@@ -33,26 +10,39 @@ FIND_PACKAGE(MySQLConnectorCPP)
 FIND_PACKAGE(Threads)
 
 link_directories(${Boost_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIRS})
 
-include_directories(${MYSQLCONNECTORCPP_INCLUDE_DIR})
+include_directories(
+${CMAKE_BINARY_DIR}
+${CMAKE_SOURCE_DIR}/..
+${CMAKE_SOURCE_DIR}/../server/AI
+${CMAKE_SOURCE_DIR}/../server/Entities/Item
+${CMAKE_SOURCE_DIR}/../server/Entities/SpellBox
+${CMAKE_SOURCE_DIR}/../server/Entities/WorldObject
+${CMAKE_SOURCE_DIR}/../server/Map
+${CMAKE_SOURCE_DIR}/../server/Server
+${CMAKE_SOURCE_DIR}/../server/Server/Database
+${CMAKE_SOURCE_DIR}/../server
+${CMAKE_SOURCE_DIR}/../server/Spell
+${CMAKE_SOURCE_DIR}/../server/Chat
+${Boost_INCLUDE_DIRS}
+${MYSQLCONNECTORCPP_INCLUDE_DIR}
+)
 
 file(
 GLOB_RECURSE
 SHARED_SRC
-${ADD_PATH}/../shared/*
+${CMAKE_SOURCE_DIR}/../shared/*
 )
 file(
 GLOB_RECURSE
 SCRIPT_SRC
-${ADD_PATH}/../scripts/*
+${CMAKE_SOURCE_DIR}/../scripts/*
 )
 
 file(
-GLOB
+GLOB_RECURSE
 SERVER_SRC
-${ADD_PATH}/../server/*.cpp
-${ADD_PATH}/../server/*.hpp
+${CMAKE_SOURCE_DIR}/../server/*
 )
 file(
 GLOB
