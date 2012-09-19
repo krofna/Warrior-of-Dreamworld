@@ -271,7 +271,7 @@ void WorldSession::HandleInventoryDataOpcode()
     for (uint8 i = 0 ; i < 4 ; ++i)
     {
         uint8 bagStatus;
-        *Packet >> bagStatus;
+        Packet >> bagStatus;
         if (bagStatus != BAG_USED)
             continue;
 

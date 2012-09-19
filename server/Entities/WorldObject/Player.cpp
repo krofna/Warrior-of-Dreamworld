@@ -84,12 +84,12 @@ void Player::SendInventoryData()
     {
         if (m_Bags[i])
         {
-            *Packet << (uint8)Bag::BAG_USED;
+            Packet << (uint8)Bag::BAG_USED;
             // Bag data
             m_Bags[i]->BuildPacketData(Packet);
         }
         else
-            *Packet << (uint8)Bag::BAG_UNUSED;
+            Packet << (uint8)Bag::BAG_UNUSED;
     }
 
     SendPacket(Packet);

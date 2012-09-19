@@ -7,6 +7,12 @@ if( NOT CMAKE_BUILD_TYPE )
             FORCE )
 endif()
 
+if (CMAKE_COMPILER_IS_GNUCXX AND PROFILE_MODE)
+    add_definitions(-pg)
+    set (CMAKE_EXE_LINKER_FLAGS "-pg")
+    set (CMAKE_BUILD_TYPE Debug)
+endif()
+
 if (CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-std=gnu++0x)
 endif()
