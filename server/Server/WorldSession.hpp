@@ -19,66 +19,57 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_SESSION_H
 #define WORLD_SESSION_H
 
-#include "../shared/WorldPacket.hpp"
-#include "World.hpp"
+#include "Player.hpp"
+#include "shared/WorldPacket.hpp"
+#include "ObjectMgr.hpp"
 #include "boost/asio.hpp"
-#include "boost/thread.hpp"
 #include <queue>
-using boost::asio::ip::tcp;
 
-class Game;
-class World;
+typedef boost::asio::ip::tcp::socket TSocket;
 
-class WorldSession
+class WorldSession : public enable_shared_from_this<WorldSession>
 {
+    friend class WorldAcceptor;
 public:
-    WorldSession(boost::asio::io_service& io, Game* sGame);
+    WorldSession(boost::asio::io_service& io);
     ~WorldSession();
 
-    void Connect(std::string Ip, std::string Port);
+    void Start();
     void Send(WorldPacket& Packet);
+
+    void SendLogOutPacket();
+    void SendChatMessage(uint64 FromID, std::string const& Message);
+    void SendNotification(std::string const& NotificationMessage);
 
     // Opcode handlers
     void HandleNULL();
-    void HandleLoginOpcode();
-    void HandleAddObjectOpcode();
-    void HandleRemoveObjectOpcode();
     void HandleMoveObjectOpcode();
     void HandleCastSpellOpcode();
     void HandleLogOutOpcode();
-    void HandleSystemMessageOpcode();
+    void HandleLoginOpcode();
     void HandleChatMessageOpcode();
-    void HandleSwapItemOpcode();
-    void HandleDeleteItemOpcode();
-    void HandleCreateItemOpcode();
+    
+    void HandleAutoEquipItemOpcode();
     void HandleUseItemOpcode();
     void HandleEquipItemOpcode();
-    void HandleInventoryDataOpcode();
-
-    // Requests
-    void SendAuthRequest(std::string Username, std::string Password);
-    void SendMovementRequest(uint8 Direction);
-    void SendCastSpellRequest(uint16 SpellID, float Angle);
-    void SendLogOutRequest();
-    void SendChatMessage(std::string const& Message);
+    void HandleSwapItemOpcode();
+    void HandleDeleteItemOpcode();
+    
+    Player* GetPlayer();
 
 private:
-    void Start();
+    void HandleSend(const boost::system::error_code& Error);
     void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader(const boost::system::error_code& Error);
-    void HandleSend(const boost::system::error_code& Error);
 
-    tcp::socket Socket;
+    void SendLoginFailPacket(uint16 Reason);
+
+    TSocket Socket;
+
     WorldPacket Packet;
-
-    boost::shared_ptr<boost::asio::io_service::work> Work;
-    tcp::resolver Resolver;
-
-    Game* sGame;
-    World* pWorld;
+    Player* pPlayer;
 
     std::queue<WorldPacket> MessageQueue;
-    boost::mutex MessageQueueMutex;
 };
 
 #endif

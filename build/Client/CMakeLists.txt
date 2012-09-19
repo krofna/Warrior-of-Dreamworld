@@ -1,28 +1,5 @@
-cmake_minimum_required(VERSION 2.8)
-
-Project(Client)
-
-if( NOT CMAKE_BUILD_TYPE )
-    set( CMAKE_BUILD_TYPE Debug CACHE STRING
-            "Choose the type of build, options are: None Debug Release RelWithDebInfo
-            MinSizeRel."
-            FORCE )
-endif()
-
-if (GLOBAL_COMPILATION)
-    set(ADD_PATH .)
-else (GLOBAL_COMPILATION)
-    set(ADD_PATH ..)
-endif (GLOBAL_COMPILATION)
-
-add_definitions(-std=gnu++0x)
-set(EXECUTABLE_OUTPUT_PATH ${ADD_PATH}/bin/Client/${CMAKE_BUILD_TYPE})
-
-IF (NOT GLOBAL_COMPILATION)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ../Modules)
-ELSE (NOT GLOBAL_COMPILATION)
-    set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ./Modules)
-ENDIF(NOT GLOBAL_COMPILATION)
+set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/Client/${CMAKE_BUILD_TYPE})
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/Modules)
 
 include(FindThreads)
 include(FindSFGUI)
@@ -41,15 +18,15 @@ include_directories(${SFGUI_INCLUDE_DIRS})
 file(
 GLOB_RECURSE
 SHARED_SRC
-${ADD_PATH}/../shared/*
+${CMAKE_SOURCE_DIR}/../shared/*
 )
 
 file(
-GLOB
+GLOB_RECURSE
 CLIENT_SRC
-${ADD_PATH}/../client/*.cpp
-${ADD_PATH}/../client/*.hpp
+${CMAKE_SOURCE_DIR}/../client/*
 )
+
 file(
 GLOB
 CLIENT_LIBS
