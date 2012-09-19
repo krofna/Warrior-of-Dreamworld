@@ -3,7 +3,19 @@
 
 #include <QtSql>
 #include <QtGui/QMessageBox>
+#include <QtGui/QFileDialog>
+#include <QtGui/QInputDialog>
+
+//#include "shared/Templates.hpp"
 #include "ui_MainWindow.h"
+
+int InventoryType(int index);
+
+enum InventoryWorldEditorType
+{
+    NotEquippable = 0,
+    BagIndex = 1
+};
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -35,9 +47,17 @@ private slots:
 
     void on_actionA_map_triggered();
 
+    void on_addItemToDatabase_clicked();
+
+    void on_actionClient_database_triggered();
+
 private:
-    quint64 getGUID(bool* okay = NULL);
+    quint64 getGUID(bool* okay = nullptr);
+    quint64 getNewItemID(bool* okay = nullptr);
     void MessageError(QString const& Message);
+
+    void loadClientDatabase();
+    void loadServerDatabase();
 
 private:
     ConnectionState m_ConnectionState;
@@ -45,7 +65,12 @@ private:
     QSqlDatabase    m_Server_DatabaseLink;
     QSqlQuery*      m_Server_Query;
 
-    QString         m_Client_DatabaseFile;
+    QString         m_Client_DatabaseFileName;
+    QFile*          m_Client_DatabaseFile;
+
+    /** QMap<quint64, ItemTemplate* > m_ItemCaches;
+    QMap<quint64, CreatureTemplate* > m_CreatureCaches;
+    QMap<quint64, QuestTemplate* > m_QuestCaches; **/
 
     int lastIndex;
 };

@@ -16,3 +16,6 @@ SOURCES += main.cpp\
 HEADERS  += MainWindow.hpp
 
 FORMS    += MainWindow.ui
+
+unix:!macx:!symbian: LIBS += -lboost_serialization
+QMAKE_CXXFLAGS += -std=c++0x

@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidgets">
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabMap">
        <attribute name="title">
@@ -292,6 +292,20 @@ But, I won't help you :)</string>
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuNew">
+     <property name="title">
+      <string>New ...</string>
+     </property>
+     <addaction name="actionClient_database"/>
+     <addaction name="actionMap_2"/>
+    </widget>
+    <widget class="QMenu" name="menuSave">
+     <property name="title">
+      <string>Save ...</string>
+     </property>
+     <addaction name="actionClient_database_2"/>
+     <addaction name="actionMap_3"/>
+    </widget>
     <widget class="QMenu" name="menuOpen">
      <property name="title">
       <string>Open ...</string>
@@ -300,8 +314,9 @@ But, I won't help you :)</string>
      <addaction name="actionA_server_database"/>
      <addaction name="actionA_map"/>
     </widget>
+    <addaction name="menuNew"/>
     <addaction name="menuOpen"/>
-    <addaction name="actionSave_map"/>
+    <addaction name="menuSave"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -356,9 +371,24 @@ But, I won't help you :)</string>
     <string>display ID</string>
    </property>
   </action>
-  <action name="actionSave_map">
+  <action name="actionClient_database">
    <property name="text">
-    <string>Save map</string>
+    <string>client database</string>
+   </property>
+  </action>
+  <action name="actionMap_2">
+   <property name="text">
+    <string>map</string>
+   </property>
+  </action>
+  <action name="actionClient_database_2">
+   <property name="text">
+    <string>client database</string>
+   </property>
+  </action>
+  <action name="actionMap_3">
+   <property name="text">
+    <string>map</string>
    </property>
   </action>
  </widget>
