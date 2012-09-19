@@ -24,6 +24,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <stdexcept>
 
+struct wrapper_profiling_multithread
+{
+    itimerval* itimer;
+};
+
+void wrapper_profiler_multithread(boost::asio::io_service* io, wrapper_profiling_multithread wrapper)
+{
+    setitimer(ITIMER_PROF, wrapper.itimer, NULL);
+    io->run();
+}
+
 int main()
 {
     using namespace std;
@@ -46,6 +57,8 @@ int main()
         Session = new WorldSession(io, sGame);
         sGame->PushState(new Login());
 
+        wrapper_profiling_multithread profiling_wrapper;
+        getitimer(ITIMER_PROF, profiling_wrapper.itimer);
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
         io.stop();
