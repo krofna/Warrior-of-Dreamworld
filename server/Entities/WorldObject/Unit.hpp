@@ -32,7 +32,7 @@ public:
 
     virtual void Update(int64 diff) = 0;
 
-    virtual WorldPacket* PackData() = 0;
+    virtual WorldPacket PackData() = 0;
 
     virtual void Say(const char* Text);
 
@@ -46,7 +46,7 @@ public:
     virtual void TakeDamage(int32 Damage, Unit* pAttacker);
     
     //NOTE: THIS FUNCTION IS NOT TO BE FUCKED WITH
-    void ClearVictim() { this->pVictim = nullptr }
+    void ClearVictim() { this->pVictim = nullptr; }
 
     void DoMeleeAttackIfReady(int64 diff);
     void Kill();

@@ -77,7 +77,7 @@ void Player::LoadFromDB()
 
 void Player::SendInventoryData()
 {
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_INVENTORY_DATA);
+    WorldPacket Packet((uint16)MSG_INVENTORY_DATA);
 
     // Calculate number of bags
     uint8 nBags = 0;
@@ -87,7 +87,7 @@ void Player::SendInventoryData()
             nBags++;
     }
 
-    *Packet << nBags;
+    Packet << nBags;
 
     // Writing bags data
     for (int i = 0 ; i < 4 ; ++i)
@@ -95,7 +95,7 @@ void Player::SendInventoryData()
         if (m_Bags[i])
         {
             // Bag index
-            *Packet << i;
+            Packet << i;
             // Bag data
             m_Bags[i]->BuildPacketData(Packet);
         }
@@ -147,14 +147,14 @@ void Player::SaveToDB()
     */
 }
 
-WorldPacket* Player::PackData()
+WorldPacket Player::PackData()
 {
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_ADD_OBJECT);
-    *Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
+    WorldPacket Packet((uint16)MSG_ADD_OBJECT);
+    Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }
 
-void Player::SendPacket(WorldPacket* Packet)
+void Player::SendPacket(WorldPacket& Packet)
 {
     pWorldSession->Send(Packet);
 }

@@ -64,7 +64,7 @@ void WorldSession::HandleHeader(const boost::system::error_code& Error)
 
 void WorldSession::HandleReceive(const boost::system::error_code& Error)
 {
-    Packet->ResetReadPos();
+    Packet.ResetReadPos();
     if(Error)
     {
         sLog.Write("Failed to receive packet. Kicking player. TODO: Try Reconnect");
@@ -72,29 +72,29 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
             pPlayer->LogOut();
         return;
     }
-    if(Packet->GetOpcode() >= MSG_COUNT)
+    if(Packet.GetOpcode() >= MSG_COUNT)
     {
-        sLog.Write("Received %u: Bad opcode! Kicking player.", Packet->GetOpcode());
+        sLog.Write("Received %u: Bad opcode! Kicking player.", Packet.GetOpcode());
         if (pPlayer)
             pPlayer->LogOut();
         return;
     }
-	if(Packet->GetOpcode() == MSG_NULL)
+	if(Packet.GetOpcode() == MSG_NULL)
 	{
 		sLog.Write("Received a MSG_NULL, strange...");
 	}
-    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
+    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
-    (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
+    (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
 
     Start();
 }
 
 void WorldSession::Send(WorldPacket& Packet)
 {
-    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
-    Packet->UpdateSizeData();
+    Packet.UpdateSizeData();
     MessageQueue.push(Packet);
     if(MessageQueue.size() == 1)
     {
@@ -121,7 +121,7 @@ void WorldSession::HandleSend(const boost::system::error_code& Error)
     if(!MessageQueue.empty())
     {
         boost::asio::async_write(Socket,
-            boost::asio::buffer(MessageQueue.front()->GetDataWithHeader(), MessageQueue.front()->GetSizeWithHeader()),
+            boost::asio::buffer(MessageQueue.front().GetDataWithHeader(), MessageQueue.front().GetSizeWithHeader()),
             boost::bind(&WorldSession::HandleSend, shared_from_this(), boost::asio::placeholders::error));
     }
 }

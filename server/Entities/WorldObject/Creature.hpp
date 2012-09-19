@@ -34,7 +34,7 @@ public:
 
     void Update(int64 diff);
 
-    WorldPacket* PackData();
+    WorldPacket PackData();
 
     void SpellHit(SpellBoxPtr pSpellBox);
     void TakeDamage(int32 Damage, Unit* pAttacker);
