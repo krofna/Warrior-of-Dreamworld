@@ -50,7 +50,7 @@ void WorldSession::Start()
     Packet = WorldPacket((uint16)MSG_NULL);
 
     boost::asio::async_read(Socket,
-        boost::asio::buffer(Packet->GetDataWithHeader(), WorldPacket::HEADER_SIZE),
+        boost::asio::buffer(Packet.GetDataWithHeader(), WorldPacket::HEADER_SIZE),
         boost::bind(&WorldSession::HandleHeader, this, boost::asio::placeholders::error));
 }
 
@@ -78,21 +78,21 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
         sLog.Write("Failed to receive packet");
         return;
     }
-    if(Packet->GetOpcode() >= MSG_COUNT)
+    if(Packet.GetOpcode() >= MSG_COUNT)
     {
-        sLog.Write("Received %u: Bad opcode!", Packet->GetOpcode());
+        sLog.Write("Received %u: Bad opcode!", Packet.GetOpcode());
         return;
     }
-    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
+    sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
-    (this->*OpcodeTable[Packet->GetOpcode()].Handler)();
+    (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
 
     Start();
 }
 
 void WorldSession::Send(WorldPacket& Packet)
 {
-    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet->GetOpcode()].name);
+    sLog.Write("Sending Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     Packet.UpdateSizeData();
 
