@@ -31,12 +31,12 @@ Health          (100) // Placeholder to fix pathfinder
 {
 }
 
-void Unit::SpellHit(SpellBoxPtr pSpellBox)
+void Unit::SpellHit(SpellBox* pSpellBox)
 {
     TakeDamage(pSpellBox->pSpell->Value, pSpellBox->pCaster);
 }
 
-void Unit::CastSpell(SpellPtr pSpell, float Angle)
+void Unit::CastSpell(Spell* pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
     WorldPacket Packet((uint16)MSG_CAST_SPELL);

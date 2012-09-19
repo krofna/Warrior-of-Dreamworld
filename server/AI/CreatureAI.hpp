@@ -50,7 +50,7 @@ public:
     virtual void Hit(Unit* pAttacker, int32& Damage){};
 
     // Called when creature is hit by spell
-    virtual void SpellHit(SpellBoxPtr& pSpellBox){};
+    virtual void SpellHit(SpellBox* pSpellBox){};
 
     // Creature controlled by this AI
     Creature* pCreature;

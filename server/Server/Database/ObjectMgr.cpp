@@ -46,6 +46,11 @@ ObjectMgr::~ObjectMgr()
     {
         delete iter->second;
     }
+    
+    for(auto iter = Spells.begin(); iter != Spells.end(); ++iter)
+    {
+        *iter;
+    }
 }
 
 CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const
@@ -66,7 +71,7 @@ ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry) const
     return nullptr;
 }
 
-SpellPtr ObjectMgr::GetSpell(uint16 ID)
+Spell* ObjectMgr::GetSpell(uint16 ID)
 {
     for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
     {
@@ -74,7 +79,7 @@ SpellPtr ObjectMgr::GetSpell(uint16 ID)
             return (*SpellIter);
     }
 
-    return SpellPtr();
+    return nullptr;
 }
 
 void ObjectMgr::LoadCreatureTemplates()
@@ -149,7 +154,7 @@ void ObjectMgr::LoadSpells()
 
     while (Result->next())
     {
-        Spells.push_back(SpellPtr(new Spell(Result->getUInt64(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6))));
+        Spells.push_back(new Spell(Result->getUInt64(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6)));
     }
 }
 

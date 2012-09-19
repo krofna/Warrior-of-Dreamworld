@@ -48,8 +48,6 @@ class WorldSession;
         #include <boost/enable_shared_from_this.hpp>
         #include <boost/make_shared.hpp>
         
-        typedef boost::shared_ptr<Spell> SpellPtr;
-        typedef boost::shared_ptr<SpellBox> SpellBoxPtr;
         typedef boost::shared_ptr<WorldSession> WorldSessionPtr;
         using boost::enable_shared_from_this;
         using boost::make_shared;
@@ -66,15 +64,11 @@ class WorldSession;
         #endif 
 
         #ifdef SMART_PTR_TR1
-            typedef std::tr1::shared_ptr<Spell> SpellPtr;
-            typedef std::tr1::shared_ptr<SpellBox> SpellBoxPtr;
             typedef std::tr1::shared_ptr<WorldSession> WorldSessionPtr;
             using std::tr1::enable_shared_from_this;
             using std::tr1::shared_from_this;
             using std::tr1::make_shared;
         #else
-            typedef std::shared_ptr<Spell> SpellPtr;
-            typedef std::shared_ptr<SpellBox> SpellBoxPtr;
             typedef std::shared_ptr<WorldSession> WorldSessionPtr;
             using std::enable_shared_from_this;
             using std::make_shared;

@@ -56,7 +56,7 @@ public:
         pCreature->Say(TEXT_ENTER_COMBAT);
     }
 
-    void SpellHit(SpellBoxPtr& pSpellBox)
+    void SpellHit(SpellBox* pSpellBox)
     {
         if (HitTimer - 1000 <= 0)
         {

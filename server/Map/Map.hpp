@@ -34,7 +34,7 @@ class Map
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
-    void AddSpell(Unit* pCaster, SpellPtr& pSpell, float Angle);
+    void AddSpell(Unit* pCaster, Spell* pSpell, float Angle);
     virtual void Update(int64 diff);
     void UnitUpdate(Unit* pVictim, int64 diff);
 
@@ -45,7 +45,7 @@ class Map
     // Entities
     std::vector<Creature*> Creatures;
     std::vector<Player*> Players;
-    std::vector<SpellBoxPtr> Spells;
+    std::vector<SpellBox*> Spells;
 
     uint16 MapID;
     uint32 NewSpellBoxID;

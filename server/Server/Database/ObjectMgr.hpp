@@ -36,7 +36,7 @@ public:
     ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
     QuestTemplate*    GetQuestTemplate    (uint64 Entry) const;
 
-    SpellPtr  GetSpell  (uint16 ID);
+    Spell/*Template*/*  GetSpell  (uint16 ID);
 
     void LoadSpells();
     void LoadCreatureTemplates();
@@ -49,7 +49,7 @@ public:
 
 private:
     std::vector<Player*> Players;
-    std::vector<SpellPtr> Spells;
+    std::vector<Spell*> Spells;/*-s+Templates*/
     std::map<uint64, CreatureTemplate*> CreatureTemplates;
     std::map<uint64, ItemTemplate*> ItemTemplates;
     std::map<uint64, QuestTemplate*> QuestTemplates;

@@ -44,9 +44,9 @@ public:
 
     bool CanSpeak() const;
 
-    void SpellHit(SpellBoxPtr pSpellBox);
+    void SpellHit(SpellBox* pSpellBox);
 
-    void CastSpell(SpellPtr pSpell, float Angle);
+    void CastSpell(Spell* pSpell, float Angle);
 
     void Update(int64 diff);
 

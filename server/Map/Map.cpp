@@ -48,6 +48,11 @@ Map::~Map()
     {
         delete *Iter;
     }
+    
+    for(auto Iter = Spells.begin(); Iter != Spells.end(); ++Iter)
+    {
+        delete *Iter;
+    }
     sLog.Write("Map %u destroyed.", MapID);
 }
 
@@ -84,6 +89,7 @@ void Map::UnitUpdate(Unit* pUnit, int64 diff)
         if((*SpellBoxIter)->pCaster != pUnit/*Is friendly? Healing?*/ && (*SpellBoxIter)->CollidesWith(pUnit))
         {
             pUnit->SpellHit(*SpellBoxIter);
+            delete *SpellBoxIter;
             SpellBoxIter = Spells.erase(SpellBoxIter);
         }
         else
@@ -122,10 +128,10 @@ void Map::AddPlayer(Player* pPlayer)
     Players.push_back(pPlayer);
 }
 
-void Map::AddSpell(Unit* pCaster, SpellPtr& pSpell, float Angle)
+void Map::AddSpell(Unit* pCaster, Spell* pSpell, float Angle)
 {
     // PLACEHOLDER
-    Spells.push_back(SpellBoxPtr(new SpellBox(pSpell, pCaster, FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID)));
+    Spells.push_back(new SpellBox(pSpell, pCaster, FloatRect((float)pCaster->GetX()+(5/32), (float)pCaster->GetY()+(3/32), 1.0f-float(9/32), 1.f-float(8/32)), Angle, NewSpellBoxID));
     ++NewSpellBoxID;
 }
 

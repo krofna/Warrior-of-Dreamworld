@@ -36,8 +36,8 @@ public:
 
     virtual void Say(const char* Text);
 
-    virtual void SpellHit(SpellBoxPtr pSpellBox);
-    virtual void CastSpell(SpellPtr pSpell, float Angle);
+    virtual void SpellHit(SpellBox* pSpellBox);
+    virtual void CastSpell(Spell* pSpell, float Angle);
     void CastSpell(uint16 Entry, Unit* pVictim);
     void CastSpell(uint16 Entry, float Angle);
 
