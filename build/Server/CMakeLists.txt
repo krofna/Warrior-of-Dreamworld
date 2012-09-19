@@ -16,12 +16,14 @@ ${CMAKE_BINARY_DIR}
 ${CMAKE_SOURCE_DIR}/..
 ${CMAKE_SOURCE_DIR}/../server/AI
 ${CMAKE_SOURCE_DIR}/../server/Entities/Item
-${CMAKE_SOURCE_DIR}/../server/Entities/Spell
+${CMAKE_SOURCE_DIR}/../server/Entities/SpellBox
 ${CMAKE_SOURCE_DIR}/../server/Entities/WorldObject
 ${CMAKE_SOURCE_DIR}/../server/Map
 ${CMAKE_SOURCE_DIR}/../server/Server
 ${CMAKE_SOURCE_DIR}/../server/Server/Database
 ${CMAKE_SOURCE_DIR}/../server
+${CMAKE_SOURCE_DIR}/../server/Spell
+${CMAKE_SOURCE_DIR}/../server/Chat
 ${Boost_INCLUDE_DIRS}
 ${MYSQLCONNECTORCPP_INCLUDE_DIR}
 )
