@@ -36,7 +36,7 @@ public:
     ~WorldSession();
 
     void Connect(std::string Ip, std::string Port);
-    void Send(WorldPacket* Packet);
+    void Send(WorldPacket& Packet);
 
     // Opcode handlers
     void HandleNULL();
@@ -66,10 +66,10 @@ private:
     void Start();
     void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader(const boost::system::error_code& Error);
-    void HandleSend(WorldPacket* Packet, const boost::system::error_code& Error);
+    void HandleSend(const boost::system::error_code& Error);
 
     tcp::socket Socket;
-    WorldPacket* Packet;
+    WorldPacket Packet;
 
     boost::shared_ptr<boost::asio::io_service::work> Work;
     tcp::resolver Resolver;
@@ -77,7 +77,7 @@ private:
     Game* sGame;
     World* pWorld;
 
-    std::queue<WorldPacket*> MessageQueue;
+    std::queue<WorldPacket> MessageQueue;
     boost::mutex MessageQueueMutex;
 };
 

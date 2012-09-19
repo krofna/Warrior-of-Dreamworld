@@ -25,7 +25,7 @@ class Bag : public Item
     void Store(Item* pItem, uint8 Slot);
     void Destroy(uint8 Slot);
 
-    void BuildPacketData(WorldPacket* Packet);
+    void BuildPacketData(WorldPacket& Packet);
 
     private:
     uint8 m_Capacity;

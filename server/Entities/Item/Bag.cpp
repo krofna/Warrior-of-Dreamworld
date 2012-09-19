@@ -52,13 +52,13 @@ void Bag::SaveToDB()
     Item::SaveToDB();
 }
 
-void Bag::BuildPacketData(WorldPacket* Packet)
+void Bag::BuildPacketData(WorldPacket& Packet)
 {
     uint64 ItemID = GetItemID();
     // Bag item ID
-    *Packet << ItemID;
+    Packet << ItemID;
     // Bag slots used
-    *Packet << m_Capacity - NumberFreeSlots();
+    Packet << m_Capacity - NumberFreeSlots();
 
     for (uint8 iSlot = 0 ; iSlot < m_Capacity ; ++iSlot)
     {

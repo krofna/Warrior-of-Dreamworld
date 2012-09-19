@@ -38,7 +38,7 @@ class Map
     virtual void Update(int64 diff);
     void UnitUpdate(Unit* pVictim, int64 diff);
 
-    void SendToPlayers(WorldPacket* Packet);
+    void SendToPlayers(WorldPacket& Packet);
 
     bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
 

@@ -99,19 +99,24 @@ void Map::AddPlayer(Player* pPlayer)
     // Pack & send all data about world objects to new player
     for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
     {
-        pPlayer->SendPacket((*CreatureIterator)->PackData());
+        WorldPacket CreatureData = (*CreatureIterator)->PackData();
+        pPlayer->SendPacket(CreatureData);
     }
 
     // Pack & send all data about players in map to new player
     // and send data about the new player to all other players
+    
+    WorldPacket NewPlayerData = pPlayer->PackData();
+    
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
     {
-        pPlayer->SendPacket((*PlayerIterator)->PackData());
-        ((*PlayerIterator)->SendPacket(pPlayer->PackData()));
+        WorldPacket PlayerData = (*PlayerIterator)->PackData();
+        pPlayer->SendPacket(PlayerData);
+        (*PlayerIterator)->SendPacket(NewPlayerData);
     }
 
     // Send the new player his data
-    pPlayer->SendPacket(pPlayer->PackData());
+    pPlayer->SendPacket(NewPlayerData);
 
     // Finally, we add the new player to the map
     Players.push_back(pPlayer);
@@ -124,12 +129,8 @@ void Map::AddSpell(Unit* pCaster, SpellPtr& pSpell, float Angle)
     ++NewSpellBoxID;
 }
 
-void Map::SendToPlayers(WorldPacket* Packet)
+void Map::SendToPlayers(WorldPacket& Packet)
 {
-    if(Players.empty())
-    {
-        delete Packet;
-    }
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
     {
         (*PlayerIterator)->SendPacket(Packet);
@@ -138,9 +139,9 @@ void Map::SendToPlayers(WorldPacket* Packet)
 
 void Map::RemovePlayer(Player* pPlayer)
 {
-    bool Sent = false;
-    WorldPacket* Packet = new WorldPacket((uint16)MSG_REMOVE_OBJECT);
-    *Packet << pPlayer->GetObjectID();
+    WorldPacket Packet((uint16)MSG_REMOVE_OBJECT);
+    Packet << pPlayer->GetObjectID();
+    
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)
     {
         if((*PlayerIterator) == pPlayer)
@@ -150,16 +151,8 @@ void Map::RemovePlayer(Player* pPlayer)
         else
         {
             (*PlayerIterator)->SendPacket(Packet);
-            Sent = true;
             ++PlayerIterator;
         }
-    }
-    
-    // In case that last player in the world is being removed
-    // We must delete packet here, since its never sent (or removed)
-    if(!Sent)
-    {
-        delete Packet;
     }
 }
 
