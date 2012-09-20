@@ -38,7 +38,8 @@ World* sWorld;
 World::World(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
 IsRunning   (true),
 io          (io),
-Timer       (io)
+Timer       (io),
+Maps        (MAP_COUNT)
 {
     pWorldAcceptor = new WorldAcceptor(io, Endpoint);
 }
@@ -91,11 +92,10 @@ void World::Load()
         sLog.Write("Loading maps...");
         for(uint16 i = 0; i < MAP_COUNT; ++i)
         {
-            Map* pMap(new Map(i));
+            Maps[i] = new Map(i);
             sLog.Write("Loading creatures' map (%d)", i);
-            pMap->LoadCreatures();
+            Maps[i]->LoadCreatures();
             sLog.Write("Creatures' map loaded (%d)", i);
-            Maps.push_back(pMap);
         }
         sLog.Write("Maps loaded.");
     }
