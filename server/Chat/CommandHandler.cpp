@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #define NullCommand { NULL, 0, false, NULL, "", NULL }
 
+
 ChatCommand* CommandHandler::GetCommandTable()
 {
     static ChatCommand AccountSetCommandTable[] =
@@ -73,9 +74,6 @@ bool CommandHandler::ExecuteCommand()
     if(Command.empty())
         return false;
 
-    if((!Console) && ((Command[0] != '.') || (!std::isalpha(Command[1]))))
-        return false;
-
     // Is there such command?
     ChatCommand* pCommand;
     for(pCommand = GetCommandTable(); pCommand->Name != NULL; ++pCommand)
@@ -112,7 +110,10 @@ bool CommandHandler::ExecuteCommand()
             pPlayer->SendCommandReponse("Command executed.");
         }
         else
+        {
+            pPlayer->SendCommandReponse("You don't have the level for executing this command !");
             return false;
+        }
     }
 
     return true;

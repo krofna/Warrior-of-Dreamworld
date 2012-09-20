@@ -375,7 +375,7 @@ void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)
 
 void Player::OnChat(const char* Text)
 {
-    if (Text[0] == '/')
+    if (Text[0] == '.')
     {
         try
         {
