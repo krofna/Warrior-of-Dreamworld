@@ -49,7 +49,7 @@ ObjectMgr::~ObjectMgr()
     
     for(auto iter = Spells.begin(); iter != Spells.end(); ++iter)
     {
-        *iter;
+        delete *iter;
     }
 }
 
