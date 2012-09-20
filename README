@@ -8,6 +8,7 @@ What do I need to compile and run this?
 
 (client only):
 - SFML: https://github.com/LaurentGomila/SFML
+- SFGUI: http://sfgui.sfml-dev.de/download
 
 (server only):
 - MySQL C connector: http://dev.mysql.com/downloads/connector/c/
