@@ -47,9 +47,9 @@ ObjectMgr::~ObjectMgr()
         delete iter->second;
     }
     
-    for(auto iter = Spells.begin(); iter != Spells.end(); ++iter)
+    for(auto iter = SpellTemplates.begin(); iter != SpellTemplates.end(); ++iter)
     {
-        delete *iter;
+        delete iter->second;
     }
 }
 
@@ -71,13 +71,12 @@ ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry) const
     return nullptr;
 }
 
-Spell* ObjectMgr::GetSpell(uint16 ID)
+SpellTemplate* ObjectMgr::GetSpellTemplate(uint16 ID) const
 {
-    for(auto SpellIter = Spells.begin(); SpellIter != Spells.end(); ++SpellIter)
-    {
-        if((*SpellIter)->ID == ID)
-            return (*SpellIter);
-    }
+    auto CTemplate = SpellTemplates.find(ID);
+    if (CTemplate != SpellTemplates.end())
+        return CTemplate->second;
+
 
     return nullptr;
 }
@@ -148,13 +147,13 @@ void ObjectMgr::LoadQuestTemplates()
     }
 }
 
-void ObjectMgr::LoadSpells()
+void ObjectMgr::LoadSpellTemplates()
 {
     QueryResult Result(sDatabase.Query("SELECT * FROM `spells`"));
 
     while (Result->next())
     {
-        Spells.push_back(new Spell(Result->getUInt64(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6)));
+        SpellTemplates[Result->getUInt64(1)] = new SpellTemplate(Result->getUInt64(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6));
     }
 }
 

@@ -22,22 +22,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include "shared/Rect.hpp"
 
-class Spell;
+class SpellTemplate;
 class Unit;
 
 class SpellBox
 {
 public:
-    SpellBox(Spell* pSpell, Unit* pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID);
+    SpellBox(SpellTemplate* pSpell, Unit* pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID);
 
     bool CollidesWith(Unit* pObject);
     void Update(int64 diff);
 
-    Spell* pSpell;
+    SpellTemplate* pSpellTemplate;
     Unit* pCaster;
     uint32 SpellBoxID;
 
 private:
+    FloatRect CurrentObjBox;
     FloatRect Hitbox;
     float Angle;
     int32 _Diff;

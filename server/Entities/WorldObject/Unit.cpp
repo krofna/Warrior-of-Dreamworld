@@ -33,10 +33,10 @@ Health          (100) // Placeholder to fix pathfinder
 
 void Unit::SpellHit(SpellBox* pSpellBox)
 {
-    TakeDamage(pSpellBox->pSpell->Value, pSpellBox->pCaster);
+    TakeDamage(pSpellBox->pSpellTemplate->Value, pSpellBox->pCaster);
 }
 
-void Unit::CastSpell(Spell* pSpell, float Angle)
+void Unit::CastSpell(SpellTemplate* pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
     WorldPacket Packet((uint16)MSG_CAST_SPELL);
@@ -73,12 +73,12 @@ void Unit::DoMeleeAttackIfReady(int64 diff)
 void Unit::CastSpell(uint16 Entry, Unit* pVictim)
 {
     // TODO: Angle is bugged because client side GetAngle works differently
-    CastSpell(sObjectMgr.GetSpell(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->GetPosition() * TILE_SIZE));
+    CastSpell(sObjectMgr.GetSpellTemplate(Entry), math::GetAngle(Position * TILE_SIZE, pVictim->GetPosition() * TILE_SIZE));
 }
 
 void Unit::CastSpell(uint16 Entry, float Angle)
 {
-    CastSpell(sObjectMgr.GetSpell(Entry), Angle);
+    CastSpell(sObjectMgr.GetSpellTemplate(Entry), Angle);
 }
 
 void Unit::Kill()

@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Templates.hpp"
 
 class Player;
-class Spell;
+class SpellTemplate;
 
 class ObjectMgr
 {
@@ -35,10 +35,9 @@ public:
     CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
     ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
     QuestTemplate*    GetQuestTemplate    (uint64 Entry) const;
+    SpellTemplate*    GetSpellTemplate    (uint16 ID)    const; // ID -> Entry like Quest, Item and Creature.
 
-    Spell/*Template*/*  GetSpell  (uint16 ID);
-
-    void LoadSpells();
+    void LoadSpellTemplates();
     void LoadCreatureTemplates();
     void LoadItemTemplates();
     void LoadQuestTemplates();
@@ -49,7 +48,7 @@ public:
 
 private:
     std::vector<Player*> Players;
-    std::vector<Spell*> Spells;/*-s+Templates*/
+    std::map<uint16, SpellTemplate*> SpellTemplates;
     std::map<uint64, CreatureTemplate*> CreatureTemplates;
     std::map<uint64, ItemTemplate*> ItemTemplates;
     std::map<uint64, QuestTemplate*> QuestTemplates;

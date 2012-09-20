@@ -70,8 +70,8 @@ void World::Load()
         sObjectMgr.LoadCreatureTemplates();
         sLog.Write("Creature templates loaded.");
 
-        sLog.Write("Load spells...");
-        sObjectMgr.LoadSpells();
+        sLog.Write("Load spell templates...");
+        sObjectMgr.LoadSpellTemplates();
         sLog.Write("Spells loaded.");
 
         sLog.Write("Load players login informations...");

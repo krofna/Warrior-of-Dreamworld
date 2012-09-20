@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "WorldObject.hpp"
 
-class Spell;
+class SpellTemplate;
 class SpellBox;
 
 class WOD_DLL_DECL Unit : public WorldObject
@@ -37,7 +37,7 @@ public:
     virtual void Say(const char* Text);
 
     virtual void SpellHit(SpellBox* pSpellBox);
-    virtual void CastSpell(Spell* pSpell, float Angle);
+    virtual void CastSpell(SpellTemplate* pSpell, float Angle);
     void CastSpell(uint16 Entry, Unit* pVictim);
     void CastSpell(uint16 Entry, float Angle);
 

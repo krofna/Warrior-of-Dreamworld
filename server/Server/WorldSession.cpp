@@ -213,7 +213,7 @@ void WorldSession::HandleCastSpellOpcode()
     float Angle;
     Packet >> SpellID >> Angle;
 
-    Spell* pSpell = sObjectMgr.GetSpell(SpellID);
+    SpellTemplate* pSpell = sObjectMgr.GetSpellTemplate(SpellID);
 
     if(!pSpell)
     {

@@ -46,7 +46,7 @@ public:
 
     void SpellHit(SpellBox* pSpellBox);
 
-    void CastSpell(Spell* pSpell, float Angle);
+    void CastSpell(SpellTemplate* pSpell, float Angle);
 
     void Update(int64 diff);
 

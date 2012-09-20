@@ -24,10 +24,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 // TODO: move to templates?
 
-class Spell//Template
+class SpellTemplate
 {
     public:
-    Spell(uint64 ID, uint16 DisplayID, uint16 Effect, uint16 Value, uint16 Cost, std::string Name);
+    SpellTemplate(uint64 ID, uint16 DisplayID, uint16 Effect, uint16 Value, uint16 Cost, std::string Name);
 
     std::string Name;
 
@@ -36,6 +36,7 @@ class Spell//Template
     uint16 Effect;
     uint16 Value;
     uint16 Cost;
+    uint32 Data;
     //Speed?
 };
 
