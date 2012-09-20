@@ -48,6 +48,8 @@ public:
     void HandleLogOutOpcode();
     void HandleSystemMessageOpcode();
     void HandleChatMessageOpcode();
+    void HandleCommandReponseOpcode();
+    void HandleNotificationMessageOpcode();
     void HandleSwapItemOpcode();
     void HandleDeleteItemOpcode();
     void HandleCreateItemOpcode();

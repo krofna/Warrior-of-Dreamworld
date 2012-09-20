@@ -1,12 +1,11 @@
 #!/bin/sh
 
 # Build Client
-cd Client
-cmake . -DCMAKE_BUILD_TYPE=$1
+cmake . -DCMAKE_BUILD_TYPE=$1 -DBUILD_ONLY_CLIENT=TRUE
 make
 
 # Copy Client Data
-cp -R ../ClientData/* ../bin/Client/$1/
+sh CopyClientData.sh
 
 # Launch client with debugger GDB
 cd ../bin/Client/$1/

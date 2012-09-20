@@ -230,6 +230,26 @@ void WorldSession::HandleChatMessageOpcode()
     sLog.Write("Packet is good!");
 }
 
+void WorldSession::HandleCommandReponseOpcode()
+{
+    std::string Message;
+
+    Packet >> Message;
+
+    pWorld->ReceiveCommandReponse(Message);
+    sLog.Write("Packet is good!");
+}
+
+void WorldSession::HandleNotificationMessageOpcode()
+{
+    std::string Message;
+
+    Packet >> Message;
+
+    pWorld->ReceiveNotification(Message);
+    sLog.Write("Packet is good!");
+}
+
 void WorldSession::HandleSwapItemOpcode()
 {
     uint8 srcbag, dstbag, srcslot, dstslot;

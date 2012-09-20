@@ -1,8 +1,9 @@
 #!/bin/sh
 
-# Build server
-cd Server
-cmake . -DCMAKE_BUILD_TYPE=$1
+# For building server
+cmake . -DCMAKE_BUILD_TYPE=$1 -DBUILD_ONLY_SERVER=TRUE
 make
+
+# Launch Server
 cd ../bin/Server/$1
 gdb ./Server

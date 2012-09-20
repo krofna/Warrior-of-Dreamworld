@@ -41,6 +41,9 @@ public:
     void CastSpell(uint16 Entry, Unit* pVictim);
     void CastSpell(uint16 Entry, float Angle);
 
+    void Teleport(int x, int y);
+    virtual void Teleport(Vector2i const& Pos);
+
     virtual int32 GetMeleeDamage() const;
     virtual void DealDamage(int32 Damage, Unit* pTarget);
     virtual void TakeDamage(int32 Damage, Unit* pAttacker);
@@ -57,6 +60,9 @@ public:
     virtual bool IsInWorld() const { return true; /*??*/ }
 
     Unit* GetVictim();
+
+protected:
+    virtual void OnChat(const char* Text) = 0;
 
 protected:
     uint32 Health;

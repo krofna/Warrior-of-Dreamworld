@@ -48,10 +48,18 @@ private:
 
     void HandleKillCommand();
 
+    void HandleTeleportToCommand();
+    void HandleTeleportAtCommand();
+    void HandleBringCommand();
+
     void HandleShutdownCommand();
 
     template <class T>
     void ExtractArg(T& Arg);
+//    #if defined(HAS_VARIADIC_TEMPLATE)
+//        template<class T, class... Tn>
+//        void ExtractArgs(T& Arg, Tn&... Arg);
+//  #endif
 
     Player* pPlayer;
     boost::tokenizer<> Tokenizer;
@@ -80,6 +88,18 @@ void CommandHandler::ExtractArg(T& Arg)
         throw BadCommand();
     }
 }
+
+//#if defined(HAS_VARIADIC_TEMPLATE)
+//    template<>
+//    void CommandHandler::ExtractArg<>() { }
+//
+//    template<class T, class... Tn>
+//    void CommandHandler::ExtractArgs(T& Arg, Tn&... Args)
+//    {
+//        ExtractArg(Arg);
+//        ExtractArgs(std::forward<Tn>(Args)...);
+//    }
+//#endif
 
 #include <string>
 

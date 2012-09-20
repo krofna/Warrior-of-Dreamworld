@@ -66,7 +66,7 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
     return true;
 }
 
-void WorldObject::UpdatePosition(Vector2i Position)
+void WorldObject::UpdatePosition(Vector2i const& Position)
 {
     this->Position = Position;
     WorldPacket Packet((uint16)MSG_MOVE_OBJECT);

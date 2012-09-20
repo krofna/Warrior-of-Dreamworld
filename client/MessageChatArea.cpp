@@ -15,6 +15,20 @@ void MessageChatArea::AddMessage(std::string const& ObjectName, std::string cons
 
     message.TimeDisplay = SecondsTime * 1000;
     message.StringMessage = StringMessage;
+    message.IsServerMessage = false;
+    message.DefaultColor = sf::Color::Black;
+
+    m_Messages.push_back(message);
+}
+
+void MessageChatArea::AddServerMessage(std::string const& Msg, sf::Color const& msgColor, int32 DisplayTime)
+{
+    Message message;
+
+    message.TimeDisplay = DisplayTime * 1000;
+    message.StringMessage = Msg;
+    message.IsServerMessage = true;
+    message.DefaultColor = msgColor;
 
     m_Messages.push_back(message);
 }
@@ -43,10 +57,14 @@ void MessageChatArea::Draw(int32 UpdateTime)
         }
         else
             m_Messages[i].TimeDisplay -= UpdateTime;
-
-        std::string StringMessage = m_Messages[i].StringMessage;
+        
+        std::string StringMessage;
+        if (m_Messages[i].IsServerMessage)
+            StringMessage += "SERVER: ";
+        StringMessage += m_Messages[i].StringMessage;
 
         sf::Text text(StringMessage, m_DefaultFont);
+        text.setColor(m_Messages[i].DefaultColor);
         text.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y - float(i * 50));
 
         Window->draw(text);

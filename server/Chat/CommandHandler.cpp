@@ -44,11 +44,20 @@ ChatCommand* CommandHandler::GetCommandTable()
         NullCommand
     };
 
+    static ChatCommand TeleportCommandTable[] =
+    {
+        { "to",         SEC_ADMIN,  false,   &CommandHandler::HandleTeleportToCommand,       "Usage: teleport to <player_name>",             NULL },
+        { "at",         SEC_ADMIN,  false,   &CommandHandler::HandleTeleportAtCommand,       "Usage: teleport at <x> <y>",                   NULL },
+        NullCommand
+    };
+
     static ChatCommand CommandTable[] =
     {
         { "account",    SEC_PLAYER, true,   NULL,                                           "Usage: account <command> <argv>",              AccountCommandTable },
-        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>", NULL },
-        { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>" },
+        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",                    NULL },
+        { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>",            NULL },
+        { "teleport",   SEC_ADMIN,  false,   NULL,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
+        { "bring",      SEC_ADMIN,  false,   &CommandHandler::HandleBringCommand,            "Usage: bring <player_name>",                   NULL },
         NullCommand
     };
 
@@ -98,7 +107,10 @@ bool CommandHandler::ExecuteCommand()
     else 
     {
         if (pPlayer->GetSecLevel() >= pCommand->SecurityLevel)
+        {
             (this->*pCommand->Handler)();
+            pPlayer->SendCommandReponse("Command executed.");
+        }
         else
             return false;
     }
@@ -122,7 +134,16 @@ void CommandHandler::HandleAccountCreateCommand()
     ExtractArg(Password);
 
     sDatabase.PExecute("INSERT INTO `players` VALUES (%llu, '%s', '%s', 'none', 0, 0, 'dg_classm32.gif', 0, 0, 0, 0, 0)", sDatabase.Generate64BitsGUID(), Username.c_str(), Password.c_str());
-    sLog.Write("Account %s successfully created.", Username.c_str());
+    if (Console)
+        sLog.Write("Account %s successfully created.", Username.c_str());
+    else
+    {
+        std::string Msg = "Account ";
+        Msg += Username;
+        Msg += " successfully created.";
+
+        pPlayer->SendCommandReponse(Msg);
+    }
 }
 
 void CommandHandler::HandleAccountDeleteCommand()
@@ -165,19 +186,80 @@ void CommandHandler::HandleAccountSetPasswordCommand()
 void CommandHandler::HandleKillCommand()
 {
     std::string PlayerName;
-
     ExtractArg(PlayerName);
 
-    Player* pPlayer = sObjectMgr.GetPlayer(PlayerName);
-    if (pPlayer)
+    Player* pTargetPlayer = sObjectMgr.GetPlayer(PlayerName);
+    if (pTargetPlayer)
     {
-        if (pPlayer->IsInWorld())
-            pPlayer->Kill();
+        if (pTargetPlayer->IsInWorld())
+            pTargetPlayer->Kill();
         else
-            sLog.Write("Player is not in world !");
+        {
+            if (Console)
+                sLog.Write("Player is not in world !");
+            else
+                pPlayer->SendCommandReponse("Player is not in world !");
+        }
     }
     else
-        sLog.Write("Unknown player !");
+    {
+        if (Console)
+            sLog.Write("Unknown player !");
+        else
+            pPlayer->SendCommandReponse("Unknown player !");
+    }
+}
+
+void CommandHandler::HandleTeleportToCommand()
+{
+    std::string PlayerName;
+    ExtractArg(PlayerName);
+
+    Player* pTargetPlayer = sObjectMgr.GetPlayer(PlayerName);
+    if (pTargetPlayer)
+    {
+        if (pTargetPlayer->IsInWorld())
+        {
+            pPlayer->Teleport(pTargetPlayer->GetPosition());
+        }
+        else
+        {
+            pPlayer->SendCommandReponse("Player is not in world !");
+        }
+    }
+    else
+        pPlayer->SendCommandReponse("Player doesn't exist !");
+}
+
+void CommandHandler::HandleTeleportAtCommand()
+{
+    int x, y;
+    ExtractArg(x);
+    ExtractArg(y);
+
+    pPlayer->Teleport(x, y);
+}
+
+void CommandHandler::HandleBringCommand()
+{
+    std::string PlayerName;
+    ExtractArg(PlayerName);
+
+    Player* pTargetPlayer = sObjectMgr.GetPlayer(PlayerName);
+
+    if (pTargetPlayer)
+    {
+        if (pTargetPlayer->IsInWorld())
+        {
+            pTargetPlayer->Teleport(pPlayer->GetPosition());
+        }
+        else
+        {
+            pPlayer->SendCommandReponse("Player is not in world !");
+        }
+    }
+    else
+        pPlayer->SendCommandReponse("Player doesn't exist !");
 }
 
 void CommandHandler::HandleShutdownCommand()

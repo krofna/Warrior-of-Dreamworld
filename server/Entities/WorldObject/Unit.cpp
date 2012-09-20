@@ -47,6 +47,7 @@ void Unit::CastSpell(SpellTemplate* pSpell, float Angle)
 
 void Unit::Say(const char* Text)
 {
+    OnChat(Text);
     WorldPacket SayPacket((uint16)MSG_CHAT_MESSAGE);
     SayPacket << GetObjectID() << std::string(Text);
 
@@ -79,6 +80,17 @@ void Unit::CastSpell(uint16 Entry, Unit* pVictim)
 void Unit::CastSpell(uint16 Entry, float Angle)
 {
     CastSpell(sObjectMgr.GetSpellTemplate(Entry), Angle);
+}
+
+void Unit::Teleport(int x, int y)
+{
+    Vector2i pos(x, y);
+    Teleport(pos);
+}
+
+void Unit::Teleport(Vector2i const& Pos)
+{
+    UpdatePosition(Pos);
 }
 
 void Unit::Kill()

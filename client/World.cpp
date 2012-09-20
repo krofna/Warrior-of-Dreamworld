@@ -264,6 +264,20 @@ void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
     m_MessageArea->AddMessage(Iter->second->GetObjectName(), Text);
 }
 
+void World::ReceiveCommandReponse(std::string const& Text)
+{
+    boost::mutex::scoped_lock lock(DrawingMutex);
+
+    m_MessageArea->AddServerMessage(Text, sf::Color::Blue);
+}
+
+void World::ReceiveNotification(std::string const& Text)
+{
+    boost::mutex::scoped_lock lock(DrawingMutex);
+
+    m_MessageArea->AddServerMessage(Text, sf::Color::Red);
+}
+
 void World::AddAnimation(Animation* pAnimation)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);

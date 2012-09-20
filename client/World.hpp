@@ -54,6 +54,8 @@ public:
 
 protected:
     void ReceiveNewMessage(uint64 ObjID, std::string const& Message);
+    void ReceiveCommandReponse(std::string const& Message);
+    void ReceiveNotification(std::string const& Message);
 
 private:
     MessageChatAreaPtr m_MessageArea;

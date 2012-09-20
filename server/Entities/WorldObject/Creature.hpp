@@ -42,6 +42,8 @@ public:
     int32 GetMeleeDamage() const { return 5; }
 
     CreatureAI* GetAI();
+protected:
+    void OnChat(const char* Text) { }
 private:
     CreatureAI* pAI;
     Pathfinder* MovementGenerator;

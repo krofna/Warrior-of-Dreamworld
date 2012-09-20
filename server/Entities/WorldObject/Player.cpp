@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Player.hpp"
+#include "CommandHandler.hpp"
 #include "shared/Opcodes.hpp"
 #include "shared/Log.hpp"
 #include "Database.hpp"
@@ -370,4 +371,40 @@ void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)
         return;
     
     m_Bags[SrcBag]->Destroy(SrcSlot);
+}
+
+void Player::OnChat(const char* Text)
+{
+    if (Text[0] == '/')
+    {
+        try
+        {
+            std::string Msg(Text);
+            Msg.erase(Msg.begin());
+
+            CommandHandler handler(this, Msg);
+            if (!handler.ExecuteCommand())
+            {
+                SendNotification("Unknown command !");
+            }
+        }
+        catch(CommandHandler::BadCommand const& /*e*/)
+        {
+            SendNotification("Unknown command !");
+        }
+    }
+}
+
+void Player::SendCommandReponse(std::string const& Msg)
+{
+    WorldPacket ReponsePacket((uint16)MSG_COMMAND_REPONSE);
+    ReponsePacket << Msg;
+    SendPacket(ReponsePacket);
+}
+
+void Player::SendNotification(std::string const& Msg)
+{
+    WorldPacket NotificationPacket((uint16)MSG_NOTIFICATION_MSG);
+    NotificationPacket << Msg;
+    SendPacket(NotificationPacket);
 }

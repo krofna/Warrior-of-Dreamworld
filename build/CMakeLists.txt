@@ -19,6 +19,20 @@ endif()
 
 set(EXECUTABLE_OUTPUT_PATH ./bin/${CMAKE_BUILD_TYPE})
 
-add_subdirectory(Server)
-add_subdirectory(Client)
-add_subdirectory(WorldEdit)
+if (NOT BUILD_ONLY_SERVER OR NOT BUILD_ONLY_CLIENT OR NOT BUILD_ONLY_WORLD_EDIT)
+    add_subdirectory(Server)
+    add_subdirectory(Client)
+    add_subdirectory(WorldEdit)
+endif()
+
+if (BUILD_ONLY_SERVER)
+    add_subdirectory(Server)
+endif()
+
+if (BUILD_ONLY_CLIENT)
+    add_subdirectory(Client)
+endif()
+
+if (BUILD_ONLY_WORLD_EDIT)
+    add_subdirectory(WorldEdit)
+endif()

@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "../shared/Defines.hpp"
 
-#define MESSAGE_POS_X 0
+#define MESSAGE_POS_X 10
 #define MESSAGE_POS_Y (WindowHeight / 6) * 5
 
 class MessageChatArea
@@ -14,11 +14,14 @@ class MessageChatArea
     {
         int32 TimeDisplay;
         std::string StringMessage;
+        sf::Color DefaultColor;
+        bool IsServerMessage;
     };
     public:
     MessageChatArea();
 
-    void AddMessage(std::string const& ObjectName, std::string const& Content, int32 SecondsTime = 5);
+    void AddMessage(std::string const& ObjectName, std::string const& Content, int32 Duration = 5);
+    void AddServerMessage(std::string const& Message, sf::Color const& color, int32 Duration = 5);
     void Draw(int32 UpdateTime);
     bool HandleTyping(sf::Event event);
 

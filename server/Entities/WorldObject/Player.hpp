@@ -87,6 +87,12 @@ public:
 
     void DestroyItem(uint8 SrcBag, uint8 SrcSlot);
 
+    void SendNotification(std::string const& Msg);
+    void SendCommandReponse(std::string const& Msg);
+
+protected:
+    void OnChat(const char* Text);
+
 private:
     void SendInventoryData();
 
