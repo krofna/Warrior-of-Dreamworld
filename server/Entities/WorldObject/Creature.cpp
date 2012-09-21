@@ -116,7 +116,7 @@ void Creature::OnInteract(Player* pWho)
         //append repair option
     }
     
-    Who->SendPacket(Packet);
+    pWho->SendPacket(Packet);
 }
 
 CreatureAI* Creature::GetAI()
