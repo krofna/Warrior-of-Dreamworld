@@ -106,7 +106,7 @@ bool Creature::UpdateCoordinates(uint8 Direction)
 
 void Creature::UpdatePosition(Vector2i const& Position)
 {
-    pMap->TileGrid[Position.y][Position.x] = nullptr;
+    pMap->TileGrid[this->Position.y][this->Position.x] = nullptr;
     WorldObject::UpdatePosition(Position);
     pMap->TileGrid[Position.y][Position.x] = this;
 }
