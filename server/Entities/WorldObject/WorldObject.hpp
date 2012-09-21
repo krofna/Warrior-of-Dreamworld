@@ -37,7 +37,7 @@ public:
 
     virtual void UpdatePosition(Vector2i const& Position);
     // Called when some a Player collides with *this
-    virtual void OnInteract(Player* Who) = 0;
+    virtual void OnInteract(Player* pWho) = 0;
 
     const uint64 GetObjectID() const;
     const uint16 GetMapID() const;

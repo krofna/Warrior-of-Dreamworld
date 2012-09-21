@@ -352,3 +352,7 @@ void WorldSession::SendChatMessage(std::string const& Message)
     Packet << Message;
     Send(Packet);
 }
+
+void WorldSession::HandleNpcInteractOpcode()
+{
+}

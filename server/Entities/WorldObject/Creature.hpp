@@ -42,7 +42,7 @@ public:
     int32 GetMeleeDamage() const { return 5; }
     
     virtual void UpdatePosition(Vector2i const& Position);
-    virtual void OnInteract(Player* Who) ;
+    void OnInteract(Player* pWho) ;
     
     CreatureAI* GetAI();
     

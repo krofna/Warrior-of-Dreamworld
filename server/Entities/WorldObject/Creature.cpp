@@ -96,12 +96,12 @@ void Creature::UpdatePosition(Vector2i const& Position)
     pMap->TileGrid[Position.y][Position.x] = this;
 }
 
-void Creature::OnInteract(Player* Who)
+void Creature::OnInteract(Player* pWho)
 {
     // Build packet data containing gossip menu options
     // depending on creature npcflag.
     
-    //WorldPacket Packet((uint16)SOME_OPCODE);
+    WorldPacket Packet((uint16)MSG_NPC_INTERACT);
     
     if(pTemplate->npcflag & NPC_QUEST_GIVER)
     {
@@ -115,6 +115,8 @@ void Creature::OnInteract(Player* Who)
     {
         //append repair option
     }
+    
+    Who->SendPacket(Packet);
 }
 
 CreatureAI* Creature::GetAI()

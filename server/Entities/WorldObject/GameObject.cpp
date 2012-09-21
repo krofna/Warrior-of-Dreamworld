@@ -23,3 +23,7 @@ WorldObject           (ObjID),
 pTemplate             (pTemplate)
 {
 }
+
+void GameObject::OnInteract(Player* pWho)
+{
+}

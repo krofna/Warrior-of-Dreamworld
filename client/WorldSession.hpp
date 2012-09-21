@@ -56,6 +56,7 @@ public:
     void HandleUseItemOpcode();
     void HandleEquipItemOpcode();
     void HandleInventoryDataOpcode();
+    void HandleNpcInteractOpcode();
 
     // Requests
     void SendAuthRequest(std::string Username, std::string Password);

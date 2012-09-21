@@ -25,6 +25,8 @@ class GameObject : public WorldObject
 public:
     GameObject(uint64 ObjID, GameObjectTemplate* pTemplate);
     
+    void OnInteract(Player* pWho);
+    
 private:
     GameObjectTemplate const* pTemplate;
 };
