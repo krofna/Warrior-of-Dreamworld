@@ -85,6 +85,7 @@ void Unit::CastSpell(uint16 Entry, float Angle)
 void Unit::Teleport(int x, int y)
 {
     Vector2i pos(x, y);
+    // Dear Ryan. ?
     Teleport(pos);
 }
 
