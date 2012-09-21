@@ -58,6 +58,11 @@ public:
     {
         this->c.clear();
     }
+    
+    void reserve(size_t elements)
+    {
+        this->c.reserve(elements);
+    }
 };
 
 class Pathfinder
@@ -125,7 +130,7 @@ class Pathfinder
         int64 MovementCooldown;
 
         // Priority queue of nodes to be checked by CheckNode()
-        my_priority_queue OpenList;
+        static my_priority_queue OpenList;
 
         //std::stack<Vector2i> PathToHome; // NYI - maybe calculate path to home but store only home coord in ctor
 };

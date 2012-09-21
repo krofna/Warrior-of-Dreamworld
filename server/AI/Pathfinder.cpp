@@ -28,13 +28,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /*
 TODO:
-- Bounds checking
+- Bounds checking map specific
 - Diagonal movement ( no cutting )
-- case (uint8)OPEN:
 */
 
 boost::shared_array<PathfinderNode> Pathfinder::PathfindingGrid;
 boost::shared_array<uint8> Pathfinder::PathfindingStatusGrid;
+my_priority_queue Pathfinder::OpenList;
 
 Pathfinder::Pathfinder(Unit* pOrigin) :
 pOrigin               (pOrigin),
@@ -51,6 +51,9 @@ void Pathfinder::Init()
 {
     PathfindingGrid.reset(new PathfinderNode[MAX_MAP_HEIGHT * MAX_MAP_WIDTH]);
     std::memset(PathfindingGrid.get(), 0, MAX_MAP_HEIGHT * MAX_MAP_WIDTH);
+    
+    // Allocate some memory (completly random)
+    OpenList.reserve(100);
 
     for(int y = 0; y < MAX_MAP_HEIGHT; ++y)
     {
@@ -139,9 +142,10 @@ void Pathfinder::GeneratePath()
                 Path.push(pCurrent->Position);
                 pCurrent = pCurrent->pParent;
             }
-
+            
             // Destroy open list
             OpenList.clear();
+            
             return;
         }
 
