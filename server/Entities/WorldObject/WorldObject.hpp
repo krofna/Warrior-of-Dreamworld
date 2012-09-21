@@ -36,6 +36,9 @@ public:
     virtual WorldPacket PackData() = 0;
 
     virtual void UpdatePosition(Vector2i const& Position);
+    
+    // Called when some WorldObject collides with *this
+    virtual void OnInteract(WorldObject* Who) {};
 
     const uint64 GetObjectID() const
     {

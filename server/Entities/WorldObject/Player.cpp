@@ -174,7 +174,6 @@ void Player::LogOut()
     this->SaveToDB();
 }
 
-// TODO: Interact with object if collided with one on return false in switch
 bool Player::UpdateCoordinates(uint8 Direction)
 {
     if (pMap->CheckOutside(Position.x, Position.y, Direction))
@@ -184,22 +183,34 @@ bool Player::UpdateCoordinates(uint8 Direction)
     {
     case MOVE_UP:
         if(pMap->TileGrid[Position.y-1][Position.x])
+        {
+            pMap->TileGrid[Position.y-1][Position.x]->OnInteract(this);
             return false;
+        }
         Position.y--;
         break;
     case MOVE_DOWN:
         if(pMap->TileGrid[Position.y+1][Position.x])
+        {
+            pMap->TileGrid[Position.y+1][Position.x]->OnInteract(this);
             return false;
+        }
         Position.y++;
         break;
     case MOVE_LEFT:
         if(pMap->TileGrid[Position.y][Position.x-1])
+        {
+            pMap->TileGrid[Position.y][Position.x-1]->OnInteract(this);
             return false;
+        }
         Position.x--;
         break;
     case MOVE_RIGHT:
         if(pMap->TileGrid[Position.y][Position.x+1])
+        {
+            pMap->TileGrid[Position.y][Position.x+1]->OnInteract(this);
             return false;
+        }
         Position.x++;
         break;
     }
