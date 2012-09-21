@@ -51,6 +51,7 @@ class Map
     uint32 NewSpellBoxID;
 
     // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
+    // NOTE: Players are NOT stored here
     std::vector<std::vector<WorldObject*> > TileGrid;
 };
 

@@ -40,6 +40,8 @@ public:
     void TakeDamage(int32 Damage, Unit* pAttacker);
     void DealDamage(int32 Damage, Unit* pTarget);
     int32 GetMeleeDamage() const { return 5; }
+    
+    virtual bool UpdateCoordinates(uint8 Direction);
 
     CreatureAI* GetAI();
 protected:

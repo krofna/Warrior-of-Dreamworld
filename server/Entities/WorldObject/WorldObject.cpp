@@ -32,8 +32,6 @@ const uint16 WorldObject::GetMapID() const
 
 bool WorldObject::UpdateCoordinates(uint8 Direction)
 {
-    uint16 OldX = Position.x, OldY = Position.y;
-
     if (pMap->CheckOutside(Position.x, Position.y, Direction))
         return false;
 
@@ -60,8 +58,6 @@ bool WorldObject::UpdateCoordinates(uint8 Direction)
         Position.x++;
         break;
     }
-
-    pMap->TileGrid[OldY][OldX] = nullptr;
 
     return true;
 }

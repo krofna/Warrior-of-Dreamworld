@@ -174,6 +174,14 @@ void Player::LogOut()
     this->SaveToDB();
 }
 
+bool Player::UpdateCoordinates(uint8 Direction)
+{
+    if(!WorldObject::UpdateCoordinates(Direction))
+    {
+        // Try to interact with object
+    }
+}
+
 bool Player::CanSpeak() const
 {
     return !m_IsMute;

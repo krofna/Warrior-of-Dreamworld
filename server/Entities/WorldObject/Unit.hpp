@@ -56,6 +56,9 @@ public:
 
     bool IsAlive() const { return Health > 0; }
     bool IsDead() const { return !IsAlive(); }
+    
+    // This should/will never happen
+    virtual bool UpdateCoordinates(uint8 Direction) { WorldObject::UpdateCoordinates(Direction); }
 
     virtual bool IsInWorld() const { return true; /*??*/ }
 

@@ -45,7 +45,6 @@ public:
     bool CanSpeak() const;
 
     void SpellHit(SpellBox* pSpellBox);
-
     void CastSpell(SpellTemplate* pSpell, float Angle);
 
     void Update(int64 diff);
@@ -57,6 +56,8 @@ public:
     void LogOut();
     void Kick();
     virtual bool IsInWorld() const;
+    
+    virtual bool UpdateCoordinates(uint8 Direction);
 
     int GetSecLevel() const { return SecLevel;}
     std::string GetUsername() const { return Username; }
@@ -73,18 +74,12 @@ public:
     void AutoEquipItem(uint8 Bag, uint8 Slot);
     void EquipItem(uint8 SourceBag, uint8 SourceSlot, uint8 DestSlot);
     void EquipItem(Item* pItem, uint8 DestSlot);
-
     void EquipBag(Bag* pBag);
-
     void StoreItem(Item* pItem, uint8 DstBag, uint8 DstSlot);
-
     void UnequipItem(uint8 SrcSlot);
     void UnequipBag(uint8 SrcSlot);
-
     void UseItem(uint8 Bag, uint8 Slot);
-
     void SwapItem(uint8 SrcBag, uint8 SrcSlot, uint8 DstBag, uint8 DstSlot);
-
     void DestroyItem(uint8 SrcBag, uint8 SrcSlot);
 
     void SendNotification(std::string const& Msg);

@@ -28,6 +28,12 @@ struct CreatureTemplate
     std::string Tileset;
     uint16 tx;
     uint16 ty;
+    
+    /* Bitmask:
+     * 1 - Quest giver
+     * 2 -
+     * 4 -
+     * */
     uint16 NpcFlag;
     uint32 MaxHealth;
     uint32 MaxPower;
