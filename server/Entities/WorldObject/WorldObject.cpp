@@ -21,13 +21,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 
 WorldObject::WorldObject(uint64 ObjID) :
-ObjID(ObjID)
+ObjID                   (ObjID)
 {
 }
 
 const uint16 WorldObject::GetMapID() const
 {
     return pMap->MapID;
+}
+
+const uint64 WorldObject::GetObjectID() const
+{
+    return ObjID;
+}
+
+Map* WorldObject::GetMap() const
+{
+    return pMap;
+}
+
+uint16 WorldObject::GetX() const
+{
+    return Position.x;
+}
+
+uint16 WorldObject::GetY() const
+{
+    return Position.y;
+}
+
+Vector2i WorldObject::GetPosition()
+{
+    return Position;
 }
 
 void WorldObject::UpdatePosition(Vector2i const& Position)

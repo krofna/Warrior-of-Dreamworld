@@ -39,32 +39,12 @@ public:
     // Called when some a Player collides with *this
     virtual void OnInteract(Player* Who) = 0;
 
-    const uint64 GetObjectID() const
-    {
-        return ObjID;
-    }
-
+    const uint64 GetObjectID() const;
     const uint16 GetMapID() const;
-
-    Map* GetMap() const
-    {
-        return pMap;
-    }
-
-    uint16 GetX() const
-    {
-        return Position.x;
-    }
-
-    uint16 GetY() const
-    {
-        return Position.y;
-    }
-
-    Vector2i GetPosition() const
-    {
-        return Position;
-    }
+    Map* GetMap() const;
+    uint16 GetX() const;
+    uint16 GetY() const;
+    Vector2i GetPosition();
 
 protected:
     Map* pMap;
