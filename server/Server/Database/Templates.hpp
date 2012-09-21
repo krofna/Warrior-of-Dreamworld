@@ -21,23 +21,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <string>
 
-struct CreatureTemplate
+enum //npcflag
+{
+    NPC_QUEST_GIVER = 1,
+    NPC_VENDOR      = 2,
+    NPC_REPAIR      = 4,
+                    //8
+                    //...
+};
+
+struct WorldObjectTemplate
 {
     uint64 Entry;
     std::string Name;
     std::string Tileset;
     uint16 tx;
     uint16 ty;
-    
-    /* Bitmask:
-     * 1 - Quest giver
-     * 2 -
-     * 4 -
-     * */
-    uint16 NpcFlag;
+};
+
+struct CreatureTemplate : WorldObjectTemplate
+{    
+    // Bitmask, see: enum npcflag
+    uint16 npcflag;
     uint32 MaxHealth;
     uint32 MaxPower;
     std::string ScriptName;
+};
+
+// NOT YET IN DATABASE
+struct GameObjectTemplate : WorldObjectTemplate
+{
 };
 
 enum InventoryType

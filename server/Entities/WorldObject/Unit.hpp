@@ -59,6 +59,7 @@ public:
     
     // This one is currently called by Player
     virtual void UpdatePosition(Vector2i const& Position) { WorldObject::UpdatePosition(Position); }
+    virtual void OnInteract(Player* Who) {}
 
     virtual bool IsInWorld() const { return true; /*??*/ }
 

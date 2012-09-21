@@ -1,6 +1,6 @@
 /*
 Warrior of Dreamworld, 2D Massivly Mutiplayer Online Role-playing Game
-Copyright (C) 2012 Ryan Lahfa
+Copyright (C) 2012  Mislav Blazevic
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -16,28 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef ITEM_DEFINED
-#define ITEM_DEFINED
+#include "WorldObject.hpp"
 
-#include "../shared/Defines.hpp"
-#include <SFML/System.hpp>
+struct GameObjectTemplate;
 
-struct ItemTemplate;
-
-class Item
+class GameObject : public WorldObject
 {
-    public:
-    Item();
-    static Item* Create(uint64 Entry);
-
-    void Draw(sf::Vector2f const& baseSlotPos, int idx);
-    void DrawInformation();
-
-    void Use();
-
-    private:
-    uint64 m_GUID;
-    ItemTemplate const* m_Template;
+public:
+    GameObject(uint64 ObjID, GameObjectTemplate* pTemplate);
+    
+private:
+    GameObjectTemplate const* pTemplate;
 };
-
-#endif

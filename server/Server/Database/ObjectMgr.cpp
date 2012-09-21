@@ -94,7 +94,7 @@ void ObjectMgr::LoadCreatureTemplates()
         pTemplate->Tileset    = Result->getString (3);
         pTemplate->tx         = Result->getUInt   (4);
         pTemplate->ty         = Result->getUInt   (5);
-        pTemplate->NpcFlag    = Result->getUInt   (6);
+        pTemplate->npcflag    = Result->getUInt   (6);
         pTemplate->MaxHealth  = Result->getUInt   (7);
         pTemplate->MaxPower   = Result->getUInt   (8);
         pTemplate->ScriptName = Result->getString (9);

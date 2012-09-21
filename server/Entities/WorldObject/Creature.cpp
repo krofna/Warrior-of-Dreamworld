@@ -24,8 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "CreatureAIFactory.hpp"
 #include "shared/Opcodes.hpp"
-#include "shared/Log.hpp"
-#include "shared/Math.hpp"
 
 Creature::Creature(uint64 ObjID, Map* pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate) :
 Unit              (ObjID),
@@ -96,6 +94,27 @@ void Creature::UpdatePosition(Vector2i const& Position)
     pMap->TileGrid[this->Position.y][this->Position.x] = nullptr;
     WorldObject::UpdatePosition(Position);
     pMap->TileGrid[Position.y][Position.x] = this;
+}
+
+void Creature::OnInteract(Player* Who)
+{
+    // Build packet data containing gossip menu options
+    // depending on creature npcflag.
+    
+    //WorldPacket Packet((uint16)SOME_OPCODE);
+    
+    if(pTemplate->npcflag & NPC_QUEST_GIVER)
+    {
+        // Append quest list?
+    }
+    if(pTemplate->npcflag & NPC_VENDOR)
+    {
+        // Append browse goods option
+    }
+    if(pTemplate->npcflag & NPC_REPAIR)
+    {
+        //append repair option
+    }
 }
 
 CreatureAI* Creature::GetAI()

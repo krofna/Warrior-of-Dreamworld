@@ -27,6 +27,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Player;
 class SpellTemplate;
 
+// In reality, this is a TemplateMgr,
+// but since it contains pointers to all players in world
+// we might need it in that sense.
 class ObjectMgr
 {
 public:

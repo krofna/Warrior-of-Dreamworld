@@ -42,14 +42,17 @@ public:
     int32 GetMeleeDamage() const { return 5; }
     
     virtual void UpdatePosition(Vector2i const& Position);
-
+    virtual void OnInteract(Player* Who) ;
+    
     CreatureAI* GetAI();
+    
 protected:
     void OnChat(const char* Text) { }
+    
 private:
     CreatureAI* pAI;
     Pathfinder* MovementGenerator;
-    CreatureTemplate* pTemplate;
+    CreatureTemplate const* pTemplate;
 };
 
 #endif
