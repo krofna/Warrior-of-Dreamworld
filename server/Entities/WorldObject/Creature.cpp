@@ -33,6 +33,7 @@ pTemplate         (pTemplate)
 {
     Position = Vector2i(x, y);
     this->pMap = pMap;
+    pMap->TileGrid[y][x] = this;
     this->Health = pTemplate->MaxHealth;
     this->Power = pTemplate->MaxPower;
 }
@@ -97,7 +98,7 @@ bool Creature::UpdateCoordinates(uint8 Direction)
     if(!WorldObject::UpdateCoordinates(Direction))
         return false;
     
-    pMap->TileGrid[Position.x][Position.y] = this;
+    pMap->TileGrid[Position.y][Position.x] = this;
     pMap->TileGrid[OldY][OldX] = nullptr;
     
     return true;
