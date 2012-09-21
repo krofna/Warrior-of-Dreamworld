@@ -104,6 +104,13 @@ bool Creature::UpdateCoordinates(uint8 Direction)
     return true;
 }
 
+void Creature::UpdatePosition(Vector2i const& Position)
+{
+    pMap->TileGrid[Position.y][Position.x] = nullptr;
+    WorldObject::UpdatePosition(Position);
+    pMap->TileGrid[Position.y][Position.x] = this;
+}
+
 CreatureAI* Creature::GetAI()
 {
     return pAI;

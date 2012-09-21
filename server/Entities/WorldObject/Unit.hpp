@@ -59,6 +59,9 @@ public:
     
     // This should/will never happen
     virtual bool UpdateCoordinates(uint8 Direction) { WorldObject::UpdateCoordinates(Direction); }
+    
+    // This one is currently called by Player
+    virtual void UpdatePosition(Vector2i const& Position) { WorldObject::UpdatePosition(Position); }
 
     virtual bool IsInWorld() const { return true; /*??*/ }
 
