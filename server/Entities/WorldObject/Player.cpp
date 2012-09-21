@@ -174,12 +174,37 @@ void Player::LogOut()
     this->SaveToDB();
 }
 
+// TODO: Interact with object if collided with one on return false in switch
 bool Player::UpdateCoordinates(uint8 Direction)
 {
-    if(!WorldObject::UpdateCoordinates(Direction))
+    if (pMap->CheckOutside(Position.x, Position.y, Direction))
+        return false;
+
+    switch(Direction)
     {
-        // Try to interact with object
+    case MOVE_UP:
+        if(pMap->TileGrid[Position.y-1][Position.x])
+            return false;
+        Position.y--;
+        break;
+    case MOVE_DOWN:
+        if(pMap->TileGrid[Position.y+1][Position.x])
+            return false;
+        Position.y++;
+        break;
+    case MOVE_LEFT:
+        if(pMap->TileGrid[Position.y][Position.x-1])
+            return false;
+        Position.x--;
+        break;
+    case MOVE_RIGHT:
+        if(pMap->TileGrid[Position.y][Position.x+1])
+            return false;
+        Position.x++;
+        break;
     }
+
+    return true;
 }
 
 bool Player::CanSpeak() const

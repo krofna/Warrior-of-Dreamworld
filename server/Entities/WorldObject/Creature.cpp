@@ -91,19 +91,6 @@ void Creature::TakeDamage(int32 Damage, Unit* pAttacker)
         pAI->JustDied(pAttacker);
 }
 
-bool Creature::UpdateCoordinates(uint8 Direction)
-{
-    uint16 OldX = Position.x, OldY = Position.y;
-    
-    if(!WorldObject::UpdateCoordinates(Direction))
-        return false;
-    
-    pMap->TileGrid[Position.y][Position.x] = this;
-    pMap->TileGrid[OldY][OldX] = nullptr;
-    
-    return true;
-}
-
 void Creature::UpdatePosition(Vector2i const& Position)
 {
     pMap->TileGrid[this->Position.y][this->Position.x] = nullptr;

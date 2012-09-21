@@ -35,7 +35,6 @@ public:
     virtual void Update(int64 diff) = 0;
     virtual WorldPacket PackData() = 0;
 
-    virtual bool UpdateCoordinates(uint8 Direction);
     virtual void UpdatePosition(Vector2i const& Position);
 
     const uint64 GetObjectID() const

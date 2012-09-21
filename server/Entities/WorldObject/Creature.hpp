@@ -41,7 +41,6 @@ public:
     void DealDamage(int32 Damage, Unit* pTarget);
     int32 GetMeleeDamage() const { return 5; }
     
-    virtual bool UpdateCoordinates(uint8 Direction);
     virtual void UpdatePosition(Vector2i const& Position);
 
     CreatureAI* GetAI();

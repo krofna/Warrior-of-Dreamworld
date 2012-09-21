@@ -57,7 +57,7 @@ public:
     void Kick();
     virtual bool IsInWorld() const;
     
-    virtual bool UpdateCoordinates(uint8 Direction);
+    bool UpdateCoordinates(uint8 Direction);
 
     int GetSecLevel() const { return SecLevel;}
     std::string GetUsername() const { return Username; }
