@@ -22,9 +22,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
-#include "../shared/Log.hpp"
+#include "shared/Log.hpp"
 
 struct ChatCommand;
+
+enum
+{
+    SEC_PLAYER    = 0,
+    SEC_MOD       = 1,
+    SEC_DEV       = 2,
+    SEC_ADMIN     = 3,
+    SEC_CONSOLE   = 4
+};
+
 
 class CommandHandler
 {

@@ -16,24 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include <boost/lexical_cast.hpp>
-
 #include "CommandHandler.hpp"
 #include "Database.hpp"
 #include "Player.hpp"
 #include "ObjectMgr.hpp"
-#include "shared/Log.hpp"
-#include <cctype>
 
 #define NullCommand { NULL, 0, false, NULL, "", NULL }
-
 
 ChatCommand* CommandHandler::GetCommandTable()
 {
     static ChatCommand AccountSetCommandTable[] =
     {
-        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $username $seclevel(0-4)", NULL },
-        { "password",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetPasswordCommand,   "Usage: account set password $username $newpassword", NULL },
+        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $username $seclevel",      NULL },
+        { "password",   SEC_PLAYER, true,   &CommandHandler::HandleAccountSetPasswordCommand,   "Usage: account set password $username $newpassword",   NULL },
         NullCommand
     };
 
@@ -41,24 +36,24 @@ ChatCommand* CommandHandler::GetCommandTable()
     {
         { "create",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountCreateCommand,    "Usage: account create $username $password",    NULL },
         { "delete",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountDeleteCommand,    "Usage: account delete $username $password",    NULL },
-        { "set",        SEC_ADMIN,  true,   NULL,                                           "Usage: account set <what> <new value>",        AccountSetCommandTable },
+        { "set",        SEC_PLAYER, true,   NULL,                                           "Usage: account set <what> <new value>",        AccountSetCommandTable },
         NullCommand
     };
 
     static ChatCommand TeleportCommandTable[] =
     {
-        { "to",         SEC_ADMIN,  false,   &CommandHandler::HandleTeleportToCommand,       "Usage: teleport to <player_name>",             NULL },
-        { "at",         SEC_ADMIN,  false,   &CommandHandler::HandleTeleportAtCommand,       "Usage: teleport at <x> <y>",                   NULL },
+        { "to",         SEC_MOD,    false,   &CommandHandler::HandleTeleportToCommand,      "Usage: teleport to $username",                 NULL },
+        { "at",         SEC_MOD,    false,   &CommandHandler::HandleTeleportAtCommand,      "Usage: teleport at $x $y",                     NULL },
         NullCommand
     };
 
     static ChatCommand CommandTable[] =
     {
         { "account",    SEC_PLAYER, true,   NULL,                                           "Usage: account <command> <argv>",              AccountCommandTable },
-        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",                    NULL },
-        { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>",            NULL },
-        { "teleport",   SEC_ADMIN,  false,   NULL,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
-        { "bring",      SEC_ADMIN,  false,   &CommandHandler::HandleBringCommand,            "Usage: bring <player_name>",                   NULL },
+        { "kill",       SEC_MOD,    true,   &CommandHandler::HandleKillCommand,             "Usage: kill $username",                        NULL },
+        { "shutdown",   SEC_DEV,    true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown $seconds",                     NULL },
+        { "teleport",   SEC_MOD,    false,  NULL,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
+        { "bring",      SEC_MOD,    false,  &CommandHandler::HandleBringCommand,            "Usage: bring $username",                       NULL },
         NullCommand
     };
 
@@ -97,10 +92,16 @@ bool CommandHandler::ExecuteCommand()
         }
     }
 
-    if(Console && pCommand->AllowConsole)
+    if(Console)
     {
-        (this->*pCommand->Handler)();
-        sLog.Write("Hopefully executed command ...");
+        if(pCommand->AllowConsole)
+        {
+            (this->*pCommand->Handler)();
+        }
+        else
+        {
+            sLog.Write("You can't do this from console!");
+        }
     }
     else 
     {
@@ -111,7 +112,7 @@ bool CommandHandler::ExecuteCommand()
         }
         else
         {
-            pPlayer->SendCommandReponse("You don't have the level for executing this command !");
+            pPlayer->SendCommandReponse("You don't have the level for executing this command!");
             return false;
         }
     }
@@ -209,9 +210,9 @@ void CommandHandler::HandleKillCommand()
     else
     {
         if (Console)
-            sLog.Write("Unknown player !");
+            sLog.Write("Unknown player %s!", PlayerName.c_str());
         else
-            pPlayer->SendCommandReponse("Unknown player !");
+            pPlayer->SendCommandReponse("Unknown player %s!", PlayerName.c_str());
     }
 }
 
@@ -233,7 +234,9 @@ void CommandHandler::HandleTeleportToCommand()
         }
     }
     else
+    {
         pPlayer->SendCommandReponse("Player doesn't exist !");
+    }
 }
 
 void CommandHandler::HandleTeleportAtCommand()
@@ -269,7 +272,7 @@ void CommandHandler::HandleBringCommand()
 
 void CommandHandler::HandleShutdownCommand()
 {
-    uint32 time;
+    uint32 Time;
 
-    ExtractArg(time);
+    ExtractArg(Time);
 }
