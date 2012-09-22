@@ -189,7 +189,7 @@ void World::HandleCommand(std::string& Command)
     }
     catch(CommandHandler::BadCommand&)
     {
-        sLog.Write("Unknown command !");
+        sLog.Write("Bad command !");
     }
     catch(sql::SQLException& e)
     {
