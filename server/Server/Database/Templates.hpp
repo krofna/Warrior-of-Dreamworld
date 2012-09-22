@@ -26,8 +26,7 @@ enum //npcflag
     NPC_QUEST_GIVER = 1,
     NPC_VENDOR      = 2,
     NPC_REPAIR      = 4,
-                    //8
-                    //...
+    NPC_CHAT        = 8
 };
 
 struct WorldObjectTemplate

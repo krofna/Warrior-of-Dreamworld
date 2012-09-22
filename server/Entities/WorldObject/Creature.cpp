@@ -109,6 +109,10 @@ void Creature::OnInteract(Player* pWho)
     {
         Packet << (uint16)NPC_REPAIR;
     }
+    if(pTemplate->npcflag & NPC_CHAT)
+    {
+        Packet << (uint16)NPC_CHAT;
+    }
     if(pTemplate->npcflag & NPC_QUEST_GIVER)
     {
         Packet << (uint16)NPC_QUEST_GIVER;
