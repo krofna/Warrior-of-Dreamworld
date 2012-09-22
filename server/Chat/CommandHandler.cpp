@@ -178,10 +178,14 @@ void CommandHandler::HandleAccountSetPasswordCommand()
     std::string Username;
     std::string Password;
 
-    ExtractArg(Username);
+    if (Console)
+        ExtractArg(Username);
+    else
+        Username = pPlayer->GetUsername();
+
     ExtractArg(Password);
 
-    sDatabase.PExecute("UPDATE `players` SET `password` = %s WHERE `username` = '%s'", Password.c_str(), Username.c_str());
+    sDatabase.PExecute("UPDATE `players` SET `password` = '%s' WHERE `username` = '%s'", Password.c_str(), Username.c_str());
 }
 
 void CommandHandler::HandleKillCommand()

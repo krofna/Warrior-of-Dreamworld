@@ -103,13 +103,12 @@ CREATE TABLE `quest_template`
 INSERT INTO `quest_template` VALUES(DEFAULT, "Help!", "One of our developers, has gone rogue! Find and eliminate him!", "Kill FullMetal-Alchimist");
 INSERT INTO `quest_template` VALUE(DEFAULT, "Help!", "One of our developers, don't know how to make a performance analysis! Please find and teach him !", "Teach how to make a performance analysis to Krofna");
 
-DROP TABLE IF EXISTS `creature_quest`
+DROP TABLE IF EXISTS `creature_quest`;
 CREATE TABLE `creature_quest`
 (
     `creature_entry` BIGINT UNSIGNED NOT NULL,
-    `quest_entry` BIGINT UNSIGNED NOT NULL
-    -- Comment by krofna: neither is unique; what do I make primary key??
-    -- Lets just let the mysql create one behind the scenes?
+    `quest_entry` BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY(`creature_entry`, `quest_entry`)
 );
 
 INSERT INTO `creature_quest` VALUES(1, 1);
