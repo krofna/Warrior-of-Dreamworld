@@ -99,22 +99,19 @@ void Creature::UpdatePosition(Vector2i const& Position)
 
 void Creature::OnInteract(Player* pWho)
 {
-    // Build packet data containing gossip menu options
-    // depending on creature npcflag.
-    
     WorldPacket Packet((uint16)MSG_NPC_INTERACT);
     
     if(pTemplate->npcflag & NPC_QUEST_GIVER)
     {
-        // Append quest list?
+        Packet << (uint16)NPC_QUEST_GIVER;
     }
     if(pTemplate->npcflag & NPC_VENDOR)
     {
-        // Append browse goods option
+        Packet << (uint16)NPC_VENDOR;
     }
     if(pTemplate->npcflag & NPC_REPAIR)
     {
-        //append repair option
+        Packet << (uint16)NPC_REPAIR;
     }
     
     pWho->SendPacket(Packet);
