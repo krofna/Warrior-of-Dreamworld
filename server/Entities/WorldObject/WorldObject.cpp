@@ -50,7 +50,7 @@ uint16 WorldObject::GetY() const
     return Position.y;
 }
 
-Vector2i WorldObject::GetPosition()
+Vector2i WorldObject::GetPosition() const
 {
     return Position;
 }

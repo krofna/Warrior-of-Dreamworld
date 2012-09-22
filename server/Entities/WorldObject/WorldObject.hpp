@@ -44,7 +44,7 @@ public:
     Map* GetMap() const;
     uint16 GetX() const;
     uint16 GetY() const;
-    Vector2i GetPosition();
+    Vector2i GetPosition() const;
 
 protected:
     Map* pMap;

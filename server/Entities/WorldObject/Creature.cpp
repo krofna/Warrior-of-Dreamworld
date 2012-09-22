@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "CreatureAIFactory.hpp"
 #include "shared/Opcodes.hpp"
+#include "shared/WorldPacket.hpp"
 
 Creature::Creature(uint64 ObjID, Map* pMap, uint16 x, uint16 y, CreatureTemplate* pTemplate) :
 Unit              (ObjID),
@@ -99,22 +100,28 @@ void Creature::UpdatePosition(Vector2i const& Position)
 
 void Creature::OnInteract(Player* pWho)
 {
-    // Build packet data containing gossip menu options
-    // depending on creature npcflag.
-    
     WorldPacket Packet((uint16)MSG_NPC_INTERACT);
     
-    if(pTemplate->npcflag & NPC_QUEST_GIVER)
-    {
-        // Append quest list?
-    }
     if(pTemplate->npcflag & NPC_VENDOR)
     {
-        // Append browse goods option
+        Packet << (uint16)NPC_VENDOR;
     }
     if(pTemplate->npcflag & NPC_REPAIR)
     {
-        //append repair option
+        Packet << (uint16)NPC_REPAIR;
+    }
+    if(pTemplate->npcflag & NPC_QUEST_GIVER)
+    {
+        Packet << (uint16)NPC_QUEST_GIVER;
+        
+        // Append all quests offered by this creature
+        // No need to say how many, its end of packet anyway
+        WorldObjectQuests QuestRange = sObjectMgr.GetCreatureQuests(pTemplate->Entry);
+        for(auto iter = QuestRange.first; iter != QuestRange.second; ++iter)
+        {
+            // TODO: Is player eligible for quest?
+            Packet << *iter;
+        }
     }
     
     pWho->SendPacket(Packet);

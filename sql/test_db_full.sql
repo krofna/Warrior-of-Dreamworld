@@ -62,8 +62,8 @@ CREATE TABLE `item_template`
 
 INSERT INTO `item_template` VALUES(DEFAULT, 1, 1, "Krofna's bag", 1, 1, 36, "The bottom of the crate is leaking. Leaking tears...");
 
-INSERT INTO `creature_template` VALUES (1, 'krofnica', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_krofnica');
-INSERT INTO `creature_template` VALUES (2, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_the_fullmetal_alchimist');
+INSERT INTO `creature_template` VALUES (DEFAULT, 'krofnica', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_krofnica');
+INSERT INTO `creature_template` VALUES (DEFAULT, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_the_fullmetal_alchimist');
 
 DROP TABLE IF EXISTS `creature`;
 CREATE TABLE `creature`
@@ -102,6 +102,17 @@ CREATE TABLE `quest_template`
 
 INSERT INTO `quest_template` VALUES(DEFAULT, "Help!", "One of our developers, has gone rogue! Find and eliminate him!", "Kill FullMetal-Alchimist");
 INSERT INTO `quest_template` VALUE(DEFAULT, "Help!", "One of our developers, don't know how to make a performance analysis! Please find and teach him !", "Teach how to make a performance analysis to Krofna");
+
+DROP TABLE IF EXISTS `creature_quest`
+CREATE TABLE `creature_quest`
+(
+    `creature_entry` BIGINT UNSIGNED NOT NULL,
+    `quest_entry` BIGINT UNSIGNED NOT NULL
+    -- Comment by krofna: neither is unique; what do I make primary key??
+    -- Lets just let the mysql create one behind the scenes?
+);
+
+INSERT INTO `creature_quest` VALUES(1, 1);
 
 DROP TABLE IF EXISTS `character_bags`;
 CREATE TABLE `character_bags`

@@ -75,8 +75,12 @@ SpellTemplate* ObjectMgr::GetSpellTemplate(uint16 ID) const
     if (CTemplate != SpellTemplates.end())
         return CTemplate->second;
 
-
     return nullptr;
+}
+
+WorldObjectQuests ObjectMgr::GetCreatureQuests(uint64 Entry) const
+{
+    return CreatureQuests.equal_range(Entry);
 }
 
 void ObjectMgr::LoadCreatureTemplates()
@@ -162,6 +166,16 @@ void ObjectMgr::LoadPlayersLoginInfo()
     while (Result->next())
     {
         Players.push_back(new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3)));
+    }
+}
+
+void ObjectMgr::LoadCreatureQuests()
+{
+    QueryResult Result(sDatabase.Query("SELECT * FROM `creature_quest`");
+    
+    while (Result->next())
+    {
+        CreatureQuests.insert(std::pair<uint64, uint64>(Result->getUInt64(1), Result->getUInt64(2)));
     }
 }
 

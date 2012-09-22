@@ -67,21 +67,25 @@ void World::Load()
         sDatabase.Connect();
         sLog.Write("Connected to database.");
 
-        sLog.Write("Load creature templates...");
+        sLog.Write("Loading creature templates...");
         sObjectMgr.LoadCreatureTemplates();
         sLog.Write("Creature templates loaded.");
+        
+        sLog.Write("Loading creature quests...");
+        sObjectMgr.LoadCreatureQuests();
+        sLog.Write("Creature quests loaded.");
 
-        sLog.Write("Load spell templates...");
+        sLog.Write("Loading spell templates...");
         sObjectMgr.LoadSpellTemplates();
         sLog.Write("Spells loaded.");
 
-        sLog.Write("Load players login informations...");
+        sLog.Write("Loading players login informations...");
         sObjectMgr.LoadPlayersLoginInfo();
         sLog.Write("Players login informations loaded.");
 
         AIFactory = new CreatureAIFactory;
 
-        sLog.Write("Load scripts...");
+        sLog.Write("Loading scripts...");
         LoadScripts();
         sLog.Write("Scripts loaded.");
 
