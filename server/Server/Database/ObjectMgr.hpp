@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Player;
 class SpellTemplate;
 
-typedef std::pair<std::const_iterator, std::const_iterator> WorldObjectQuests;
+typedef std::pair<std::multimap<uint64, uint64>::const_iterator, std::multimap<uint64, uint64>::const_iterator> WorldObjectQuests;
 
 // In reality, this is a TemplateMgr,
 // but since it contains pointers to all players in world
