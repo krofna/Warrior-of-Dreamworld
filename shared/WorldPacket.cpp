@@ -85,6 +85,11 @@ void WorldPacket::ResetReadPos()
     ReadPos = HEADER_SIZE;
 }
 
+bool WorldPacket::EndOfPacket()
+{
+    return ReadPos == ByteBuffer.size();
+}
+
 WorldPacket& WorldPacket::operator <<(uint8 data)   { Append<uint8>(data);  return *this; }
 WorldPacket& WorldPacket::operator <<(uint16 data)  { Append<uint16>(data); return *this; }
 WorldPacket& WorldPacket::operator <<(uint32 data)  { Append<uint32>(data); return *this; }

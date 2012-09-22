@@ -27,6 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class Player;
 class SpellTemplate;
 
+typedef std::pair<std::const_iterator, std::const_iterator> WorldObjectQuests;
+
 // In reality, this is a TemplateMgr,
 // but since it contains pointers to all players in world
 // we might need it in that sense.
@@ -39,22 +41,31 @@ public:
     ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
     QuestTemplate*    GetQuestTemplate    (uint64 Entry) const;
     SpellTemplate*    GetSpellTemplate    (uint16 ID)    const; // ID -> Entry like Quest, Item and Creature.
+                                                                // Comment by krofna: Rename ID to Entry?
+                                                                
+    WorldObjectQuests GetCreatureQuests   (uint64 Entry) const;
 
     void LoadSpellTemplates();
     void LoadCreatureTemplates();
     void LoadItemTemplates();
     void LoadQuestTemplates();
     void LoadPlayersLoginInfo();
+    void LoadCreatureQuests();
 
     Player* GetPlayer(std::string& Username);
 	Player* GetPlayer(uint64 ObjectID);
 
 private:
     std::vector<Player*> Players;
+    
     std::map<uint16, SpellTemplate*> SpellTemplates;
     std::map<uint64, CreatureTemplate*> CreatureTemplates;
     std::map<uint64, ItemTemplate*> ItemTemplates;
     std::map<uint64, QuestTemplate*> QuestTemplates;
+    
+    // Key = Creature ObjID
+    // T   = Quest ID
+    std::multimap<uint64, uint64> CreatureQuests;
 };
 
 extern ObjectMgr sObjectMgr; // todo: *

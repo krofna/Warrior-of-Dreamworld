@@ -101,10 +101,6 @@ void Creature::OnInteract(Player* pWho)
 {
     WorldPacket Packet((uint16)MSG_NPC_INTERACT);
     
-    if(pTemplate->npcflag & NPC_QUEST_GIVER)
-    {
-        Packet << (uint16)NPC_QUEST_GIVER;
-    }
     if(pTemplate->npcflag & NPC_VENDOR)
     {
         Packet << (uint16)NPC_VENDOR;
@@ -112,6 +108,19 @@ void Creature::OnInteract(Player* pWho)
     if(pTemplate->npcflag & NPC_REPAIR)
     {
         Packet << (uint16)NPC_REPAIR;
+    }
+    if(pTemplate->npcflag & NPC_QUEST_GIVER)
+    {
+        Packet << (uint16)NPC_QUEST_GIVER;
+        
+        // Append all quests offered by this creature
+        // No need to say how many, its end of packet anyway
+        WorldObjectQuests QuestRange = sObjectMgr.GetCreatureQuests(pTemplate->Entry);
+        for(auto iter = QuestRange.first; iter != QuestRange.second; ++iter)
+        {
+            // TODO: Is player eligible for quest?
+            Packet << *iter;
+        }
     }
     
     pWho->SendPacket(Packet);

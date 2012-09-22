@@ -50,6 +50,7 @@ public:
     void UpdateSizeData();
     void UpdateWritePos();
     void ResetReadPos();
+    bool EndOfPacket();
 
     template<class T> void ReadSkip();
 
