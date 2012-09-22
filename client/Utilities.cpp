@@ -20,15 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 std::string IntToString(int Integer)
 {
-    std::stringstream stream;
-    stream << Integer;
-    return stream.str();
+    return boost::lexical_cast<std::string>(Integer);
 }
 
 int StringToInt(const std::string& String)
 {
-    std::stringstream buffer(String);
-    int a;
-    buffer >> a;
-    return a;
+    return boost::lexical_cast<int>(String);
 }

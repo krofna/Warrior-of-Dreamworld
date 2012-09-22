@@ -49,7 +49,7 @@ Bag::~Bag()
 
 void Bag::Create(uint64 Entry)
 {
-    ItemTemplate const* proto = sObjectMgr->GetItemData(Entry);
+    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(Entry);
     m_Capacity = proto->ContainerSlots;
     m_IsCreated = true;
 }

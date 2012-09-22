@@ -19,12 +19,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
-#include <cstdlib>
-#include <sstream>
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
+#include <boost/lexical_cast.hpp>
+
+extern boost::random::mt19937 generator;
 
 inline int urand(int MIN, int MAX)
 {
-    return (rand()%(MAX-MIN+1) + MIN);
+    boost::random::uniform_int_distribution<> dist(MIN, MAX);
+    return dist(generator);
 }
 
 std::string IntToString(int Integer);
