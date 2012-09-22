@@ -171,7 +171,7 @@ void ObjectMgr::LoadPlayersLoginInfo()
 
 void ObjectMgr::LoadCreatureQuests()
 {
-    QueryResult Result(sDatabase.Query("SELECT * FROM `creature_quest`");
+    QueryResult Result(sDatabase.Query("SELECT * FROM `creature_quest`"));
     
     while (Result->next())
     {

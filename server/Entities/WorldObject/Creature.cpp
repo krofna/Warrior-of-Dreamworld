@@ -120,7 +120,7 @@ void Creature::OnInteract(Player* pWho)
         for(auto iter = QuestRange.first; iter != QuestRange.second; ++iter)
         {
             // TODO: Is player eligible for quest?
-            Packet << *iter;
+            Packet << iter->second;
         }
     }
     
