@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidgets">
       <property name="currentIndex">
-       <number>1</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="tabMap">
        <attribute name="title">
@@ -27,6 +27,176 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QGraphicsView" name="mapView"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabCreature">
+       <attribute name="title">
+        <string>Creature</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>Generic</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <layout class="QFormLayout" name="formLayout_2">
+             <property name="fieldGrowthPolicy">
+              <enum>QFormLayout::ExpandingFieldsGrow</enum>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="creatureEntryLabel">
+               <property name="text">
+                <string>Creature Entry</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="creatureEntryLine">
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="nameLabel">
+               <property name="text">
+                <string>Name</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="creatureNameLine"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="tilesetLabel">
+               <property name="text">
+                <string>Tileset</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="tilesetLineEdit"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="tilesetXLabel">
+               <property name="text">
+                <string>Tileset X</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QSpinBox" name="tilesetXSpinBox"/>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="tilesetYLabel">
+               <property name="text">
+                <string>Tileset Y</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QSpinBox" name="tilesetYSpinBox"/>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="nPCFlagsLabel">
+               <property name="text">
+                <string>NPC Flags</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QCheckBox" name="isQuestGiverCheck">
+                 <property name="text">
+                  <string>Quest Giver</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="isVendorCheck">
+                 <property name="text">
+                  <string>Vendor</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="isRepairCheck">
+                 <property name="text">
+                  <string>Repair</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="maxHealthLabel">
+               <property name="text">
+                <string>Max Health</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QSpinBox" name="maxHealthSpinBox">
+               <property name="minimum">
+                <number>1</number>
+               </property>
+               <property name="maximum">
+                <number>900000000</number>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QLabel" name="maxPowerLabel">
+               <property name="text">
+                <string>Max Power</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
+              <widget class="QSpinBox" name="maxPowerSpinBox">
+               <property name="maximum">
+                <number>900000000</number>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="0">
+              <widget class="QLabel" name="scriptNameLabel">
+               <property name="text">
+                <string>Script Name</string>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="1">
+              <widget class="QLineEdit" name="scriptNameLineEdit"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="addCreatureToDatabase">
+             <property name="text">
+              <string>Add to database</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -69,7 +239,11 @@
             </widget>
            </item>
            <item row="7" column="1">
-            <widget class="QSpinBox" name="displayIDEdit"/>
+            <widget class="QSpinBox" name="displayIDEdit">
+             <property name="maximum">
+              <number>900000</number>
+             </property>
+            </widget>
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="nameEdit"/>
@@ -112,7 +286,7 @@
              </item>
             </widget>
            </item>
-           <item row="8" column="1">
+           <item row="9" column="1">
             <spacer name="verticalSpacer_2">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -206,6 +380,68 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tabQuest">
+       <attribute name="title">
+        <string>Quest</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <layout class="QFormLayout" name="formLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="questIDLabel">
+            <property name="text">
+             <string>Quest ID</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="questIDLineEdit">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="titleLabel">
+            <property name="text">
+             <string>Title</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="titleLineEdit"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="detailsLabel">
+            <property name="text">
+             <string>Details</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPlainTextEdit" name="plainTextEdit"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="objectiveLabel">
+            <property name="text">
+             <string>Objective</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPlainTextEdit" name="plainTextEdit_2"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="addQuestToDatabase">
+          <property name="text">
+           <string>Add to database</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="tabDisplayID">
        <attribute name="title">
         <string>DisplayIDs</string>
@@ -268,8 +504,14 @@
            <bool>true</bool>
           </property>
           <property name="plainText">
-           <string>Here is the help :D
-But, I won't help you :)</string>
+           <string>First,
+you need to open a &quot;data connection&quot;
+
+Open a server database (MySQL)
+
+For merge all data.
+Use Utilities -&gt; Merge server db to client file
+</string>
           </property>
          </widget>
         </item>
@@ -292,35 +534,28 @@ But, I won't help you :)</string>
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuNew">
-     <property name="title">
-      <string>New ...</string>
-     </property>
-     <addaction name="actionClient_database"/>
-     <addaction name="actionMap_2"/>
-    </widget>
-    <widget class="QMenu" name="menuSave">
-     <property name="title">
-      <string>Save ...</string>
-     </property>
-     <addaction name="actionClient_database_2"/>
-     <addaction name="actionMap_3"/>
-    </widget>
     <widget class="QMenu" name="menuOpen">
      <property name="title">
       <string>Open ...</string>
      </property>
-     <addaction name="actionA_client_database"/>
      <addaction name="actionA_server_database"/>
      <addaction name="actionA_map"/>
     </widget>
-    <addaction name="menuNew"/>
     <addaction name="menuOpen"/>
-    <addaction name="menuSave"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
+    <addaction name="separator"/>
+    <addaction name="actionCreate_map"/>
+    <addaction name="actionSave_map"/>
+   </widget>
+   <widget class="QMenu" name="menuUtilities">
+    <property name="title">
+     <string>Utilities</string>
+    </property>
+    <addaction name="actionMerge_server_database_to_client_database"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuUtilities"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -331,16 +566,6 @@ But, I won't help you :)</string>
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionOpen_a_connection_in_server_database">
-   <property name="text">
-    <string>Open a connection in server database</string>
-   </property>
-  </action>
-  <action name="actionA_client_database">
-   <property name="text">
-    <string>a client database</string>
-   </property>
-  </action>
   <action name="actionA_server_database">
    <property name="text">
     <string>a server database</string>
@@ -356,39 +581,19 @@ But, I won't help you :)</string>
     <string>a map</string>
    </property>
   </action>
-  <action name="actionMap">
+  <action name="actionMerge_server_database_to_client_database">
    <property name="text">
-    <string>map</string>
+    <string>Merge server database to client database</string>
    </property>
   </action>
-  <action name="actionItem">
+  <action name="actionCreate_map">
    <property name="text">
-    <string>item</string>
+    <string>Create map</string>
    </property>
   </action>
-  <action name="actionDisplay_ID">
+  <action name="actionSave_map">
    <property name="text">
-    <string>display ID</string>
-   </property>
-  </action>
-  <action name="actionClient_database">
-   <property name="text">
-    <string>client database</string>
-   </property>
-  </action>
-  <action name="actionMap_2">
-   <property name="text">
-    <string>map</string>
-   </property>
-  </action>
-  <action name="actionClient_database_2">
-   <property name="text">
-    <string>client database</string>
-   </property>
-  </action>
-  <action name="actionMap_3">
-   <property name="text">
-    <string>map</string>
+    <string>Save map</string>
    </property>
   </action>
  </widget>
