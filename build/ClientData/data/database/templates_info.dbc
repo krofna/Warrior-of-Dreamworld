@@ -1,0 +1,5 @@
+CreatureTemplate;1;krofnica;dg_classm32.gif;7;10;0;100;100
+CreatureTemplate;2;The FullMetal Alchimist;dg_classm32.gif;7;10;0;100;100
+ItemTemplate;1;1;1;Krofna's bag;1;1;36;The bottom of the crate is leaking. Leaking tears...
+ItemTemplate;2;0;0;Test;0;1;36;Oh, it's sooo cool !
+QuestTemplate;1;Help!;One of our developers, has gone rogue! Find and eliminate him!;Kill FullMetal-Alchimist

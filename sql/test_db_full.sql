@@ -101,6 +101,7 @@ CREATE TABLE `quest_template`
 );
 
 INSERT INTO `quest_template` VALUES(DEFAULT, "Help!", "One of our developers, has gone rogue! Find and eliminate him!", "Kill FullMetal-Alchimist");
+INSERT INTO `quest_template` VALUE(DEFAULT, "Help!", "One of our developers, don't know how to make a performance analysis! Please find and teach him !", "Teach how to make a performance analysis to Krofna");
 
 DROP TABLE IF EXISTS `character_bags`;
 CREATE TABLE `character_bags`

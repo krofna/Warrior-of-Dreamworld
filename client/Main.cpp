@@ -39,7 +39,7 @@ int main()
 {
     using namespace std;
 
-    sObjectMgr = new ObjectMgr("data/tileset", "data/templates_info.dbc");
+    sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
     //sObjectMgr->Initialize();
 
     Window = new sf::RenderWindow();
