@@ -15,7 +15,9 @@ include_directories(
 ${SFML_INCLUDE_DIRS}
 ${Boost_INCLUDE_DIRS}
 ${SFGUI_INCLUDE_DIRS}
-${CMAKE_SOURCE_DIR}/../client/Session}
+${CMAKE_SOURCE_DIR}/../client/Session
+${CMAKE_SOURCE_DIR}/../client/
+${CMAKE_SOURCE_DIR}/..
 )
 
 file(
