@@ -302,7 +302,7 @@ void CommandHandler::HandleHelpCommand()
     }
 
     if (Console)
-        sLog.Write("%s", Help);
+        sLog.Write("%s", Help.c_str());
     else
         pPlayer->SendCommandReponse(Help);
 }
