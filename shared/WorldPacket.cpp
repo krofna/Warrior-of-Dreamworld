@@ -123,10 +123,7 @@ WorldPacket& WorldPacket::operator >>(std::string& data)
     char* pNull = pBBuf;
     while(*pNull) ++pNull;
     data.resize(pNull-pBBuf);
-    sLog << "pNull-pBBuf = " << pNull-pBBuf << "\n";
     std::memcpy(&data[0], pBBuf, data.size());
-    sLog << "THE STRING: \"" << data << "\"\n";
     ReadPos += data.size(); ++ReadPos;
-    sLog << "data.size() = " << data.size() << "\n";
     return *this; 
 }
