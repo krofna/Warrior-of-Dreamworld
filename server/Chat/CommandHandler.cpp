@@ -57,8 +57,9 @@ ChatCommand* CommandHandler::GetCommandTable()
         { "account",    SEC_PLAYER, true,   NULL,                                           "Usage: account <command> <argv>",              AccountCommandTable },
         { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",                    NULL },
         { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>",            NULL },
-        { "teleport",   SEC_ADMIN,  false,   NULL,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
-        { "bring",      SEC_ADMIN,  false,   &CommandHandler::HandleBringCommand,            "Usage: bring <player_name>",                   NULL },
+        { "teleport",   SEC_ADMIN,  false,  NULL,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
+        { "bring",      SEC_ADMIN,  false,  &CommandHandler::HandleBringCommand,            "Usage: bring <player_name>",                   NULL },
+        { "help",       SEC_PLAYER, true,   &CommandHandler::HandleHelpCommand,             "Usage: help <command>",                        NULL },
         NullCommand
     };
 
@@ -107,7 +108,6 @@ bool CommandHandler::ExecuteCommand()
         if (pPlayer->GetSecLevel() >= pCommand->SecurityLevel)
         {
             (this->*pCommand->Handler)();
-            pPlayer->SendCommandReponse("Command executed.");
         }
         else
         {
@@ -272,4 +272,34 @@ void CommandHandler::HandleShutdownCommand()
     uint32 time;
 
     ExtractArg(time);
+}
+
+void CommandHandler::HandleHelpCommand()
+{
+    std::string Command, Help;
+    ExtractArg(Command);
+
+    // Is this command exists ?
+    ChatCommand* pCommand;
+    for (pCommand = GetCommandTable() ; pCommand->Name != NULL ; ++pCommand)
+    {
+        if (Command == pCommand->Name)
+        {
+            Help = pCommand->Help;
+            break;
+        }
+    }
+
+    if (pCommand == NULL)
+    {
+        if (Console)
+            sLog.Write("There is not a such command !");
+        else
+            pPlayer->SendCommandReponse("There is not a such command !");
+    }
+
+    if (Console)
+        sLog.Write("%s", Help);
+    else
+        pPlayer->SendCommandReponse(Help);
 }

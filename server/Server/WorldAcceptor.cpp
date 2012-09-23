@@ -18,9 +18,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldAcceptor.hpp"
 #include "World.hpp"
+#include "shared/Log.hpp"
 #include "WorldSession.hpp"
 #include "Database.hpp"
 #include "boost/bind.hpp"
+
+#define DEBUG_CONNECTION
 
 WorldAcceptor::WorldAcceptor(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
 Acceptor                (io, Endpoint)
@@ -34,6 +37,10 @@ WorldAcceptor::~WorldAcceptor()
 
 void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::error_code& error)
 {
+    #if defined(DEBUG_CONNECTION)
+    sLog.Write("Accepting a connection...");
+    #endif
+
     if(!error)
     {
         Session->Start();
@@ -42,6 +49,12 @@ void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::e
             boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
             boost::asio::placeholders::error));
     }
+    #if defined(DEBUG_CONNECTION)
+    else
+    {
+        sLog.Write("Connection refused (%s)", error.message());
+    }
+    #endif
 }
 
 void WorldAcceptor::Accept()

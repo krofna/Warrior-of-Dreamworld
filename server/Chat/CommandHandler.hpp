@@ -54,6 +54,8 @@ private:
 
     void HandleShutdownCommand();
 
+    void HandleHelpCommand();
+
     template <class T>
     void ExtractArg(T& Arg);
 //    #if defined(HAS_VARIADIC_TEMPLATE)
