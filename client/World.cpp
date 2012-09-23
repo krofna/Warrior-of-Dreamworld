@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
-#include "Utilities.hpp"
 
 #include "Globals.hpp"
 #include "Game.hpp"
@@ -29,9 +28,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Bag.hpp"
 
 #include "../shared/Math.hpp"
+#include "../shared/Utils.hpp"
 #include <cassert>
 
-World::World (uint64 MeID) :
+World::World  (uint64 MeID) :
 m_MessageArea (new MessageChatArea),
 TileMap       (sf::PrimitiveType::Quads),
 WorldView     (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
@@ -67,7 +67,7 @@ void World::Load(WorldPacket Argv)
     uint16 MapID;
     Argv >> MapID;
 
-    std::string Path = "data/maps/map" + IntToString(MapID) + ".map";
+    std::string Path = "data/maps/map" + ToString(MapID) + ".map";
 
     std::ifstream File(Path);
     assert(File.good());

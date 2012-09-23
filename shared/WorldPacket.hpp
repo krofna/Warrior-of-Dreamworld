@@ -26,7 +26,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <cstring>
 
 // Todo:
-// - Store size/opcode in bytebuffer
 // - void Clear(uint16 Opcode);
 // - Base class ByteBuffer; same shit, but no Opcode,
 // will be useful for Loadable::Load

@@ -51,7 +51,6 @@ class WorldSession;
         typedef boost::shared_ptr<WorldSession> WorldSessionPtr;
         using boost::enable_shared_from_this;
         using boost::make_shared;
-        using boost::static_pointer_cast;
         using boost::array;
 
         #define static_template_array boost::array
@@ -66,13 +65,14 @@ class WorldSession;
         #ifdef SMART_PTR_TR1
             typedef std::tr1::shared_ptr<WorldSession> WorldSessionPtr;
             using std::tr1::enable_shared_from_this;
-            using std::tr1::shared_from_this;
             using std::tr1::make_shared;
+            using std::tr1::array;
+
+            #define static_template_array std::tr1::array;
         #else
             typedef std::shared_ptr<WorldSession> WorldSessionPtr;
             using std::enable_shared_from_this;
             using std::make_shared;
-            using std::static_pointer_cast;
             using std::array;
 
             #define static_template_array std::array
@@ -90,15 +90,6 @@ enum
     MOVE_DOWN   = 2,
     MOVE_LEFT   = 4,
     MOVE_RIGHT  = 8
-};
-
-enum
-{
-    SEC_PLAYER    = 0,
-    SEC_MOD       = 1,
-    SEC_DEV       = 2,
-    SEC_ADMIN     = 3,
-    SEC_CONSOLE   = 4
 };
 
 enum

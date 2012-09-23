@@ -132,7 +132,7 @@ void World::ConsoleInput()
 
     while (true)
     {
-        sLog.Write("Console> ");
+        std::cout << "Console>" << std::flush;
         std::getline(std::cin, Input);
 
         if (Input == "exit")
@@ -189,7 +189,7 @@ void World::HandleCommand(std::string& Command)
     }
     catch(CommandHandler::BadCommand&)
     {
-        sLog.Write("Unknown command !");
+        sLog.Write("Bad command !");
     }
     catch(sql::SQLException& e)
     {

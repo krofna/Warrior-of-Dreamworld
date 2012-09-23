@@ -101,10 +101,9 @@ WorldPacket& WorldPacket::operator <<(int64 data)   { Append<int64>(data);  retu
 WorldPacket& WorldPacket::operator <<(float data)   { Append<float>(data);  return *this; }
 WorldPacket& WorldPacket::operator <<(std::string data)
 {
-    Append<uint16>(data.size());
-    ByteBuffer.resize(ByteBuffer.size() + data.size());
-    std::memcpy(&ByteBuffer[WritePos], data.c_str(), data.size());
-    WritePos += data.size();
+    ByteBuffer.resize(ByteBuffer.size() + data.size()+1);
+    std::memcpy(&ByteBuffer[WritePos], data.c_str(), data.size()+1);
+    WritePos += data.size(); ++WritePos;
     return *this; 
 }
 
@@ -119,9 +118,11 @@ WorldPacket& WorldPacket::operator >>(int64& data)  { data = Read<int64>(); retu
 WorldPacket& WorldPacket::operator >>(float& data)  { data = Read<float>(); return *this; }
 WorldPacket& WorldPacket::operator >>(std::string& data)
 {
-    uint16 size = Read<uint16>();
-    data.resize(size);
-    std::memcpy(&data[0], &ByteBuffer[ReadPos], size);
-    ReadPos += size;
+    char* pBBuf = &ByteBuffer[ReadPos];
+    char* pNull = pBBuf;
+    while(*pNull) ++pNull;
+    data.resize(pNull-pBBuf);
+    std::memcpy(&data[0], pBBuf, data.size());
+    ReadPos += data.size(); ++ReadPos;
     return *this; 
 }
