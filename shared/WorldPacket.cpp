@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldPacket.hpp"
 #include "Opcodes.hpp"
-#include "../shared/Log.hpp"
 
 WorldPacket::WorldPacket() :
 ByteBuffer              (HEADER_SIZE)
