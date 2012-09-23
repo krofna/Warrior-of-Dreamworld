@@ -23,11 +23,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Math.hpp"
 #include "ObjectMgr.hpp"
 
-Unit::Unit      (uint64 ObjID) :
-WorldObject     (ObjID),
+Unit::Unit         (uint64 ObjID) :
+WorldObject        (ObjID),
 MeeleAttackCooldown(0),
-pVictim         (nullptr),
-Health          (100) // Placeholder to fix pathfinder
+pVictim            (nullptr),
+Health             (100) // Placeholder to fix pathfinder
 {
 }
 
