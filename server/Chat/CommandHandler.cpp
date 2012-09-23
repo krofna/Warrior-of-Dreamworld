@@ -202,17 +202,17 @@ void CommandHandler::HandleKillCommand()
         else
         {
             if (Console)
-                sLog.Write("Player is not in world !");
+                sLog.Write("Player is not in world!");
             else
-                pPlayer->SendCommandReponse("Player is not in world !");
+                pPlayer->SendCommandReponse("Player is not in world!");
         }
     }
     else
     {
         if (Console)
-            sLog.Write("Unknown player %s!", PlayerName.c_str());
+            sLog.Write("Unknown player!");
         else
-            pPlayer->SendCommandReponse("Unknown player %s!", PlayerName.c_str());
+            pPlayer->SendCommandReponse("Unknown player!");
     }
 }
 

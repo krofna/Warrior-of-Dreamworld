@@ -100,23 +100,12 @@ void Creature::UpdatePosition(Vector2i const& Position)
 void Creature::OnInteract(Player* pWho)
 {
     WorldPacket Packet((uint16)MSG_NPC_INTERACT);
-    
-    if(pTemplate->npcflag & NPC_VENDOR)
-    {
-        Packet << (uint16)NPC_VENDOR;
-    }
-    if(pTemplate->npcflag & NPC_REPAIR)
-    {
-        Packet << (uint16)NPC_REPAIR;
-    }
     if(pTemplate->npcflag & NPC_CHAT)
     {
-        Packet << (uint16)NPC_CHAT;
+        // TODO: creature chat
     }
     if(pTemplate->npcflag & NPC_QUEST_GIVER)
     {
-        Packet << (uint16)NPC_QUEST_GIVER;
-        
         // Append all quests offered by this creature
         // No need to say how many, its end of packet anyway
         WorldObjectQuests QuestRange = sObjectMgr.GetCreatureQuests(pTemplate->Entry);
