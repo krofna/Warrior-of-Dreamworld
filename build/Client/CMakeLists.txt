@@ -11,9 +11,12 @@ link_directories(${Boost_LIBRARY_DIRS})
 link_directories(${SFML_LIBRARY_DIRS})
 link_directories(${SFGUI_LIBRARY_DIRS})
 
-include_directories(${SFML_INCLUDE_DIRS})
-include_directories(${Boost_INCLUDE_DIRS})
-include_directories(${SFGUI_INCLUDE_DIRS})
+include_directories(
+${SFML_INCLUDE_DIRS}
+${Boost_INCLUDE_DIRS}
+${SFGUI_INCLUDE_DIRS}
+${CMAKE_SOURCE_DIR}/../client/Session}
+)
 
 file(
 GLOB_RECURSE
