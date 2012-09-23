@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldPacket.hpp"
 #include "Opcodes.hpp"
+#include "../shared/Log.hpp"
 
 WorldPacket::WorldPacket() :
 ByteBuffer              (HEADER_SIZE)
@@ -101,10 +102,9 @@ WorldPacket& WorldPacket::operator <<(int64 data)   { Append<int64>(data);  retu
 WorldPacket& WorldPacket::operator <<(float data)   { Append<float>(data);  return *this; }
 WorldPacket& WorldPacket::operator <<(std::string data)
 {
-    Append<uint16>(data.size());
-    ByteBuffer.resize(ByteBuffer.size() + data.size());
-    std::memcpy(&ByteBuffer[WritePos], data.c_str(), data.size());
-    WritePos += data.size();
+    ByteBuffer.resize(ByteBuffer.size() + data.size()+1);
+    std::memcpy(&ByteBuffer[WritePos], data.c_str(), data.size()+1);
+    WritePos += data.size(); ++WritePos;
     return *this; 
 }
 
@@ -119,9 +119,14 @@ WorldPacket& WorldPacket::operator >>(int64& data)  { data = Read<int64>(); retu
 WorldPacket& WorldPacket::operator >>(float& data)  { data = Read<float>(); return *this; }
 WorldPacket& WorldPacket::operator >>(std::string& data)
 {
-    uint16 size = Read<uint16>();
-    data.resize(size);
-    std::memcpy(&data[0], &ByteBuffer[ReadPos], size);
-    ReadPos += size;
+    char* pBBuf = &ByteBuffer[ReadPos];
+    char* pNull = pBBuf;
+    while(*pNull) ++pNull;
+    data.resize(pNull-pBBuf);
+    sLog << "pNull-pBBuf = " << pNull-pBBuf << "\n";
+    std::memcpy(&data[0], pBBuf, data.size());
+    sLog << "THE STRING: \"" << data << "\"\n";
+    ReadPos += data.size(); ++ReadPos;
+    sLog << "data.size() = " << data.size() << "\n";
     return *this; 
 }
