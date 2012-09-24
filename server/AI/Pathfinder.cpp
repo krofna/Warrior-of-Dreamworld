@@ -228,7 +228,8 @@ void Pathfinder::CheckNode(PathfinderNode* pCurrent, int x, int y, int Cost)
             // Add it to open list
             PathfindingStatusGrid[MAX_MAP_HEIGHT * pAdjacent->Position.y + pAdjacent->Position.x] = OPEN;
             OpenList.push(pAdjacent);
-
+            
+            break;
             // If it is already on open list
         case (uint8)OPEN:
             // Check if G path of pCurrent is better than G path of pAdjacent
