@@ -204,7 +204,7 @@ void WorldSession::HandleMoveObjectOpcode()
     // Send movement update to all players in the map
     WorldPacket Packet((uint16)MSG_MOVE_OBJECT);
     Packet << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
-    sWorld->Maps[pPlayer->GetMapID()]->SendToPlayers(Packet);
+    pPlayer->GetMap()->SendToPlayers(Packet);
 }
 
 void WorldSession::HandleCastSpellOpcode()
