@@ -40,7 +40,7 @@ int main()
     using namespace std;
 
     sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
-    //sObjectMgr->Initialize();
+    sObjectMgr->Initialize();
 
     Window = new sf::RenderWindow();
     sSFGUI = new sfg::SFGUI();
