@@ -164,7 +164,8 @@ bool Player::IsInWorld() const
 
 void Player::Kick()
 {
-    LogOut();
+    pWorldSession = WorldSessionPtr();
+    this->SaveToDB();
 }
 
 void Player::LogOut()

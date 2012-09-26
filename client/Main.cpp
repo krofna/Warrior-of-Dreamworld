@@ -24,6 +24,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <stdexcept>
 
+#ifdef GPROF
+
 struct wrapper_profiling_multithread
 {
     itimerval* itimer;
@@ -35,12 +37,14 @@ void wrapper_profiler_multithread(boost::asio::io_service* io, wrapper_profiling
     io->run();
 }
 
+#endif
+
 int main()
 {
     using namespace std;
 
     sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
-    //sObjectMgr->Initialize();
+    sObjectMgr->Initialize();
 
     Window = new sf::RenderWindow();
     sSFGUI = new sfg::SFGUI();
@@ -57,9 +61,14 @@ int main()
         Session = new WorldSession(io, sGame);
         sGame->PushState(new Login());
 
+#ifdef GPROF
+
         wrapper_profiling_multithread profiling_wrapper;
         getitimer(ITIMER_PROF, profiling_wrapper.itimer);
         boost::thread NetworkThread(boost::bind(&wrapper_profiler_multithread, &io, profiling_wrapper));
+
+#endif
+        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
         io.stop();
         NetworkThread.join();

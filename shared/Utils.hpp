@@ -50,6 +50,8 @@ inline std::string Format(std::string const& toFormat)
     return toFormat;
 }
 
+#ifdef HAVE_VARIADIC_TEMPLATES
+
 template<typename T, typename... Values>
 inline std::string Format(boost::format formater, T const& val, Values... values)
 {
@@ -61,5 +63,7 @@ inline std::string Format(std::string const& toFormat, T const& val, Values... v
 {
     return Format(boost::format(toFormat) % val, std::forward<Values>(values)...);
 }
+
+#endif
 
 #endif // UTILS_HPP_INCLUDED
