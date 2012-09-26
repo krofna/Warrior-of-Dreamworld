@@ -31,13 +31,6 @@ typedef int16_t int16;
 typedef int32_t int32;
 typedef int64_t int64;
 
-class Player;
-class Unit;
-class WorldObject;
-class Creature;
-class Map;
-class Spell;
-class SpellBox;
 class WorldSession;
 
 #include "Config.hpp"

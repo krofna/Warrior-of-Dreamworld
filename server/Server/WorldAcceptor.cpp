@@ -44,10 +44,7 @@ void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::e
     if(!error)
     {
         Session->Start();
-        NewSession = make_shared<WorldSession>(Acceptor.get_io_service());
-        Acceptor.async_accept(NewSession->Socket,
-            boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
-            boost::asio::placeholders::error));
+        Accept();
     }
     #if defined(DEBUG_CONNECTION)
     else

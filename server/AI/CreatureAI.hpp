@@ -22,6 +22,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include <string>
 
+class Unit;
+class Creature;
+class SpellBox;
+
 class WOD_DLL_DECL CreatureAI
 {
 public:

@@ -25,6 +25,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include "shared/Vector2.hpp"
 
+struct Map;
+class WorldObject;
+class Unit;
+
 /*
 TODO: Instead of *50 use map width: see Map.cpp Map::{ctor}
 */
