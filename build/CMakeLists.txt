@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
-set (Boost_USE_STATIC_LIBS TRUE)
+if (WIN32)
+    set (Boost_USE_STATIC_LIBS TRUE)
+endif()
 
 if( NOT CMAKE_BUILD_TYPE )
     set( CMAKE_BUILD_TYPE Debug CACHE STRING

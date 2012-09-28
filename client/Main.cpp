@@ -67,11 +67,12 @@ int main()
         getitimer(ITIMER_PROF, profiling_wrapper.itimer);
         boost::thread NetworkThread(boost::bind(&wrapper_profiler_multithread, &io, profiling_wrapper));
 
-#endif
+#else
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
         sGame->Run();
         io.stop();
         NetworkThread.join();
+#endif
     }
     catch(std::exception const
           & e)
