@@ -116,6 +116,7 @@ void WorldSession::HandleSend(const boost::system::error_code& Error)
     else
     {
         sLog.Write("Failed!");
+        return;
     }
 
     boost::mutex::scoped_lock lock(MessageQueueMutex);

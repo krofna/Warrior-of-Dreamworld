@@ -69,10 +69,10 @@ int main()
 
 #else
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
+#endif
         sGame->Run();
         io.stop();
         NetworkThread.join();
-#endif
     }
     catch(std::exception const
           & e)
