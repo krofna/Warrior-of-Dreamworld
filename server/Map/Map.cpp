@@ -37,13 +37,13 @@ TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 
 Map::~Map()
 {
-    // Kick all players if they are online
+    // Notify everyone that server is going down
     for(auto PlayerIter = Players.begin(); PlayerIter != Players.end(); ++PlayerIter)
     {
-        if((*PlayerIter)->IsInWorld())
-            (*PlayerIter)->Kick();
+        (*PlayerIter)->OnServerShutdown();
     }
 
+    // Cleanup entities
     for(auto Iter = Creatures.begin(); Iter != Creatures.end(); ++Iter)
     {
         delete *Iter;

@@ -34,7 +34,7 @@ public:
 
     void AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv);
     void PushState(GameState* pState) { StateStack.push(pState); }
-    void PopState() { delete StateStack.top(); StateStack.pop(); }
+    void PopState() { if(!StateStack.empty()) { delete StateStack.top(); StateStack.pop(); } }
     void PopAllStates() { while(!StateStack.empty()) { PopState(); }}
 
 

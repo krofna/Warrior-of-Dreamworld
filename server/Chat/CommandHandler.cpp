@@ -155,7 +155,7 @@ void CommandHandler::HandleAccountDeleteCommand()
 
     Player* pPlayer = sObjectMgr.GetPlayer(Username);
     if (pPlayer->IsInWorld())
-        pPlayer->Kick();
+        pPlayer->LogOut();
 
     sDatabase.PExecute("DELETE FROM `players` WHERE `username` = '%s'", Username.c_str());
 }

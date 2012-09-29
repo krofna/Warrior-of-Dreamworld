@@ -156,14 +156,15 @@ void Player::BindSession(WorldSessionPtr pWorldSession)
     this->pWorldSession = pWorldSession;
 }
 
-
 bool Player::IsInWorld() const
 {
     return pWorldSession != nullptr;
 }
 
-void Player::Kick()
+void Player::OnServerShutdown()
 {
+    WorldPacket Packet((uint16)MSG_LOG_OUT);
+    SendPacket(Packet);
     pWorldSession = WorldSessionPtr();
     this->SaveToDB();
 }

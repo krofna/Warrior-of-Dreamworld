@@ -54,7 +54,7 @@ public:
     void BindSession(WorldSessionPtr pWorldSession);
 
     void LogOut();
-    void Kick();
+    void OnServerShutdown();
     virtual bool IsInWorld() const;
     
     bool UpdateCoordinates(uint8 Direction);

@@ -116,7 +116,6 @@ void WorldSession::HandleSend(const boost::system::error_code& Error)
     else
     {
         sLog.Write("Failed!");
-        return;
     }
 
     boost::mutex::scoped_lock lock(MessageQueueMutex);
@@ -208,7 +207,7 @@ void WorldSession::HandleCastSpellOpcode()
 
 void WorldSession::HandleLogOutOpcode()
 {
-    //... Not sure yet
+    GoToLoginScreen();
 }
 
 void WorldSession::HandleSystemMessageOpcode()
@@ -341,10 +340,7 @@ void WorldSession::SendLogOutRequest()
 {
     WorldPacket Packet((uint16)MSG_LOG_OUT);
     Send(Packet);
-
-    // Back to login screen?
-    //sGame->ChangeState(new Login());
-    //Window->setView(Window->getDefaultView());
+    GoToLoginScreen();
 }
 
 void WorldSession::SendChatMessage(std::string const& Message)
@@ -356,4 +352,10 @@ void WorldSession::SendChatMessage(std::string const& Message)
 
 void WorldSession::HandleNpcInteractOpcode()
 {
+}
+
+void WorldSession::GoToLoginScreen()
+{
+    sGame->AddToLoadQueue(new Login(), WorldPacket());
+    Window->setView(Window->getDefaultView());
 }

@@ -66,7 +66,6 @@ int main()
         wrapper_profiling_multithread profiling_wrapper;
         getitimer(ITIMER_PROF, profiling_wrapper.itimer);
         boost::thread NetworkThread(boost::bind(&wrapper_profiler_multithread, &io, profiling_wrapper));
-
 #else
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
 #endif

@@ -196,7 +196,7 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::Escape:
             Session->SendLogOutRequest();
-            Window->close();
+            Session->GoToLoginScreen();
             return;
         case sf::Keyboard::P:
             m_PointMode = !m_PointMode;

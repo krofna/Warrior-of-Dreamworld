@@ -64,6 +64,9 @@ public:
     void SendCastSpellRequest(uint16 SpellID, float Angle);
     void SendLogOutRequest();
     void SendChatMessage(std::string const& Message);
+    
+    // Misc
+    void GoToLoginScreen();
 
 private:
     void Start();

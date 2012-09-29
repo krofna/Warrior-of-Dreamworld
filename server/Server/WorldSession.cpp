@@ -170,7 +170,7 @@ void WorldSession::HandleLoginOpcode()
 
     // If player is online, kick him
     if(pPlayer->IsInWorld())
-        pPlayer->Kick();
+        pPlayer->LogOut();
     else if(!pPlayer->IsLoaded())
         pPlayer->LoadFromDB();
 
