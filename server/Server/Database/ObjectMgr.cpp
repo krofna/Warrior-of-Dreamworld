@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "ObjectMgr.hpp"
-#include "Spell.hpp"
 #include "Database.hpp"
 #include "Player.hpp"
 
@@ -153,9 +152,20 @@ void ObjectMgr::LoadSpellTemplates()
 {
     QueryResult Result(sDatabase.Query("SELECT * FROM `spells`"));
 
+    SpellTemplate* pTemplate;
+
     while (Result->next())
     {
-        SpellTemplates[Result->getUInt64(1)] = new SpellTemplate(Result->getUInt64(1), Result->getUInt(2), Result->getUInt(3), Result->getUInt(4), Result->getUInt(5), Result->getString(6));
+        pTemplate = new SpellTemplate;
+
+        pTemplate->Entry     = Result->getUInt64 (1);
+        pTemplate->DisplayID = Result->getUInt   (2); // Unused
+        pTemplate->Effect    = Result->getUInt   (3);
+        pTemplate->Value     = Result->getUInt   (4);
+        pTemplate->Cost      = Result->getUInt   (5);
+        pTemplate->Name      = Result->getString (6);
+
+        SpellTemplates[Result->getUInt64(1)] = pTemplate;
     }
 }
 

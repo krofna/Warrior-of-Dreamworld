@@ -21,8 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "WorldObject.hpp"
 
-class SpellTemplate;
 class SpellBox;
+struct SpellTemplate;
 
 class WOD_DLL_DECL Unit : public WorldObject
 {

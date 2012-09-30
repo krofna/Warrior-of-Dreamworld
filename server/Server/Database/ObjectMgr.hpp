@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Templates.hpp"
 
 class Player;
-class SpellTemplate;
+struct SpellTemplate;
 
 typedef std::pair<std::multimap<uint64, uint64>::const_iterator, std::multimap<uint64, uint64>::const_iterator> WorldObjectQuests;
 
@@ -40,9 +40,8 @@ public:
     CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
     ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
     QuestTemplate*    GetQuestTemplate    (uint64 Entry) const;
-    SpellTemplate*    GetSpellTemplate    (uint16 ID)    const; // ID -> Entry like Quest, Item and Creature.
-                                                                // Comment by krofna: Rename ID to Entry?
-                                                                
+    SpellTemplate*    GetSpellTemplate    (uint16 Entry) const;
+
     WorldObjectQuests GetCreatureQuests   (uint64 Entry) const;
 
     void LoadSpellTemplates();
@@ -58,7 +57,7 @@ public:
 private:
     std::vector<Player*> Players;
     
-    std::map<uint16, SpellTemplate*> SpellTemplates;
+    std::map<uint64, SpellTemplate*> SpellTemplates;
     std::map<uint64, CreatureTemplate*> CreatureTemplates;
     std::map<uint64, ItemTemplate*> ItemTemplates;
     std::map<uint64, QuestTemplate*> QuestTemplates;

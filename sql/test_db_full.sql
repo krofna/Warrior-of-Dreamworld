@@ -16,8 +16,8 @@ CREATE TABLE `players`
     PRIMARY KEY(guid)
 );
 
-DROP TABLE IF EXISTS `spells`;
-CREATE TABLE `spells`
+DROP TABLE IF EXISTS `spell_template`;
+CREATE TABLE `spell_template`
 (
     `entry` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `displayid` INT UNSIGNED NOT NULL,
@@ -28,8 +28,8 @@ CREATE TABLE `spells`
     PRIMARY KEY(entry)
 );
 
-INSERT INTO `spells` VALUES (DEFAULT, 1, 0, 10, 10, 'Bolt');
-INSERT INTO `spells` VALUES (DEFAULT, 1, 1, 0, 0, 'Quadruple Accel No Interval');
+INSERT INTO `spell_template` VALUES (DEFAULT, 1, 0, 10, 10, 'Bolt');
+INSERT INTO `spell_template` VALUES (DEFAULT, 1, 1, 0, 0, 'Quadruple Accel No Interval');
 
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template`

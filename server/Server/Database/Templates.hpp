@@ -78,4 +78,15 @@ struct QuestTemplate
     std::string Objective;
 };
 
+struct SpellTemplate
+{
+    uint64 Entry;
+    std::string Name;
+    uint16 DisplayID;
+    uint16 Effect;
+    uint16 Value;
+    uint16 Cost;
+};
+
+
 #endif
