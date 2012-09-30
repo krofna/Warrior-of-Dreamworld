@@ -150,7 +150,7 @@ void ObjectMgr::LoadQuestTemplates()
 
 void ObjectMgr::LoadSpellTemplates()
 {
-    QueryResult Result(sDatabase.Query("SELECT * FROM `spells`"));
+    QueryResult Result(sDatabase.Query("SELECT * FROM `spell_template`"));
 
     SpellTemplate* pTemplate;
 

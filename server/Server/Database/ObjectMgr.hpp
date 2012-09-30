@@ -20,18 +20,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define OBJECT_MGR_H
 
 #include "shared/Defines.hpp"
+#include "Templates.hpp"
 #include <map>
 #include <vector>
-#include "Templates.hpp"
 
 class Player;
 struct SpellTemplate;
 
 typedef std::pair<std::multimap<uint64, uint64>::const_iterator, std::multimap<uint64, uint64>::const_iterator> WorldObjectQuests;
 
-// In reality, this is a TemplateMgr,
-// but since it contains pointers to all players in world
-// we might need it in that sense.
 class ObjectMgr
 {
 public:

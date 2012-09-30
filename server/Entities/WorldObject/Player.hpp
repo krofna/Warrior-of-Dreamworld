@@ -101,7 +101,7 @@ private:
     uint16 tx;
     uint16 ty;
 
-    std::set<uint16> Spells;
+    std::set<uint64> Spells;
 
     bool LearnedSpell(uint8 ID);
 
