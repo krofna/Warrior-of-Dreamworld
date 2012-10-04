@@ -158,6 +158,8 @@ void ObjectMgr::LoadTemplates()
                 LoadItemTemplate(line.substr(idxType + 1));
             else if (typeTemplate == "CreatureTemplate")
                 LoadCreatureTemplate(line.substr(idxType + 1));
+            else if (typeTemplate == "QuestTemplate")
+                // Skip it. Thanks to krofna.
             else
             {
                 sLog.Write("Unknown template type: %s. templates_info.dbc damaged ?", typeTemplate);
