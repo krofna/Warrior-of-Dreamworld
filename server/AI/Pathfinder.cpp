@@ -76,8 +76,9 @@ void Pathfinder::Update(int64 diff)
         GeneratePath();
         pOrigin->ClearVictim();
     }
-    // If target moved since last path generate, generate new path
-    else if(pTarget && pTarget->Position != Target)
+    // If target moved since last path generate OR something is blocking
+    // our current path, generate new path
+    else if((pTarget && pTarget->Position != Target) || (!Path.empty() && (*pTileGrid)[Path.top().y][Path.top().x]))
     {
         this->Target = pTarget->GetPosition();
         GeneratePath();
