@@ -404,11 +404,12 @@ void Player::SwapItem(uint8 SrcBag, uint8 SrcSlot, uint8 DstBag, uint8 DstSlot)
 	Item* pSrcItem = GetItemByPos(SrcBag, SrcSlot);
 	Item* pDstItem = GetItemByPos(DstBag, DstSlot);
 
-    Item** ppSrcItem = &pSrcItem;
-    Item** ppDstItem = &pDstItem;
+    Item* cpSrcItem(new Item(*pSrcItem)); // Verify copy operator !
 
-    std::swap(ppSrcItem, ppDstItem); // [To check]: Should work
-    // Comment by krofna: What? No, this wont work
+    delete pSrcItem;
+
+    StoreItem(pDstItem, SrcBag, SrcSlot);
+    StoreItem(cpSrcItem, DstBag, DstSlot);
 }
  
 void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)
@@ -417,6 +418,41 @@ void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)
         return;
     
     m_Bags[SrcBag]->Destroy(SrcSlot);
+}
+
+std::string Player::GetEmote(const char* Text)
+{
+    // TODO: Handle also others emotes
+    
+    std::string EmoteText = Text;
+
+    EmoteText.erase(EmoteText.begin(), EmoteText.begin() + 3); // Erase /me 
+
+    return EmoteText;
+}
+
+bool Player::IsNotEmote(const char* Text)
+{
+    return (Text[0] != '/');
+}
+
+void Player::Say(const char* Text)
+{
+    OnChat(Text);
+
+    if (IsNotEmote(Text))
+    {
+        Unit::Say(Text);
+    }
+    else
+    {
+        WorldPacket TextEmotePacket((uint16)MSG_TEXT_EMOTE);
+        std::string TextEmote = GetEmote(Text);
+        TextEmotePacket << GetObjectID();
+        TextEmotePacket << TextEmote;
+
+        pMap->SendToPlayers(TextEmotePacket);
+    }
 }
 
 void Player::OnChat(const char* Text)

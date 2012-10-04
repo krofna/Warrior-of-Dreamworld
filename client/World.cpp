@@ -278,6 +278,30 @@ void World::ReceiveNotification(std::string const& Text)
     m_MessageArea->AddServerMessage(Text, sf::Color::Red);
 }
 
+void World::ReceiveEmote(TypeEmote type, uint64 ObjectID, std::string const& Text)
+{
+    boost::mutex::scoped_lock lock(DrawingMutex);
+
+    if (type == VOICE_EMOTE)
+    {
+//        PlayVoice(Text); // Text = Path
+        return;
+    }
+
+    sf::Color color;
+
+    if (type == TEXT_EMOTE)
+        color = sf::Color::Magenta;
+
+    auto Iter = WorldObjectMap.find(ObjectID);
+    if (Iter == WorldObjectMap.end())
+        return;
+
+    std::string Msg = Iter->second->GetObjectName() + Text;
+
+    m_MessageArea->AddRawMessage(Msg, color);
+}
+
 void World::AddAnimation(Animation* pAnimation)
 {
     boost::mutex::scoped_lock lock(DrawingMutex);

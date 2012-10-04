@@ -33,6 +33,12 @@ class MessageChatArea;
 
 typedef boost::shared_ptr<MessageChatArea> MessageChatAreaPtr;
 
+enum TypeEmote
+{
+    TEXT_EMOTE,
+    VOICE_EMOTE
+};
+
 class World : public GameState
 {
     friend class WorldSession;
@@ -56,6 +62,7 @@ protected:
     void ReceiveNewMessage(uint64 ObjID, std::string const& Message);
     void ReceiveCommandReponse(std::string const& Message);
     void ReceiveNotification(std::string const& Message);
+    void ReceiveEmote(TypeEmote type, uint64 ObjID, std::string const& Message);
 
 private:
     MessageChatAreaPtr m_MessageArea;

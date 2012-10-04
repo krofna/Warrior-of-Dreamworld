@@ -35,6 +35,7 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
     { "MSG_CHAT_MESSAGE", &WorldSession::HandleChatMessageOpcode },
     { "MSG_COMMAND_REPONSE", &WorldSession::HandleNULL }, // SMSG
     { "MSG_NOTIFICATION_MSG", &WorldSession::HandleNULL }, // SMSG
+    { "MSG_EMOTE_TEXT", &WorldSession::HandleNULL }, // SMSG
     { "MSG_AUTO_EQUIP_ITEM", &WorldSession::HandleAutoEquipItemOpcode },
     { "MSG_USE_ITEM", &WorldSession::HandleUseItemOpcode },
     { "MSG_EQUIP_ITEM", &WorldSession::HandleEquipItemOpcode },
