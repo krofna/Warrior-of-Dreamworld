@@ -15,11 +15,11 @@ URGENT TODOs: (FullMetal-Alchimist assigned)
 1) Fix all crashes/bugs (Report them by issue or sending a email at masterancpp at gmail dot com, except krofna, who can
     report them by "Fix that slave!")
 
-2) Finish melee system
+2) Finish melee system (Need just melee attack opcode, all is ready server-side)
 
-3) Finish chat system
+3) Finish chat system (Need to implement emote)
 
-4) Finish inventory system
+4) Finish inventory system (Need to test with items and GUI)
 
 Code:
 - Propertly clean up SPELL_BOLT on client side when its erased from server
