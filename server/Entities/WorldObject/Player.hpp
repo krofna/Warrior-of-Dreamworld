@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <set>
 #include "Unit.hpp"
 #include "WorldSession.hpp"
-#include "Spell.hpp"
 #include "Bag.hpp"
 
 class WorldSession;
@@ -84,6 +83,12 @@ public:
 
     void SendNotification(std::string const& Msg);
     void SendCommandReponse(std::string const& Msg);
+    void SendTextEmote(std::string const& Msg);
+
+    std::string GetEmote(const char* Text);
+    bool IsNotEmote(const char* Text);
+
+    void Say(const char* Text);
 
 protected:
     void OnChat(const char* Text);
@@ -102,7 +107,7 @@ private:
     uint16 tx;
     uint16 ty;
 
-    std::set<uint16> Spells;
+    std::set<uint64> Spells;
 
     bool LearnedSpell(uint8 ID);
 

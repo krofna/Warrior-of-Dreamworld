@@ -51,6 +51,19 @@ void MessageChatArea::AddServerMessage(std::string const& Msg, sf::Color const& 
     m_Messages.push_back(message);
 }
 
+void MessageChatArea::AddRawMessage(std::string const& Msg, sf::Color const& MsgColor, int32 DisplayTime)
+{
+    Message message;
+
+    message.TimeDisplay = DisplayTime * 1000;
+    message.StringMessage = Msg;
+    message.IsServerMessage = false;
+    message.DefaultColor = MsgColor;
+
+    m_Messages.push_back(message);
+}
+
+
 void MessageChatArea::Draw(int32 UpdateTime)
 {
     if (m_IsTyping)

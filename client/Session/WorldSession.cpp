@@ -250,6 +250,18 @@ void WorldSession::HandleNotificationMessageOpcode()
     sLog.Write("Packet is good!");
 }
 
+void WorldSession::HandleTextEmoteOpcode()
+{
+    std::string Message;
+    uint64 ObjectID;
+
+    Packet >> ObjectID;
+    Packet >> Message;
+
+    pWorld->ReceiveEmote(TEXT_EMOTE, ObjectID, Message);
+    sLog.Write("Packet is good!");
+}
+
 void WorldSession::HandleSwapItemOpcode()
 {
     uint8 srcbag, dstbag, srcslot, dstslot;

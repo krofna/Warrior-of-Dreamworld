@@ -40,6 +40,7 @@ class MessageChatArea
 
     void AddMessage(std::string const& ObjectName, std::string const& Content, int32 Duration = 5);
     void AddServerMessage(std::string const& Message, sf::Color const& color, int32 Duration = 5);
+    void AddRawMessage(std::string const& Message, sf::Color const& Color, int32 Duration = 5);
     void Draw(int32 UpdateTime);
     bool HandleTyping(sf::Event event);
 

@@ -132,7 +132,7 @@ void World::ConsoleInput()
 
     while (true)
     {
-        std::cout << "Console>" << std::flush;
+        std::cout << "Console> " << std::flush;
         std::getline(std::cin, Input);
 
         if (Input == "exit")

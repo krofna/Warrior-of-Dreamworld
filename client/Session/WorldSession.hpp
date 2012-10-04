@@ -40,22 +40,30 @@ public:
 
     // Opcode handlers
     void HandleNULL();
+    
     void HandleLoginOpcode();
+
     void HandleAddObjectOpcode();
     void HandleRemoveObjectOpcode();
     void HandleMoveObjectOpcode();
+
     void HandleCastSpellOpcode();
+
     void HandleLogOutOpcode();
+
     void HandleSystemMessageOpcode();
     void HandleChatMessageOpcode();
     void HandleCommandReponseOpcode();
     void HandleNotificationMessageOpcode();
+    void HandleTextEmoteOpcode();
+
     void HandleSwapItemOpcode();
     void HandleDeleteItemOpcode();
     void HandleCreateItemOpcode();
     void HandleUseItemOpcode();
     void HandleEquipItemOpcode();
     void HandleInventoryDataOpcode();
+
     void HandleNpcInteractOpcode();
 
     // Requests
