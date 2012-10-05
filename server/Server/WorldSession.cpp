@@ -80,9 +80,9 @@ void WorldSession::HandleReceive(const boost::system::error_code& Error)
         return;
     }
 	if(Packet.GetOpcode() == MSG_NULL)
-	{
-		sLog.Write("Received a MSG_NULL, strange...");
-	}
+    {
+        sLog.Write("Received a MSG_NULL, strange...");
+    }
     sLog.Write("Received Packet: %s, ", OpcodeTable[Packet.GetOpcode()].name);
 
     (this->*OpcodeTable[Packet.GetOpcode()].Handler)();
@@ -185,8 +185,8 @@ void WorldSession::HandleLoginOpcode()
     // Send inventory data to client
     pPlayer->SendInventoryData();
 
-    // Add player to the world
-    sWorld->AddPlayer(pPlayer);
+    // Add player to the map
+    pPlayer->GetMap()->AddPlayer(pPlayer);
     sLog.Write("Packet is good!");
 }
 

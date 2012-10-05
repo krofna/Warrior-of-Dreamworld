@@ -166,11 +166,6 @@ void World::Update()
     Timer.async_wait(boost::bind(&World::Update, this));
 }
 
-void World::AddPlayer(Player* pPlayer)
-{
-    Maps[pPlayer->GetMapID()]->AddPlayer(pPlayer);
-}
-
 Map* World::GetMap(uint16 MapID)
 {
     if(MapID < Maps.size())

@@ -22,7 +22,6 @@ ${CMAKE_SOURCE_DIR}/../server/Map
 ${CMAKE_SOURCE_DIR}/../server/Server
 ${CMAKE_SOURCE_DIR}/../server/Server/Database
 ${CMAKE_SOURCE_DIR}/../server
-${CMAKE_SOURCE_DIR}/../server/Spell
 ${CMAKE_SOURCE_DIR}/../server/Chat
 ${Boost_INCLUDE_DIRS}
 ${MYSQLCONNECTORCPP_INCLUDE_DIR}
