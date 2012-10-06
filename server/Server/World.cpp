@@ -123,7 +123,6 @@ int World::Run()
     return 0;
 }
 
-// [PH], needs extra work
 void World::ConsoleInput()
 {
     std::string Input;
