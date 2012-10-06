@@ -25,6 +25,7 @@ class GameObject : public WorldObject
 public:
     GameObject(uint64 ObjID, GameObjectTemplate* pTemplate);
     
+    void Update(int64 diff);
     void OnInteract(Player* pWho);
     
 private:

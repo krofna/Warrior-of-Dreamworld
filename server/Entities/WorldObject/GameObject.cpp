@@ -24,6 +24,10 @@ pTemplate             (pTemplate)
 {
 }
 
+void GameObject::Update(int64 diff)
+{
+}
+
 void GameObject::OnInteract(Player* pWho)
 {
 }
