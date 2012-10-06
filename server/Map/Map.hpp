@@ -27,7 +27,7 @@ class Player;
 
 class Map
 {
-    friend class Pathfinder;
+    //friend class Pathfinder;
 public:
     Map(uint16 TMapID);
     ~Map();
