@@ -38,7 +38,7 @@ public:
 private:
     void HandleAccept(WorldSessionPtr Session, const boost::system::error_code& error);
 
-    TCPAcceptor Acceptor;
+    TCPAcceptor* pAcceptor;
     TCPEndpoint Endpoint;
     WorldSessionPtr NewSession;
 };

@@ -26,14 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define DEBUG_CONNECTION
 
 WorldAcceptor::WorldAcceptor(boost::asio::io_service& io) :
-Endpoint                    (boost::asio::ip::tcp::v4(), 0xBEEF),
-Acceptor                    (io, Endpoint)
+Endpoint                    (boost::asio::ip::tcp::v4(), 0xBEEF)
 {
-
+    pAcceptor = new TCPAcceptor(io, Endpoint);
 }
 
 WorldAcceptor::~WorldAcceptor()
 {
+    delete pAcceptor;
 }
 
 void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::error_code& error)
@@ -57,8 +57,8 @@ void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::e
 
 void WorldAcceptor::Accept()
 {
-    NewSession = make_shared<WorldSession>(Acceptor.get_io_service());
-    Acceptor.async_accept(NewSession->Socket,
+    NewSession = make_shared<WorldSession>(pAcceptor->get_io_service());
+    pAcceptor->async_accept(NewSession->Socket,
         boost::bind(&WorldAcceptor::HandleAccept, this, NewSession,
         boost::asio::placeholders::error));
 }
