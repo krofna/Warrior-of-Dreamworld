@@ -447,11 +447,11 @@ void Player::OnChat(const char* Text)
 {
     if (Text[0] == '.')
     {
+        std::string Msg(Text);
+        Msg.erase(Msg.begin());
+
         try
         {
-            std::string Msg(Text);
-            Msg.erase(Msg.begin());
-
             CommandHandler handler(this, Msg);
             if (!handler.ExecuteCommand())
             {

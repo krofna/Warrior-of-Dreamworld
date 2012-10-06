@@ -48,21 +48,12 @@ uint32 Map::GetNewSpellBoxID() const
 Map::~Map()
 {
     // Notify everyone that server is going down
-    for(auto PlayerIter = Players.begin(); PlayerIter != Players.end(); ++PlayerIter)
-    {
-        (*PlayerIter)->OnServerShutdown();
-    }
+    std::for_each(Players.begin(), Players.end(), boost::bind(&Player::OnServerShutdown, _1));
 
     // Cleanup entities
-    for(auto Iter = Creatures.begin(); Iter != Creatures.end(); ++Iter)
-    {
-        delete *Iter;
-    }
-    
-    for(auto Iter = Spells.begin(); Iter != Spells.end(); ++Iter)
-    {
-        delete *Iter;
-    }
+    std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&operator delete, _1));
+    std::for_each(Spells.begin(), Spells.end(), boost::bind(&operator delete, _1));
+
     sLog.Write("Map %u destroyed.", MapID);
 }
 
@@ -81,12 +72,7 @@ void Map::LoadCreatures()
 
 void Map::Update(int64 diff)
 {
-    // Update spell box positions
-    for(auto SpellBoxIter = Spells.begin(); SpellBoxIter != Spells.end(); ++SpellBoxIter)
-    {
-        (*SpellBoxIter)->Update(diff);
-    }
-
+    std::for_each(Spells.begin(), Spells.end(), boost::bind(&SpellBox::Update, _1, diff));
     std::for_each(Players.begin(), Players.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
 }
@@ -187,20 +173,10 @@ bool Map::CheckOutside(int PosX, int PosY, uint8 Direction) const
     // FIXME: This works only for map0 (50x50)
     switch(Direction)
     {
-        case MOVE_UP:
-            return ((PosY - 1) < 0);
-            break;
-        case MOVE_DOWN:
-            return ((PosY + 1) >= 50);
-            break;
-        case MOVE_LEFT:
-            return ((PosX - 1) < 0);
-            break;
-        case MOVE_RIGHT:
-            return ((PosX + 1) >= 50);
-            break;
-        default:
-            return false;
-            break;
+        case MOVE_UP: return ((PosY - 1) < 0);
+        case MOVE_DOWN: return ((PosY + 1) >= 50);
+        case MOVE_LEFT: return ((PosX - 1) < 0);
+        case MOVE_RIGHT: return ((PosX + 1) >= 50);
+        default: return false;
     }
 }
