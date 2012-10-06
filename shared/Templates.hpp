@@ -26,8 +26,7 @@ enum //npcflag
     NPC_QUEST_GIVER = 1,
     NPC_VENDOR      = 2,
     NPC_REPAIR      = 4,
-                    //8
-                    //...
+    NPC_CHAT        = 8
 };
 
 struct WorldObjectTemplate
@@ -78,5 +77,21 @@ struct QuestTemplate
     std::string Details;
     std::string Objective;
 };
+
+enum //Effect
+{
+    SPELL_BOLT = 0
+};
+
+struct SpellTemplate
+{
+    uint64 Entry;
+    std::string Name;
+    uint16 DisplayID;
+    uint16 Effect;
+    uint16 Value;
+    uint16 Cost;
+};
+
 
 #endif

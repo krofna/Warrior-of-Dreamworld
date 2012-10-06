@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define OBJECT_MGR_H
 
 #include "shared/Defines.hpp"
-#include "Templates.hpp"
+#include "shared/Templates.hpp"
 #include <map>
 #include <vector>
 

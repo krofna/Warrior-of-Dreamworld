@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <string>
 #include <SFML/Graphics/Texture.hpp>
 #include "../shared/Defines.hpp"
-#include "Templates.hpp"
+#include "shared/Templates.hpp"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>

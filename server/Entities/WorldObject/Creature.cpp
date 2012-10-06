@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "CreatureAI.hpp"
 #include "SpellBox.hpp"
 #include "Pathfinder.hpp"
-#include "Templates.hpp"
+#include "shared/Templates.hpp"
 #include "Map.hpp"
 #include "CreatureAIFactory.hpp"
 #include "shared/Opcodes.hpp"

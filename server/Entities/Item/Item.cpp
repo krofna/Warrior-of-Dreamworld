@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Item.hpp"
 
 #include "Database.hpp"
-#include "Templates.hpp"
+#include "shared/Templates.hpp"
 #include "ObjectMgr.hpp"
 #include "Player.hpp"
 

@@ -85,9 +85,4 @@ enum
     MOVE_RIGHT  = 8
 };
 
-enum
-{
-    SPELL_BOLT = 0
-};
-
 #endif
