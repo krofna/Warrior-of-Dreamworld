@@ -45,7 +45,6 @@ void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::e
     if(!error)
     {
         Session->Start();
-        Accept();
     }
     #if defined(DEBUG_CONNECTION)
     else
@@ -53,6 +52,7 @@ void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::e
         sLog.Write("Connection refused (%s)", error.message());
     }
     #endif
+    Accept();
 }
 
 void WorldAcceptor::Accept()

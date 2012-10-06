@@ -25,7 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <vector>
 
 class Player;
-struct SpellTemplate;
 
 typedef std::pair<std::multimap<uint64, uint64>::const_iterator, std::multimap<uint64, uint64>::const_iterator> WorldObjectQuests;
 
@@ -64,6 +63,6 @@ private:
     std::multimap<uint64, uint64> CreatureQuests;
 };
 
-extern ObjectMgr sObjectMgr; // todo: *
+extern ObjectMgr sObjectMgr;
 
 #endif
