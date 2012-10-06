@@ -184,35 +184,23 @@ bool Player::UpdateCoordinates(uint8 Direction)
     switch(Direction)
     {
     case MOVE_UP:
-        if(pMap->TileGrid[Position.y-1][Position.x])
-        {
-            pMap->TileGrid[Position.y-1][Position.x]->OnInteract(this);
+        if(pMap->TryInteract(this, Position.x, Position.y-1))
             return false;
-        }
         Position.y--;
         break;
     case MOVE_DOWN:
-        if(pMap->TileGrid[Position.y+1][Position.x])
-        {
-            pMap->TileGrid[Position.y+1][Position.x]->OnInteract(this);
+        if(pMap->TryInteract(this, Position.x, Position.y+1))
             return false;
-        }
         Position.y++;
         break;
     case MOVE_LEFT:
-        if(pMap->TileGrid[Position.y][Position.x-1])
-        {
-            pMap->TileGrid[Position.y][Position.x-1]->OnInteract(this);
+        if(pMap->TryInteract(this, Position.x-1, Position.y))
             return false;
-        }
         Position.x--;
         break;
     case MOVE_RIGHT:
-        if(pMap->TileGrid[Position.y][Position.x+1])
-        {
-            pMap->TileGrid[Position.y][Position.x+1]->OnInteract(this);
+        if(pMap->TryInteract(this, Position.x+1, Position.y))
             return false;
-        }
         Position.x++;
         break;
     }

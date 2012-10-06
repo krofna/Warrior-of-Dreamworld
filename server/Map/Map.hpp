@@ -47,6 +47,8 @@ public:
 
     void SendToPlayers(WorldPacket& Packet);
 
+    bool TryInteract(Player* pWho, uint16 x, uint16 y);
+
     bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
 
 //private:

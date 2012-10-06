@@ -172,6 +172,16 @@ void Map::RemovePlayer(Player* pPlayer)
     }
 }
 
+bool Map::TryInteract(Player* pWho, uint16 x, uint16 y)
+{
+    if(!TileGrid[y][x])
+        return false;
+
+    TileGrid[y][x]->OnInteract(pWho);
+    return true;
+}
+
+
 bool Map::CheckOutside(int PosX, int PosY, uint8 Direction) const
 {
     // FIXME: This works only for map0 (50x50)
