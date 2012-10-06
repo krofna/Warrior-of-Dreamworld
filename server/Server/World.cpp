@@ -16,8 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/bind.hpp>
 
 #include "World.hpp"
@@ -35,13 +33,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 World* sWorld;
 
-World::World(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
+World::World(boost::asio::io_service& io) :
 IsRunning   (true),
 io          (io),
 Timer       (io),
 Maps        (MAP_COUNT)
 {
-    pWorldAcceptor = new WorldAcceptor(io, Endpoint);
+    pWorldAcceptor = new WorldAcceptor(io);
 }
 
 World::~World()

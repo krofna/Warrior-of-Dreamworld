@@ -308,6 +308,20 @@ void World::AddAnimation(Animation* pAnimation)
     Animations.push_back(pAnimation);
 }
 
+void World::RemoveAnimation(uint32 ID)
+{
+    boost::mutex::scoped_lock lock(DrawingMutex);
+    for(auto iter = Animations.begin(); iter != Animations.end(); ++iter)
+    {
+        if((*iter)->GetID() == ID)
+        {
+            delete *iter;
+            Animations.erase(iter);
+            return;
+        }
+    }
+}
+
 Inventory* World::GetInventory() 
 {
     return pInventory;

@@ -30,6 +30,7 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
     { "MSG_REMOVE_OBJECT",    &WorldSession::HandleRemoveObjectOpcode }, // SMSG
     { "MSG_MOVE_OBJECT",      &WorldSession::HandleMoveObjectOpcode },
     { "MSG_CAST_SPELL",       &WorldSession::HandleCastSpellOpcode },
+    { "MSG_REMOVE_SPELL",     &WorldSession::HandleRemoveSpellOpcode }, // SMSG
     { "MSG_LOG_OUT",          &WorldSession::HandleLogOutOpcode },
     { "MSG_SYSTEM_MESSAGE",   &WorldSession::HandleSystemMessageOpcode }, // SMSG
     { "MSG_CHAT_MESSAGE",     &WorldSession::HandleChatMessageOpcode },

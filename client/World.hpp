@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Animation.hpp"
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
+#include <list>
 
 class GameState;
 class WorldObject;
@@ -55,6 +56,7 @@ public:
     void RemoveObject(uint64 ObjectID);
 
     void AddAnimation(Animation* pAnimation);
+    void RemoveAnimation(uint32 ID);
 
     Inventory* GetInventory();
 
@@ -89,7 +91,7 @@ private:
     // Debug purpose (For stopping voodoo)
     bool m_PointMode;
     std::map<uint64, WorldObject*> WorldObjectMap;
-    std::vector<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
+    std::list<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint64 MeID;
 
     sf::Clock m_UpdateClock;

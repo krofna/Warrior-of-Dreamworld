@@ -28,11 +28,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Map::Map     (uint16 TMapID) : 
 NewSpellBoxID(0),
+MapID        (TMapID),
 // [PH] This only works for map0, cause its size is 50x50 tiles
 TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 {
-    MapID = TMapID;
     sLog.Write("Map %u loaded.", MapID);
+}
+
+uint16 Map::GetID() const
+{
+    return MapID;
+}
+
+uint32 Map::GetNewSpellBoxID() const
+{
+    return NewSpellBoxID;
 }
 
 Map::~Map()

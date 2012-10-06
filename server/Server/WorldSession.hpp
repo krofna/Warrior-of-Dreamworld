@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "boost/asio.hpp"
 #include <queue>
 
-typedef boost::asio::ip::tcp::socket TSocket;
+typedef boost::asio::ip::tcp::socket TCPSocket;
 
 class WorldSession : public enable_shared_from_this<WorldSession>
 {
@@ -64,7 +64,7 @@ private:
 
     void SendLoginFailPacket(uint16 Reason);
 
-    TSocket Socket;
+    TCPSocket Socket;
 
     WorldPacket Packet;
     Player* pPlayer;

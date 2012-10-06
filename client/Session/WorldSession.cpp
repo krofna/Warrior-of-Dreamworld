@@ -205,6 +205,13 @@ void WorldSession::HandleCastSpellOpcode()
     sLog.Write("Packet is good!");
 }
 
+void WorldSession::HandleRemoveSpellOpcode()
+{
+    uint32 SpellBoxID;
+    Packet >> SpellBoxID;
+    pWorld->RemoveAnimation(SpellBoxID);
+}
+
 void WorldSession::HandleLogOutOpcode()
 {
     GoToLoginScreen();

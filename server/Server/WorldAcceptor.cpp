@@ -25,8 +25,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #define DEBUG_CONNECTION
 
-WorldAcceptor::WorldAcceptor(boost::asio::io_service& io, tcp::endpoint& Endpoint) :
-Acceptor                (io, Endpoint)
+WorldAcceptor::WorldAcceptor(boost::asio::io_service& io) :
+Endpoint                    (boost::asio::ip::tcp::v4(), 0xBEEF),
+Acceptor                    (io, Endpoint)
 {
 
 }

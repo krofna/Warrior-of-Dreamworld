@@ -48,6 +48,7 @@ public:
     void HandleMoveObjectOpcode();
 
     void HandleCastSpellOpcode();
+    void HandleRemoveSpellOpcode();
 
     void HandleLogOutOpcode();
 

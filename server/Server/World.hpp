@@ -29,7 +29,7 @@ class World
 {
     friend class WorldSession;
 public:
-    World(boost::asio::io_service& io, tcp::endpoint& Endpoint);
+    World(boost::asio::io_service& io);
     ~World();
     void Load();
 

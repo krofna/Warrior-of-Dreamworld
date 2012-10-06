@@ -27,9 +27,7 @@ int main()
 
     try
     {
-        tcp::endpoint Endpoint(tcp::v4(), 0xBEEF);
-
-        sWorld = new World(io, Endpoint);
+        sWorld = new World(io);
         sWorld->Load();
 
         boost::thread ConsoleInputThread(boost::bind(&World::ConsoleInput, sWorld));

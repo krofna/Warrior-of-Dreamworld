@@ -26,12 +26,15 @@ Unit::Unit         (uint64 ObjID) :
 WorldObject        (ObjID),
 MeeleAttackCooldown(0),
 pVictim            (nullptr),
-Health             (100) // Placeholder to fix pathfinder
+Health             (1000) // Placeholder to fix pathfinder
 {
 }
 
 void Unit::SpellHit(SpellBox* pSpellBox)
 {
+    WorldPacket Packet((uint16)MSG_REMOVE_SPELL);
+    Packet << pSpellBox->SpellBoxID;
+    pMap->SendToPlayers(Packet);
     TakeDamage(pSpellBox->pSpellTemplate->Value, pSpellBox->pCaster);
 }
 
@@ -39,7 +42,7 @@ void Unit::CastSpell(SpellTemplate* pSpell, float Angle)
 {
     // TODO: Reduce mana etc etc
     WorldPacket Packet((uint16)MSG_CAST_SPELL);
-    Packet << ObjID << pSpell->Effect << pSpell->DisplayID << Angle << pMap->NewSpellBoxID;
+    Packet << ObjID << pSpell->Effect << pSpell->DisplayID << Angle << pMap->GetNewSpellBoxID();
     pMap->SendToPlayers(Packet);
     pMap->AddSpell(this, pSpell, Angle);
 }

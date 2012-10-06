@@ -28,7 +28,6 @@ class Pathfinder;
 
 class WOD_DLL_DECL WorldObject
 {
-    friend class Pathfinder;
 public:
     WorldObject(uint64 ObjID);
     virtual ~WorldObject() {}

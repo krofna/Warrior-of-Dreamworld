@@ -21,20 +21,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "SpellBox.hpp"
 #include "Creature.hpp"
+#include <list>
 
 class Player;
 
 class Map
 {
-    public:
+    friend class Pathfinder;
+public:
     Map(uint16 TMapID);
     ~Map();
+
+    uint16 GetID() const;
+    uint32 GetNewSpellBoxID() const;
 
     void LoadCreatures();
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
+
     void AddSpell(Unit* pCaster, SpellTemplate* pSpell, float Angle);
+
     virtual void Update(int64 diff);
     void UnitUpdate(Unit* pVictim, int64 diff);
 
@@ -42,12 +49,13 @@ class Map
 
     bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
 
+//private:
     // Entities
-    std::vector<Creature*> Creatures;
-    std::vector<Player*> Players;
-    std::vector<SpellBox*> Spells;
+    std::list<Creature*> Creatures;
+    std::list<Player*> Players;
+    std::list<SpellBox*> Spells;
 
-    uint16 MapID;
+    const uint16 MapID;
     uint32 NewSpellBoxID;
 
     // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*

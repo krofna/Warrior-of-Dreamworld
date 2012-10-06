@@ -24,13 +24,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <boost/asio.hpp>
 
-using boost::asio::ip::tcp;
-typedef boost::asio::ip::tcp::acceptor TAcceptor;
+typedef boost::asio::ip::tcp::endpoint TCPEndpoint;
+typedef boost::asio::ip::tcp::acceptor TCPAcceptor;
 
 class WorldAcceptor
 {
 public:
-    WorldAcceptor(boost::asio::io_service& io, tcp::endpoint& Endpoint);
+    WorldAcceptor(boost::asio::io_service& io);
     ~WorldAcceptor();
 
     void Accept();
@@ -38,7 +38,8 @@ public:
 private:
     void HandleAccept(WorldSessionPtr Session, const boost::system::error_code& error);
 
-    TAcceptor Acceptor;
+    TCPAcceptor Acceptor;
+    TCPEndpoint Endpoint;
     WorldSessionPtr NewSession;
 };
 
