@@ -26,12 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include "Creature.hpp"
 #include "GameObject.hpp"
+#include "MapScript.hpp"
 
 Map::Map     (uint16 TMapID) : 
 NewSpellBoxID(0),
 MapID        (TMapID),
 // [PH] This only works for map0, cause its size is 50x50 tiles
-TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
+TileGrid     (50, std::vector<WorldObject*>(50, nullptr)),
+pMapScript   (new MapScript(this))
 {
     sLog.Write("Map %u loaded.", MapID);
 }
@@ -45,6 +47,8 @@ Map::~Map()
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&operator delete, _1));
     std::for_each(GameObjects.begin(), GameObjects.end(), boost::bind(&operator delete, _1));
     std::for_each(Spells.begin(), Spells.end(), boost::bind(&operator delete, _1));
+    
+    delete pMapScript;
 
     sLog.Write("Map %u destroyed.", MapID);
 }
@@ -82,6 +86,7 @@ void Map::Load()
 
 void Map::Update(int64 diff)
 {
+    pMapScript->Update(diff);
     std::for_each(Spells.begin(), Spells.end(), boost::bind(&SpellBox::Update, _1, diff));
     std::for_each(Players.begin(), Players.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));

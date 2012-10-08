@@ -27,6 +27,7 @@ class Player;
 class Creature;
 class GameObject;
 class WorldObject;
+class MapScript;
 
 class Map
 {
@@ -67,6 +68,7 @@ public:
     // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
     // NOTE: Players are NOT stored here
     std::vector<std::vector<WorldObject*> > TileGrid;
+    MapScript* pMapScript;
 };
 
 #endif
