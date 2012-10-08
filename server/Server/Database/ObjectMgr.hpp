@@ -51,7 +51,6 @@ public:
     void LoadCreatureQuests();
     void LoadPlayersLoginInfo();
     
-
     Player* GetPlayer(std::string& Username);
 	Player* GetPlayer(uint64 ObjectID);
 

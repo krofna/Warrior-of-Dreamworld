@@ -242,7 +242,7 @@ Player* ObjectMgr::GetPlayer(std::string& Username)
 
 Player* ObjectMgr::GetPlayer(uint64 ObjectID)
 {
-	for (auto iter = Players.begin() ; iter != Players.end() ; ++iter)
+	for (auto iter = Players.begin(); iter != Players.end(); ++iter)
 	{
 		if ((*iter)->GetObjectID() == ObjectID)
 			return *iter;

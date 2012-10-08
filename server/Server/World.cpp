@@ -124,7 +124,7 @@ int World::Run()
 {
     pWorldAcceptor->Accept();
     OldTime = boost::chrono::high_resolution_clock::now();
-    Timer.expires_from_now(boost::posix_time::milliseconds(50));
+    Timer.expires_from_now(boost::posix_time::milliseconds(SERVER_HEARTBEAT));
     Timer.async_wait(boost::bind(&World::Update, this));
     io.run();
     return 0;
@@ -141,13 +141,28 @@ void World::ConsoleInput()
 
         if (Input == "exit")
             break;
-        HandleCommand(Input);
+            
+        CommandHandler Handler(Input);
+
+        try
+        {
+            Handler.ExecuteCommand();
+        }
+        catch(CommandHandler::BadCommand&)
+        {
+            sLog.Write("Bad command !");
+        }
+        catch(sql::SQLException& e)
+        {
+            sLog.Write(e.what());
+            sLog.Flush();
+        }
     }
     IsRunning = false;
 }
 
 void World::Update()
-{
+{    
     if(!IsRunning)
     {
         io.stop();
@@ -160,13 +175,11 @@ void World::Update()
     sLog.Write("World::Update(now: %u, old: %u, new: %u)", now, OldTime, NewTime);
     #endif
 
-    for(auto MapIterator = Maps.begin(); MapIterator != Maps.end(); ++MapIterator)
-    {
-        (*MapIterator)->Update(NewTime.count());
-    }
+    std::for_each(Maps.begin(), Maps.end(), boost::bind(&Map::Update, _1, NewTime.count()));
+    
     OldTime += NewTime;
 
-    Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(50));
+    Timer.expires_at(Timer.expires_at() + boost::posix_time::milliseconds(SERVER_HEARTBEAT));
     Timer.async_wait(boost::bind(&World::Update, this));
 }
 
@@ -176,23 +189,4 @@ Map* World::GetMap(uint16 MapID)
         return Maps[MapID];
 
     return nullptr;
-}
-
-void World::HandleCommand(std::string& Command)
-{
-    CommandHandler Handler(Command);
-
-    try
-    {
-        Handler.ExecuteCommand();
-    }
-    catch(CommandHandler::BadCommand&)
-    {
-        sLog.Write("Bad command !");
-    }
-    catch(sql::SQLException& e)
-    {
-        sLog.Write(e.what());
-        sLog.Flush();
-    }
 }

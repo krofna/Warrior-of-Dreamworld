@@ -25,6 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class AIFactory;
 
+typedef boost::chrono::milliseconds ms;
+
 class World
 {
 public:
@@ -41,12 +43,10 @@ public:
 
 private:
     void Update();
-    void HandleCommand(std::string& Command);
-
-    WorldAcceptor* pWorldAcceptor;
-    std::vector<Map*> Maps;
 
     AIFactory* pAIFactory;
+    WorldAcceptor* pWorldAcceptor;
+    std::vector<Map*> Maps;
 
     volatile bool IsRunning;
 
@@ -55,7 +55,6 @@ private:
     boost::chrono::high_resolution_clock::time_point OldTime;
 };
 
-typedef boost::chrono::milliseconds ms;
 extern World* sWorld;
 
 #endif
