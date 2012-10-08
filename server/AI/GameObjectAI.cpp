@@ -17,6 +17,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "GameObjectAI.hpp"
+#include "AIFactory.hpp"
+#include "World.hpp"
+
+GameObjectAI* CreateAI(const std::string& AIName, GameObject* pGo)
+{
+    return sWorld->GetAIFactory()->CreateGameObjectAI(AIName, pGo);
+}
+
+void RegisterAI(const std::string &AIName, GameObjectAI*(*Creator)(GameObject* pGo))
+{
+    sWorld->GetAIFactory()->RegisterGameObjectAI(AIName, Creator);
+}
 
 void GameObjectAI::UpdateAI(int64 diff)
 {

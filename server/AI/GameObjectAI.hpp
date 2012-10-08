@@ -36,4 +36,7 @@ public:
     GameObject* pGo;
 };
 
+GameObjectAI* CreateAI(const std::string& AIName, GameObject* pGo);
+WOD_DLL_DECL void RegisterAI(const std::string &AIName, GameObjectAI*(*Creator)(GameObject* pGo));
+
 #endif
