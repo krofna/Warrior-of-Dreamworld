@@ -25,20 +25,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class CreatureAI;
 class GameObjectAI;
+class MapScript;
 class Creature;
 class GameObject;
+class Map;
 
 class AIFactory
 {
 public:
     void RegisterCreatureAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature));
     void RegisterGameObjectAI(const std::string& AIName, GameObjectAI*(*Creator)(GameObject* pGo));
+    void RegisterMapAI(const std::string& AIName, MapScript* (*Creator)(Map* pMap));
+    
     CreatureAI* CreateCreatureAI(const std::string& AIName, Creature* pCreature);
     GameObjectAI* CreateGameObjectAI(const std::string& AIName, GameObject* pGo);
+    MapScript* CreateMapScript(const std::string& AIName, Map* pMap);
 
 private:
     std::map<std::string, CreatureAI*(*)(Creature* pCreature)> CreatureAIRegistry;
     std::map<std::string, GameObjectAI*(*)(GameObject* pGo)> GameObjectAIRegistry;
+    std::map<std::string, MapScript*(*)(Map* pMap)> MapScriptRegistry;
 };
 
 #endif

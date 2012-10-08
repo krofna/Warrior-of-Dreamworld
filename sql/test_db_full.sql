@@ -75,6 +75,16 @@ CREATE TABLE `item_template`
     PRIMARY KEY(entry)
 );
 
+DROP TABLE IF EXISTS `map_template`;
+CREATE TABLE `map_template`
+(
+    `entry` INT UNSIGNED NOT NULL AUTOINCREMENT,
+    `ScriptName` CHAR(192),
+    PRIMARY KEY(entry)
+);
+
+INSERT INTO `map_template` VALUES(DEFAULT, 'map_test_map');
+
 INSERT INTO `item_template` VALUES(DEFAULT, 1, 1, "Krofna's bag", 1, 1, 36, "The bottom of the crate is leaking. Leaking tears...");
 
 INSERT INTO `creature_template` VALUES (DEFAULT, 'krofnica', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_krofnica');

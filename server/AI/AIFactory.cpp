@@ -19,8 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "AIFactory.hpp"
 #include "CreatureAI.hpp"
 #include "GameObjectAI.hpp"
+#include "MapScript.hpp"
 #include "Creature.hpp"
 #include "GameObject.hpp"
+#include "Map.hpp"
 
 void AIFactory::RegisterCreatureAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature))
 {
@@ -30,6 +32,11 @@ void AIFactory::RegisterCreatureAI(const std::string& AIName, CreatureAI*(*Creat
 void AIFactory::RegisterGameObjectAI(const std::string& AIName, GameObjectAI*(*Creator)(GameObject* pGo))
 {
     GameObjectAIRegistry[AIName] = Creator;
+}
+
+void AIFactory::RegisterMapAI(const std::string& AIName, MapScript* (*Creator)(Map* pMap))
+{
+    MapScriptRegistry[AIName] = Creator;
 }
 
 CreatureAI* AIFactory::CreateCreatureAI(const std::string& AIName, Creature* pCreature)
@@ -46,4 +53,12 @@ GameObjectAI* AIFactory::CreateGameObjectAI(const std::string& AIName, GameObjec
         return new GameObjectAI(pGo);
 
     return GameObjectAIRegistry[AIName](pGo);
+}
+
+MapScript* AIFactory::CreateMapScript(const std::string& AIName, Map* pMap)
+{
+    if(MapScriptRegistry.find(AIName) == MapScriptRegistry.end())
+        return new MapScript(pMap);
+
+    return MapScriptRegistry[AIName](pMap);
 }
