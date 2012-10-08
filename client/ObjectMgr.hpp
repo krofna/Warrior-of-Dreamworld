@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class ObjectMgr
 {
-    public:
+public:
     ObjectMgr(std::string const& TilesetDataFolder, std::string const& TemplatesFilePath);
 
     void Initialize();
@@ -64,7 +64,7 @@ class ObjectMgr
 
     sf::Texture* GetTexture(std::string const& TextureName, std::string const& TexturePath);
 
-    private:
+private:
     void LoadTemplates();
 
     void LoadItemTemplate(std::string const& lineData);
@@ -78,16 +78,6 @@ class ObjectMgr
 
     std::string m_TilesetPath;
     std::string m_TemplatesFilePath;
-
-
-    struct MapSecondDeleter
-    {
-        template<typename Type>
-        void operator() (Type toDelete)
-        {
-            delete toDelete.second;
-        }
-    };
 };
 
 #endif

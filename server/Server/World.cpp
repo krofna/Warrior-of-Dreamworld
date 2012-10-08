@@ -44,10 +44,7 @@ Maps        (MAP_COUNT)
 
 World::~World()
 {
-    for(uint16 i = 0; i < MAP_COUNT; ++i)
-    {
-        delete Maps[i];
-    }
+    std::for_each(Maps.begin(), Maps.end(), boost::bind(&operator delete, _1));
     delete AIFactory;
     delete pWorldAcceptor;
 }

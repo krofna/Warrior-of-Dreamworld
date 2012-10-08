@@ -19,6 +19,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef DEFINES_H
 #define DEFINES_H
 
+struct MapDeleter
+{
+    template<typename Type>
+    void operator() (Type toDelete)
+    {
+        delete toDelete.second;
+    }
+};
+
 #include <cstdint>
 
 typedef uint8_t uint8;

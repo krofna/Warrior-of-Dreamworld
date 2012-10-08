@@ -33,10 +33,10 @@ void ObjectMgr::Initialize()
 
 void ObjectMgr::Cleanup()
 {
-    std::for_each(m_ItemTemplates.begin(), m_ItemTemplates.end(), MapSecondDeleter());
-    std::for_each(m_CreatureTemplates.begin(), m_CreatureTemplates.end(), MapSecondDeleter());
-    std::for_each(m_Tilesets.begin(), m_Tilesets.end(), MapSecondDeleter());
-    std::for_each(m_Textures.begin(), m_Textures.end(), MapSecondDeleter());
+    std::for_each(m_ItemTemplates.begin(), m_ItemTemplates.end(), MapDeleter());
+    std::for_each(m_CreatureTemplates.begin(), m_CreatureTemplates.end(), MapDeleter());
+    std::for_each(m_Tilesets.begin(), m_Tilesets.end(), MapDeleter());
+    std::for_each(m_Textures.begin(), m_Textures.end(), MapDeleter());
 }
 
 void ObjectMgr::LoadTileset(std::string const& FileName)

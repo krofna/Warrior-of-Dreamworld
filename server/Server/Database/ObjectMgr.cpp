@@ -19,35 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
 #include "Player.hpp"
+#include "boost/bind.hpp"
 
 ObjectMgr sObjectMgr;
 
 ObjectMgr::~ObjectMgr()
 {
-    for(auto iter = CreatureTemplates.begin(); iter != CreatureTemplates.end(); ++iter)
-    {
-        delete iter->second;
-    }
-
-    for(auto iter = Players.begin(); iter != Players.end(); ++iter)
-    {
-        delete *iter;
-    }
-    
-    for(auto iter = ItemTemplates.begin(); iter != ItemTemplates.end(); ++iter)
-    {
-        delete iter->second;
-    }
-    
-    for(auto iter = QuestTemplates.begin(); iter != QuestTemplates.end(); ++iter)
-    {
-        delete iter->second;
-    }
-    
-    for(auto iter = SpellTemplates.begin(); iter != SpellTemplates.end(); ++iter)
-    {
-        delete iter->second;
-    }
+    std::for_each(CreatureTemplates.begin(), CreatureTemplates.end(), MapDeleter());
+    std::for_each(ItemTemplates.begin(), ItemTemplates.end(), MapDeleter());
+    std::for_each(QuestTemplates.begin(), QuestTemplates.end(), MapDeleter());
+    std::for_each(SpellTemplates.begin(), SpellTemplates.end(), MapDeleter());
+    std::for_each(Players.begin(), Players.end(), boost::bind(&operator delete, _1));
 }
 
 CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const
