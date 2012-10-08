@@ -103,6 +103,7 @@ void World::Load()
         {
             pMap = new Map(sObjectMgr.GetMapTemplate(Result->getUInt64(2)), Result->getUInt(1));
             Maps.push_back(pMap);
+            sLog.Write("Map %u loaded.", Result->getUInt(1));
         }
         
         sLog.Write("Maps loaded.");

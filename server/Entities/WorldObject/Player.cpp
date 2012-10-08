@@ -48,13 +48,13 @@ void Player::LoadFromDB()
     QueryResult Result(sDatabase.PQuery("SELECT `seclevel`, `tileset`, `tx`, `ty`, `mapid`, `x`, `y` FROM `players` WHERE guid='%llu'", ObjID));
     Result->next();
 
-    SecLevel    = Result->getUInt(1);
-    Tileset     = Result->getString(2);
-    tx          = Result->getUInt(3);
-    ty          = Result->getUInt(4);
-    pMap        = sWorld->GetMap(Result->getUInt(5));
-    Position.x  = Result->getUInt(6);
-    Position.y  = Result->getUInt(7);
+    SecLevel    = Result->getUInt   (1);
+    Tileset     = Result->getString (2);
+    tx          = Result->getUInt   (3);
+    ty          = Result->getUInt   (4);
+    pMap        = sWorld->GetMap    (Result->getUInt(5));
+    Position.x  = Result->getUInt   (6);
+    Position.y  = Result->getUInt   (7);
 
     // Load bags
     QueryResult BagResult(sDatabase.PQuery("SELECT `guid`, `idx`, `item_id` FROM `character_bags` WHERE `owner_guid` = %llu", ObjID));

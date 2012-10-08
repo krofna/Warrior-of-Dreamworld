@@ -1,6 +1,6 @@
 -- Placeholder database used for testing various game aspects
 
-INSERT INTO `map` VALUES(DEFAULT, 1, 'map_test_map');
+INSERT INTO `map` VALUES(0, 1);
 
 INSERT INTO `spell_template` VALUES (DEFAULT, 1, 0, 10, 10, 'Bolt');
 INSERT INTO `spell_template` VALUES (DEFAULT, 1, 1, 0, 0, 'Quadruple Accel No Interval');

@@ -127,8 +127,7 @@ DROP TABLE IF EXISTS `creature_quest`;
 CREATE TABLE `creature_quest`
 (
     `creature_entry` BIGINT UNSIGNED NOT NULL,
-    `quest_entry` BIGINT UNSIGNED NOT NULL,
-    PRIMARY KEY(`creature_entry`, `quest_entry`)
+    `quest_entry` BIGINT UNSIGNED NOT NULL
 );
 
 DROP TABLE IF EXISTS `character_bags`;
@@ -144,7 +143,7 @@ CREATE TABLE `character_bags`
 DROP TABLE IF EXISTS `map`;
 CREATE TABLE `map`
 (
-    `id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `entry` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` TINYINT UNSIGNED NOT NULL,
+    `entry` BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(id)
 );
