@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LOADABLE_H
 #define LOADABLE_H
 
-#include "../shared/WorldPacket.hpp"
+#include "shared/WorldPacket.hpp"
 
 // This ABC is a hack which allows us to make
 // main thread load all OpenGL stuff which

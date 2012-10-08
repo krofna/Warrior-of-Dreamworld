@@ -19,8 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_PACKET_H
 #define WORLD_PACKET_H
 
-#include "../shared/Defines.hpp"
-#include "../shared/Config.hpp"
+#include "shared/Defines.hpp"
 #include <cassert>
 #include <vector>
 #include <cstring>

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef OPCODES_H
 #define OPCODES_H
 
-#include "../shared/Config.hpp"
+#include "shared/Config.hpp"
 
 #ifdef MSVC
     #include "WorldSession.hpp"
@@ -47,7 +47,7 @@ enum Opcodes
     MSG_NOTIFICATION_MSG,
     MSG_TEXT_EMOTE,
 
-   /** Items **/
+    /** Items **/
     MSG_AUTO_EQUIP_ITEM,
     MSG_USE_ITEM,
     MSG_EQUIP_ITEM,
@@ -56,7 +56,6 @@ enum Opcodes
     MSG_CREATE_ITEM,
 	MSG_INVENTORY_DATA,
 
-   
     /** Insert witty comment **/
     MSG_NPC_INTERACT
 };
@@ -76,8 +75,5 @@ struct OpcodeHandler
 };
 
 extern OpcodeHandler OpcodeTable[MSG_COUNT];
-
-#define MakeOpcode(NameOpcode, Name) { #NameOpcode, &WorldSession:: ## Handle ## Name ## Opcode }
-#define MakeNullOpcode(NameOpcode) { #NameOpcode, &WorldSession::HandleNULL }
 
 #endif

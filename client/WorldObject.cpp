@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldObject.hpp"
 #include "Globals.hpp"
-#include "../shared/WorldPacket.hpp"
+#include "shared/WorldPacket.hpp"
 
 WorldObject::WorldObject()
 {
@@ -65,4 +65,9 @@ void WorldObject::Draw()
 sf::Vector2f WorldObject::GetPosition() 
 { 
     return ObjectSprite.getPosition(); 
+}
+
+std::string WorldObject::GetObjectName() const
+{
+    return ObjectName;
 }

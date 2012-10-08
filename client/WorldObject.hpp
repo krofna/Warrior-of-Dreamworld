@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_OBJECT_H
 #define WORLD_OBJECT_H
 
-#include "../shared/Defines.hpp"
 #include "Loadable.hpp"
 #include "Globals.hpp"
 
@@ -41,10 +40,7 @@ public:
     void UpdateCoordinates(uint16 x, uint16 y);
     sf::Vector2f GetPosition();
 
-    std::string GetObjectName() const
-    {
-        return ObjectName;
-    }
+    std::string GetObjectName() const;
 
 private:
     sf::Sprite ObjectSprite;

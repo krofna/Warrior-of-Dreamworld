@@ -17,18 +17,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
-
 #include "Globals.hpp"
 #include "Game.hpp"
-
 #include "WorldSession.hpp"
 #include "MessageChatArea.hpp"
-
 #include "Inventory.hpp"
 #include "Bag.hpp"
 
-#include "../shared/Math.hpp"
-#include "../shared/Utils.hpp"
+#include "shared/Math.hpp"
+#include "shared/Utils.hpp"
 #include <cassert>
 
 World::World  (uint64 MeID) :
@@ -47,16 +44,8 @@ m_PointMode   (false)
 
 World::~World()
 {
-    for(auto ObjIter = WorldObjectMap.begin(); ObjIter != WorldObjectMap.end(); ++ObjIter)
-    {
-        delete ObjIter->second;
-    }
-
-    for(auto AnimIter = Animations.begin(); AnimIter != Animations.end(); ++AnimIter)
-    {
-        delete *AnimIter;
-    }
-
+    std::for_each(WorldObjectMap.begin(), WorldObjectMap.end(), MapDeleter());
+    std::for_each(Animations.begin(), Animations.end(), boost::bind(&operator delete, _1));
     delete pInventory;
 }
 

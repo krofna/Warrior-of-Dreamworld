@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef BAG_DEFINED
 #define BAG_DEFINED
 
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 #include "Globals.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -29,9 +29,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define SLOT_SHAPE sf::Vector2f(15, 15)
 
 class Item;
+
 class Bag
 {
-    public:
+public:
     Bag(int idxBag, std::string const& FileNameIcon);
     ~Bag();
 
@@ -55,7 +56,7 @@ class Bag
 
     static void InitializePositionsBag();
 
-    private:
+private:
     bool m_IsCreated;
     uint8 m_Capacity;
     static_template_array<Item*, MAX_BAG_SIZE> m_Slots;

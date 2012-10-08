@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 #include "Loadable.hpp"
 
 #include <SFML/System/Time.hpp>
@@ -31,12 +31,10 @@ class Animation : public Loadable
 {
 public:
     Animation();
+    uint32 GetID() const;
+
     void Update();
     virtual void Load(WorldPacket Argv);
-    uint32 GetID() const
-    {
-        return ID;
-    }
 
 private:
     sf::Time Time;

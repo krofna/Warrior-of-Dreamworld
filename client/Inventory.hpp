@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef INVENTORY_DEFINED
 #define INVENTORY_DEFINED
 
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 
 namespace sf { class Event; }
 class Bag;
@@ -39,7 +39,7 @@ enum ItemBlockStatus
 
 class Inventory
 {
-    public:
+public:
     Inventory(std::string const& FileNameIcon);
     ~Inventory();
 
@@ -55,11 +55,11 @@ class Inventory
 
     uint8 GetNumSlots(uint8 BagPos) const;
 
-    protected:
+protected:
     void DrawBagOpen();
     void DrawBagIcon();
 
-    private:
+private:
     Bag* m_Bags[4]; 
     bool m_IsBagOpen[4];
     bool m_IsAllOpen;

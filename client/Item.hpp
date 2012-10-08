@@ -19,14 +19,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef ITEM_DEFINED
 #define ITEM_DEFINED
 
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 #include <SFML/System.hpp>
 
 struct ItemTemplate;
 
 class Item
 {
-    public:
+public:
     Item();
     static Item* Create(uint64 Entry);
 
@@ -35,7 +35,7 @@ class Item
 
     void Use();
 
-    private:
+private:
     uint64 m_GUID;
     ItemTemplate const* m_Template;
 };

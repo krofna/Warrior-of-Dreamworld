@@ -20,7 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 #include "WorldSession.hpp"
 
-MessageChatArea::MessageChatArea() : m_IsTyping(false)
+MessageChatArea::MessageChatArea() :
+m_IsTyping                      (false)
 {
     if (!m_DefaultFont.loadFromFile("data/fonts/arial.ttf"))
         throw std::runtime_error("Impossible to load arial.ttf font");
@@ -62,7 +63,6 @@ void MessageChatArea::AddRawMessage(std::string const& Msg, sf::Color const& Msg
 
     m_Messages.push_back(message);
 }
-
 
 void MessageChatArea::Draw(int32 UpdateTime)
 {
@@ -139,6 +139,5 @@ bool MessageChatArea::HandleTyping(sf::Event event)
         }
     }
 
-    
     return m_IsTyping;
 }

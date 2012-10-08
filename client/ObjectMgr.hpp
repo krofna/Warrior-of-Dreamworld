@@ -20,9 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define OBJECT_MGR_DEFINED
 
 #include <map>
-#include <string>
 #include <SFML/Graphics/Texture.hpp>
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 #include "shared/Templates.hpp"
 
 #include <boost/lexical_cast.hpp>

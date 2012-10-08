@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "../shared/Defines.hpp"
+#include "shared/Defines.hpp"
 
 #define MESSAGE_POS_X 10
 #define MESSAGE_POS_Y (WindowHeight / 6) * 5
@@ -35,7 +35,7 @@ class MessageChatArea
         sf::Color DefaultColor;
         bool IsServerMessage;
     };
-    public:
+public:
     MessageChatArea();
 
     void AddMessage(std::string const& ObjectName, std::string const& Content, int32 Duration = 5);
@@ -44,7 +44,7 @@ class MessageChatArea
     void Draw(int32 UpdateTime);
     bool HandleTyping(sf::Event event);
 
-    private:
+private:
     std::string m_Message;
     bool m_IsTyping;
     bool m_StartCharacter;

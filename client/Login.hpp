@@ -32,6 +32,7 @@ class Login : public GameState
         Password,
         None
     };
+
 public:
     Login();
     ~Login();
