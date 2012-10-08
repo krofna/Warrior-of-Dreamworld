@@ -26,8 +26,9 @@ How to import SQL database of Warrior-of-Dreamworld:
     cd sql && mysql -u root -p
     He will asks for your root password (for MySQL, not system account)
     type in MySQL prompt: CREATE DATABASE world;
-    type in MySQL prompt: USE world;
-    type in MySQL prompt: source test_db_full.sql;
+                          USE world;
+                          source world_structure.sql
+                          source test_db_full.sql
     You have imported SQL Database needed for Warrior-of-Dreamworld
     (For exit from prompt, type exit :) )
 
