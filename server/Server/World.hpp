@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldAcceptor.hpp"
 #include <boost/chrono.hpp>
 
-class CreatureAIFactory;
+class AIFactory;
 
 class World
 {
@@ -38,7 +38,7 @@ public:
 
     Map* GetMap(uint16 MapID);
 
-    CreatureAIFactory* GetAIFactory();
+    AIFactory* GetAIFactory();
 
 private:
     void Update();
@@ -47,7 +47,7 @@ private:
     WorldAcceptor* pWorldAcceptor;
     std::vector<Map*> Maps;
 
-    CreatureAIFactory* AIFactory;
+    AIFactory* pAIFactory;
 
     volatile bool IsRunning;
 

@@ -36,6 +36,7 @@ struct WorldObjectTemplate
     std::string Tileset;
     uint16 tx;
     uint16 ty;
+    std::string ScriptName;
 };
 
 struct CreatureTemplate : WorldObjectTemplate
@@ -44,7 +45,6 @@ struct CreatureTemplate : WorldObjectTemplate
     uint16 npcflag;
     uint32 MaxHealth;
     uint32 MaxPower;
-    std::string ScriptName;
 };
 
 // NOT YET IN DATABASE

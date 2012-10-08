@@ -78,7 +78,7 @@ void MessageChatArea::Draw(int32 UpdateTime)
     if (m_Messages.empty())
         return;
 
-    for (int i = 0 ; i < m_Messages.size() ; ++i)
+    for (unsigned i = 0 ; i < m_Messages.size() ; ++i)
     {
         if (m_Messages[i].TimeDisplay - UpdateTime <= 0)
         {
@@ -87,7 +87,9 @@ void MessageChatArea::Draw(int32 UpdateTime)
             continue;
         }
         else
+        {
             m_Messages[i].TimeDisplay -= UpdateTime;
+        }
         
         std::string StringMessage;
         if (m_Messages[i].IsServerMessage)

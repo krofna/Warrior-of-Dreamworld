@@ -18,17 +18,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "CreatureAI.hpp"
 #include "Creature.hpp"
-#include "CreatureAIFactory.hpp"
+#include "AIFactory.hpp"
 #include "World.hpp"
 
 CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature)
 {
-    return sWorld->GetAIFactory()->CreateAI(AIName, pCreature);
+    return sWorld->GetAIFactory()->CreateCreatureAI(AIName, pCreature);
 }
 
 void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature))
 {
-    sWorld->GetAIFactory()->RegisterAI(AIName, Creator);
+    sWorld->GetAIFactory()->RegisterCreatureAI(AIName, Creator);
 }
 
 void CreatureAI::UpdateAI(int64 diff)

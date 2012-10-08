@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
 #include "scripts/ScriptLoader.hpp"
-#include "CreatureAIFactory.hpp"
+#include "AIFactory.hpp"
 #include "Pathfinder.hpp"
 #include "shared/Log.hpp"
 #include "CommandHandler.hpp"
@@ -45,13 +45,13 @@ Maps        (MAP_COUNT)
 World::~World()
 {
     std::for_each(Maps.begin(), Maps.end(), boost::bind(&operator delete, _1));
-    delete AIFactory;
+    delete pAIFactory;
     delete pWorldAcceptor;
 }
 
-CreatureAIFactory* World::GetAIFactory()
+AIFactory* World::GetAIFactory()
 {
-    return AIFactory;
+    return pAIFactory;
 }
 
 void World::Load()
@@ -78,7 +78,7 @@ void World::Load()
         sObjectMgr.LoadPlayersLoginInfo();
         sLog.Write("Players login informations loaded.");
 
-        AIFactory = new CreatureAIFactory;
+        pAIFactory = new AIFactory;
 
         sLog.Write("Loading scripts...");
         LoadScripts();

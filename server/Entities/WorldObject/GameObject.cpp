@@ -18,14 +18,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "GameObject.hpp"
 #include "GameObjectAI.hpp"
+#include "World.hpp"
+#include "AIFactory.hpp"
 #include "shared/Opcodes.hpp"
 
 GameObject::GameObject(uint64 ObjID, Map* pMap, uint16 x, uint16 y, GameObjectTemplate* pTemplate) :
 WorldObject           (ObjID),
-pTemplate             (pTemplate),
-pAI                   (new GameObjectAI(this))
+pTemplate             (pTemplate)
 {
+    pAI = sWorld->GetAIFactory()->CreateGameObjectAI(pTemplate->ScriptName, this);
     this->pMap = pMap;
+}
+
+GameObject::~GameObject()
+{
+    delete pAI;
 }
 
 void GameObject::Update(int64 diff)

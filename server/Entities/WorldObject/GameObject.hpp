@@ -25,6 +25,7 @@ class GameObject : public WorldObject
 {
 public:
     GameObject(uint64 ObjID, Map* pMap, uint16 x, uint16 y, GameObjectTemplate* pTemplate);
+    ~GameObject();
     
     void Update(int64 diff);
     void OnInteract(Player* pWho);

@@ -108,11 +108,12 @@ void ObjectMgr::LoadGameObjectTemplates()
     {
         pTemplate = new GameObjectTemplate;
 
-        pTemplate->Entry   = Result->getUInt64 (1);
-        pTemplate->Name    = Result->getString (2);
-        pTemplate->Tileset = Result->getString (3);
-        pTemplate->tx      = Result->getUInt   (4);
-        pTemplate->ty      = Result->getUInt   (5);
+        pTemplate->Entry      = Result->getUInt64 (1);
+        pTemplate->Name       = Result->getString (2);
+        pTemplate->Tileset    = Result->getString (3);
+        pTemplate->tx         = Result->getUInt   (4);
+        pTemplate->ty         = Result->getUInt   (5);
+        pTemplate->ScriptName = Result->getString (6);
 
         GameObjectTemplates[pTemplate->Entry] = pTemplate;
     }
