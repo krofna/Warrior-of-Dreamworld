@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include "Database.hpp"
 #include "Player.hpp"
-#include "boost/bind.hpp"
+#include <boost/bind.hpp>
 
 ObjectMgr sObjectMgr;
 
