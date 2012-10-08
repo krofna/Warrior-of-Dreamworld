@@ -21,12 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <fstream>
 #include <iostream>
-#include "boost/thread/mutex.hpp"
+#include <boost/thread/mutex.hpp>
 #include "Config.hpp"
-
-#ifdef HAVE_VARIADIC_TEMPLATES
-#include "Utils.hpp"
-#endif
 
 // Thread safe output
 class Log

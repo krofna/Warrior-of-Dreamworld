@@ -2,7 +2,7 @@
 #define VECTOR2_HPP
 
 #include <cmath>
-#include "Defines.hpp"
+#include "shared/Defines.hpp"
 // TODO: Minor cleanings necessary.
 
 template<typename NumberType>

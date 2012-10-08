@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include "shared/Templates.hpp"
 #include <map>
-#include <vector>
+#include <list>
 
 class Player;
 
@@ -55,7 +55,7 @@ public:
 	Player* GetPlayer(uint64 ObjectID);
 
 private:
-    std::vector<Player*> Players;
+    std::list<Player*> Players;
     
     std::map<uint64, SpellTemplate*> SpellTemplates;
     std::map<uint64, CreatureTemplate*> CreatureTemplates;
