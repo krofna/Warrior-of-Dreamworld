@@ -75,7 +75,7 @@ CREATE TABLE `item_template`
 DROP TABLE IF EXISTS `map_template`;
 CREATE TABLE `map_template`
 (
-    `entry` INT UNSIGNED NOT NULL AUTOINCREMENT,
+    `entry` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `ScriptName` CHAR(192),
     PRIMARY KEY(entry)
 );
