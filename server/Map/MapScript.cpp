@@ -17,6 +17,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "MapScript.hpp"
+#include "World.hpp"
+
+MapScript* CreateScript(const std::string& AIName, Map* pMap)
+{
+    return sWorld->GetAIFactory()->CreateMapScript(AIName, pMap);
+}
+
+void RegisterScript(const std::string &AIName, MapScript*(*Creator)(Map* pMap))
+{
+    sWorld->GetAIFactory()->RegisterMapAI(AIName, Creator);
+}
 
 void MapScript::Update(int64 diff)
 {

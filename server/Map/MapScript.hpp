@@ -34,4 +34,7 @@ private:
     Map* pMap;
 };
 
+MapScript* CreateScript(const std::string& AIName, Map* pMap);
+WOD_DLL_DECL void RegisterScript(const std::string &AIName, MapScript*(*Creator)(Map* pMap));
+
 #endif
