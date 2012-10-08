@@ -1,3 +1,5 @@
+-- World database structure --
+
 DROP TABLE IF EXISTS `players`;
 CREATE TABLE `players` 
 (
@@ -28,9 +30,6 @@ CREATE TABLE `spell_template`
     PRIMARY KEY(entry)
 );
 
-INSERT INTO `spell_template` VALUES (DEFAULT, 1, 0, 10, 10, 'Bolt');
-INSERT INTO `spell_template` VALUES (DEFAULT, 1, 1, 0, 0, 'Quadruple Accel No Interval');
-
 DROP TABLE IF EXISTS `creature_template`;
 CREATE TABLE `creature_template`
 (
@@ -59,8 +58,6 @@ CREATE TABLE `gameobject_template`
     PRIMARY KEY(entry)
 );
 
-INSERT INTO `gameobject_template` VALUES (DEFAULT, 'test_go', 'dg_edging132.gif', 7, 15, 0, 'go_test_go'); 
-
 DROP TABLE IF EXISTS `item_template`;
 CREATE TABLE `item_template`
 (
@@ -82,13 +79,6 @@ CREATE TABLE `map_template`
     `ScriptName` CHAR(192),
     PRIMARY KEY(entry)
 );
-
-INSERT INTO `map_template` VALUES(DEFAULT, 'map_test_map');
-
-INSERT INTO `item_template` VALUES(DEFAULT, 1, 1, "Krofna's bag", 1, 1, 36, "The bottom of the crate is leaking. Leaking tears...");
-
-INSERT INTO `creature_template` VALUES (DEFAULT, 'krofnica', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_krofnica');
-INSERT INTO `creature_template` VALUES (DEFAULT, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_the_fullmetal_alchimist');
 
 DROP TABLE IF EXISTS `creature`;
 CREATE TABLE `creature`
@@ -112,9 +102,6 @@ CREATE TABLE `gameobject`
     PRIMARY KEY(guid)
 );
 
-INSERT INTO `creature` VALUES (UUID_SHORT(), 1, 0, 10, 10);
-INSERT INTO `creature` VALUES (UUID_SHORT(), 2, 0, 11, 11);
-
 DROP TABLE IF EXISTS `items`;
 CREATE TABLE `items`
 (
@@ -136,9 +123,6 @@ CREATE TABLE `quest_template`
     PRIMARY KEY(entry)
 );
 
-INSERT INTO `quest_template` VALUES(DEFAULT, "Help!", "One of our developers, has gone rogue! Find and eliminate him!", "Kill FullMetal-Alchimist");
-INSERT INTO `quest_template` VALUE(DEFAULT, "Help!", "One of our developers, don't know how to make a performance analysis! Please find and teach him !", "Teach how to make a performance analysis to Krofna");
-
 DROP TABLE IF EXISTS `creature_quest`;
 CREATE TABLE `creature_quest`
 (
@@ -146,8 +130,6 @@ CREATE TABLE `creature_quest`
     `quest_entry` BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(`creature_entry`, `quest_entry`)
 );
-
-INSERT INTO `creature_quest` VALUES(1, 1);
 
 DROP TABLE IF EXISTS `character_bags`;
 CREATE TABLE `character_bags`
