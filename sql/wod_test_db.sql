@@ -18,6 +18,6 @@ INSERT INTO `creature` VALUES (UUID_SHORT(), 1, 0, 10, 10);
 INSERT INTO `creature` VALUES (UUID_SHORT(), 2, 0, 11, 11);
 
 INSERT INTO `quest_template` VALUES(DEFAULT, "Help!", "One of our developers, has gone rogue! Find and eliminate him!", "Kill FullMetal-Alchimist");
-INSERT INTO `quest_template` VALUE(DEFAULT, "Help!", "One of our developers, don't know how to make a performance analysis! Please find and teach him !", "Teach how to make a performance analysis to Krofna");
+INSERT INTO `quest_template` VALUES(DEFAULT, "Help!", "One of our developers, don't know how to make a performance analysis! Please find and teach him !", "Teach how to make a performance analysis to Krofna");
 
 INSERT INTO `creature_quest` VALUES(1, 1);
