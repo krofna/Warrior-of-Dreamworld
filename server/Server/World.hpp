@@ -27,7 +27,6 @@ class AIFactory;
 
 class World
 {
-    friend class WorldSession;
 public:
     World(boost::asio::io_service& io);
     ~World();
