@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "GameState.hpp"
 #include "Globals.hpp"
-#include "boost/thread.hpp"
+#include <boost/thread.hpp>
 #include <queue>
 #include <stack>
 
@@ -37,10 +37,8 @@ public:
     void PopState() { if(!StateStack.empty()) { delete StateStack.top(); StateStack.pop(); } }
     void PopAllStates() { while(!StateStack.empty()) { PopState(); }}
 
-
 private:
     std::stack<GameState*> StateStack;
-
     std::queue<std::pair<Loadable*, WorldPacket> > LoadQueue;
     boost::mutex LoadQueueMutex;
 };

@@ -23,9 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Globals.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
-/*
-TODO: Maybe everything should be WorldObject as far as client is concerned?
-*/
 
 class WorldPacket;
 

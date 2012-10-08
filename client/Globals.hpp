@@ -30,7 +30,7 @@ extern sf::RenderWindow* Window;
 extern sfg::SFGUI* sSFGUI;
 extern sfg::Desktop sDesktop;
 
-#include "../shared/Log.hpp"
+#include "shared/Log.hpp"
 #include "ObjectMgr.hpp"
 extern ObjectMgr* sObjectMgr;
 

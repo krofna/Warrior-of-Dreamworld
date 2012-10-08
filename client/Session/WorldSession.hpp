@@ -21,8 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "shared/WorldPacket.hpp"
 #include "World.hpp"
-#include "boost/asio.hpp"
-#include "boost/thread.hpp"
+#include <boost/asio.hpp>
+#include <boost/thread.hpp>
 #include <queue>
 using boost::asio::ip::tcp;
 

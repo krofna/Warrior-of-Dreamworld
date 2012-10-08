@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include "WorldSession.hpp"
 #include "ObjectMgr.hpp"
-#include "boost/scoped_ptr.hpp"
 
 #include <stdexcept>
 
@@ -62,19 +61,18 @@ int main()
         sGame->PushState(new Login());
 
 #ifdef GPROF
-
         wrapper_profiling_multithread profiling_wrapper;
         getitimer(ITIMER_PROF, profiling_wrapper.itimer);
         boost::thread NetworkThread(boost::bind(&wrapper_profiler_multithread, &io, profiling_wrapper));
 #else
         boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
 #endif
+
         sGame->Run();
         io.stop();
         NetworkThread.join();
     }
-    catch(std::exception const
-          & e)
+    catch(std::exception const& e)
     {
         sLog.Write("EXCEPTION occured: %s", e.what());
     }
