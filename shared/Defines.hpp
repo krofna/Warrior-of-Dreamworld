@@ -83,7 +83,6 @@ class WorldSession;
 #endif
 
 #define TILE_SIZE 32
-#define MAP_COUNT 1
 
 enum
 {

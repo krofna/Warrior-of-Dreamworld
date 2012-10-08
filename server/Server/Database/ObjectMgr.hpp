@@ -40,7 +40,7 @@ public:
     SpellTemplate*      GetSpellTemplate      (uint64 Entry) const;
     MapTemplate*        GetMapTemplate        (uint16 Entry) const;
 
-    WorldObjectQuests GetCreatureQuests   (uint64 Entry) const;
+    WorldObjectQuests GetCreatureQuests       (uint64 Entry) const;
 
     void LoadSpellTemplates();
     void LoadCreatureTemplates();

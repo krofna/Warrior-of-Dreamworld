@@ -36,8 +36,7 @@ World* sWorld;
 World::World(boost::asio::io_service& io) :
 IsRunning   (true),
 io          (io),
-Timer       (io),
-Maps        (MAP_COUNT)
+Timer       (io)
 {
     pWorldAcceptor = new WorldAcceptor(io);
     pAIFactory = new AIFactory;
@@ -96,14 +95,16 @@ void World::Load()
         sLog.Write("Pathfinding initialized.");
 
         sLog.Write("Loading maps...");
-        for(uint16 i = 0; i < MAP_COUNT; ++i)
+        
+        QueryResult Result(sDatabase.Query("SELECT * FROM `map`"));
+        Map* pMap;
+        
+        while(Result->next())
         {
-            // placeholder... This is not how maps should be loaded
-            Maps[i] = new Map(sObjectMgr.GetMapTemplate(i), i);
-            sLog.Write("Loading map (%u)", i);
-            Maps[i]->Load();
-            sLog.Write("Map loaded (%u)", i);
+            pMap = new Map(sObjectMgr.GetMapTemplate(Result->getUInt64(2)), Result->getUInt(1));
+            Maps.push_back(pMap);
         }
+        
         sLog.Write("Maps loaded.");
     }
     catch(sql::SQLException &e)
