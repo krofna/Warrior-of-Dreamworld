@@ -59,7 +59,7 @@ void Item::SaveToDB()
         sDatabase.PExecute("INSERT INTO `items` VALUES(%llu, %llu, %llu, %llu)", m_GUID, m_OwnerGUID, m_Container ? m_Container->GetGUID() : 0, m_Slot, GetItemID());
     }
     else if (m_uState == ITEM_CHANGED)
-	{
+    {
         // TODO: Make update flag and others thing.
 
         // sDatabase.PExecute("UPDATE %s WHERE `guid` = %llu", ModificationQuery);
@@ -176,10 +176,10 @@ uint64 Item::GetItemID() const
 
 bool Item::IsBag() const
 {
-	return m_Template->InventoryType == INVTYPE_BAG;
+    return m_Template->InventoryType == INVTYPE_BAG;
 }
 
 Bag* Item::ToBag()
 {
-	return (IsBag() ? dynamic_cast<Bag* >(this) : nullptr);
+    return (IsBag() ? dynamic_cast<Bag* >(this) : nullptr);
 }

@@ -42,7 +42,7 @@ class Item
         NONE
     };
 
-    public:
+public:
     enum ItemBlockStatus
     {
         ITEM_USED,
@@ -50,7 +50,7 @@ class Item
         ITEM_ERROR
     };
 
-   Item();
+    Item();
 
     static Item* CreateItem(uint64 ItemID, Player const* Owner = nullptr);
 
@@ -82,7 +82,7 @@ class Item
 	bool IsBag() const;
 	Bag* ToBag();
 
-    private:
+private:
     uint64 m_GUID;
     std::string m_Text;
     Bag* m_Container;
