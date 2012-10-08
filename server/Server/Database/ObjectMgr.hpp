@@ -33,15 +33,17 @@ class ObjectMgr
 public:
     ~ObjectMgr();
 
-    CreatureTemplate* GetCreatureTemplate (uint64 Entry) const;
-    ItemTemplate*     GetItemTemplate     (uint64 Entry) const;
-    QuestTemplate*    GetQuestTemplate    (uint64 Entry) const;
-    SpellTemplate*    GetSpellTemplate    (uint16 Entry) const;
+    CreatureTemplate*   GetCreatureTemplate   (uint64 Entry) const;
+    GameObjectTemplate* GetGameObjectTemplate (uint64 Entry) const;
+    ItemTemplate*       GetItemTemplate       (uint64 Entry) const;
+    QuestTemplate*      GetQuestTemplate      (uint64 Entry) const;
+    SpellTemplate*      GetSpellTemplate      (uint16 Entry) const;
 
     WorldObjectQuests GetCreatureQuests   (uint64 Entry) const;
 
     void LoadSpellTemplates();
     void LoadCreatureTemplates();
+    void LoadGameObjectTemplates();
     void LoadItemTemplates();
     void LoadQuestTemplates();
     void LoadPlayersLoginInfo();
@@ -55,6 +57,7 @@ private:
     
     std::map<uint64, SpellTemplate*> SpellTemplates;
     std::map<uint64, CreatureTemplate*> CreatureTemplates;
+    std::map<uint64, GameObjectTemplate*> GameObjectTemplates;
     std::map<uint64, ItemTemplate*> ItemTemplates;
     std::map<uint64, QuestTemplate*> QuestTemplates;
     

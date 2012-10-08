@@ -24,6 +24,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Database.hpp"
 #include "Pathfinder.hpp"
 #include "ObjectMgr.hpp"
+#include "Creature.hpp"
+#include "GameObject.hpp"
 
 Map::Map     (uint16 TMapID) : 
 NewSpellBoxID(0),
@@ -32,6 +34,19 @@ MapID        (TMapID),
 TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 {
     sLog.Write("Map %u loaded.", MapID);
+}
+
+Map::~Map()
+{
+    // Notify everyone that server is going down
+    std::for_each(Players.begin(), Players.end(), boost::bind(&Player::OnServerShutdown, _1));
+
+    // Cleanup entities
+    std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&operator delete, _1));
+    std::for_each(GameObjects.begin(), GameObjects.end(), boost::bind(&operator delete, _1));
+    std::for_each(Spells.begin(), Spells.end(), boost::bind(&operator delete, _1));
+
+    sLog.Write("Map %u destroyed.", MapID);
 }
 
 uint16 Map::GetID() const
@@ -44,28 +59,24 @@ uint32 Map::GetNewSpellBoxID() const
     return NewSpellBoxID;
 }
 
-Map::~Map()
-{
-    // Notify everyone that server is going down
-    std::for_each(Players.begin(), Players.end(), boost::bind(&Player::OnServerShutdown, _1));
-
-    // Cleanup entities
-    std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&operator delete, _1));
-    std::for_each(Spells.begin(), Spells.end(), boost::bind(&operator delete, _1));
-
-    sLog.Write("Map %u destroyed.", MapID);
-}
-
-void Map::LoadCreatures()
+void Map::Load()
 {
     QueryResult Result(sDatabase.PQuery("SELECT * FROM `creature` WHERE map='%u'", MapID));
     Creature* pCreature;
 
     while(Result->next())
     {
-        pCreature = new Creature(Result->getUInt(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2)));
-        pCreature->InitializeAI();
+        pCreature = new Creature(Result->getUInt64(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetCreatureTemplate(Result->getUInt(2)));
         Creatures.push_back(pCreature);
+    }
+
+    QueryResult GoResult(sDatabase.PQuery("SELECT * FROM `gameobject` WHERE map='%u'", MapID));
+    GameObject* pGo;
+
+    while(Result->next())
+    {
+        pGo = new GameObject(Result->getUInt64(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetGameObjectTemplate(Result->getUInt(2)));
+        GameObjects.push_back(pGo);
     }
 }
 
@@ -74,6 +85,7 @@ void Map::Update(int64 diff)
     std::for_each(Spells.begin(), Spells.end(), boost::bind(&SpellBox::Update, _1, diff));
     std::for_each(Players.begin(), Players.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
+    std::for_each(GameObjects.begin(), GameObjects.end(), boost::bind(&GameObject::Update, _1, diff));
 }
 
 void Map::UnitUpdate(Unit* pUnit, int64 diff)

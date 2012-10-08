@@ -16,21 +16,24 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "WorldObject.hpp"
+#ifndef GAME_OBJECT_AI_H
+#define GAME_OBJECT_AI_H
 
-struct GameObjectTemplate;
-class GameObjectAI;
+#include "shared/Defines.hpp"
 
-class GameObject : public WorldObject
+class GameObject;
+
+class WOD_DLL_DECL GameObjectAI
 {
 public:
-    GameObject(uint64 ObjID, Map* pMap, uint16 x, uint16 y, GameObjectTemplate* pTemplate);
-    
-    void Update(int64 diff);
-    void OnInteract(Player* pWho);
-    WorldPacket PackData();
-    
-private:
-    GameObjectTemplate const* pTemplate;
-    GameObjectAI* pAI;
+    explicit GameObjectAI(GameObject* pGo) : pGo(pGo) {}
+    virtual ~GameObjectAI() {};
+
+    // Called on World::Update
+    virtual void UpdateAI(int64 diff);
+
+    // GameObject controlled by this AI
+    GameObject* pGo;
 };
+
+#endif

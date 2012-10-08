@@ -20,10 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define MAP_H
 
 #include "SpellBox.hpp"
-#include "Creature.hpp"
+#include "shared/WorldPacket.hpp"
 #include <list>
 
 class Player;
+class Creature;
+class GameObject;
+class WorldObject;
 
 class Map
 {
@@ -35,7 +38,7 @@ public:
     uint16 GetID() const;
     uint32 GetNewSpellBoxID() const;
 
-    void LoadCreatures();
+    void Load();
 
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
@@ -53,6 +56,7 @@ public:
 
 //private:
     // Entities
+    std::list<GameObject*> GameObjects;
     std::list<Creature*> Creatures;
     std::list<Player*> Players;
     std::list<SpellBox*> Spells;

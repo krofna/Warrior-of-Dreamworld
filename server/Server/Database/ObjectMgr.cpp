@@ -26,6 +26,7 @@ ObjectMgr sObjectMgr;
 ObjectMgr::~ObjectMgr()
 {
     std::for_each(CreatureTemplates.begin(), CreatureTemplates.end(), MapDeleter());
+    std::for_each(GameObjectTemplates.begin(), GameObjectTemplates.end(), MapDeleter());
     std::for_each(ItemTemplates.begin(), ItemTemplates.end(), MapDeleter());
     std::for_each(QuestTemplates.begin(), QuestTemplates.end(), MapDeleter());
     std::for_each(SpellTemplates.begin(), SpellTemplates.end(), MapDeleter());
@@ -36,6 +37,15 @@ CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const
 {
     auto CTemplate = CreatureTemplates.find(Entry);
     if(CTemplate != CreatureTemplates.end())
+        return CTemplate->second;
+
+    return nullptr;
+}
+
+GameObjectTemplate* ObjectMgr::GetGameObjectTemplate (uint64 Entry) const
+{
+    auto CTemplate = GameObjectTemplates.find(Entry);
+    if(CTemplate != GameObjectTemplates.end())
         return CTemplate->second;
 
     return nullptr;
@@ -85,6 +95,26 @@ void ObjectMgr::LoadCreatureTemplates()
         pTemplate->ScriptName = Result->getString (9);
 
         CreatureTemplates[pTemplate->Entry] = pTemplate;
+    }
+}
+
+void ObjectMgr::LoadGameObjectTemplates()
+{
+    QueryResult Result(sDatabase.Query("SELECT * FROM `gameobject_template`"));
+
+    GameObjectTemplate* pTemplate;
+
+    while(Result->next())
+    {
+        pTemplate = new GameObjectTemplate;
+
+        pTemplate->Entry   = Result->getUInt64 (1);
+        pTemplate->Name    = Result->getString (2);
+        pTemplate->Tileset = Result->getString (3);
+        pTemplate->tx      = Result->getUInt   (4);
+        pTemplate->ty      = Result->getUInt   (5);
+
+        GameObjectTemplates[pTemplate->Entry] = pTemplate;
     }
 }
 

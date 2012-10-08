@@ -40,10 +40,6 @@ pTemplate         (pTemplate)
     pMap->TileGrid[y][x] = this;
     this->Health = pTemplate->MaxHealth;
     this->Power = pTemplate->MaxPower;
-}
-
-void Creature::InitializeAI()
-{
     pAI = CreateAI(pTemplate->ScriptName, this);
     MovementGenerator = new Pathfinder(this);
 }

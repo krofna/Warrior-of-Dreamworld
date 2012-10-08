@@ -46,6 +46,19 @@ CREATE TABLE `creature_template`
     PRIMARY KEY(entry)
 );
 
+DROP TABLE IF EXISTS `gameobject_template`;
+CREATE TABLE `gameobject_template`
+(
+    `entry` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` CHAR(192) NOT NULL,
+    `tileset` VARCHAR(20) NOT NULL,
+	`tx` SMALLINT UNSIGNED NOT NULL,
+    `ty` SMALLINT UNSIGNED NOT NULL,
+    `goflag` SMALLINT UNSIGNED NOT NULL,
+	`ScriptName` CHAR(192),
+	PRIMARY KEY(entry)
+);
+
 DROP TABLE IF EXISTS `item_template`;
 CREATE TABLE `item_template`
 (
@@ -74,6 +87,17 @@ CREATE TABLE `creature`
     `x` TINYINT UNSIGNED NOT NULL,
     `y` TINYINT UNSIGNED NOT NULL,
     PRIMARY KEY(guid)
+);
+
+DROP TABLE IF EXISTS `gameobject`;
+CREATE TABLE `gameobject`
+(
+    `guid` BIGINT UNISGNED NOT NULL,
+	`entry` INT UNSIGNED NOT NULL,
+	`map` TINYINT UNSIGNED NOT NULL,
+	`x` TINYINT UNSIGNED NOT NULL,
+    `y` TINYINT UNSIGNED NOT NULL,
+	PRIMARY KEY(guid)
 );
 
 INSERT INTO `creature` VALUES (UUID_SHORT(), 1, 0, 10, 10);

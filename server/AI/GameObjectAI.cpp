@@ -16,21 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "WorldObject.hpp"
+#include "GameObjectAI.hpp"
 
-struct GameObjectTemplate;
-class GameObjectAI;
-
-class GameObject : public WorldObject
+void GameObjectAI::UpdateAI(int64 diff)
 {
-public:
-    GameObject(uint64 ObjID, Map* pMap, uint16 x, uint16 y, GameObjectTemplate* pTemplate);
-    
-    void Update(int64 diff);
-    void OnInteract(Player* pWho);
-    WorldPacket PackData();
-    
-private:
-    GameObjectTemplate const* pTemplate;
-    GameObjectAI* pAI;
-};
+}

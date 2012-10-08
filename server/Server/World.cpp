@@ -92,9 +92,9 @@ void World::Load()
         for(uint16 i = 0; i < MAP_COUNT; ++i)
         {
             Maps[i] = new Map(i);
-            sLog.Write("Loading creatures' map (%d)", i);
-            Maps[i]->LoadCreatures();
-            sLog.Write("Creatures' map loaded (%d)", i);
+            sLog.Write("Loading map (%u)", i);
+            Maps[i]->Load();
+            sLog.Write("Map loaded (%u)", i);
         }
         sLog.Write("Maps loaded.");
     }
