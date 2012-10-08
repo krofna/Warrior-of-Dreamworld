@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "MapScript.hpp"
 #include "World.hpp"
+#include "AIFactory.hpp"
 
 MapScript* CreateScript(const std::string& AIName, Map* pMap)
 {

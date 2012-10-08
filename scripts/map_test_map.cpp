@@ -34,11 +34,11 @@ public:
 
 MapScript* GetScript_map_test_map(Map* pMap)
 {
-    return new map_test_map(pMap);
+    return new map_test_mapScript(pMap);
 }
 
 void LoadScript_map_test_map()
 {
-    RegisterAI("map_test_map", &GetScript_map_test_map);
+    RegisterScript("map_test_map", &GetScript_map_test_map);
 }
 
