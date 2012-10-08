@@ -33,9 +33,9 @@ public:
     void Run();
 
     void AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv);
-    void PushState(GameState* pState) { StateStack.push(pState); }
-    void PopState() { if(!StateStack.empty()) { delete StateStack.top(); StateStack.pop(); } }
-    void PopAllStates() { while(!StateStack.empty()) { PopState(); }}
+    void PushState(GameState* pState);
+    void PopState();
+    void PopAllStates();
 
 private:
     std::stack<GameState*> StateStack;

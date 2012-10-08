@@ -61,3 +61,25 @@ void Game::AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv)
     boost::mutex::scoped_lock lock(LoadQueueMutex);
     LoadQueue.push(std::make_pair(pLoadable, Argv));
 }
+
+void Game::PushState(GameState* pState)
+{
+    StateStack.push(pState);
+}
+
+void Game::PopState()
+{
+    if(!StateStack.empty())
+    {
+        delete StateStack.top();
+        StateStack.pop();
+    }
+}
+
+void Game::PopAllStates()
+{
+    while(!StateStack.empty())
+    {
+        PopState();
+    }
+}
