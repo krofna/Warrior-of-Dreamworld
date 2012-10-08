@@ -1,39 +1,22 @@
-URGENT/ASIO TODOS: (Krofna assigned)
+(Krofna assigned)
 1) Improve performance of worldpackets
+2) Send time stamp in packet header and take it into consideration when spawning SPELL_BOLTs
+3) Implement reconnect
+4) Cleanup spell bolt when its out from map
+5) Unit interaction: Vendor & Quest Giver
+6) Gameobject interaction
+7) MapScript
 
-2) Propertly clean up stuff on log out
-
-3) Send unix time stamp in packet header and take it into consideration when
-spawning SPELL_BOLTs
-
-4) Implement reconnect
-
-5) Finish movement system (Or Remake it)
-
-URGENT TODOs: (FullMetal-Alchimist assigned)
-
-1) Fix all crashes/bugs (Report them by issue or sending a email at masterancpp at gmail dot com, except krofna, who can
-    report them by "Fix that slave!")
-
-2) Finish melee system (Need just melee attack opcode, all is ready server-side)
-
-3) Finish chat system (Need to implement emote)
-
-4) Finish inventory system (Need to test with items and GUI)
+(FullMetal-Alchimist assigned)
+1) Finish melee system (Need just melee attack opcode, all is ready server-side)
+2) Finish inventory system (Need to test with items and GUI)
 
 Code:
-- Propertly clean up SPELL_BOLT on client side when its erased from server
-- SpellMgr and SpellEffect
 - Some data may/should be Uint8 instead of Uint16
-- Cleanup Includes/forward declares...
 - Give tilesets IDs instead of std::string
 - world_edit
-- site to register accounts (RenaissanceinCroatia working on it)
 - Finish animations
-- Items
 - Money ?
-- Combat stats (health, mana..)
-- A little more commands !
 
 Art:
 - Terrain
