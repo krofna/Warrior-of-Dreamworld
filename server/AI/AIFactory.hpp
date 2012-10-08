@@ -16,24 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#ifndef CREATURE_AI_FACTORY_H
-#define CREATURE_AI_FACTORY_H
+#ifndef AI_FACTORY_H
+#define AI_FACTORY_H
 
 #include <map>
 #include <string>
 #include "shared/Defines.hpp"
 
 class CreatureAI;
+class GameObjectAI;
 class Creature;
+class GameObject;
 
-class CreatureAIFactory
+class AIFactory
 {
 public:
-    void RegisterAI(const std::string &AIName, CreatureAI*(*Creator)(Creature* pCreature));
-    CreatureAI* CreateAI(const std::string& AIName, Creature* pCreature);
+    void RegisterCreatureAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature));
+    void RegisterGameObjectAI(const std::string& AIName, GameObjectAI*(*Creator)(GameObject* pGo));
+    CreatureAI* CreateCreatureAI(const std::string& AIName, Creature* pCreature);
+    GameObjectAI* CreateGameObjectAI(const std::string& AIName, GameObject* pGo);
 
 private:
-    std::map<std::string, CreatureAI*(*)(Creature* pCreature)> Registry;
+    std::map<std::string, CreatureAI*(*)(Creature* pCreature)> CreatureAIRegistry;
+    std::map<std::string, GameObjectAI*(*)(GameObject* pGo)> GameObjectAIRegistry;
 };
 
 #endif

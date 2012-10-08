@@ -16,19 +16,34 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "CreatureAIFactory.hpp"
+#include "AIFactory.hpp"
 #include "CreatureAI.hpp"
+#include "GameObjectAI.hpp"
 #include "Creature.hpp"
+#include "GameObject.hpp"
 
-void CreatureAIFactory::RegisterAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature))
+void AIFactory::RegisterCreatureAI(const std::string& AIName, CreatureAI*(*Creator)(Creature* pCreature))
 {
-    Registry[AIName] = Creator;
+    CreatureAIRegistry[AIName] = Creator;
 }
 
-CreatureAI* CreatureAIFactory::CreateAI(const std::string& AIName, Creature* pCreature)
+void AIFactory::RegisterGameObjectAI(const std::string& AIName, GameObjectAI*(*Creator)(GameObject* pGo))
 {
-    if(Registry.find(AIName) == Registry.end())
+    GameObjectAIRegistry[AIName] = Creator;
+}
+
+CreatureAI* AIFactory::CreateCreatureAI(const std::string& AIName, Creature* pCreature)
+{
+    if(CreatureAIRegistry.find(AIName) == CreatureAIRegistry.end())
         return new CreatureAI(pCreature);
 
-    return Registry[AIName](pCreature);
+    return CreatureAIRegistry[AIName](pCreature);
+}
+
+GameObjectAI* AIFactory::CreateGameObjectAI(const std::string& AIName, GameObject* pGo)
+{
+    if(GameObjectAIRegistry.find(AIName) == GameObjectAIRegistry.end())
+        return new GameObjectAI(pGo);
+
+    return GameObjectAIRegistry[AIName](pGo);
 }
