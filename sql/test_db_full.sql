@@ -59,6 +59,8 @@ CREATE TABLE `gameobject_template`
     PRIMARY KEY(entry)
 );
 
+INSERT INTO `gameobject_template` VALUES (DEFAULT, 'test_go', 'dg_edging132.gif', 7, 15, 0, 'go_test_go'); 
+
 DROP TABLE IF EXISTS `item_template`;
 CREATE TABLE `item_template`
 (

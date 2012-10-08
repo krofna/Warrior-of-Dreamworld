@@ -16,17 +16,28 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "ScriptLoader.hpp"
+#include "GameObject.hpp"
+#include "GameObjectAI.hpp"
 
-extern void LoadScript_npc_krofnica();
-extern void LoadScript_npc_the_fullmetal_alchimist();
-
-extern void LoadScript_go_test_go();
-
-void LoadScripts()
+class WOD_DLL_DECL go_test_goAI : public GameObjectAI
 {
-    LoadScript_npc_krofnica();
-    LoadScript_npc_the_fullmetal_alchimist();
+public:
+    go_test_goAI(GameObject* pGo) : GameObjectAI(pGo)
+    {
+        Reset();
+    }
 
-    LoadScript_go_test_go();
+    void Reset()
+    {
+    }
+};
+
+GameObjectAI* GetAI_go_test_go(GameObject* pGo)
+{
+    return new go_test_goAI(pGo);
+}
+
+void LoadScript_npc_krofnica()
+{
+    RegisterAI("go_test_go", &GetAI_go_test_go);
 }

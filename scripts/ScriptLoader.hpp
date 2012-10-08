@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef SCRIPT_LOADER_H
 #define SCRIPT_LOADER_H
 
-#include "../shared/Config.hpp"
+#include "shared/Config.hpp"
 
 WOD_DLL_DECL void LoadScripts();
 

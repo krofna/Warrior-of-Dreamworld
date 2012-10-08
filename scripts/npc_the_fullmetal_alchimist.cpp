@@ -1,6 +1,6 @@
 /*
 Warrior of Dreamworld, 2D Massivly Mutiplayer Online Role-playing Game
-Copyright (C) 2012  Mislav Blazevic
+Copyright (C) 2012 Ryan Lahfa
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
