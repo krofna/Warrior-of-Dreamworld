@@ -28,12 +28,13 @@ class Creature;
 class GameObject;
 class WorldObject;
 class MapScript;
+struct MapTemplate;
 
 class Map
 {
     //friend class Pathfinder;
 public:
-    Map(uint16 TMapID);
+    Map(MapTemplate* pTemplate, uint16 MapID);
     ~Map();
 
     uint16 GetID() const;
@@ -62,13 +63,14 @@ public:
     std::list<Player*> Players;
     std::list<SpellBox*> Spells;
 
-    const uint16 MapID;
+    MapTemplate const* pTemplate;
     uint32 NewSpellBoxID;
 
     // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
     // NOTE: Players are NOT stored here
     std::vector<std::vector<WorldObject*> > TileGrid;
     MapScript* pMapScript;
+    uint16 MapID;
 };
 
 #endif

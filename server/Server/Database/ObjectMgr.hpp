@@ -37,7 +37,8 @@ public:
     GameObjectTemplate* GetGameObjectTemplate (uint64 Entry) const;
     ItemTemplate*       GetItemTemplate       (uint64 Entry) const;
     QuestTemplate*      GetQuestTemplate      (uint64 Entry) const;
-    SpellTemplate*      GetSpellTemplate      (uint16 Entry) const;
+    SpellTemplate*      GetSpellTemplate      (uint64 Entry) const;
+    MapTemplate*        GetMapTemplate        (uint16 Entry) const;
 
     WorldObjectQuests GetCreatureQuests   (uint64 Entry) const;
 
@@ -46,8 +47,10 @@ public:
     void LoadGameObjectTemplates();
     void LoadItemTemplates();
     void LoadQuestTemplates();
-    void LoadPlayersLoginInfo();
+    void LoadMapTemplates();
     void LoadCreatureQuests();
+    void LoadPlayersLoginInfo();
+    
 
     Player* GetPlayer(std::string& Username);
 	Player* GetPlayer(uint64 ObjectID);
@@ -60,6 +63,7 @@ private:
     std::map<uint64, GameObjectTemplate*> GameObjectTemplates;
     std::map<uint64, ItemTemplate*> ItemTemplates;
     std::map<uint64, QuestTemplate*> QuestTemplates;
+    std::map<uint16, MapTemplate*> MapTemplates;
     
     // Key = Creature ObjID
     // T   = Quest ID

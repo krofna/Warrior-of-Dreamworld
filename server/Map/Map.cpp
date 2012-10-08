@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "Map.hpp"
+#include "World.hpp"
 #include "shared/Opcodes.hpp"
 #include "shared/Log.hpp"
 #include <boost/bind.hpp>
@@ -27,13 +27,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Creature.hpp"
 #include "GameObject.hpp"
 #include "MapScript.hpp"
+#include "AIFactory.hpp"
 
-Map::Map     (uint16 TMapID) : 
+Map::Map     (MapTemplate* pTemplate, uint16 MapID) : 
 NewSpellBoxID(0),
-MapID        (TMapID),
+pTemplate    (pTemplate),
+MapID        (MapID),
 // [PH] This only works for map0, cause its size is 50x50 tiles
 TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 {
+    pMapScript = sWorld->GetAIFactory()->CreateMapScript(pTemplate->ScriptName, this);
     sLog.Write("Map %u loaded.", MapID);
 }
 
@@ -85,7 +88,7 @@ void Map::Load()
 
 void Map::Update(int64 diff)
 {
-    //pMapScript->Update(diff);
+    pMapScript->Update(diff);
     std::for_each(Spells.begin(), Spells.end(), boost::bind(&SpellBox::Update, _1, diff));
     std::for_each(Players.begin(), Players.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));

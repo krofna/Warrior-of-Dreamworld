@@ -30,6 +30,7 @@ ObjectMgr::~ObjectMgr()
     std::for_each(ItemTemplates.begin(), ItemTemplates.end(), MapDeleter());
     std::for_each(QuestTemplates.begin(), QuestTemplates.end(), MapDeleter());
     std::for_each(SpellTemplates.begin(), SpellTemplates.end(), MapDeleter());
+    std::for_each(MapTemplates.begin(), MapTemplates.end(), MapDeleter());
     std::for_each(Players.begin(), Players.end(), boost::bind(&operator delete, _1));
 }
 
@@ -53,18 +54,27 @@ GameObjectTemplate* ObjectMgr::GetGameObjectTemplate (uint64 Entry) const
 
 ItemTemplate* ObjectMgr::GetItemTemplate(uint64 Entry) const
 {
-    auto CTemplate = ItemTemplates.find(Entry);
-    if (CTemplate != ItemTemplates.end())
-        return CTemplate->second;
+    auto ITemplate = ItemTemplates.find(Entry);
+    if (ITemplate != ItemTemplates.end())
+        return ITemplate->second;
 
     return nullptr;
 }
 
-SpellTemplate* ObjectMgr::GetSpellTemplate(uint16 ID) const
+SpellTemplate* ObjectMgr::GetSpellTemplate(uint64 ID) const
 {
-    auto CTemplate = SpellTemplates.find(ID);
-    if (CTemplate != SpellTemplates.end())
-        return CTemplate->second;
+    auto STemplate = SpellTemplates.find(ID);
+    if (STemplate != SpellTemplates.end())
+        return STemplate->second;
+
+    return nullptr;
+}
+
+MapTemplate* ObjectMgr::GetMapTemplate(uint16 ID) const
+{
+    auto MTemplate = MapTemplates.find(ID);
+    if (MTemplate != MapTemplates.end())
+        return MTemplate->second;
 
     return nullptr;
 }
@@ -178,7 +188,24 @@ void ObjectMgr::LoadSpellTemplates()
         pTemplate->Cost      = Result->getUInt   (5);
         pTemplate->Name      = Result->getString (6);
 
-        SpellTemplates[Result->getUInt64(1)] = pTemplate;
+        SpellTemplates[pTemplate->Entry] = pTemplate;
+    }
+}
+
+void ObjectMgr::LoadMapTemplates()
+{
+    QueryResult Result(sDatabase.Query("SELECT * FROM `map_template`"));
+
+    MapTemplate* pTemplate;
+
+    while (Result->next())
+    {
+        pTemplate = new MapTemplate;
+
+        pTemplate->Entry      = Result->getUInt64 (1);
+        pTemplate->ScriptName = Result->getString (2);
+        
+        MapTemplates[pTemplate->Entry] = pTemplate;
     }
 }
 

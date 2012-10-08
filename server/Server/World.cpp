@@ -40,6 +40,7 @@ Timer       (io),
 Maps        (MAP_COUNT)
 {
     pWorldAcceptor = new WorldAcceptor(io);
+    pAIFactory = new AIFactory;
 }
 
 World::~World()
@@ -73,12 +74,18 @@ void World::Load()
         sLog.Write("Loading spell templates...");
         sObjectMgr.LoadSpellTemplates();
         sLog.Write("Spells loaded.");
+        
+        sLog.Write("Loading gameobject templates...");
+        sObjectMgr.LoadGameObjectTemplates();
+        sLog.Write("Gameobject templates loaded.");
+        
+        sLog.Write("Loading map templates...");
+        sObjectMgr.LoadMapTemplates();
+        sLog.Write("Map templates loaded.");
 
         sLog.Write("Loading players login informations...");
         sObjectMgr.LoadPlayersLoginInfo();
         sLog.Write("Players login informations loaded.");
-
-        pAIFactory = new AIFactory;
 
         sLog.Write("Loading scripts...");
         LoadScripts();
@@ -91,7 +98,8 @@ void World::Load()
         sLog.Write("Loading maps...");
         for(uint16 i = 0; i < MAP_COUNT; ++i)
         {
-            Maps[i] = new Map(i);
+            // placeholder... This is not how maps should be loaded
+            Maps[i] = new Map(sObjectMgr.GetMapTemplate(i), i);
             sLog.Write("Loading map (%u)", i);
             Maps[i]->Load();
             sLog.Write("Map loaded (%u)", i);
