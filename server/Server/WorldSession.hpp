@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Player.hpp"
 #include "shared/WorldPacket.hpp"
 #include "ObjectMgr.hpp"
-#include "boost/asio.hpp"
+#include <boost/asio.hpp>
 #include <queue>
 
 typedef boost::asio::ip::tcp::socket TCPSocket;

@@ -42,6 +42,7 @@ public:
     AIFactory* GetAIFactory();
 
 private:
+    // Server thick, called every SERVER_HEARTBEAT milliseconds 
     void Update();
 
     AIFactory* pAIFactory;
