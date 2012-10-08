@@ -37,7 +37,7 @@ GameObjectAI* GetAI_go_test_go(GameObject* pGo)
     return new go_test_goAI(pGo);
 }
 
-void LoadScript_npc_krofnica()
+void LoadScript_go_test_go()
 {
     RegisterAI("go_test_go", &GetAI_go_test_go);
 }
