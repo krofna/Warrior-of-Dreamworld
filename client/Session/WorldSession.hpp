@@ -24,10 +24,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <queue>
-using boost::asio::ip::tcp;
 
 class Game;
 class World;
+
+typedef boost::asio::ip::tcp::socket TCPSocket;
+typedef boost::asio::ip::tcp::resolver TCPResolver;
 
 class WorldSession
 {
@@ -83,11 +85,10 @@ private:
     void HandleHeader(const boost::system::error_code& Error);
     void HandleSend(const boost::system::error_code& Error);
 
-    tcp::socket Socket;
     WorldPacket Packet;
-
     boost::shared_ptr<boost::asio::io_service::work> Work;
-    tcp::resolver Resolver;
+    TCPSocket Socket;
+    TCPResolver Resolver;
 
     Game* sGame;
     World* pWorld;

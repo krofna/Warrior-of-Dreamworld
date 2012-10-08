@@ -39,8 +39,8 @@ WorldSession::~WorldSession()
 
 void WorldSession::Connect(std::string Ip, std::string Port)
 {
-    tcp::resolver::query Query(Ip.c_str(), Port.c_str());
-    tcp::resolver::iterator Iterator = Resolver.resolve(Query);
+    TCPResolver::query Query(Ip.c_str(), Port.c_str());
+    TCPResolver::iterator Iterator = Resolver.resolve(Query);
     boost::asio::async_connect(Socket, Iterator, boost::bind(&WorldSession::Start, this));
 }
 
