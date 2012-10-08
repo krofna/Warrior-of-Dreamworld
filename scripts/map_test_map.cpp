@@ -16,24 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "ScriptLoader.hpp"
+#include "MapScript.hpp"
+#include "Map.hpp"
 
-extern void LoadScript_npc_krofnica();
-extern void LoadScript_npc_the_fullmetal_alchimist();
-
-extern void LoadScript_go_test_go();
-
-extern void LoadScript_map_test_map();
-
-void LoadScripts()
+class WOD_DLL_DECL map_test_mapScript : public MapScript
 {
-    // Load CreatureAI
-    LoadScript_npc_krofnica();
-    LoadScript_npc_the_fullmetal_alchimist();
-
-    // Load GameObjectAI
-    LoadScript_go_test_go();
+public:
+    map_test_mapScript(Map* pMap) : MapScript(pMap)
+    {
+        Reset();
+    }
     
-    // Load MapScript
-    LoadScript_map_test_map();
+    void Reset()
+    {
+    }
+};
+
+MapScript* GetScript_map_test_map(Map* pMap)
+{
+    return new map_test_map(pMap);
 }
+
+void LoadScript_map_test_map()
+{
+    RegisterAI("map_test_map", &GetScript_map_test_map);
+}
+
