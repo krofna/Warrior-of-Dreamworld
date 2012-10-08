@@ -32,8 +32,7 @@ Map::Map     (uint16 TMapID) :
 NewSpellBoxID(0),
 MapID        (TMapID),
 // [PH] This only works for map0, cause its size is 50x50 tiles
-TileGrid     (50, std::vector<WorldObject*>(50, nullptr)),
-pMapScript   (new MapScript(this))
+TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 {
     sLog.Write("Map %u loaded.", MapID);
 }
@@ -86,7 +85,7 @@ void Map::Load()
 
 void Map::Update(int64 diff)
 {
-    pMapScript->Update(diff);
+    //pMapScript->Update(diff);
     std::for_each(Spells.begin(), Spells.end(), boost::bind(&SpellBox::Update, _1, diff));
     std::for_each(Players.begin(), Players.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&Map::UnitUpdate, this, _1, diff));
