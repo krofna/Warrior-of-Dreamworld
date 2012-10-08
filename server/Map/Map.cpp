@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Map.hpp"
 #include "shared/Opcodes.hpp"
-#include "shared/Config.hpp"
 #include "shared/Log.hpp"
 #include <boost/bind.hpp>
 #include "Player.hpp"

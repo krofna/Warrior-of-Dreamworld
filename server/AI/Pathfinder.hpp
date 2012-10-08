@@ -22,8 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <stack>
 #include <queue>
 #include <boost/shared_array.hpp>
-#include "shared/Defines.hpp"
-#include "shared/Vector2.hpp"
+#include "shared/Math.hpp"
 
 class Map;
 class WorldObject;
