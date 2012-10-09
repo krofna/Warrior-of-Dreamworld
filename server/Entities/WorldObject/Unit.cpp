@@ -22,12 +22,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Math.hpp"
 #include "ObjectMgr.hpp"
 
+std::map<uint64, Unit* > Unit::sUnits;
+
 Unit::Unit         (uint64 ObjID) :
 WorldObject        (ObjID),
 MeeleAttackCooldown(0),
 pVictim            (nullptr),
 Health             (1000) // Placeholder to fix pathfinder
 {
+    sUnits[GetObjectID()] = this;
+}
+
+Unit* Unit::GetUnitByObjectID(uint64 ObjID)
+{
+    auto Iter = sUnits.find(ObjID);
+    if (Iter == sUnits.end())
+        return nullptr;
+    else
+        return Iter->second;
 }
 
 void Unit::SpellHit(SpellBox* pSpellBox)

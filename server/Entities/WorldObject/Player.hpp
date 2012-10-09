@@ -42,6 +42,9 @@ public:
     bool IsLoaded();
 
     bool CanSpeak() const;
+    bool CanAttack(Unit* pTarget) const;
+
+    Unit* FindNearTarget(uint8 Direction) const;
 
     void SpellHit(SpellBox* pSpellBox);
     void CastSpell(SpellTemplate* pSpell, float Angle);

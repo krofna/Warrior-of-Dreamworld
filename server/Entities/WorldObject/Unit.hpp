@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define UNIT_H
 
 #include "WorldObject.hpp"
+#include <map>
 
 class SpellBox;
 struct SpellTemplate;
@@ -28,7 +29,14 @@ class WOD_DLL_DECL Unit : public WorldObject
 {
 public:
     Unit(uint64 ObjID);
-    virtual ~Unit() { } 
+    virtual ~Unit() { sUnits.erase(GetObjectID()); } 
+
+    // **************************
+    // Static functions
+    // **************************
+    
+    static Unit* GetUnitByObjectID(uint64 ObjID);
+
 
     virtual void Update(int64 diff) = 0;
 
@@ -67,6 +75,9 @@ public:
 
 protected:
     virtual void OnChat(const char* Text) = 0;
+
+protected:
+    static std::map<uint64, Unit* > sUnits;
 
 protected:
     uint32 Health;

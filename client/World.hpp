@@ -95,6 +95,8 @@ private:
 
     sf::Clock m_UpdateClock;
     boost::mutex DrawingMutex;
+
+    uint8 cDirection;
 };
 
 #endif

@@ -40,7 +40,7 @@ public:
     SpellTemplate*      GetSpellTemplate      (uint64 Entry) const;
     MapTemplate*        GetMapTemplate        (uint16 Entry) const;
 
-    WorldObjectQuests GetCreatureQuests       (uint64 Entry) const;
+    WorldObjectQuests   GetCreatureQuests     (uint64 Entry) const;
 
     void LoadSpellTemplates();
     void LoadCreatureTemplates();
@@ -55,18 +55,18 @@ public:
 	Player* GetPlayer(uint64 ObjectID);
 
 private:
-    std::list<Player*> Players;
+    std::list<Player*>                    Players;
     
-    std::map<uint64, SpellTemplate*> SpellTemplates;
-    std::map<uint64, CreatureTemplate*> CreatureTemplates;
+    std::map<uint64, SpellTemplate*>      SpellTemplates;
+    std::map<uint64, CreatureTemplate*>   CreatureTemplates;
     std::map<uint64, GameObjectTemplate*> GameObjectTemplates;
-    std::map<uint64, ItemTemplate*> ItemTemplates;
-    std::map<uint64, QuestTemplate*> QuestTemplates;
-    std::map<uint16, MapTemplate*> MapTemplates;
+    std::map<uint64, ItemTemplate*>       ItemTemplates;
+    std::map<uint64, QuestTemplate*>      QuestTemplates;
+    std::map<uint16, MapTemplate*>        MapTemplates;
     
     // Key = Creature ObjID
     // T   = Quest ID
-    std::multimap<uint64, uint64> CreatureQuests;
+    std::multimap<uint64, uint64>         CreatureQuests;
 };
 
 extern ObjectMgr sObjectMgr;

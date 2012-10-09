@@ -57,6 +57,7 @@ public:
     bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
 
 //private:
+
     // Entities
     std::list<GameObject*> GameObjects;
     std::list<Creature*> Creatures;

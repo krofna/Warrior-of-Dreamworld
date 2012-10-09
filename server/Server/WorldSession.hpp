@@ -44,10 +44,12 @@ public:
     // Opcode handlers
     void HandleNULL();
     void HandleMoveObjectOpcode();
-    void HandleCastSpellOpcode();
     void HandleLogOutOpcode();
     void HandleLoginOpcode();
     void HandleChatMessageOpcode();
+
+    void HandleCastSpellOpcode();
+    void HandleMeleeAttackOpcode();
     
     void HandleAutoEquipItemOpcode();
     void HandleUseItemOpcode();

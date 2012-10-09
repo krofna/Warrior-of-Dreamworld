@@ -229,6 +229,30 @@ void WorldSession::HandleCastSpellOpcode()
     pPlayer->CastSpell(pSpell, Angle);
 }
 
+void WorldSession::HandleMeleeAttackOpcode()
+{
+    uint8 Direction;
+    Packet >> Direction;
+
+    Unit* pTarget = pPlayer->FindNearTarget(Direction);
+
+    if (!pTarget)
+    {
+        sLog.Write("Unknown target !");
+        SendNotification("Unknown target !");
+        return;
+    }
+
+    if (!pPlayer->CanAttack(pTarget))
+    {
+        sLog.Write("Impossible to attack target !");
+        SendNotification("Impossible to attack target !");
+        return;
+    }
+
+    pPlayer->DealDamage(pPlayer->GetMeleeDamage(), pTarget);
+}
+
 void WorldSession::HandleLogOutOpcode()
 {
     SendLogOutPacket();

@@ -354,6 +354,13 @@ void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
     Send(Packet);
 }
 
+void WorldSession::SendAttackRequest(uint8 Direction)
+{
+    WorldPacket Packet((uint16)MSG_MELEE_ATTACK);
+    Packet << Direction;
+    Send(Packet);
+}
+
 void WorldSession::SendLogOutRequest()
 {
     WorldPacket Packet((uint16)MSG_LOG_OUT);

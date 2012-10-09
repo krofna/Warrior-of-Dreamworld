@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     class WorldSession;
 #endif
 
-#define MSG_COUNT 21
+#define MSG_COUNT 22
 
 enum Opcodes
 {
@@ -36,8 +36,6 @@ enum Opcodes
     MSG_ADD_OBJECT,
     MSG_REMOVE_OBJECT,
     MSG_MOVE_OBJECT,
-    MSG_CAST_SPELL,
-    MSG_REMOVE_SPELL,
     MSG_LOG_OUT,
 
     /** Chat Stuff  **/
@@ -46,6 +44,11 @@ enum Opcodes
     MSG_COMMAND_REPONSE,
     MSG_NOTIFICATION_MSG,
     MSG_TEXT_EMOTE,
+
+    /** Attack **/
+    MSG_MELEE_ATTACK,
+    MSG_CAST_SPELL,
+    MSG_REMOVE_SPELL,
 
     /** Items **/
     MSG_AUTO_EQUIP_ITEM,

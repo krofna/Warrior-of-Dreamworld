@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "CommandHandler.hpp"
 #include "shared/Opcodes.hpp"
 #include "shared/Log.hpp"
+#include "shared/Math.hpp"
 #include "Database.hpp"
 #include "World.hpp"
 
@@ -211,6 +212,40 @@ bool Player::UpdateCoordinates(uint8 Direction)
 bool Player::CanSpeak() const
 {
     return !m_IsMute;
+}
+
+bool Player::CanAttack(Unit* pTarget) const
+{
+    // Check distance between pTarget and Player
+    if (math::GetManhattanDistance(GetPosition(), pTarget->GetPosition()) > 1.f)
+        return false;
+
+    return true;
+}
+
+Unit* Player::FindNearTarget(uint8 Direction) const
+{
+    // In order:
+    // DIR_UP
+    // DIR_DOWN
+    // DIR_LEFT
+    // DIR_RIGHT
+    static Vector2i Directions[4] = { Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, -1), Vector2i(0, 1) };
+
+    Vector2i newPos = GetPosition();
+    newPos.x += Directions[Direction].x;
+    newPos.y += Directions[Direction].y;
+
+    if (pMap->TileGrid[newPos.y][newPos.x] == nullptr)
+    {
+        // Maybe a player ?
+
+        // TODO: Find near player without iterate on pMap->Players
+
+        return nullptr;
+    }
+
+    return dynamic_cast<Unit* >(pMap->TileGrid[newPos.y][newPos.x]);
 }
 
 bool Player::HasItem(uint8 Bag, uint8 Slot, uint64 ItemID) const
