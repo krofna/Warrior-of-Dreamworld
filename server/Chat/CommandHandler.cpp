@@ -21,40 +21,40 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Player.hpp"
 #include "ObjectMgr.hpp"
 
-#define NullCommand { NULL, 0, false, NULL, "", NULL }
+#define NullCommand { nullptr, 0, false, nullptr, "", nullptr }
 
 ChatCommand* CommandHandler::GetCommandTable()
 {
     static ChatCommand AccountSetCommandTable[] =
     {
-        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $username $seclevel",      NULL },
-        { "password",   SEC_PLAYER, true,   &CommandHandler::HandleAccountSetPasswordCommand,   "Usage: account set password $username $newpassword",   NULL },
+        { "seclevel",   SEC_ADMIN,  true,   &CommandHandler::HandleAccountSetSecLevelCommand,   "Usage: account set seclevel $username $seclevel",      nullptr },
+        { "password",   SEC_PLAYER, true,   &CommandHandler::HandleAccountSetPasswordCommand,   "Usage: account set password $username $newpassword",   nullptr },
         NullCommand
     };
 
     static ChatCommand AccountCommandTable[] =
     {
-        { "create",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountCreateCommand,    "Usage: account create $username $password",    NULL },
-        { "delete",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountDeleteCommand,    "Usage: account delete $username $password",    NULL },
-        { "set",        SEC_PLAYER, true,   NULL,                                           "Usage: account set <what> <new value>",        AccountSetCommandTable },
+        { "create",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountCreateCommand,    "Usage: account create $username $password",    nullptr },
+        { "delete",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountDeleteCommand,    "Usage: account delete $username $password",    nullptr },
+        { "set",        SEC_PLAYER, true,   nullptr,                                           "Usage: account set <what> <new value>",        AccountSetCommandTable },
         NullCommand
     };
 
     static ChatCommand TeleportCommandTable[] =
     {
-        { "to",         SEC_MOD,    false,   &CommandHandler::HandleTeleportToCommand,      "Usage: teleport to $username",                 NULL },
-        { "at",         SEC_MOD,    false,   &CommandHandler::HandleTeleportAtCommand,      "Usage: teleport at $x $y",                     NULL },
+        { "to",         SEC_MOD,    false,   &CommandHandler::HandleTeleportToCommand,      "Usage: teleport to $username",                 nullptr },
+        { "at",         SEC_MOD,    false,   &CommandHandler::HandleTeleportAtCommand,      "Usage: teleport at $x $y",                     nullptr },
         NullCommand
     };
 
     static ChatCommand CommandTable[] =
     {
-        { "account",    SEC_PLAYER, true,   NULL,                                           "Usage: account <command> <argv>",              AccountCommandTable },
-        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",                    NULL },
-        { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>",            NULL },
-        { "teleport",   SEC_ADMIN,  false,  NULL,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
-        { "bring",      SEC_ADMIN,  false,  &CommandHandler::HandleBringCommand,            "Usage: bring <player_name>",                   NULL },
-        { "help",       SEC_PLAYER, true,   &CommandHandler::HandleHelpCommand,             "Usage: help <command>",                        NULL },
+        { "account",    SEC_PLAYER, true,   nullptr,                                           "Usage: account <command> <argv>",              AccountCommandTable },
+        { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",                    nullptr },
+        { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>",            nullptr },
+        { "teleport",   SEC_ADMIN,  false,  nullptr,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
+        { "bring",      SEC_ADMIN,  false,  &CommandHandler::HandleBringCommand,            "Usage: bring <player_name>",                   nullptr },
+        { "help",       SEC_PLAYER, true,   &CommandHandler::HandleHelpCommand,             "Usage: help <command>",                        nullptr },
         NullCommand
     };
 
