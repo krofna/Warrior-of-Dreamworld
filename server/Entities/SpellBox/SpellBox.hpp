@@ -40,7 +40,7 @@ private:
     FloatRect CurrentObjBox;
     FloatRect Hitbox;
     float Angle;
-    int32 _Diff;
+    int64 _Diff;
 };
 
 #endif
