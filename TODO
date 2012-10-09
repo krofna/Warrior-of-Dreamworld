@@ -8,7 +8,7 @@
 7) MapScript
 
 (FullMetal-Alchimist assigned)
-1) Finish melee system (Need just melee attack opcode, all is ready server-side)
+1) Finish melee system (Fix FindNearTarget, currently incorrect)
 2) Finish inventory system (Need to test with items and GUI)
 
 Code:
@@ -17,6 +17,7 @@ Code:
 - world_edit
 - Finish animations
 - Money ?
+- Level system and EXP System ?
 
 Art:
 - Terrain
