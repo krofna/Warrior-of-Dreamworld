@@ -21,16 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <stack>
 #include <queue>
-#include <boost/shared_array.hpp>
+#include <boost/scoped_array.hpp>
 #include "shared/Math.hpp"
 
 class Map;
 class WorldObject;
 class Unit;
-
-/*
-TODO: Instead of *50 use map width: see Map.cpp Map::{ctor}
-*/
 
 struct PathfinderNode
 {
@@ -126,16 +122,14 @@ class Pathfinder
         // Pointer to 2D array of pre-allocated nodes used by pathfinder
         // Its size same as size of largest map
         // [TODO]: Maybe make it a bit bigger to get nicer path?
-        static boost::shared_array<PathfinderNode> PathfindingGrid; // 2D (but 1D in real)
-        static boost::shared_array<uint8> PathfindingStatusGrid;    // 2D (but 1D in real)
+        static boost::scoped_array<PathfinderNode> PathfindingGrid; // 2D (but 1D in real)
+        static boost::scoped_array<uint8> PathfindingStatusGrid;    // 2D (but 1D in real)
 
         // Time between moving onto next tile in path in miliseconds
         int64 MovementCooldown;
 
         // Priority queue of nodes to be checked by CheckNode()
         static my_priority_queue OpenList;
-
-        //std::stack<Vector2i> PathToHome; // NYI - maybe calculate path to home but store only home coord in ctor
 };
 
 #endif

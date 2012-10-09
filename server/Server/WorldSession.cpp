@@ -176,7 +176,9 @@ void WorldSession::HandleLoginOpcode()
 
     // Tell the client that he logged in sucessfully
     WorldPacket LoginPacket((uint16)MSG_LOGIN);
-    LoginPacket << (uint16)LOGIN_SUCCESS << pPlayer->GetMapID() << pPlayer->GetObjectID();
+    LoginPacket << (uint16)LOGIN_SUCCESS
+                << pPlayer->GetMapID()
+                << pPlayer->GetObjectID();
     Send(LoginPacket);
 
     // Bind WorldSession to Player

@@ -29,12 +29,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "MapScript.hpp"
 #include "AIFactory.hpp"
 
-Map::Map     (MapTemplate* pTemplate, uint16 MapID) : 
+Map::Map     (MapTemplate* pTemplate, uint16 MapID, uint16 SizeX, uint16 SizeY) : 
 NewSpellBoxID(0),
 pTemplate    (pTemplate),
 MapID        (MapID),
-// [PH] This only works for map0, cause its size is 50x50 tiles
-TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
+TileGrid     (SizeY, std::vector<WorldObject*>(SizeX, nullptr))
 {
     pMapScript = sWorld->GetAIFactory()->CreateMapScript(pTemplate->ScriptName, this);
 }

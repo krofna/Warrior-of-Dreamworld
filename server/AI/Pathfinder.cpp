@@ -27,8 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /*
 TODO:
-- Bounds checking map specific
-- Diagonal movement ( no cutting )
+No cutting on diagonal movement
 */
 
 boost::shared_array<PathfinderNode> Pathfinder::PathfindingGrid;
@@ -161,13 +160,13 @@ void Pathfinder::GeneratePath()
         }
 
         // Lower
-        if(pCurrent->Position.y != 49) // Todo pMap->height
+        if(pCurrent->Position.y != pMap->TileGrid.size()-1)
         {
             CheckNode(pCurrent, 0, 1, 10);
         }
 
         // Right
-        if(pCurrent->Position.x != 49) // pMap->width-... TODO
+        if(pCurrent->Position.x != pMap->TileGrid[0].size()-1)
         {
             CheckNode(pCurrent, 1, 0, 10);
         }
@@ -179,7 +178,7 @@ void Pathfinder::GeneratePath()
         }
 
         // Upper-right
-        if(pCurrent->Position.x != 49 && pCurrent->Position.y != 0)
+        if(pCurrent->Position.x != pMap->TileGrid[0].size()-1 && pCurrent->Position.y != 0)
         {
             CheckNode(pCurrent, 1, -1, 14);
         }
@@ -191,13 +190,13 @@ void Pathfinder::GeneratePath()
         }
 
         // Lower-right
-        if(pCurrent->Position.x != 49 && pCurrent->Position.y != 49)
+        if(pCurrent->Position.x != pMap->TileGrid[0].size()-1 && pCurrent->Position.y != pMap->TileGrid.size()-1)
         {
             CheckNode(pCurrent, 1, 1, 14);
         }
 
         // Lower-left
-        if(pCurrent->Position.x != 0 && pCurrent->Position.y != 49)
+        if(pCurrent->Position.x != 0 && pCurrent->Position.y != pMap->TileGrid.size()-1)
         {
             CheckNode(pCurrent, -1, 1, 14);
         }

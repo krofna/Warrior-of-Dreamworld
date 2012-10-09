@@ -34,7 +34,7 @@ class Map
 {
     //friend class Pathfinder;
 public:
-    Map(MapTemplate* pTemplate, uint16 MapID);
+    Map(MapTemplate* pTemplate, uint16 MapID, uint16 SizeX, uint16 SizeY);
     ~Map();
 
     uint16 GetID() const;
