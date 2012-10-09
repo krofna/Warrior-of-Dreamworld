@@ -202,7 +202,7 @@ void ObjectMgr::LoadMapTemplates()
     {
         pTemplate = new MapTemplate;
 
-        pTemplate->Entry      = Result->getUInt64 (1);
+        pTemplate->Entry      = Result->getUInt   (1);
         pTemplate->ScriptName = Result->getString (2);
         
         MapTemplates[pTemplate->Entry] = pTemplate;
