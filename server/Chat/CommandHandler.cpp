@@ -72,21 +72,21 @@ bool CommandHandler::ExecuteCommand()
 
     // Is there such command?
     ChatCommand* pCommand;
-    for(pCommand = GetCommandTable(); pCommand->Name != NULL; ++pCommand)
+    for(pCommand = GetCommandTable(); pCommand->Name != nullptr; ++pCommand)
         if(Command.compare(pCommand->Name) == 0)
             break;
 
-    if(pCommand->Name == NULL)
+    if(pCommand->Name == nullptr)
         throw BadCommand();
 
     while(!pCommand->Handler)
     {
         ExtractArg(Command);
 
-        if(pCommand->ChildCommands == NULL)
+        if(pCommand->ChildCommands == nullptr)
             throw BadCommand();
 
-        for(pCommand = pCommand->ChildCommands; pCommand->Name != NULL; ++pCommand)
+        for(pCommand = pCommand->ChildCommands; pCommand->Name != nullptr; ++pCommand)
         {
             if(Command.compare(pCommand->Name) == 0)
                 break;
@@ -282,27 +282,62 @@ void CommandHandler::HandleHelpCommand()
     std::string Command, Help;
     ExtractArg(Command);
 
-    // Is this command exists ?
-    ChatCommand* pCommand;
-    for (pCommand = GetCommandTable() ; pCommand->Name != NULL ; ++pCommand)
-    {
-        if (Command == pCommand->Name)
-        {
-            Help = pCommand->Help;
-            break;
-        }
-    }
+    ChatCommand* pCommand = SubCommandHelper(Command);
 
-    if (pCommand == NULL)
+    if (pCommand == nullptr)
     {
         if (Console)
             sLog.Write("There is not a such command !");
         else
             pPlayer->SendCommandReponse("There is not a such command !");
+
+        return;
     }
+    else
+        Help = pCommand->Help;
 
     if (Console)
         sLog.Write("%s", Help.c_str());
     else
         pPlayer->SendCommandReponse(Help);
+}
+
+ChatCommand* CommandHandler::SubCommandHelper(std::string const& CommandBaseName)
+{
+    ChatCommand* pCommand;
+    for (pCommand = GetCommandTable() ; pCommand->Name != nullptr ; ++pCommand)
+        if (pCommand->Name == CommandBaseName)
+            break;
+
+    if (pCommand->Name == nullptr)
+        return nullptr;
+
+    if (pCommand->ChildCommands == nullptr)
+        return pCommand;
+
+    else if (!IsEndArgument())
+    {
+        while (!IsEndArgument())
+        {
+            std::string SubCommand;
+            ExtractArg(SubCommand);
+            
+            for (pCommand = pCommand->ChildCommands ; pCommand->Name != nullptr ; ++pCommand)
+                if (pCommand->Name == SubCommand)
+                    break;
+            
+            if (pCommand->Name == nullptr)
+                return nullptr;
+
+            if (pCommand->ChildCommands == nullptr)
+                return pCommand;
+        }
+    }
+
+    return pCommand;
+}
+
+bool CommandHandler::IsEndArgument() const
+{
+    return TokIter == Tokenizer.end();
 }

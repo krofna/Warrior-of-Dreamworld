@@ -463,11 +463,11 @@ void Player::Say(const char* Text)
 {
     OnChat(Text);
 
-    if (IsNotEmote(Text))
+    if (IsNotEmote(Text) && Text[0] != '.') // Not a command or a emote
     {
         Unit::Say(Text);
     }
-    else
+    else if (Text[0] != '.') // Not a command so a emote
     {
         WorldPacket TextEmotePacket((uint16)MSG_TEXT_EMOTE);
         std::string TextEmote = GetEmote(Text);

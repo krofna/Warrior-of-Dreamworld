@@ -66,6 +66,9 @@ private:
     void HandleShutdownCommand();
 
     void HandleHelpCommand();
+    ChatCommand* SubCommandHelper(std::string const& BaseCommand);
+
+    bool IsEndArgument() const;
 
     template <class T>
     void ExtractArg(T& Arg);
