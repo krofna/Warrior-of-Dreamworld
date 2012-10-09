@@ -6,7 +6,7 @@ CREATE TABLE `players`
     `guid` BIGINT UNSIGNED NOT NULL,
     `username` VARCHAR(20) NOT NULL,
     `password` VARCHAR(30) NOT NULL,
-    `email`    VARCHAR(40) NOT NULL,
+    `email` VARCHAR(40) NOT NULL,
     `online` TINYINT UNSIGNED DEFAULT 0,
     `seclevel` TINYINT UNSIGNED DEFAULT 0,
     `tileset` VARCHAR(20) NOT NULL,
