@@ -30,8 +30,8 @@ TODO:
 No cutting on diagonal movement
 */
 
-boost::shared_array<PathfinderNode> Pathfinder::PathfindingGrid;
-boost::shared_array<uint8> Pathfinder::PathfindingStatusGrid;
+boost::scoped_array<PathfinderNode> Pathfinder::PathfindingGrid;
+boost::scoped_array<uint8> Pathfinder::PathfindingStatusGrid;
 my_priority_queue Pathfinder::OpenList;
 
 Pathfinder::Pathfinder(Unit* pOrigin) :
