@@ -34,7 +34,7 @@ class Map
 {
     //friend class Pathfinder;
 public:
-    Map(MapTemplate* pTemplate, uint16 MapID, uint16 SizeX, uint16 SizeY);
+    Map(MapTemplate* pTemplate, uint32 MapID, uint16 SizeX, uint16 SizeY);
     ~Map();
 
     uint16 GetID() const;
@@ -71,7 +71,7 @@ public:
     // NOTE: Players are NOT stored here
     std::vector<std::vector<WorldObject*> > TileGrid;
     MapScript* pMapScript;
-    uint16 MapID;
+    uint32 MapID;
 };
 
 #endif

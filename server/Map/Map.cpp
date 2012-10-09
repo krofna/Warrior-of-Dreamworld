@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "MapScript.hpp"
 #include "AIFactory.hpp"
 
-Map::Map     (MapTemplate* pTemplate, uint16 MapID, uint16 SizeX, uint16 SizeY) : 
+Map::Map     (MapTemplate* pTemplate, uint32 MapID, uint16 SizeX, uint16 SizeY) : 
 NewSpellBoxID(0),
 pTemplate    (pTemplate),
 MapID        (MapID),

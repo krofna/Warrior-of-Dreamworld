@@ -70,7 +70,7 @@ SpellTemplate* ObjectMgr::GetSpellTemplate(uint64 ID) const
     return nullptr;
 }
 
-MapTemplate* ObjectMgr::GetMapTemplate(uint16 ID) const
+MapTemplate* ObjectMgr::GetMapTemplate(uint32 ID) const
 {
     auto MTemplate = MapTemplates.find(ID);
     if (MTemplate != MapTemplates.end())

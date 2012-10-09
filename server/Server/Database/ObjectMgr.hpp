@@ -38,7 +38,7 @@ public:
     ItemTemplate*       GetItemTemplate       (uint64 Entry) const;
     QuestTemplate*      GetQuestTemplate      (uint64 Entry) const;
     SpellTemplate*      GetSpellTemplate      (uint64 Entry) const;
-    MapTemplate*        GetMapTemplate        (uint16 Entry) const;
+    MapTemplate*        GetMapTemplate        (uint32 Entry) const;
 
     WorldObjectQuests   GetCreatureQuests     (uint64 Entry) const;
 
