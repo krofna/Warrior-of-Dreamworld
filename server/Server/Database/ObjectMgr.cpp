@@ -215,7 +215,7 @@ void ObjectMgr::LoadPlayersLoginInfo()
 
     while (Result->next())
     {
-        Players.push_back(new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3)));
+        Players[Result->getUInt64(3)] = new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3));
     }
 }
 
@@ -233,8 +233,8 @@ Player* ObjectMgr::GetPlayer(std::string& Username)
 {
     for(auto iter = Players.begin(); iter != Players.end(); ++iter)
     {
-        if((*iter)->GetUsername() == Username)
-			return *iter;
+        if(iter->second->GetUsername() == Username)
+            return iter->second;
     }
 
     return nullptr;
@@ -242,11 +242,9 @@ Player* ObjectMgr::GetPlayer(std::string& Username)
 
 Player* ObjectMgr::GetPlayer(uint64 ObjectID)
 {
-	for (auto iter = Players.begin(); iter != Players.end(); ++iter)
-	{
-		if ((*iter)->GetObjectID() == ObjectID)
-			return *iter;
-	}
+    auto Player = Players.find(ObjectID);
+    if(Player != Players.end())
+        return Player->second;
 
 	return nullptr;
 }
