@@ -73,7 +73,7 @@ public:
     void SendAuthRequest(std::string Username, std::string Password);
     void SendMovementRequest(uint8 Direction);
     void SendCastSpellRequest(uint16 SpellID, float Angle);
-    void SendAttackRequest(uint8 Direction);
+    void SendAttackRequest();
     void SendLogOutRequest();
     void SendChatMessage(std::string const& Message);
     

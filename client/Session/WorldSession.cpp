@@ -354,10 +354,9 @@ void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
     Send(Packet);
 }
 
-void WorldSession::SendAttackRequest(uint8 Direction)
+void WorldSession::SendAttackRequest()
 {
     WorldPacket Packet((uint16)MSG_MELEE_ATTACK);
-    Packet << Direction;
     Send(Packet);
 }
 

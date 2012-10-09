@@ -231,22 +231,17 @@ void WorldSession::HandleCastSpellOpcode()
 
 void WorldSession::HandleMeleeAttackOpcode()
 {
-    uint8 Direction;
-    Packet >> Direction;
-
-    Unit* pTarget = pPlayer->FindNearTarget(Direction);
+    Unit* pTarget = pPlayer->FindNearTarget();
 
     if (!pTarget)
     {
-        sLog.Write("Unknown target !");
-        SendNotification("Unknown target !");
+        pPlayer->SendNotification("No target !");
         return;
     }
 
     if (!pPlayer->CanAttack(pTarget))
     {
-        sLog.Write("Impossible to attack target !");
-        SendNotification("Impossible to attack target !");
+        pPlayer->SendNotification("Impossible to attack target !");
         return;
     }
 

@@ -45,6 +45,7 @@ public:
     bool CanAttack(Unit* pTarget) const;
 
     Unit* FindNearTarget(uint8 Direction) const;
+    Unit* FindNearTarget() const; // Use Last Direction
 
     void SpellHit(SpellBox* pSpellBox);
     void CastSpell(SpellTemplate* pSpell, float Angle);
@@ -109,6 +110,8 @@ private:
     std::string Tileset;
     uint16 tx;
     uint16 ty;
+
+    uint8 LastDirection;
 
     std::set<uint64> Spells;
 

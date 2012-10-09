@@ -38,8 +38,7 @@ CameraTop     (WorldView.getCenter().y - WindowHeight / 2),
 CameraRight   (WindowWidth),
 CameraBottom  (WindowHeight),
 MeID          (MeID),
-m_PointMode   (false),
-cDirection    (0)
+m_PointMode   (false)
 {
 }
 
@@ -170,22 +169,18 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::D:
             Session->SendMovementRequest(MOVE_RIGHT);
-            cDirection = DIR_RIGHT;
             break;
 
         case sf::Keyboard::A:
             Session->SendMovementRequest(MOVE_LEFT);
-            cDirection = DIR_LEFT;
             break;
 
         case sf::Keyboard::W:
             Session->SendMovementRequest(MOVE_UP);
-            cDirection = DIR_UP;
             break;
 
         case sf::Keyboard::S:
             Session->SendMovementRequest(MOVE_DOWN);
-            cDirection = DIR_DOWN;
             break;
 
         case sf::Keyboard::Escape:
@@ -198,7 +193,7 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::LControl:
         case sf::Keyboard::RControl:
-            Session->SendAttackRequest(cDirection);
+            Session->SendAttackRequest();
             break;
 
         default:

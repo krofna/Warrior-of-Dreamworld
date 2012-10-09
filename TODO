@@ -8,8 +8,8 @@
 7) MapScript
 
 (FullMetal-Alchimist assigned)
-1) Finish melee system (Fix FindNearTarget, currently incorrect)
-2) Finish inventory system (Need to test with items and GUI)
+1) Finish inventory system (Need to test with items and GUI)
+2) Start stat system (Health, Mana, Damage)
 
 Code:
 - Some data may/should be Uint8 instead of Uint16

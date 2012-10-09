@@ -25,11 +25,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 
 Player::Player(std::string Username, std::string Password, uint64 ObjID) :
-Unit         (ObjID),
-Username     (Username),
-Password     (Password),
-LoadedFromDB (false),
-m_IsMute     (false)
+Unit          (ObjID),
+Username      (Username),
+Password      (Password),
+LoadedFromDB  (false),
+m_IsMute      (false),
+LastDirection (MOVE_STOP)
 {
     for (int i = 0 ; i < 4 ; ++i)
         m_Bags[i] = nullptr;
@@ -179,6 +180,7 @@ void Player::LogOut()
 
 bool Player::UpdateCoordinates(uint8 Direction)
 {
+    LastDirection = Direction;
     if (pMap->CheckOutside(Position.x, Position.y, Direction))
         return false;
 
@@ -225,27 +227,40 @@ bool Player::CanAttack(Unit* pTarget) const
 
 Unit* Player::FindNearTarget(uint8 Direction) const
 {
-    // In order:
-    // DIR_UP
-    // DIR_DOWN
-    // DIR_LEFT
-    // DIR_RIGHT
-    static Vector2i Directions[4] = { Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, -1), Vector2i(0, 1) };
-
     Vector2i newPos = GetPosition();
-    newPos.x += Directions[Direction].x;
-    newPos.y += Directions[Direction].y;
+    
+    switch (Direction)
+    {
+        case MOVE_STOP:
+        default:
+            break;
+        case MOVE_UP:
+            newPos.y--;
+            break;
+        case MOVE_DOWN:
+            newPos.y++;
+            break;
+        case MOVE_LEFT:
+            newPos.x--;
+            break;
+        case MOVE_RIGHT:
+            newPos.x++;
+            break;
+    }
 
     if (pMap->TileGrid[newPos.y][newPos.x] == nullptr)
     {
         // Maybe a player ?
-
-        // TODO: Find near player without iterate on pMap->Players
-
+        sLog.Write("TODO: Find near player !");
         return nullptr;
     }
 
     return dynamic_cast<Unit* >(pMap->TileGrid[newPos.y][newPos.x]);
+}
+
+Unit* Player::FindNearTarget() const
+{
+    return FindNearTarget(LastDirection);
 }
 
 bool Player::HasItem(uint8 Bag, uint8 Slot, uint64 ItemID) const
