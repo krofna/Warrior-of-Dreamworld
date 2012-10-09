@@ -33,7 +33,7 @@ Map::Map     (MapTemplate* pTemplate, uint16 MapID, uint16 SizeX, uint16 SizeY) 
 NewSpellBoxID(0),
 pTemplate    (pTemplate),
 MapID        (MapID),
-TileGrid     (SizeY, std::vector<WorldObject*>(SizeX, nullptr))
+TileGrid     (SizeX, std::vector<WorldObject*>(SizeY, nullptr))
 {
     pMapScript = sWorld->GetAIFactory()->CreateMapScript(pTemplate->ScriptName, this);
 }
@@ -193,13 +193,12 @@ bool Map::TryInteract(Player* pWho, uint16 x, uint16 y)
 
 bool Map::CheckOutside(int PosX, int PosY, uint8 Direction) const
 {
-    // FIXME: This works only for map0 (50x50)
     switch(Direction)
     {
         case MOVE_UP: return ((PosY - 1) < 0);
-        case MOVE_DOWN: return ((PosY + 1) >= 50);
+        case MOVE_DOWN: return ((PosY + 1) >= TileGrid.size()-1);
         case MOVE_LEFT: return ((PosX - 1) < 0);
-        case MOVE_RIGHT: return ((PosX + 1) >= 50);
+        case MOVE_RIGHT: return ((PosX + 1) >= TileGrid[0].size()-1);
         default: return false;
     }
 }
