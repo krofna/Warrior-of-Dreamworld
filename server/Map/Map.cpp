@@ -126,7 +126,7 @@ void Map::AddPlayer(Player* pPlayer)
     for(auto GoIterator = GameObjects.begin(); GoIterator != GameObjects.end(); ++GoIterator)
     {
         WorldPacket GoData = (*GoIterator)->PackData();
-        pPlayer->SendPacket(GoeData);
+        pPlayer->SendPacket(GoData);
     }
 
     // Pack & send all data about players in map to new player
