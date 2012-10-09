@@ -35,7 +35,7 @@ pTemplate    (pTemplate),
 MapID        (MapID),
 TileGrid     (SizeX, std::vector<WorldObject*>(SizeY, nullptr))
 {
-    pMapScript = sWorld->GetAIFactory()->CreateMapScript(pTemplate->ScriptName, this);
+    pMapScript = CreateScript(pTemplate->ScriptName, this);
 }
 
 Map::~Map()
