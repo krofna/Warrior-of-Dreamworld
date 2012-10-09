@@ -97,7 +97,7 @@ struct SpellTemplate
 
 struct MapTemplate
 {
-    uint16 Entry;
+    uint32 Entry;
     std::string ScriptName;
 };
 
