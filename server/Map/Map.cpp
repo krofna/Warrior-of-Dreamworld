@@ -37,7 +37,6 @@ MapID        (MapID),
 TileGrid     (50, std::vector<WorldObject*>(50, nullptr))
 {
     pMapScript = sWorld->GetAIFactory()->CreateMapScript(pTemplate->ScriptName, this);
-    sLog.Write("Map %u loaded.", MapID);
 }
 
 Map::~Map()
@@ -116,11 +115,18 @@ void Map::UnitUpdate(Unit* pUnit, int64 diff)
 
 void Map::AddPlayer(Player* pPlayer)
 {
-    // Pack & send all data about world objects to new player
+    // Pack & send all data about creatures to new player
     for(auto CreatureIterator = Creatures.begin(); CreatureIterator != Creatures.end(); ++CreatureIterator)
     {
         WorldPacket CreatureData = (*CreatureIterator)->PackData();
         pPlayer->SendPacket(CreatureData);
+    }
+    
+    // Pack & send all data about game objects to new player
+    for(auto GoIterator = GameObjects.begin(); GoIterator != GameObjects.end(); ++GoIterator)
+    {
+        WorldPacket GoData = (*GoIterator)->PackData();
+        pPlayer->SendPacket(GoeData);
     }
 
     // Pack & send all data about players in map to new player

@@ -48,5 +48,6 @@ void GameObject::OnInteract(Player* pWho)
 WorldPacket GameObject::PackData()
 {
     WorldPacket Packet((uint16)MSG_ADD_OBJECT);
+    Packet << ObjID << pTemplate->Tileset << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
     return Packet;
 }
