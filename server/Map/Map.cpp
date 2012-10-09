@@ -80,7 +80,7 @@ void Map::Load()
 
     while(Result->next())
     {
-        pGo = new GameObject(Result->getUInt64(1), this, Result->getUInt(4), Result->getUInt(5), sObjectMgr.GetGameObjectTemplate(Result->getUInt(2)));
+        pGo = new GameObject(GoResult->getUInt64(1), this, GoResult->getUInt(4), GoResult->getUInt(5), sObjectMgr.GetGameObjectTemplate(GoResult->getUInt(2)));
         GameObjects.push_back(pGo);
     }
 }
