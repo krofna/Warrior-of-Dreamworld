@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include "shared/Templates.hpp"
 #include <map>
+#include <list>
 #include <boost/unordered_map.hpp>
 
 class Player;
@@ -50,25 +51,23 @@ public:
     void LoadMapTemplates();
     void LoadCreatureQuests();
     void LoadPlayersLoginInfo();
-    
-    // TODO: this overload is evil
+
     Player* GetPlayer(std::string& Username);
 	Player* GetPlayer(uint64 ObjectID);
 
 private:
-    boost::unordered_map<uint64, Player*>             Players;
+    std::list<Player*> Players;
     
     boost::unordered_map<uint64, SpellTemplate*>      SpellTemplates;
     boost::unordered_map<uint64, CreatureTemplate*>   CreatureTemplates;
     boost::unordered_map<uint64, GameObjectTemplate*> GameObjectTemplates;
     boost::unordered_map<uint64, ItemTemplate*>       ItemTemplates;
     boost::unordered_map<uint32, MapTemplate*>        MapTemplates;
-
     std::map<uint64, QuestTemplate*>                  QuestTemplates;
     
     // Key = Creature ObjID
     // T   = Quest ID
-    std::multimap<uint64, uint64>         CreatureQuests;
+    std::multimap<uint64, uint64>                     CreatureQuests;
 };
 
 extern ObjectMgr sObjectMgr;

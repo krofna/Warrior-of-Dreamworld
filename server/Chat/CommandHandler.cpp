@@ -36,7 +36,7 @@ ChatCommand* CommandHandler::GetCommandTable()
     {
         { "create",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountCreateCommand,    "Usage: account create $username $password",    nullptr },
         { "delete",     SEC_ADMIN,  true,   &CommandHandler::HandleAccountDeleteCommand,    "Usage: account delete $username $password",    nullptr },
-        { "set",        SEC_PLAYER, true,   nullptr,                                           "Usage: account set <what> <new value>",        AccountSetCommandTable },
+        { "set",        SEC_PLAYER, true,   nullptr,                                        "Usage: account set <what> <new value>",        AccountSetCommandTable },
         NullCommand
     };
 
@@ -49,10 +49,10 @@ ChatCommand* CommandHandler::GetCommandTable()
 
     static ChatCommand CommandTable[] =
     {
-        { "account",    SEC_PLAYER, true,   nullptr,                                           "Usage: account <command> <argv>",              AccountCommandTable },
+        { "account",    SEC_PLAYER, true,   nullptr,                                        "Usage: account <command> <argv>",              AccountCommandTable },
         { "kill",       SEC_ADMIN,  true,   &CommandHandler::HandleKillCommand,             "Usage: kill <player_name>",                    nullptr },
         { "shutdown",   SEC_ADMIN,  true,   &CommandHandler::HandleShutdownCommand,         "Usage: shutdown <time in seconds>",            nullptr },
-        { "teleport",   SEC_ADMIN,  false,  nullptr,                                           "Usage: teleport <subcommand>",                 TeleportCommandTable },
+        { "teleport",   SEC_ADMIN,  false,  nullptr,                                        "Usage: teleport <subcommand>",                 TeleportCommandTable },
         { "bring",      SEC_ADMIN,  false,  &CommandHandler::HandleBringCommand,            "Usage: bring <player_name>",                   nullptr },
         { "help",       SEC_PLAYER, true,   &CommandHandler::HandleHelpCommand,             "Usage: help <command>",                        nullptr },
         NullCommand

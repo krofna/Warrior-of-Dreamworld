@@ -215,7 +215,7 @@ void ObjectMgr::LoadPlayersLoginInfo()
 
     while (Result->next())
     {
-        Players[Result->getUInt64(3)] = new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3));
+        Players.push_front(new Player(Result->getString(1), Result->getString(2), Result->getUInt64(3)));
     }
 }
 
@@ -232,19 +232,17 @@ void ObjectMgr::LoadCreatureQuests()
 Player* ObjectMgr::GetPlayer(std::string& Username)
 {
     for(auto iter = Players.begin(); iter != Players.end(); ++iter)
-    {
-        if(iter->second->GetUsername() == Username)
-            return iter->second;
-    }
+        if((*iter)->GetUsername() == Username)
+            return *iter;
 
     return nullptr;
 }
 
 Player* ObjectMgr::GetPlayer(uint64 ObjectID)
 {
-    auto Player = Players.find(ObjectID);
-    if(Player != Players.end())
-        return Player->second;
+    for(auto iter = Players.begin(); iter != Players.end(); ++iter)
+        if((*iter)->GetObjectID() == ObjectID)
+            return *iter;
 
 	return nullptr;
 }
