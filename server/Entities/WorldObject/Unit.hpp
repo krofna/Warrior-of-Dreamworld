@@ -62,8 +62,8 @@ public:
     void DoMeleeAttackIfReady(int64 diff);
     void Kill();
 
-    bool IsAlive() const { return Health > 0; }
-    bool IsDead() const { return !IsAlive(); }
+    bool IsAlive() const;
+    bool IsDead() const;
     
     // This one is currently called by Player
     virtual void UpdatePosition(Vector2i const& Position) { WorldObject::UpdatePosition(Position); }

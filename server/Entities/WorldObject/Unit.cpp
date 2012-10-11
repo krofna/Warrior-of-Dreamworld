@@ -64,7 +64,6 @@ void Unit::Say(const char* Text)
     OnChat(Text);
     WorldPacket SayPacket((uint16)MSG_CHAT_MESSAGE);
     SayPacket << GetObjectID() << std::string(Text);
-
     pMap->SendToPlayers(SayPacket);
 }
 
@@ -110,6 +109,16 @@ void Unit::Teleport(Vector2i const& Pos)
 void Unit::Kill()
 {
     Health = 0; // :)
+}
+
+bool Unit::IsAlive() const
+{
+    return Health > 0;
+}
+
+bool Unit::IsDead() const
+{
+    return !IsAlive();
 }
 
 void Unit::DealDamage(int32 Damage, Unit* pTarget)

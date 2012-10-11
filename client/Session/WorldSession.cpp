@@ -171,7 +171,6 @@ void WorldSession::HandleRemoveObjectOpcode()
 {
     uint64 ObjID;
     Packet >> ObjID;
-
     pWorld->RemoveObject(ObjID);
 }
 
@@ -332,6 +331,14 @@ void WorldSession::HandleInventoryDataOpcode()
     }
 }
 
+void WorldSession::HandleNpcInteractOpcode()
+{
+    uint64 Entry;
+    Packet >> Entry;
+    // TODO: construct GUI
+    //sGame->AddToLoadQueue(/*gui*/, Packet);
+}
+
 void WorldSession::SendMovementRequest(uint8 Direction)
 {
     WorldPacket Packet((uint16)MSG_MOVE_OBJECT);
@@ -342,7 +349,6 @@ void WorldSession::SendMovementRequest(uint8 Direction)
 void WorldSession::SendAuthRequest(std::string Username, std::string Password)
 {
     WorldPacket Packet((uint16)MSG_LOGIN);
-
     Packet << Username << Password;
     Send(Packet);
 }
@@ -372,10 +378,6 @@ void WorldSession::SendChatMessage(std::string const& Message)
     WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
     Packet << Message;
     Send(Packet);
-}
-
-void WorldSession::HandleNpcInteractOpcode()
-{
 }
 
 void WorldSession::GoToLoginScreen()

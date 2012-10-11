@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Creature.hpp"
 #include "Player.hpp"
 #include "CreatureAI.hpp"
-#include "SpellBox.hpp"
 #include "Pathfinder.hpp"
 #include "shared/Templates.hpp"
 #include "Map.hpp"
@@ -101,9 +100,12 @@ void Creature::UpdatePosition(Vector2i const& Position)
 void Creature::OnInteract(Player* pWho)
 {
     WorldPacket Packet((uint16)MSG_NPC_INTERACT);
+    Packet << pTemplate->Entry;
+    
     if(pTemplate->npcflag & NPC_CHAT)
     {
-        // TODO: creature chat
+        // TODO: Placeholder
+        Packet << std::string("Hello!");
     }
     if(pTemplate->npcflag & NPC_QUEST_GIVER)
     {

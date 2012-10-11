@@ -25,7 +25,7 @@ ObjID                   (ObjID)
 {
 }
 
-const uint16 WorldObject::GetMapID() const
+const uint32 WorldObject::GetMapID() const
 {
     return pMap->GetID();
 }

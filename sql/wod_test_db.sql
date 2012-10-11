@@ -9,7 +9,7 @@ INSERT INTO `gameobject_template` VALUES (DEFAULT, 'test_go', 'dg_edging132.gif'
 INSERT INTO `gameobject` VALUES (UUID_SHORT(), 1, 0, 9, 9);
 INSERT INTO `map_template` VALUES (DEFAULT, 'map_test_map');
 INSERT INTO `item_template` VALUES (DEFAULT, 1, 1, "Krofna's bag", 1, 1, 36, "The bottom of the crate is leaking. Leaking tears...");
-INSERT INTO `creature_template` VALUES (DEFAULT, 'krofnica', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_krofnica');
+INSERT INTO `creature_template` VALUES (DEFAULT, 'krofnica', 'dg_classm32.gif', 7, 10, 8, 100, 100, 'npc_krofnica');
 INSERT INTO `creature_template` VALUES (DEFAULT, 'The FullMetal Alchimist', 'dg_classm32.gif', 7, 10, 0, 100, 100, 'npc_the_fullmetal_alchimist');
 INSERT INTO `creature` VALUES (UUID_SHORT(), 1, 0, 10, 10);
 INSERT INTO `creature` VALUES (UUID_SHORT(), 2, 0, 11, 11);

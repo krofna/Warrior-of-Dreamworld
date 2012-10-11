@@ -39,11 +39,6 @@ LastDirection (MOVE_STOP)
 Player::~Player()
 {
 }
-// PH: needs more work
-void Player::RemoveFromWorld()
-{
-    pMap->RemovePlayer(this);
-}
 
 void Player::LoadFromDB()
 {
@@ -105,22 +100,12 @@ bool Player::IsLoaded()
 
 void Player::SpellHit(SpellBox* pSpellBox)
 {
-    // PH, TODO: do player specific stuff
     Unit::SpellHit(pSpellBox);
 }
 
 void Player::CastSpell(SpellTemplate* pSpell, float Angle)
 {
-    // TODO: Uncomment this when player actually learns spells xD
-    //if(!LearnedSpell(pSpell->ID))
-        //return;
-
     Unit::CastSpell(pSpell, Angle);
-}
-
-bool Player::LearnedSpell(uint8 ID)
-{
-    return Spells.find(ID) != Spells.end();
 }
 
 void Player::Update(int64 diff)
@@ -174,7 +159,7 @@ void Player::OnServerShutdown()
 void Player::LogOut()
 {
     pWorldSession = WorldSessionPtr();
-    this->RemoveFromWorld();
+    pMap->RemovePlayer(this);
     this->SaveToDB();
 }
 

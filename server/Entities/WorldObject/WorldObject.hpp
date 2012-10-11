@@ -40,7 +40,7 @@ public:
     virtual void OnInteract(Player* pWho) = 0;
 
     const uint64 GetObjectID() const;
-    const uint16 GetMapID() const;
+    const uint32 GetMapID() const;
     Map* GetMap() const;
     uint16 GetX() const;
     uint16 GetY() const;

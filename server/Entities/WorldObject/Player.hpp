@@ -35,8 +35,6 @@ public:
     Player(std::string Username, std::string Password, uint64 ObjID);
     ~Player();
 
-    void RemoveFromWorld();
-
     void LoadFromDB();
     void SaveToDB();
     bool IsLoaded();
@@ -112,10 +110,6 @@ private:
     uint16 ty;
 
     uint8 LastDirection;
-
-    std::set<uint64> Spells;
-
-    bool LearnedSpell(uint8 ID);
 
     bool LoadedFromDB;
     bool m_IsMute;
