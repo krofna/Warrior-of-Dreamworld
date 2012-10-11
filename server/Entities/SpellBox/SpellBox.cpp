@@ -21,12 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Opcodes.hpp"
 
 SpellBox::SpellBox(SpellTemplate* pSpell, Unit* pCaster, FloatRect Hitbox, float Angle, uint32 SpellBoxID) :
-pSpellTemplate            (pSpell),
-pCaster                   (pCaster),
-Hitbox                    (Hitbox),
-Angle                     (Angle),
-SpellBoxID                (SpellBoxID),
-_Diff                     (0)
+pSpellTemplate    (pSpell),
+pCaster           (pCaster),
+Hitbox            (Hitbox),
+Angle             (Angle),
+SpellBoxID        (SpellBoxID),
+_Diff             (0)
 {
 }
 

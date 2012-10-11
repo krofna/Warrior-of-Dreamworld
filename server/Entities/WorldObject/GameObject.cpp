@@ -27,7 +27,7 @@ GameObject::GameObject(uint64 ObjID, Map* pMap, uint16 x, uint16 y, GameObjectTe
 WorldObject           (ObjID),
 pTemplate             (pTemplate)
 {
-    pAI = sWorld->GetAIFactory()->CreateGameObjectAI(pTemplate->ScriptName, this);
+    pAI = CreateAI(pTemplate->ScriptName, this);
     this->pMap = pMap;
 }
 

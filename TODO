@@ -4,8 +4,6 @@
 3) Implement reconnect
 4) Cleanup spell bolt when its out from map
 5) Unit interaction: Vendor & Quest Giver
-6) Gameobject interaction
-7) MapScript
 
 (FullMetal-Alchimist assigned)
 1) Finish inventory system (Need to test with items and GUI)

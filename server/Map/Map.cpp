@@ -156,10 +156,7 @@ void Map::AddSpell(Unit* pCaster, SpellTemplate* pSpellTemplate, float Angle)
 
 void Map::SendToPlayers(WorldPacket& Packet)
 {
-    for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end(); ++PlayerIterator)
-    {
-        (*PlayerIterator)->SendPacket(Packet);
-    }
+    std::for_each(Players.begin(), Players.end(), boost::bind(&Player::SendPacket, _1, Packet));
 }
 
 void Map::RemovePlayer(Player* pPlayer)
