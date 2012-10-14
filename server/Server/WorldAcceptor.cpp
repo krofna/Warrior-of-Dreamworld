@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Log.hpp"
 #include "WorldSession.hpp"
 #include "Database.hpp"
+#include <boost/asio/placeholders.hpp>
 #include <boost/bind.hpp>
 
 #define DEBUG_CONNECTION

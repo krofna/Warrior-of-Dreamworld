@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include "WorldSession.hpp"
 #include "ObjectMgr.hpp"
-
 #include <stdexcept>
 
 #ifdef GPROF

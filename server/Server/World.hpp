@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Map.hpp"
 #include "WorldAcceptor.hpp"
 #include <boost/chrono.hpp>
+#include <boost/asio/deadline_timer.hpp>
 
 class AIFactory;
 

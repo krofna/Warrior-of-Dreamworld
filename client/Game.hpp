@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "GameState.hpp"
 #include "Globals.hpp"
-#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include <queue>
 #include <stack>
 

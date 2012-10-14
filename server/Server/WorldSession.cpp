@@ -21,6 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 #include "Player.hpp"
 #include <boost/bind.hpp>
+#include <boost/asio/write.hpp>
+#include <boost/asio/read.hpp>
+#include <boost/asio/placeholders.hpp>
 #include "shared/Log.hpp"
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
