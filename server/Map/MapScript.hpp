@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Map;
 
-class MapScript
+class WOD_DLL_DECL MapScript
 {
 public:
     explicit MapScript(Map* pMap) : pMap(pMap) { }
