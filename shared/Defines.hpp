@@ -28,6 +28,15 @@ struct MapDeleter
     }
 };
 
+struct Deleter
+{
+    template<typename Type>
+    void operator() (Type toDelete)
+    {
+        delete toDelete;
+    }
+};
+
 #include <cstdint>
 
 typedef uint8_t uint8;

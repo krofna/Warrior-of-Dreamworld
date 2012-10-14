@@ -31,7 +31,7 @@ ObjectMgr::~ObjectMgr()
     std::for_each(QuestTemplates.begin(), QuestTemplates.end(), MapDeleter());
     std::for_each(SpellTemplates.begin(), SpellTemplates.end(), MapDeleter());
     std::for_each(MapTemplates.begin(), MapTemplates.end(), MapDeleter());
-    std::for_each(Players.begin(), Players.end(), boost::bind(&operator delete, _1));
+    std::for_each(Players.begin(), Players.end(), Deleter());
 }
 
 CreatureTemplate* ObjectMgr::GetCreatureTemplate(uint64 Entry) const

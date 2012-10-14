@@ -44,7 +44,7 @@ Timer       (io)
 
 World::~World()
 {
-    std::for_each(Maps.begin(), Maps.end(), boost::bind(&operator delete, _1));
+    std::for_each(Maps.begin(), Maps.end(), Deleter());
     delete pAIFactory;
     delete pWorldAcceptor;
 }

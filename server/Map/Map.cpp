@@ -45,9 +45,9 @@ Map::~Map()
         std::for_each(Players.begin(), Players.end(), boost::bind(&Player::OnServerShutdown, _1));
 
     // Cleanup entities
-    std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&operator delete, _1));
-    std::for_each(GameObjects.begin(), GameObjects.end(), boost::bind(&operator delete, _1));
-    std::for_each(Spells.begin(), Spells.end(), boost::bind(&operator delete, _1));
+    std::for_each(Creatures.begin(), Creatures.end(), Deleter());
+    std::for_each(GameObjects.begin(), GameObjects.end(), Deleter());
+    std::for_each(Spells.begin(), Spells.end(), Deleter());
     
     delete pMapScript;
 
