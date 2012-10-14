@@ -188,7 +188,7 @@ bool Map::TryInteract(Player* pWho, uint16 x, uint16 y)
 }
 
 
-bool Map::CheckOutside(int PosX, int PosY, uint8 Direction) const
+bool Map::CheckOutside(uint16 PosX, uint16 PosY, uint8 Direction) const
 {
     switch(Direction)
     {

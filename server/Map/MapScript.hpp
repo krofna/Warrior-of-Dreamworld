@@ -26,7 +26,8 @@ class Map;
 class MapScript
 {
 public:
-    MapScript(Map* pMap) : pMap(pMap) { }
+    explicit MapScript(Map* pMap) : pMap(pMap) { }
+    virtual ~MapScript() {}
 
     virtual void Update(int64 diff);
 

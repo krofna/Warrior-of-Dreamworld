@@ -27,7 +27,7 @@ class WOD_DLL_DECL GameObjectAI
 {
 public:
     explicit GameObjectAI(GameObject* pGo) : pGo(pGo) {}
-    virtual ~GameObjectAI() {};
+    virtual ~GameObjectAI() {}
 
     // Called on World::Update
     virtual void UpdateAI(int64 diff);

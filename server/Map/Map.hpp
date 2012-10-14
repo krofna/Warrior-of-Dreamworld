@@ -54,7 +54,7 @@ public:
 
     bool TryInteract(Player* pWho, uint16 x, uint16 y);
 
-    bool CheckOutside(int PosY, int PosX, uint8 Direction) const;
+    bool CheckOutside(uint16 PosY, uint16 PosX, uint8 Direction) const;
 
 //private:
 
