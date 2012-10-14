@@ -21,8 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "shared/Opcodes.hpp"
 #include "shared/Defines.hpp"
-
-#include <boost/asio.hpp>
+#include <boost/asio/io_service.hpp>
 
 typedef boost::asio::ip::tcp::endpoint TCPEndpoint;
 typedef boost::asio::ip::tcp::acceptor TCPAcceptor;
