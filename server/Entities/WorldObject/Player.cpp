@@ -240,7 +240,6 @@ Unit* Player::FindNearTarget(uint8 Direction) const
         return nullptr;
     }
 
-    // Todo: THIS ISNT GUARANTEED TO BE UNIT!!
     return dynamic_cast<Unit*>(pMap->GetObjectAt(newPos.x, newPos.y));
 }
 
