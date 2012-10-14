@@ -41,7 +41,7 @@ pTarget               (nullptr),
 Target                (-1, -1),
 Home                  (pOrigin->GetPosition())
 {
-    pTileGrid =  &pMap->TileGrid;
+    pTileGrid =  pMap->GetWorldObjectGrid();
     MovementCooldown = 1000;
 }
 
@@ -160,13 +160,13 @@ void Pathfinder::GeneratePath()
         }
 
         // Lower
-        if(pCurrent->Position.y != pMap->TileGrid.size()-1)
+        if(pCurrent->Position.y != pTileGrid->size())
         {
             CheckNode(pCurrent, 0, 1, 10);
         }
 
         // Right
-        if(pCurrent->Position.x != pMap->TileGrid[0].size()-1)
+        if(pCurrent->Position.x != pTileGrid->size()-1)
         {
             CheckNode(pCurrent, 1, 0, 10);
         }
@@ -178,7 +178,7 @@ void Pathfinder::GeneratePath()
         }
 
         // Upper-right
-        if(pCurrent->Position.x != pMap->TileGrid[0].size()-1 && pCurrent->Position.y != 0)
+        if(pCurrent->Position.x != (*pTileGrid)[0].size()-1 && pCurrent->Position.y != 0)
         {
             CheckNode(pCurrent, 1, -1, 14);
         }
@@ -190,13 +190,13 @@ void Pathfinder::GeneratePath()
         }
 
         // Lower-right
-        if(pCurrent->Position.x != pMap->TileGrid[0].size()-1 && pCurrent->Position.y != pMap->TileGrid.size()-1)
+        if(pCurrent->Position.x != (*pTileGrid)[0].size()-1 && pCurrent->Position.y != pTileGrid->size()-1)
         {
             CheckNode(pCurrent, 1, 1, 14);
         }
 
         // Lower-left
-        if(pCurrent->Position.x != 0 && pCurrent->Position.y != pMap->TileGrid.size()-1)
+        if(pCurrent->Position.x != 0 && pCurrent->Position.y != pTileGrid->size()-1)
         {
             CheckNode(pCurrent, -1, 1, 14);
         }

@@ -19,8 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <string>
-#include <set>
 #include "Unit.hpp"
 #include "WorldSession.hpp"
 #include "Bag.hpp"

@@ -76,6 +76,9 @@ DROP TABLE IF EXISTS `map_template`;
 CREATE TABLE `map_template`
 (
     `entry` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `size_x` TINYINT UNSIGNED NOT NULL,
+    `size_y` TINYINT UNSIGNED NOT NULL,
+    `mapflag` TINYINT UNSIGNED NOT NULL,
     `ScriptName` CHAR(192),
     PRIMARY KEY(entry)
 );
@@ -145,7 +148,5 @@ CREATE TABLE `map`
 (
     `id` INT UNSIGNED NOT NULL,
     `entry` INT UNSIGNED NOT NULL,
-    `size_x` TINYINT UNSIGNED NOT NULL,
-    `size_y` TINYINT UNSIGNED NOT NULL,
     PRIMARY KEY(id)
 );

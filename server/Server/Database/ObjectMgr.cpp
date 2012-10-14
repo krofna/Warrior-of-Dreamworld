@@ -203,8 +203,11 @@ void ObjectMgr::LoadMapTemplates()
         pTemplate = new MapTemplate;
 
         pTemplate->Entry      = Result->getUInt   (1);
-        pTemplate->ScriptName = Result->getString (2);
-        
+        pTemplate->SizeX      = Result->getUInt   (2);
+        pTemplate->SizeY      = Result->getUInt   (3);
+        pTemplate->mapflag    = Result->getUInt   (4);
+        pTemplate->ScriptName = Result->getString (5);
+
         MapTemplates[pTemplate->Entry] = pTemplate;
     }
 }

@@ -29,19 +29,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "MapScript.hpp"
 #include "AIFactory.hpp"
 
-Map::Map     (MapTemplate* pTemplate, uint32 MapID, uint16 SizeX, uint16 SizeY) : 
+Map::Map     (MapTemplate* pTemplate, uint32 MapID) : 
 NewSpellBoxID(0),
 pTemplate    (pTemplate),
-MapID        (MapID),
-TileGrid     (SizeX, std::vector<WorldObject*>(SizeY, nullptr))
+MapID        (MapID)
 {
     pMapScript = CreateScript(pTemplate->ScriptName, this);
+    TileGrid.resize(pTemplate->SizeX, std::vector<WorldObject*>(pTemplate->SizeY, nullptr));
 }
 
 Map::~Map()
 {
     // Notify everyone that server is going down
-    std::for_each(Players.begin(), Players.end(), boost::bind(&Player::OnServerShutdown, _1));
+    if(!(pTemplate->mapflag & MAP_INSTANCED))
+        std::for_each(Players.begin(), Players.end(), boost::bind(&Player::OnServerShutdown, _1));
 
     // Cleanup entities
     std::for_each(Creatures.begin(), Creatures.end(), boost::bind(&operator delete, _1));
@@ -110,6 +111,11 @@ void Map::UnitUpdate(Unit* pUnit, int64 diff)
         }
     }
     pUnit->Update(diff);
+}
+
+void Map::AddToTileGrid(WorldObject* pWho)
+{
+    TileGrid[pWho->GetY()][pWho->GetX()] = pWho;
 }
 
 void Map::AddPlayer(Player* pPlayer)
@@ -187,6 +193,20 @@ bool Map::TryInteract(Player* pWho, uint16 x, uint16 y)
     return true;
 }
 
+void Map::RemoveFromTileGrid(uint16 x, uint16 y)
+{
+    TileGrid[y][x] = nullptr;
+}
+
+WorldObject* Map::GetObjectAt(uint16 x, uint16 y)
+{
+    return TileGrid[y][x];
+}
+
+WorldObjectGrid* Map::GetWorldObjectGrid()
+{
+    return &TileGrid;
+}
 
 bool Map::CheckOutside(uint16 PosX, uint16 PosY, uint8 Direction) const
 {

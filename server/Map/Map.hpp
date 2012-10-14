@@ -30,11 +30,12 @@ class WorldObject;
 class MapScript;
 struct MapTemplate;
 
+typedef std::vector<std::vector<WorldObject*> > WorldObjectGrid;
+
 class Map
 {
-    //friend class Pathfinder;
 public:
-    Map(MapTemplate* pTemplate, uint32 MapID, uint16 SizeX, uint16 SizeY);
+    Map(MapTemplate* pTemplate, uint32 MapID);
     ~Map();
 
     uint16 GetID() const;
@@ -42,9 +43,11 @@ public:
 
     void Load();
 
+    // THIS FUNCTION IS NOT TO BE FUCKED WITH
+    void RemoveFromTileGrid(uint16 x, uint16 y);
+    void AddToTileGrid(WorldObject* pWho);
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
-
     void AddSpell(Unit* pCaster, SpellTemplate* pSpell, float Angle);
 
     virtual void Update(int64 diff);
@@ -53,24 +56,22 @@ public:
     void SendToPlayers(WorldPacket& Packet);
 
     bool TryInteract(Player* pWho, uint16 x, uint16 y);
+    WorldObject* GetObjectAt(uint16 x, uint16 y);
+    WorldObjectGrid* GetWorldObjectGrid();
 
     bool CheckOutside(uint16 PosY, uint16 PosX, uint8 Direction) const;
 
-//private:
-
+private:
     // Entities
     std::list<GameObject*> GameObjects;
     std::list<Creature*> Creatures;
     std::list<Player*> Players;
     std::list<SpellBox*> Spells;
+    WorldObjectGrid TileGrid;
 
     MapTemplate const* pTemplate;
-    uint32 NewSpellBoxID;
-
-    // TODO: maybe struct containing iswater/not walkable/walkable stuff along with WorldObject*
-    // NOTE: Players are NOT stored here
-    std::vector<std::vector<WorldObject*> > TileGrid;
     MapScript* pMapScript;
+    uint32 NewSpellBoxID;
     uint32 MapID;
 };
 

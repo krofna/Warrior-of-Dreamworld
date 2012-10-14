@@ -28,6 +28,8 @@ class Map;
 class WorldObject;
 class Unit;
 
+typedef std::vector<std::vector<WorldObject*> > WorldObjectGrid;
+
 struct PathfinderNode
 {
     PathfinderNode* pParent;
@@ -117,7 +119,7 @@ class Pathfinder
         Map* pMap;
 
         // Pointer to 2D array of static world objects in pMap
-        std::vector<std::vector<WorldObject*> >* pTileGrid;
+        WorldObjectGrid* pTileGrid;
 
         // Pointer to 2D array of pre-allocated nodes used by pathfinder
         // Its size same as size of largest map

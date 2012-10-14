@@ -95,9 +95,17 @@ struct SpellTemplate
     uint16 Cost;
 };
 
+enum //mapflag
+{
+    MAP_INSTANCED = 1
+};
+
 struct MapTemplate
 {
     uint32 Entry;
+    uint16 SizeX;
+    uint16 SizeY;
+    uint8 mapflag;
     std::string ScriptName;
 };
 

@@ -233,14 +233,15 @@ Unit* Player::FindNearTarget(uint8 Direction) const
             break;
     }
 
-    if (pMap->TileGrid[newPos.y][newPos.x] == nullptr)
+    if (!pMap->GetObjectAt(newPos.x, newPos.y))
     {
         // Maybe a player ?
         sLog.Write("TODO: Find near player !");
         return nullptr;
     }
 
-    return dynamic_cast<Unit* >(pMap->TileGrid[newPos.y][newPos.x]);
+    // Todo: THIS ISNT GUARANTEED TO BE UNIT!!
+    return dynamic_cast<Unit*>(pMap->GetObjectAt(newPos.x, newPos.y));
 }
 
 Unit* Player::FindNearTarget() const

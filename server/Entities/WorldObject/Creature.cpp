@@ -36,7 +36,7 @@ pTemplate         (pTemplate)
 {
     Position = Vector2i(x, y);
     this->pMap = pMap;
-    pMap->TileGrid[y][x] = this;
+    pMap->AddToTileGrid(this);
     this->Health = pTemplate->MaxHealth;
     this->Power = pTemplate->MaxPower;
     pAI = CreateAI(pTemplate->ScriptName, this);
@@ -92,9 +92,9 @@ void Creature::TakeDamage(int32 Damage, Unit* pAttacker)
 
 void Creature::UpdatePosition(Vector2i const& Position)
 {
-    pMap->TileGrid[this->Position.y][this->Position.x] = nullptr;
+    pMap->RemoveFromTileGrid(Position.x, Position.y);
     WorldObject::UpdatePosition(Position);
-    pMap->TileGrid[Position.y][Position.x] = this;
+    pMap->AddToTileGrid(this);
 }
 
 void Creature::OnInteract(Player* pWho)
