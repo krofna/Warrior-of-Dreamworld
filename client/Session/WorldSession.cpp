@@ -144,7 +144,7 @@ void WorldSession::HandleLoginOpcode()
         return;
     }
 
-    uint16 MapID;
+    uint32 MapID;
     uint64 MeID;
     Packet >> MapID >> MeID;
 

@@ -53,7 +53,7 @@ void World::Load(WorldPacket Argv)
 {
     Window->setView(WorldView);
 
-    uint16 MapID;
+    uint32 MapID;
     Argv >> MapID;
 
     std::string Path = "data/maps/map" + ToString(MapID) + ".map";

@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "AIFactory.hpp"
 #include "shared/Opcodes.hpp"
 #include "shared/Templates.hpp"
+#include "Map.hpp"
 
 GameObject::GameObject(uint64 ObjID, Map* pMap, uint16 x, uint16 y, GameObjectTemplate* pTemplate) :
 WorldObject           (ObjID),
