@@ -18,7 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldSession.hpp"
 #include "shared/Opcodes.hpp"
-#include "World.hpp"
+#include "Map.hpp"
 #include "Player.hpp"
 #include <boost/bind.hpp>
 #include <boost/asio/write.hpp>

@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include <boost/bind.hpp>
-
 #include "World.hpp"
 #include "WorldSession.hpp"
 #include "shared/Log.hpp"
@@ -28,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Pathfinder.hpp"
 #include "shared/Log.hpp"
 #include "CommandHandler.hpp"
+#include "Map.hpp"
 
 #define SERVER_HEARTBEAT 50
 

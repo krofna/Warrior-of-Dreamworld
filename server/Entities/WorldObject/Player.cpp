@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Log.hpp"
 #include "shared/Math.hpp"
 #include "Database.hpp"
+#include "Map.hpp"
 #include "World.hpp"
 
 Player::Player(std::string Username, std::string Password, uint64 ObjID) :

@@ -19,12 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "Map.hpp"
 #include "WorldAcceptor.hpp"
 #include <boost/chrono.hpp>
 #include <boost/asio/deadline_timer.hpp>
 
 class AIFactory;
+class Map;
 
 typedef boost::chrono::milliseconds ms;
 
