@@ -78,7 +78,7 @@ void Map::Load()
     QueryResult GoResult(sDatabase.PQuery("SELECT * FROM `gameobject` WHERE map='%u'", MapID));
     GameObject* pGo;
 
-    while(Result->next())
+    while(GoResult->next())
     {
         pGo = new GameObject(GoResult->getUInt64(1), this, GoResult->getUInt(4), GoResult->getUInt(5), sObjectMgr.GetGameObjectTemplate(GoResult->getUInt(2)));
         GameObjects.push_back(pGo);
