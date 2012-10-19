@@ -57,7 +57,7 @@ enum Opcodes
     MSG_SWAP_ITEM,
     MSG_DELETE_ITEM,
     MSG_CREATE_ITEM,
-	MSG_INVENTORY_DATA,
+    MSG_INVENTORY_DATA,
 
     /** Insert witty comment **/
     MSG_NPC_INTERACT
