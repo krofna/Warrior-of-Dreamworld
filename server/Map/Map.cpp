@@ -213,9 +213,9 @@ bool Map::CheckOutside(uint16 PosX, uint16 PosY, uint8 Direction) const
     switch(Direction)
     {
         case MOVE_UP: return ((PosY - 1) < 0);
-        case MOVE_DOWN: return ((PosY + 1) >= TileGrid.size());
+        case MOVE_DOWN: return ((PosY + 1) >= pTemplate->SizeY);
         case MOVE_LEFT: return ((PosX - 1) < 0);
-        case MOVE_RIGHT: return ((PosX + 1) >= TileGrid[0].size());
+        case MOVE_RIGHT: return ((PosX + 1) >= pTemplate->SizeX);
         default: return false;
     }
 }
