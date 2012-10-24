@@ -15,16 +15,6 @@ What do I need to compile and run this?
 - MySQL C++ connector (NOTE: You should compile from source on Windows): http://dev.mysql.com/downloads/connector/cpp/
 - MySQL server: http://dev.mysql.com/downloads/mysql/
 
-Specials instructions:
-    For profilage mode, using gprof:
-            - go in build folder
-            - cmake . -DPROFILE_MODE=TRUE -DCMAKE_BUILD_TYPE=Debug
-            - make
-            - launch client in debug mode
-            - launch server in debug mode
-            - play one minutes
-            - close them
-            - in client debug directory, gprof client_exe_name > client_profile.txt
-            - in server debug directory, gprof server_exe_name > server_profile.txt
-
-
+Got questions?
+Krofna and OzVessalius in #wod-dev @ irc.freenode.net will help you.
+You can also email me: krofnica996@gmail.com
