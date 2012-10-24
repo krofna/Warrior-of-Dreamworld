@@ -372,6 +372,18 @@ void WorldSession::HandleDeleteItemOpcode()
     pPlayer->DestroyItem(Bag, Slot);
 }
 
+void WorldSession::HandleBuyItemOpcode()
+{
+}
+
+void WorldSession::HandleSellItemOpcode()
+{
+}
+
+void WorldSession::HandleAcceptQuestOpcode()
+{
+}
+
 void WorldSession::SendLogOutPacket()
 {
     WorldPacket Packet((uint16)MSG_LOG_OUT);

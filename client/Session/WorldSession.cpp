@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Login.hpp"
 #include "Inventory.hpp"
 #include <boost/bind.hpp>
-#include <cstring>
 
 WorldSession::WorldSession(boost::asio::io_service& io, Game* sGame) :
 Socket                    (io),

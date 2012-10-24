@@ -58,6 +58,10 @@ public:
     void HandleSwapItemOpcode();
     void HandleDeleteItemOpcode();
     
+    void HandleBuyItemOpcode();
+    void HandleSellItemOpcode();
+    void HandleAcceptQuestOpcode();
+    
     Player* GetPlayer();
 
 private:
