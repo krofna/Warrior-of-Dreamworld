@@ -107,7 +107,7 @@ void Login::Create()
     Global->SetSpacing(5.f);
 
     m_LoginWindow->Add(Global);
-    m_LoginWindow->SetPosition(sf::Vector2f(WindowWidth / 2, WindowHeight / 2));
+    m_LoginWindow->SetPosition(sf::Vector2f(Window->getSize().x / 2, Window->getSize().y / 2));
 
     sDesktop.Add(m_LoginWindow);
 }

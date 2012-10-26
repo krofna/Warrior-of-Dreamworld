@@ -23,20 +23,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "MessageChatArea.hpp"
 #include "Inventory.hpp"
 #include "Bag.hpp"
-
 #include "shared/Math.hpp"
 #include "shared/Utils.hpp"
+#include "ObjectMgr.hpp"
+#include <fstream>
 #include <cassert>
 
 World::World  (uint64 MeID) :
 m_MessageArea (new MessageChatArea),
 TileMap       (sf::PrimitiveType::Quads),
-WorldView     (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
+WorldView     (sf::FloatRect(0, 0, Window->getSize().x, Window->getSize().y)),
 MoveWorldView (MOVE_STOP),
-CameraLeft    (WorldView.getCenter().x - WindowWidth / 2),
-CameraTop     (WorldView.getCenter().y - WindowHeight / 2),
-CameraRight   (WindowWidth),
-CameraBottom  (WindowHeight),
+CameraLeft    (WorldView.getCenter().x - Window->getSize().x / 2),
+CameraTop     (WorldView.getCenter().y - Window->getSize().y / 2),
+CameraRight   (Window->getSize().x),
+CameraBottom  (Window->getSize().y),
 MeID          (MeID),
 m_PointMode   (false)
 {
@@ -165,24 +166,24 @@ void World::HandleEvent(sf::Event Event)
             break;
 
         case sf::Keyboard::D:
-            Session->SendMovementRequest(MOVE_RIGHT);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_RIGHT);
             break;
 
         case sf::Keyboard::A:
-            Session->SendMovementRequest(MOVE_LEFT);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_LEFT);
             break;
 
         case sf::Keyboard::W:
-            Session->SendMovementRequest(MOVE_UP);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_UP);
             break;
 
         case sf::Keyboard::S:
-            Session->SendMovementRequest(MOVE_DOWN);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_DOWN);
             break;
 
         case sf::Keyboard::Escape:
-            Session->SendLogOutRequest();
-            Session->GoToLoginScreen();
+            WorldSession::GetInstance()->SendLogOutRequest();
+            WorldSession::GetInstance()->GoToLoginScreen();
             return;
         case sf::Keyboard::P:
             m_PointMode = !m_PointMode;
@@ -190,7 +191,7 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::LControl:
         case sf::Keyboard::RControl:
-            Session->SendAttackRequest();
+            WorldSession::GetInstance()->SendAttackRequest();
             break;
 
         default:
@@ -201,13 +202,13 @@ void World::HandleEvent(sf::Event Event)
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
 
-        if(sf::Mouse::getPosition(*Window).x >= WindowWidth - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Window).x >= Window->getSize().x - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_RIGHT;
 
         else if(sf::Mouse::getPosition(*Window).x < TILE_SIZE / 2)
             MoveWorldView |= MOVE_LEFT;
 
-        if(sf::Mouse::getPosition(*Window).y > WindowHeight - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Window).y > Window->getSize().y - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_DOWN;
 
         else if(sf::Mouse::getPosition(*Window).y < TILE_SIZE / 2)
@@ -220,7 +221,7 @@ void World::HandleEvent(sf::Event Event)
         if (m_PointMode)
             std::cout << Event.mouseButton.x << ";" << Event.mouseButton.y << std::endl;
         else
-            Session->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
+            WorldSession::GetInstance()->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:

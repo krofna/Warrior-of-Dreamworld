@@ -50,10 +50,10 @@ void Item::Use()
 {
     if (m_Template->InventoryType == INVTYPE_BAG)
     {
-        // TODO: Session->SendEquipRequest(m_GUID);
+        // TODO: WorldSession::GetInstance()->SendEquipRequest(m_GUID);
     }
     else if (m_Template->InventoryType == INVTYPE_NON_EQUIP)
     {
-        // TODO: Session->SendUseRequest(m_GUID);
+        // TODO: WorldSession::GetInstance()->SendUseRequest(m_GUID);
     }
 }

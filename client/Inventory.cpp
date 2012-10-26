@@ -53,7 +53,7 @@ bool Inventory::HandleEvent(sf::Event& e)
 
     if (e.type == sf::Event::MouseButtonPressed)
     {
-        sf::Vector2i mousePos(e.mouseButton.x, e.mouseButton.y);
+        Vector2i mousePos(e.mouseButton.x, e.mouseButton.y);
 
         for (int iBag = 0 ; iBag < 4 ; ++iBag)
         {
