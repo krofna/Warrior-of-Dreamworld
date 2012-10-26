@@ -22,10 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/WorldPacket.hpp"
 #include "World.hpp"
 #include <boost/asio.hpp>
-#include <boost/thread/mutex.hpp>
 #include <queue>
 
-class Game;
 class World;
 
 typedef boost::asio::ip::tcp::socket TCPSocket;
@@ -34,7 +32,8 @@ typedef boost::asio::ip::tcp::resolver TCPResolver;
 class WorldSession
 {
 public:
-    WorldSession(boost::asio::io_service& io, Game* sGame);
+    static WorldSession* GetInstance();
+    static void Create(boost::asio::io_service& io);
     ~WorldSession();
 
     void Connect(std::string Ip, std::string Port);
@@ -81,6 +80,9 @@ public:
     void GoToLoginScreen();
 
 private:
+    WorldSession(boost::asio::io_service& io);
+    static WorldSession* pInstance;
+
     void Start();
     void HandleReceive(const boost::system::error_code& Error);
     void HandleHeader(const boost::system::error_code& Error);
@@ -91,11 +93,9 @@ private:
     TCPSocket Socket;
     TCPResolver Resolver;
 
-    Game* sGame;
     World* pWorld;
 
     std::queue<WorldPacket> MessageQueue;
-    boost::mutex MessageQueueMutex;
 };
 
 #endif

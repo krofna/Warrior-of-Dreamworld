@@ -22,31 +22,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ObjectMgr.hpp"
 #include <stdexcept>
 
-#ifdef GPROF
-
-struct wrapper_profiling_multithread
-{
-    itimerval* itimer;
-};
-
-void wrapper_profiler_multithread(boost::asio::io_service* io, wrapper_profiling_multithread wrapper)
-{
-    setitimer(ITIMER_PROF, wrapper.itimer, NULL);
-    io->run();
-}
-
-#endif
-
 int main()
 {
     using namespace std;
 
+    boost::asio::io_service io;
+    Game::Create(io);
+    WorldSession::Create(io);
+
     sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
     sObjectMgr->Initialize();
 
-    Window = new sf::RenderWindow();
     sSFGUI = new sfg::SFGUI();
-    boost::asio::io_service io;
 
     try
     {
@@ -55,21 +42,10 @@ int main()
         WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
         sLog.Write("My guess is: %ux%u", WindowWidth, WindowHeight);
 
-        sGame = new Game(true);
-        Session = new WorldSession(io, sGame);
-        sGame->PushState(new Login());
+        Game::GetInstance().PushState(new Login());
 
-#ifdef GPROF
-        wrapper_profiling_multithread profiling_wrapper;
-        getitimer(ITIMER_PROF, profiling_wrapper.itimer);
-        boost::thread NetworkThread(boost::bind(&wrapper_profiler_multithread, &io, profiling_wrapper));
-#else
-        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
-#endif
-
-        sGame->Run();
-        io.stop();
-        NetworkThread.join();
+        io.post(boost::bind(&Game::Update, Game::GetInstance()));
+        io.run();
     }
     catch(std::exception const& e)
     {
@@ -85,10 +61,7 @@ int main()
     sObjectMgr->Cleanup();
 
     delete sObjectMgr;
-    delete sGame;
-    delete Session;
     delete sSFGUI;
-    delete Window;
 
     return 0;
 }

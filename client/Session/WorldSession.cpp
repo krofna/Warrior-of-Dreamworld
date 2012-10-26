@@ -23,9 +23,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Inventory.hpp"
 #include <boost/bind.hpp>
 
-WorldSession::WorldSession(boost::asio::io_service& io, Game* sGame) :
+WorldSession* WorldSession::pInstance;
+
+WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-sGame                     (sGame),
 pWorld                    (nullptr),
 Resolver                  (io),
 Work                      (make_shared<boost::asio::io_service::work>(io))
@@ -34,6 +35,16 @@ Work                      (make_shared<boost::asio::io_service::work>(io))
 
 WorldSession::~WorldSession()
 {
+}
+
+WorldSession* WorldSession::GetInstance()
+{
+    return pInstance;
+}
+
+void WorldSession::Create(boost::asio::io_service& io)
+{
+    pInstance = new WorldSession(io);
 }
 
 void WorldSession::Connect(std::string Ip, std::string Port)
@@ -151,7 +162,7 @@ void WorldSession::HandleLoginOpcode()
     this->pWorld = pWorld;
     WorldPacket Argv;
     Argv << MapID;
-    sGame->AddToLoadQueue(pWorld, Argv);
+    pWorld->Load(Argv);
     sLog.Write("Packet is good!");
 }
 
@@ -161,7 +172,7 @@ void WorldSession::HandleAddObjectOpcode()
     Packet >> ObjID;
     WorldObject* pNewObject = new WorldObject;
     WorldPacket Packet = this->Packet;
-    sGame->AddToLoadQueue(pNewObject, Packet);
+    pNewObject->Load(Packet);
     pWorld->AddObject(pNewObject, ObjID);
     sLog.Write("Packet is good!");
 }
@@ -197,7 +208,7 @@ void WorldSession::HandleCastSpellOpcode()
     Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
     Animation* pAnim = new Animation;
     WorldPacket Packet = this->Packet;
-    sGame->AddToLoadQueue(pAnim, Packet);
+    pAnim->Load(Packet);
     pWorld->AddAnimation(pAnim);
     sLog.Write("Packet is good!");
 }

@@ -22,12 +22,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <SFML/Graphics.hpp>
 #include "Loadable.hpp"
 
+extern sf::RenderWindow* Window;
+
 class WorldPacket;
 
 class GameState : public Loadable
 {
 public:
-    virtual ~GameState(){}
+    virtual ~GameState() = 0;
     virtual void HandleEvent(sf::Event Event) = 0;
     virtual void Update() = 0;
     virtual void Draw() = 0;

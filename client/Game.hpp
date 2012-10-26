@@ -21,26 +21,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "GameState.hpp"
 #include "Globals.hpp"
-#include <boost/thread/mutex.hpp>
-#include <queue>
+#include <boost/asio/io_service.hpp>
 #include <stack>
 
 class Game
 {
 public:
-    Game(bool FullScreen);
+    static Game& GetInstance();
+    static void Create(boost::asio::io_service& io);
     ~Game();
-    void Run();
 
-    void AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv);
+    void Update();
+
     void PushState(GameState* pState);
     void PopState();
     void PopAllStates();
 
 private:
     std::stack<GameState*> StateStack;
-    std::queue<std::pair<Loadable*, WorldPacket> > LoadQueue;
-    boost::mutex LoadQueueMutex;
+    boost::asio::io_service* io;
 };
 
 #endif

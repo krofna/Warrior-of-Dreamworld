@@ -20,12 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GLOBALS_H
 
 #include "shared/Defines.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFGUI/SFGUI.hpp>
 
 extern uint16 WindowWidth;
 extern uint16 WindowHeight;
-extern sf::RenderWindow* Window;
 
 extern sfg::SFGUI* sSFGUI;
 extern sfg::Desktop sDesktop;
@@ -33,11 +31,5 @@ extern sfg::Desktop sDesktop;
 #include "shared/Log.hpp"
 #include "ObjectMgr.hpp"
 extern ObjectMgr* sObjectMgr;
-
-class WorldSession;
-extern WorldSession* Session;
-
-class Game;
-extern Game* sGame;
 
 #endif
