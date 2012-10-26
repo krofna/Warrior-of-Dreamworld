@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include "Login.hpp"
 #include "Inventory.hpp"
+#include "shared/Log.hpp"
 #include <boost/bind.hpp>
 
 WorldSession* WorldSession::pInstance;
@@ -105,8 +106,6 @@ void WorldSession::Send(WorldPacket& Packet)
 
     Packet.UpdateSizeData();
 
-    boost::mutex::scoped_lock lock(MessageQueueMutex);
-
     MessageQueue.push(Packet);
     if(MessageQueue.size() == 1)
     {
@@ -127,7 +126,6 @@ void WorldSession::HandleSend(const boost::system::error_code& Error)
         sLog.Write("Failed!");
     }
 
-    boost::mutex::scoped_lock lock(MessageQueueMutex);
     MessageQueue.pop();
 
     if(!MessageQueue.empty())
@@ -190,9 +188,7 @@ void WorldSession::HandleMoveObjectOpcode()
     uint16 x, y;
     Packet >> ObjID >> x >> y;
 
-    pWorld->DrawingMutex.lock();
     pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
-    pWorld->DrawingMutex.unlock();
     sLog.Write("Packet is good!");
 }
 
@@ -202,9 +198,7 @@ void WorldSession::HandleCastSpellOpcode()
     uint64 CasterID;
     Packet >> CasterID;
     Packet.UpdateWritePos();
-    pWorld->DrawingMutex.lock();
     WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
-    pWorld->DrawingMutex.unlock();
     Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
     Animation* pAnim = new Animation;
     WorldPacket Packet = this->Packet;
@@ -248,7 +242,6 @@ void WorldSession::HandleChatMessageOpcode()
 void WorldSession::HandleCommandReponseOpcode()
 {
     std::string Message;
-
     Packet >> Message;
 
     pWorld->ReceiveCommandReponse(Message);
@@ -258,7 +251,6 @@ void WorldSession::HandleCommandReponseOpcode()
 void WorldSession::HandleNotificationMessageOpcode()
 {
     std::string Message;
-
     Packet >> Message;
 
     pWorld->ReceiveNotification(Message);
@@ -392,6 +384,7 @@ void WorldSession::SendChatMessage(std::string const& Message)
 
 void WorldSession::GoToLoginScreen()
 {
-    sGame->AddToLoadQueue(new Login(), WorldPacket());
+    Game::GetInstance().PopAllStates();
+    Game::GetInstance().PushState(new Login());
     Window->setView(Window->getDefaultView());
 }

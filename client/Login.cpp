@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Login.hpp"
 #include "Globals.hpp"
 #include "WorldSession.hpp"
+#include "shared/Log.hpp"
 #include "shared/Opcodes.hpp"
 
 Login::Login() : m_CurrentFocus(None)
@@ -113,8 +114,8 @@ void Login::Create()
 
 void Login::onConnectButtonPressed()
 {
-    Session->Connect(m_IPEntry->GetText(), m_PortEntry->GetText());
-    Session->SendAuthRequest(m_UsernameEntry->GetText(), m_PasswordEntry->GetText());
+    WorldSession::GetInstance()->Connect(m_IPEntry->GetText(), m_PortEntry->GetText());
+    WorldSession::GetInstance()->SendAuthRequest(m_UsernameEntry->GetText(), m_PasswordEntry->GetText());
     m_CurrentState->SetText("Logging in progress...");
 }
 

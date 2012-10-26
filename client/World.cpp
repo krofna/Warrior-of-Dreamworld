@@ -45,7 +45,7 @@ m_PointMode   (false)
 World::~World()
 {
     std::for_each(WorldObjectMap.begin(), WorldObjectMap.end(), MapDeleter());
-    std::for_each(Animations.begin(), Animations.end(), boost::bind(&operator delete, _1));
+    std::for_each(Animations.begin(), Animations.end(), Deleter());
     delete pInventory;
 }
 
@@ -92,15 +92,12 @@ void World::Load(WorldPacket Argv)
     Bag::InitializePositionsBag();
     pInventory = new Inventory("data/icons/bag.png");
 
-    sGame->PopState();
-    sGame->PushState(this);
+    Game::GetInstance().PopState();
+    Game::GetInstance().PushState(this);
 }
 
 void World::Draw()
 {
-    // Network thread shouldn't add new stuff while drawing
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     if(MoveWorldView != MOVE_STOP)
     {
         if(MoveWorldView & MOVE_UP && CameraTop > 0)
@@ -233,13 +230,11 @@ void World::HandleEvent(sf::Event Event)
 
 void World::AddObject(WorldObject* pWorldObject, uint64 ObjectID)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     this->WorldObjectMap[ObjectID] = pWorldObject;
 }
 
 void World::RemoveObject(uint64 ObjectID)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     auto Iter = WorldObjectMap.find(ObjectID);
     if(Iter == WorldObjectMap.end())
         return;
@@ -250,7 +245,6 @@ void World::RemoveObject(uint64 ObjectID)
 
 void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     auto Iter = WorldObjectMap.find(ObjectID);
     if (Iter == WorldObjectMap.end())
         return;
@@ -260,22 +254,16 @@ void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
 
 void World::ReceiveCommandReponse(std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     m_MessageArea->AddServerMessage(Text, sf::Color::Blue);
 }
 
 void World::ReceiveNotification(std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     m_MessageArea->AddServerMessage(Text, sf::Color::Red);
 }
 
 void World::ReceiveEmote(TypeEmote type, uint64 ObjectID, std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     if (type == VOICE_EMOTE)
     {
 //        PlayVoice(Text); // Text = Path
@@ -298,13 +286,11 @@ void World::ReceiveEmote(TypeEmote type, uint64 ObjectID, std::string const& Tex
 
 void World::AddAnimation(Animation* pAnimation)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     Animations.push_back(pAnimation);
 }
 
 void World::RemoveAnimation(uint32 ID)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     for(auto iter = Animations.begin(); iter != Animations.end(); ++iter)
     {
         if((*iter)->GetID() == ID)

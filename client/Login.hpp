@@ -40,7 +40,6 @@ public:
     void HandleEvent(sf::Event Event);
     void Draw();
     void Update();
-    virtual void Load(WorldPacket Argv) { sGame->PopAllStates(); sGame->PushState(this); }
 
 private:
     void onConnectButtonPressed();

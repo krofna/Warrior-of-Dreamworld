@@ -79,4 +79,6 @@ private:
     std::string m_TemplatesFilePath;
 };
 
+extern ObjectMgr* sObjectMgr;
+
 #endif

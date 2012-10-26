@@ -17,8 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Item.hpp"
-#include "Globals.hpp"
-#include "shared/Templates.hpp"
+#include "ObjectMgr.hpp"
 
 Item::Item()
 {
@@ -37,7 +36,7 @@ Item* Item::Create(uint64 Entry)
     return newItem;
 }
 
-void Item::Draw(sf::Vector2f const& baseSlotPos, int idx)
+void Item::Draw(Vector2f const& baseSlotPos, int idx)
 {
     // TODO: Draw icon display ID.
 }

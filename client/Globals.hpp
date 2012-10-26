@@ -19,17 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include "shared/Defines.hpp"
 #include <SFGUI/SFGUI.hpp>
-
-extern uint16 WindowWidth;
-extern uint16 WindowHeight;
 
 extern sfg::SFGUI* sSFGUI;
 extern sfg::Desktop sDesktop;
-
-#include "shared/Log.hpp"
-#include "ObjectMgr.hpp"
-extern ObjectMgr* sObjectMgr;
 
 #endif

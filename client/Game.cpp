@@ -31,7 +31,7 @@ void Game::Create(boost::asio::io_service& io)
 {
     GetInstance().io = &io;
     Window = new sf::RenderWindow();
-    Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", sf::Style::Close);
+    Window->create(*sf::VideoMode::getFullscreenModes().begin(), "Warrior of Dreamworld", sf::Style::Close);
     Window->setFramerateLimit(60);
 }
 

@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define BAG_DEFINED
 
 #include "shared/Defines.hpp"
-#include "Globals.hpp"
+#include "shared/Vector2.hpp"
 #include <SFML/Graphics.hpp>
 
 #define MAX_BAG_SIZE 36
@@ -40,7 +40,7 @@ public:
 
     void Draw();
     void DrawIcon();
-    void DrawEmptySlot(sf::Vector2f const& baseSlotPos, int idx);
+    void DrawEmptySlot(Vector2f const& baseSlotPos, int idx);
 
     Item* GetItem(uint8 SrcSlot) const;
 
@@ -50,7 +50,7 @@ public:
 
     bool IsCreated() const;
 
-    bool IsInArea(sf::Vector2i const& point) const;
+    bool IsInArea(Vector2i const& point) const;
     
     uint8 GetNumSlots() const; 
 
@@ -64,7 +64,7 @@ private:
     // GUI Stuff
     sf::Sprite* m_IconSprite;
 
-    static sf::Vector2f PositionsBag[4];
+    static Vector2f PositionsBag[4];
 };
 
 #endif

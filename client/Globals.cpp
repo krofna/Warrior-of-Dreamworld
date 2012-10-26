@@ -20,6 +20,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 sfg::SFGUI* sSFGUI;
 sfg::Desktop sDesktop;
-ObjectMgr* sObjectMgr;
-uint16 WindowWidth;
-uint16 WindowHeight;

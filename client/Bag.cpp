@@ -18,6 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Bag.hpp"
 #include "Item.hpp"
+#include "ObjectMgr.hpp"
+#include "GameState.hpp"
 
 // TODO: Write the good positions :D
 // Comment by krofna: What the hell is this?
@@ -27,10 +29,10 @@ sf::Vector2f Bag::PositionsBag[4];
 
 void Bag::InitializePositionsBag()
 {
-    PositionsBag[0] = sf::Vector2f(WindowWidth - 200, BAG_POS_Y + 50);
-    PositionsBag[1] = sf::Vector2f(WindowWidth - 150, BAG_POS_Y + 50);
-    PositionsBag[2] = sf::Vector2f(WindowWidth - 100, BAG_POS_Y + 50);
-    PositionsBag[3] = sf::Vector2f(WindowWidth - 50, BAG_POS_Y + 50);
+    PositionsBag[0] = Vector2f(WindowWidth - 200, BAG_POS_Y + 50);
+    PositionsBag[1] = Vector2f(WindowWidth - 150, BAG_POS_Y + 50);
+    PositionsBag[2] = Vector2f(WindowWidth - 100, BAG_POS_Y + 50);
+    PositionsBag[3] = Vector2f(WindowWidth - 50, BAG_POS_Y + 50);
 }
 
 Bag::Bag(int idxBag, std::string const& FileNameIcon) : m_Capacity(0), m_IsCreated(false)
@@ -71,7 +73,7 @@ void Bag::DrawIcon()
     Window->draw(*m_IconSprite);
 }
 
-void Bag::DrawEmptySlot(sf::Vector2f const& baseSlotPos, int idx)
+void Bag::DrawEmptySlot(Vector2f const& baseSlotPos, int idx)
 {
     sf::RectangleShape shape(SLOT_SHAPE);
     shape.setTexture(sObjectMgr->GetTexture("EmptySlotIcon", "data/icon/empty_slot.png"));
@@ -118,9 +120,9 @@ uint8 Bag::GetNumSlots() const
     return m_Capacity;
 }
 
-bool Bag::IsInArea(sf::Vector2i const& point) const
+bool Bag::IsInArea(Vector2i const& point) const
 {
     sf::FloatRect rect = sf::FloatRect(m_IconSprite->getPosition(), m_IconSprite->getScale());
 
-    return rect.contains(sf::Vector2f(point));
+    return rect.contains(Vector2f(point));
 }

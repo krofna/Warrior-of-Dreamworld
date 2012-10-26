@@ -20,28 +20,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include "WorldSession.hpp"
 #include "ObjectMgr.hpp"
+#include "shared/Log.hpp"
 #include <stdexcept>
+#include <boost/bind/bind.hpp>
 
 int main()
 {
     using namespace std;
 
-    boost::asio::io_service io;
-    Game::Create(io);
-    WorldSession::Create(io);
-
-    sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
-    sObjectMgr->Initialize();
-
-    sSFGUI = new sfg::SFGUI();
-
     try
     {
-        sLog.Write("Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf");
-        WindowWidth = (*sf::VideoMode::getFullscreenModes().begin()).width;
-        WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
-        sLog.Write("My guess is: %ux%u", WindowWidth, WindowHeight);
+        boost::asio::io_service io;
+        Game::Create(io);
+        WorldSession::Create(io);
 
+        sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
+        sObjectMgr->Initialize();
+
+        sSFGUI = new sfg::SFGUI();
         Game::GetInstance().PushState(new Login());
 
         io.post(boost::bind(&Game::Update, Game::GetInstance()));
