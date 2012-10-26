@@ -1,7 +1,6 @@
 #!/bin/sh
-
 # Build Client
-cmake . -DCMAKE_BUILD_TYPE=$1 -DBUILD_ONLY_CLIENT=TRUE
+cmake . -DCMAKE_BUILD_TYPE=$1 -DBUILD_CLIENT=TRUE
 make
 
 # Copy Client Data

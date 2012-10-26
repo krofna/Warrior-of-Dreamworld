@@ -12,6 +12,7 @@ link_directories(${SFML_LIBRARY_DIRS})
 link_directories(${SFGUI_LIBRARY_DIRS})
 
 include_directories(
+${CMAKE_BINARY_DIR}
 ${SFML_INCLUDE_DIRS}
 ${Boost_INCLUDE_DIRS}
 ${SFGUI_INCLUDE_DIRS}

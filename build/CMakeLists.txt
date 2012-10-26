@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
+project(Warrior-of-Dreamworld)
+
 if (WIN32)
     set (Boost_USE_STATIC_LIBS TRUE)
 endif()
@@ -21,22 +23,26 @@ if (CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-std=gnu++0x)
 endif()
 
-set(EXECUTABLE_OUTPUT_PATH ./bin/${CMAKE_BUILD_TYPE})
-
-if (NOT BUILD_ONLY_SERVER OR NOT BUILD_ONLY_CLIENT OR NOT BUILD_ONLY_WORLD_EDIT)
-    add_subdirectory(Server)
-    add_subdirectory(Client)
-    add_subdirectory(WorldEdit)
-endif()
-
-if (BUILD_ONLY_SERVER)
+if (NOT BUILD_SERVER)
+    set(BUILD_SERVER TRUE CACHE BOOL
+    "Check it, if you want to build server"
+    FORCE)
+else (NOT BUILD_SERVER)
     add_subdirectory(Server)
 endif()
 
-if (BUILD_ONLY_CLIENT)
+if (NOT BUILD_CLIENT)
+    set(BUILD_CLIENT TRUE CACHE BOOL
+    "Check it, if you want to build client"
+    FORCE)
+else (NOT BUILD_CLIENT)
     add_subdirectory(Client)
 endif()
 
-if (BUILD_ONLY_WORLD_EDIT)
+if (NOT BUILD_WORLD_EDIT)
+    set(BUILD_WORLD_EDIT TRUE CACHE BOOL
+    "Check it, if you want to build world editor"
+    FORCE)
+else (NOT BUILD_WORLD_EDIT)
     add_subdirectory(WorldEdit)
 endif()

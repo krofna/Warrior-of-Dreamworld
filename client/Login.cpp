@@ -50,7 +50,7 @@ void Login::Draw()
 
 void Login::Update()
 {
-    sDesktop.Update(0); // FIXME: Use a good frame time !
+    sDesktop.Update(updateClock.restart().asSeconds());
 }
 
 void Login::Create()

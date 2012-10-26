@@ -62,6 +62,8 @@ private:
     sfg::Entry::Ptr m_PasswordEntry;
 
     EFocus m_CurrentFocus;
+
+    sf::Clock updateClock;
 };
 
 #endif

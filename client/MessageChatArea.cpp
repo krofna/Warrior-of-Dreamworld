@@ -27,41 +27,20 @@ m_IsTyping                      (false)
         throw std::runtime_error("Impossible to load arial.ttf font");
 }
 
-void MessageChatArea::AddMessage(std::string const& ObjectName, std::string const& Content, int32 SecondsTime)
+void MessageChatArea::AddMessage(std::string const& ObjectName, std::string const& Content, int32 DisplayTime)
 {
     std::string StringMessage = ObjectName + ": " + Content;
-    Message message;
-
-    message.TimeDisplay = SecondsTime * 1000;
-    message.StringMessage = StringMessage;
-    message.IsServerMessage = false;
-    message.DefaultColor = sf::Color::Black;
-
-    m_Messages.push_back(message);
+    m_Messages.push_back(Message(DisplayTime, StringMessage));
 }
 
-void MessageChatArea::AddServerMessage(std::string const& Msg, sf::Color const& msgColor, int32 DisplayTime)
+void MessageChatArea::AddServerMessage(std::string const& Msg, sf::Color const& MsgColor, int32 DisplayTime)
 {
-    Message message;
-
-    message.TimeDisplay = DisplayTime * 1000;
-    message.StringMessage = Msg;
-    message.IsServerMessage = true;
-    message.DefaultColor = msgColor;
-
-    m_Messages.push_back(message);
+    m_Messages.push_back(Message(DisplayTime, Msg, true, MsgColor));
 }
 
 void MessageChatArea::AddRawMessage(std::string const& Msg, sf::Color const& MsgColor, int32 DisplayTime)
 {
-    Message message;
-
-    message.TimeDisplay = DisplayTime * 1000;
-    message.StringMessage = Msg;
-    message.IsServerMessage = false;
-    message.DefaultColor = MsgColor;
-
-    m_Messages.push_back(message);
+    m_Messages.push_back(Message(DisplayTime, Msg, false, MsgColor));
 }
 
 void MessageChatArea::Draw(int32 UpdateTime)
@@ -90,13 +69,8 @@ void MessageChatArea::Draw(int32 UpdateTime)
         {
             m_Messages[i].TimeDisplay -= UpdateTime;
         }
-        
-        std::string StringMessage;
-        if (m_Messages[i].IsServerMessage)
-            StringMessage += "SERVER: ";
-        StringMessage += m_Messages[i].StringMessage;
 
-        sf::Text text(StringMessage, m_DefaultFont);
+        sf::Text text(m_Messages[i].StringMessage, m_DefaultFont);
         text.setColor(m_Messages[i].DefaultColor);
         text.setPosition(MESSAGE_POS_X, MESSAGE_POS_Y - float(i * 50));
 

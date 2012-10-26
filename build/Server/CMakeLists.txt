@@ -3,8 +3,6 @@ set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/Modules)
 
 include(FindThreads)
 
-set(MYSQLCONNECTORCPP_ROOT_DIR /home/ryan/Documents/Développement/mysql-connector-c++)
-
 FIND_PACKAGE(Boost COMPONENTS system thread chrono REQUIRED)
 FIND_PACKAGE(MySQLConnectorCPP)
 FIND_PACKAGE(Threads)
