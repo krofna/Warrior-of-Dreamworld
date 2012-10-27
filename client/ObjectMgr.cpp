@@ -26,20 +26,15 @@ ObjectMgr::ObjectMgr(std::string const& TilesetPath, std::string const& Template
 m_TilesetPath       (TilesetPath),
 m_TemplatesFilePath (TemplatesFilePath)
 {
-
+    std::for_each(m_ItemTemplates.begin(), m_ItemTemplates.end(), MapDeleter());
+    std::for_each(m_CreatureTemplates.begin(), m_CreatureTemplates.end(), MapDeleter());
+    std::for_each(m_Tilesets.begin(), m_Tilesets.end(), MapDeleter());
+    std::for_each(m_Textures.begin(), m_Textures.end(), MapDeleter());
 }
 
 void ObjectMgr::Initialize()
 {
     LoadTemplates();
-}
-
-void ObjectMgr::Cleanup()
-{
-    std::for_each(m_ItemTemplates.begin(), m_ItemTemplates.end(), MapDeleter());
-    std::for_each(m_CreatureTemplates.begin(), m_CreatureTemplates.end(), MapDeleter());
-    std::for_each(m_Tilesets.begin(), m_Tilesets.end(), MapDeleter());
-    std::for_each(m_Textures.begin(), m_Textures.end(), MapDeleter());
 }
 
 void ObjectMgr::LoadTileset(std::string const& FileName)

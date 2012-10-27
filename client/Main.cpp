@@ -31,17 +31,20 @@ int main()
     try
     {
         boost::asio::io_service io;
+
         Game::Create(io);
         WorldSession::Create(io);
 
         sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
         sObjectMgr->Initialize();
 
-        sSFGUI = new sfg::SFGUI();
         Game::GetInstance().PushState(new Login());
 
         io.post(boost::bind(&Game::Update, boost::ref(Game::GetInstance())));
         io.run();
+
+        WorldSession::Destroy();
+        delete sObjectMgr;
     }
     catch(std::exception const& e)
     {
@@ -53,11 +56,6 @@ int main()
     }
 
     sLog.Flush();
-
-    sObjectMgr->Cleanup();
-
-    delete sObjectMgr;
-    delete sSFGUI;
 
     return 0;
 }

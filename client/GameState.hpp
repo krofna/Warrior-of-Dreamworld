@@ -21,7 +21,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFGUI/SFGUI.hpp>
 
+extern sfg::SFGUI* sSFGUI;
+extern sfg::Desktop* sDesktop;
 extern sf::RenderWindow* Window;
 
 class WorldPacket;

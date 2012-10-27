@@ -20,6 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <boost/bind.hpp>
 
 sf::RenderWindow* Window;
+sfg::SFGUI* sSFGUI;
+sfg::Desktop* sDesktop;
 
 Game& Game::GetInstance()
 {
@@ -31,6 +33,8 @@ void Game::Create(boost::asio::io_service& io)
 {
     GetInstance().io = &io;
     Window = new sf::RenderWindow();
+    sSFGUI = new sfg::SFGUI();
+    sDesktop = new sfg::Desktop();
     Window->create(*sf::VideoMode::getFullscreenModes().begin(), "Warrior of Dreamworld", sf::Style::Close);
     Window->setFramerateLimit(60);
 }
@@ -39,11 +43,17 @@ Game::~Game()
 {
     PopAllStates();
     delete Window;
+    delete sSFGUI;
+    delete sDesktop;
 }
 
 void Game::Update()
 {
-    sf::Event Event;
+    if(!Window->isOpen())
+    {
+        io->stop();
+        return;
+    }
 
     while(Window->pollEvent(Event))
     {

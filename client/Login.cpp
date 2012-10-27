@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Login.hpp"
-#include "Globals.hpp"
 #include "WorldSession.hpp"
 #include "shared/Log.hpp"
 #include "shared/Opcodes.hpp"
@@ -30,12 +29,12 @@ Login::Login() : m_CurrentFocus(None)
 
 Login::~Login()
 {
-    sDesktop.Remove(m_LoginWindow);
+    sDesktop->Remove(m_LoginWindow);
 }
 
 void Login::HandleEvent(sf::Event Event)
 {
-    sDesktop.HandleEvent(Event);
+    sDesktop->HandleEvent(Event);
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Tab)
         GrabNextFocus();
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Return)
@@ -51,7 +50,7 @@ void Login::Draw()
 
 void Login::Update()
 {
-    sDesktop.Update(0); // FIXME: Use a good frame time !
+    sDesktop->Update(0); // FIXME: Use a good frame time !
 }
 
 void Login::Create()
@@ -109,7 +108,7 @@ void Login::Create()
     m_LoginWindow->Add(Global);
     m_LoginWindow->SetPosition(sf::Vector2f(Window->getSize().x / 2, Window->getSize().y / 2));
 
-    sDesktop.Add(m_LoginWindow);
+    sDesktop->Add(m_LoginWindow);
 }
 
 void Login::onConnectButtonPressed()

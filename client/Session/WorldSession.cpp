@@ -48,6 +48,11 @@ void WorldSession::Create(boost::asio::io_service& io)
     pInstance = new WorldSession(io);
 }
 
+void WorldSession::Destroy()
+{
+    delete pInstance;
+}
+
 void WorldSession::Connect(std::string Ip, std::string Port)
 {
     TCPResolver::query Query(Ip.c_str(), Port.c_str());

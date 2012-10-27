@@ -44,10 +44,6 @@ public:
 
     void Initialize();
 
-    // Use this function, if you not using anymore data from ObjectMgr
-    // Else, the Client might crash !
-    void Cleanup();
-
     void LoadTileset(std::string const& TilesetName);
 
     ItemTemplate* GetItemTemplate(uint64 ItemID);

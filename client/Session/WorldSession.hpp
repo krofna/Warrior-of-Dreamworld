@@ -34,6 +34,7 @@ class WorldSession
 public:
     static WorldSession* GetInstance();
     static void Create(boost::asio::io_service& io);
+    static void Destroy();
     ~WorldSession();
 
     void Connect(std::string Ip, std::string Port);

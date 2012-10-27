@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define GAME_H
 
 #include "GameState.hpp"
-#include "Globals.hpp"
 #include <boost/asio/io_service.hpp>
 #include <stack>
 
@@ -38,6 +37,7 @@ public:
     void PopAllStates();
 
 private:
+    sf::Event Event;
     std::stack<GameState*> StateStack;
     boost::asio::io_service* io;
 };
