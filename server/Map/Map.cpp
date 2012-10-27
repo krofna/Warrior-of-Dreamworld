@@ -35,7 +35,7 @@ pTemplate    (pTemplate),
 MapID        (MapID)
 {
     pMapScript = CreateScript(pTemplate->ScriptName, this);
-    TileGrid.resize(pTemplate->SizeX, std::vector<WorldObject*>(pTemplate->SizeY, nullptr));
+    TileGrid.resize(pTemplate->SizeY, std::vector<WorldObject*>(pTemplate->SizeX, nullptr));
 }
 
 Map::~Map()

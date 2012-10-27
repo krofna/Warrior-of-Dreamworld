@@ -58,7 +58,7 @@ void EditMap()
 
         for (float y = 0 ; y < SizeY ; ++y)
             for (float x = 0 ; x < SizeX ; ++x)
-                File << y << " " << x << " 1 15 ";
+                File << x << " " << y << " 1 15 ";
     }
 }
 
