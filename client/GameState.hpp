@@ -19,7 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef GAME_STATE_H
 #define GAME_STATE_H
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 extern sf::RenderWindow* Window;
 
@@ -28,7 +29,7 @@ class WorldPacket;
 class GameState
 {
 public:
-    virtual ~GameState() = 0;
+    virtual ~GameState() {}
     virtual void HandleEvent(sf::Event Event) = 0;
     virtual void Update() = 0;
     virtual void Draw() = 0;

@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define ITEM_DEFINED
 
 #include "shared/Defines.hpp"
-#include "shared/Vector2.hpp"
+#include <SFML/System/Vector2.hpp>
 
 struct ItemTemplate;
 
@@ -30,7 +30,7 @@ public:
     Item();
     static Item* Create(uint64 Entry);
 
-    void Draw(Vector2f const& baseSlotPos, int idx);
+    void Draw(sf::Vector2f const& baseSlotPos, int idx);
     void DrawInformation();
 
     void Use();

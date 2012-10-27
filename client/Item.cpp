@@ -36,7 +36,7 @@ Item* Item::Create(uint64 Entry)
     return newItem;
 }
 
-void Item::Draw(Vector2f const& baseSlotPos, int idx)
+void Item::Draw(sf::Vector2f const& baseSlotPos, int idx)
 {
     // TODO: Draw icon display ID.
 }

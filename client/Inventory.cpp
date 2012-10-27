@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Inventory.hpp"
 #include "Item.hpp"
 #include "Bag.hpp"
-
 #include <SFML/Window/Event.hpp>
 
 Inventory::Inventory(std::string const& FileNameIcon) : m_IsAllOpen(false)
@@ -53,7 +52,7 @@ bool Inventory::HandleEvent(sf::Event& e)
 
     if (e.type == sf::Event::MouseButtonPressed)
     {
-        Vector2i mousePos(e.mouseButton.x, e.mouseButton.y);
+        sf::Vector2i mousePos(e.mouseButton.x, e.mouseButton.y);
 
         for (int iBag = 0 ; iBag < 4 ; ++iBag)
         {

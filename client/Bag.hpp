@@ -40,7 +40,7 @@ public:
 
     void Draw();
     void DrawIcon();
-    void DrawEmptySlot(Vector2f const& baseSlotPos, int idx);
+    void DrawEmptySlot(sf::Vector2f const& baseSlotPos, int idx);
 
     Item* GetItem(uint8 SrcSlot) const;
 
@@ -50,7 +50,7 @@ public:
 
     bool IsCreated() const;
 
-    bool IsInArea(Vector2i const& point) const;
+    bool IsInArea(sf::Vector2i const& point) const;
     
     uint8 GetNumSlots() const; 
 
@@ -64,7 +64,7 @@ private:
     // GUI Stuff
     sf::Sprite* m_IconSprite;
 
-    static Vector2f PositionsBag[4];
+    static sf::Vector2f PositionsBag[4];
 };
 
 #endif

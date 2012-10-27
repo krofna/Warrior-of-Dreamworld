@@ -22,7 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "GameState.hpp"
 #include "WorldObject.hpp"
 #include "Animation.hpp"
+#include <SFML/Graphics/VertexArray.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <map>
 #include <list>
 
 class GameState;

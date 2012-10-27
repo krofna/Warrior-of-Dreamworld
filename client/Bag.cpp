@@ -25,14 +25,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // Comment by krofna: What the hell is this?
 #define BAG_POS_Y ((Window->getSize().y / 6) * 5)
 
-Vector2f Bag::PositionsBag[4];
+sf::Vector2f Bag::PositionsBag[4];
 
 void Bag::InitializePositionsBag()
 {
-    PositionsBag[0] = Vector2f(Window->getSize().x - 200.f, (float)BAG_POS_Y + 50.f);
-    PositionsBag[1] = Vector2f(Window->getSize().x - 150.f, (float)BAG_POS_Y + 50.f);
-    PositionsBag[2] = Vector2f(Window->getSize().x - 100.f, (float)BAG_POS_Y + 50.f);
-    PositionsBag[3] = Vector2f(Window->getSize().x - 50.f, (float)BAG_POS_Y + 50.f);
+    PositionsBag[0] = sf::Vector2f(Window->getSize().x - 200.f, (float)BAG_POS_Y + 50.f);
+    PositionsBag[1] = sf::Vector2f(Window->getSize().x - 150.f, (float)BAG_POS_Y + 50.f);
+    PositionsBag[2] = sf::Vector2f(Window->getSize().x - 100.f, (float)BAG_POS_Y + 50.f);
+    PositionsBag[3] = sf::Vector2f(Window->getSize().x - 50.f, (float)BAG_POS_Y + 50.f);
 }
 
 Bag::Bag(int idxBag, std::string const& FileNameIcon) : m_Capacity(0), m_IsCreated(false)
@@ -58,7 +58,7 @@ void Bag::Create(uint64 Entry)
 
 void Bag::Draw()
 {
-    Vector2f baseSlotPos (BASE_SLOT_POS(m_IconSprite->getPosition().x, m_IconSprite->getPosition().y));
+    sf::Vector2f baseSlotPos(BASE_SLOT_POS(m_IconSprite->getPosition().x, m_IconSprite->getPosition().y));
     for (int i = 0 ; i < m_Capacity ; ++i)
     {
         if (m_Slots[i])
@@ -73,7 +73,7 @@ void Bag::DrawIcon()
     Window->draw(*m_IconSprite);
 }
 
-void Bag::DrawEmptySlot(Vector2f const& baseSlotPos, int idx)
+void Bag::DrawEmptySlot(sf::Vector2f const& baseSlotPos, int idx)
 {
     sf::RectangleShape shape(SLOT_SHAPE);
     shape.setTexture(sObjectMgr->GetTexture("EmptySlotIcon", "data/icon/empty_slot.png"));
@@ -120,9 +120,9 @@ uint8 Bag::GetNumSlots() const
     return m_Capacity;
 }
 
-bool Bag::IsInArea(Vector2i const& point) const
+bool Bag::IsInArea(sf::Vector2i const& point) const
 {
     sf::FloatRect rect = sf::FloatRect(m_IconSprite->getPosition(), m_IconSprite->getScale());
 
-    return rect.contains(Vector2f(point));
+    return rect.contains(sf::Vector2f(point));
 }
