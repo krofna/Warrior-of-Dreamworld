@@ -30,7 +30,7 @@ public:
     WorldObject();
     virtual ~WorldObject(){}
     virtual void Draw();
-    virtual void Load(WorldPacket Argv);
+    virtual void Load(WorldPacket& Argv);
 
     void UpdateCoordinates(uint16 x, uint16 y);
     sf::Vector2f GetPosition();

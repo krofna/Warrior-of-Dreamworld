@@ -26,6 +26,10 @@ ObjectMgr::ObjectMgr(std::string const& TilesetPath, std::string const& Template
 m_TilesetPath       (TilesetPath),
 m_TemplatesFilePath (TemplatesFilePath)
 {
+}
+
+ObjectMgr::~ObjectMgr()
+{
     std::for_each(m_ItemTemplates.begin(), m_ItemTemplates.end(), MapDeleter());
     std::for_each(m_CreatureTemplates.begin(), m_CreatureTemplates.end(), MapDeleter());
     std::for_each(m_Tilesets.begin(), m_Tilesets.end(), MapDeleter());

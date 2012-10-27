@@ -26,7 +26,7 @@ WorldObject::WorldObject()
 
 }
 
-void WorldObject::Load(WorldPacket Argv)
+void WorldObject::Load(WorldPacket& Argv)
 {
     std::string Tileset;
     Argv >> Tileset >> ObjectName;

@@ -41,6 +41,7 @@ class ObjectMgr
 {
 public:
     ObjectMgr(std::string const& TilesetDataFolder, std::string const& TemplatesFilePath);
+    ~ObjectMgr();
 
     void Initialize();
 
