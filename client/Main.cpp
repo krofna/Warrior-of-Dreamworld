@@ -40,7 +40,7 @@ int main()
         sSFGUI = new sfg::SFGUI();
         Game::GetInstance().PushState(new Login());
 
-        io.post(boost::bind(&Game::Update, Game::GetInstance()));
+        io.post(boost::bind(&Game::Update, boost::ref(Game::GetInstance())));
         io.run();
     }
     catch(std::exception const& e)
