@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define BAG_DEFINED
 
 #include "shared/Defines.hpp"
-#include "Globals.hpp"
+#include "shared/Vector2.hpp"
 #include <SFML/Graphics.hpp>
 
 #define MAX_BAG_SIZE 36

@@ -3,24 +3,23 @@
 
 #include <cmath>
 #include "shared/Defines.hpp"
-// TODO: Minor cleanings necessary.
 
 template<typename NumberType>
 class Vector2
 {
-    public:
-        Vector2();
-        Vector2(NumberType x, NumberType y);
-        Vector2(const Vector2& v);
+public:
+    Vector2();
+    Vector2(NumberType x, NumberType y);
+    Vector2(const Vector2& v);
 
-        template<typename OtherType>
-        int GetManhattanDistance(Vector2<OtherType> const& Target);
-        template<typename OtherType>
-        float GetDistance(Vector2<OtherType> const& Target);
-
-        template<typename OtherType>
-        float GetAngle(Vector2<OtherType> const& Target);
-
+    template<typename OtherType>
+    int GetManhattanDistance(Vector2<OtherType> const& Target);
+    template<typename OtherType>
+    float GetDistance(Vector2<OtherType> const& Target);
+        
+    template<typename OtherType>
+    float GetAngle(Vector2<OtherType> const& Target);
+    
     NumberType x;
     NumberType y;
 };

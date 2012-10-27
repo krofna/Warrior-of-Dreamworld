@@ -40,7 +40,6 @@ public:
     void HandleEvent(sf::Event Event);
     void Draw();
     void Update();
-    virtual void Load(WorldPacket Argv) { sGame->PopAllStates(); sGame->PushState(this); }
 
 private:
     void onConnectButtonPressed();
@@ -50,14 +49,10 @@ private:
 
 private:
     sfg::Window::Ptr m_LoginWindow;
-
     sfg::Button::Ptr m_ConnectButton;
-
     sfg::Label::Ptr m_CurrentState;
-
     sfg::Entry::Ptr m_IPEntry;
     sfg::Entry::Ptr m_PortEntry;
-
     sfg::Entry::Ptr m_UsernameEntry;
     sfg::Entry::Ptr m_PasswordEntry;
 

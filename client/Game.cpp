@@ -17,48 +17,54 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Game.hpp"
+#include <boost/bind.hpp>
 
-Game::Game(bool FullScreen)
+sf::RenderWindow* Window;
+sfg::SFGUI* sSFGUI;
+sfg::Desktop* sDesktop;
+
+Game& Game::GetInstance()
 {
-    Window->create(sf::VideoMode(WindowWidth, WindowHeight), "Warrior of Dreamworld", sf::Style::Close);
+    static Game instance;
+    return instance;
+}
+
+void Game::Create(boost::asio::io_service& io)
+{
+    GetInstance().io = &io;
+    Window = new sf::RenderWindow();
+    sSFGUI = new sfg::SFGUI();
+    sDesktop = new sfg::Desktop();
+    Window->create(*sf::VideoMode::getFullscreenModes().begin(), "Warrior of Dreamworld", sf::Style::Close);
     Window->setFramerateLimit(60);
 }
 
 Game::~Game()
 {
     PopAllStates();
+    delete Window;
+    delete sSFGUI;
+    delete sDesktop;
 }
 
-void Game::Run()
+void Game::Update()
 {
-    sf::Event Event;
-
-    while(Window->isOpen())
+    if(!Window->isOpen())
     {
-        if(LoadQueueMutex.try_lock())
-        {
-            while(!LoadQueue.empty())
-            {
-                LoadQueue.front().first->Load(LoadQueue.front().second);
-                LoadQueue.pop();
-            }
-            LoadQueueMutex.unlock();
-        }
-        while(Window->pollEvent(Event))
-        {
-            StateStack.top()->HandleEvent(Event);
-        }
-        Window->clear();
-        StateStack.top()->Draw();
-        Window->display();
-        StateStack.top()->Update();
+        io->stop();
+        return;
     }
-}
 
-void Game::AddToLoadQueue(Loadable* pLoadable, WorldPacket Argv)
-{
-    boost::mutex::scoped_lock lock(LoadQueueMutex);
-    LoadQueue.push(std::make_pair(pLoadable, Argv));
+    while(Window->pollEvent(Event))
+    {
+        StateStack.top()->HandleEvent(Event);
+    }
+    Window->clear();
+    StateStack.top()->Draw();
+    Window->display();
+    StateStack.top()->Update();
+
+    io->post(boost::bind(&Game::Update, this));
 }
 
 void Game::PushState(GameState* pState)

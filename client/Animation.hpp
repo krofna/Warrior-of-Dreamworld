@@ -20,21 +20,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define ANIMATION_H
 
 #include "shared/Defines.hpp"
-#include "Loadable.hpp"
-
+#include "shared/WorldPacket.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 // TODO: SpellAnimation? SpellBox? (name change)
-class Animation : public Loadable
+class Animation
 {
 public:
     Animation();
     uint32 GetID() const;
 
     void Update();
-    virtual void Load(WorldPacket Argv);
+    virtual void Load(WorldPacket& Argv);
 
 private:
     sf::Time Time;

@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define ITEM_DEFINED
 
 #include "shared/Defines.hpp"
-#include <SFML/System.hpp>
+#include <SFML/System/Vector2.hpp>
 
 struct ItemTemplate;
 

@@ -17,8 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Login.hpp"
-#include "Globals.hpp"
 #include "WorldSession.hpp"
+#include "shared/Log.hpp"
 #include "shared/Opcodes.hpp"
 
 Login::Login() : m_CurrentFocus(None)
@@ -29,12 +29,12 @@ Login::Login() : m_CurrentFocus(None)
 
 Login::~Login()
 {
-    sDesktop.Remove(m_LoginWindow);
+    sDesktop->Remove(m_LoginWindow);
 }
 
 void Login::HandleEvent(sf::Event Event)
 {
-    sDesktop.HandleEvent(Event);
+    sDesktop->HandleEvent(Event);
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Tab)
         GrabNextFocus();
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Return)
@@ -50,7 +50,7 @@ void Login::Draw()
 
 void Login::Update()
 {
-    sDesktop.Update(updateClock.restart().asSeconds());
+    sDesktop->Update(updateClock.restart().asSeconds());
 }
 
 void Login::Create()
@@ -106,15 +106,15 @@ void Login::Create()
     Global->SetSpacing(5.f);
 
     m_LoginWindow->Add(Global);
-    m_LoginWindow->SetPosition(sf::Vector2f(WindowWidth / 2, WindowHeight / 2));
+    m_LoginWindow->SetPosition(sf::Vector2f(Window->getSize().x / 2, Window->getSize().y / 2));
 
-    sDesktop.Add(m_LoginWindow);
+    sDesktop->Add(m_LoginWindow);
 }
 
 void Login::onConnectButtonPressed()
 {
-    Session->Connect(m_IPEntry->GetText(), m_PortEntry->GetText());
-    Session->SendAuthRequest(m_UsernameEntry->GetText(), m_PasswordEntry->GetText());
+    WorldSession::GetInstance()->Connect(m_IPEntry->GetText(), m_PortEntry->GetText());
+    WorldSession::GetInstance()->SendAuthRequest(m_UsernameEntry->GetText(), m_PasswordEntry->GetText());
     m_CurrentState->SetText("Logging in progress...");
 }
 

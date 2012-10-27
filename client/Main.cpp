@@ -20,56 +20,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include "WorldSession.hpp"
 #include "ObjectMgr.hpp"
+#include "shared/Log.hpp"
 #include <stdexcept>
-
-#ifdef GPROF
-
-struct wrapper_profiling_multithread
-{
-    itimerval* itimer;
-};
-
-void wrapper_profiler_multithread(boost::asio::io_service* io, wrapper_profiling_multithread wrapper)
-{
-    setitimer(ITIMER_PROF, wrapper.itimer, NULL);
-    io->run();
-}
-
-#endif
+#include <boost/bind/bind.hpp>
 
 int main()
 {
     using namespace std;
 
-    sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
-    sObjectMgr->Initialize();
-
-    Window = new sf::RenderWindow();
-    sSFGUI = new sfg::SFGUI();
-    boost::asio::io_service io;
-
     try
     {
-        sLog.Write("Guessing screen resolution [FIXME]: Select configuration in game and save it in Config.conf");
-        WindowWidth = (*sf::VideoMode::getFullscreenModes().begin()).width;
-        WindowHeight = (*sf::VideoMode::getFullscreenModes().begin()).height;
-        sLog.Write("My guess is: %ux%u", WindowWidth, WindowHeight);
+        boost::asio::io_service io;
 
-        sGame = new Game(true);
-        Session = new WorldSession(io, sGame);
-        sGame->PushState(new Login());
+        Game::Create(io);
+        WorldSession::Create(io);
 
-#ifdef GPROF
-        wrapper_profiling_multithread profiling_wrapper;
-        getitimer(ITIMER_PROF, profiling_wrapper.itimer);
-        boost::thread NetworkThread(boost::bind(&wrapper_profiler_multithread, &io, profiling_wrapper));
-#else
-        boost::thread NetworkThread(boost::bind(&boost::asio::io_service::run, &io));
-#endif
+        sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
+        sObjectMgr->Initialize();
 
-        sGame->Run();
-        io.stop();
-        NetworkThread.join();
+        Game::GetInstance().PushState(new Login());
+
+        io.post(boost::bind(&Game::Update, boost::ref(Game::GetInstance())));
+        io.run();
+
+        WorldSession::Destroy();
+        delete sObjectMgr;
     }
     catch(std::exception const& e)
     {
@@ -81,14 +56,6 @@ int main()
     }
 
     sLog.Flush();
-
-    sObjectMgr->Cleanup();
-
-    delete sObjectMgr;
-    delete sGame;
-    delete Session;
-    delete sSFGUI;
-    delete Window;
 
     return 0;
 }

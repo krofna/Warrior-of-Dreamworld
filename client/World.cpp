@@ -17,26 +17,26 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "World.hpp"
-#include "Globals.hpp"
 #include "Game.hpp"
 #include "WorldSession.hpp"
 #include "MessageChatArea.hpp"
 #include "Inventory.hpp"
 #include "Bag.hpp"
-
 #include "shared/Math.hpp"
 #include "shared/Utils.hpp"
+#include "ObjectMgr.hpp"
+#include <fstream>
 #include <cassert>
 
 World::World  (uint64 MeID) :
 m_MessageArea (new MessageChatArea),
 TileMap       (sf::PrimitiveType::Quads),
-WorldView     (sf::FloatRect(0, 0, WindowWidth, WindowHeight)),
+WorldView     (sf::FloatRect(0, 0, Window->getSize().x, Window->getSize().y)),
 MoveWorldView (MOVE_STOP),
-CameraLeft    (WorldView.getCenter().x - WindowWidth / 2),
-CameraTop     (WorldView.getCenter().y - WindowHeight / 2),
-CameraRight   (WindowWidth),
-CameraBottom  (WindowHeight),
+CameraLeft    (WorldView.getCenter().x - Window->getSize().x / 2),
+CameraTop     (WorldView.getCenter().y - Window->getSize().y / 2),
+CameraRight   (Window->getSize().x),
+CameraBottom  (Window->getSize().y),
 MeID          (MeID),
 m_PointMode   (false)
 {
@@ -45,7 +45,7 @@ m_PointMode   (false)
 World::~World()
 {
     std::for_each(WorldObjectMap.begin(), WorldObjectMap.end(), MapDeleter());
-    std::for_each(Animations.begin(), Animations.end(), boost::bind(&operator delete, _1));
+    std::for_each(Animations.begin(), Animations.end(), Deleter());
     delete pInventory;
 }
 
@@ -92,15 +92,12 @@ void World::Load(WorldPacket Argv)
     Bag::InitializePositionsBag();
     pInventory = new Inventory("data/icons/bag.png");
 
-    sGame->PopState();
-    sGame->PushState(this);
+    Game::GetInstance().PopState();
+    Game::GetInstance().PushState(this);
 }
 
 void World::Draw()
 {
-    // Network thread shouldn't add new stuff while drawing
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     if(MoveWorldView != MOVE_STOP)
     {
         if(MoveWorldView & MOVE_UP && CameraTop > 0)
@@ -168,24 +165,24 @@ void World::HandleEvent(sf::Event Event)
             break;
 
         case sf::Keyboard::D:
-            Session->SendMovementRequest(MOVE_RIGHT);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_RIGHT);
             break;
 
         case sf::Keyboard::A:
-            Session->SendMovementRequest(MOVE_LEFT);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_LEFT);
             break;
 
         case sf::Keyboard::W:
-            Session->SendMovementRequest(MOVE_UP);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_UP);
             break;
 
         case sf::Keyboard::S:
-            Session->SendMovementRequest(MOVE_DOWN);
+            WorldSession::GetInstance()->SendMovementRequest(MOVE_DOWN);
             break;
 
         case sf::Keyboard::Escape:
-            Session->SendLogOutRequest();
-            Session->GoToLoginScreen();
+            WorldSession::GetInstance()->SendLogOutRequest();
+            WorldSession::GetInstance()->GoToLoginScreen();
             return;
         case sf::Keyboard::P:
             m_PointMode = !m_PointMode;
@@ -193,7 +190,7 @@ void World::HandleEvent(sf::Event Event)
 
         case sf::Keyboard::LControl:
         case sf::Keyboard::RControl:
-            Session->SendAttackRequest();
+            WorldSession::GetInstance()->SendAttackRequest();
             break;
 
         default:
@@ -204,13 +201,13 @@ void World::HandleEvent(sf::Event Event)
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
 
-        if(sf::Mouse::getPosition(*Window).x >= WindowWidth - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Window).x >= Window->getSize().x - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_RIGHT;
 
         else if(sf::Mouse::getPosition(*Window).x < TILE_SIZE / 2)
             MoveWorldView |= MOVE_LEFT;
 
-        if(sf::Mouse::getPosition(*Window).y > WindowHeight - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Window).y > Window->getSize().y - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_DOWN;
 
         else if(sf::Mouse::getPosition(*Window).y < TILE_SIZE / 2)
@@ -223,7 +220,7 @@ void World::HandleEvent(sf::Event Event)
         if (m_PointMode)
             std::cout << Event.mouseButton.x << ";" << Event.mouseButton.y << std::endl;
         else
-            Session->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
+            WorldSession::GetInstance()->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
         break;
         
     default:
@@ -233,13 +230,11 @@ void World::HandleEvent(sf::Event Event)
 
 void World::AddObject(WorldObject* pWorldObject, uint64 ObjectID)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     this->WorldObjectMap[ObjectID] = pWorldObject;
 }
 
 void World::RemoveObject(uint64 ObjectID)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     auto Iter = WorldObjectMap.find(ObjectID);
     if(Iter == WorldObjectMap.end())
         return;
@@ -250,7 +245,6 @@ void World::RemoveObject(uint64 ObjectID)
 
 void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     auto Iter = WorldObjectMap.find(ObjectID);
     if (Iter == WorldObjectMap.end())
         return;
@@ -260,22 +254,16 @@ void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
 
 void World::ReceiveCommandReponse(std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     m_MessageArea->AddServerMessage(Text, sf::Color::Blue);
 }
 
 void World::ReceiveNotification(std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     m_MessageArea->AddServerMessage(Text, sf::Color::Red);
 }
 
 void World::ReceiveEmote(TypeEmote type, uint64 ObjectID, std::string const& Text)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
-
     if (type == VOICE_EMOTE)
     {
 //        PlayVoice(Text); // Text = Path
@@ -298,13 +286,11 @@ void World::ReceiveEmote(TypeEmote type, uint64 ObjectID, std::string const& Tex
 
 void World::AddAnimation(Animation* pAnimation)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     Animations.push_back(pAnimation);
 }
 
 void World::RemoveAnimation(uint32 ID)
 {
-    boost::mutex::scoped_lock lock(DrawingMutex);
     for(auto iter = Animations.begin(); iter != Animations.end(); ++iter)
     {
         if((*iter)->GetID() == ID)

@@ -103,7 +103,7 @@ bool MessageChatArea::HandleTyping(sf::Event event)
         {
             if (m_IsTyping)
             {
-                Session->SendChatMessage(m_Message);
+                WorldSession::GetInstance()->SendChatMessage(m_Message);
                 m_Message.clear();
                 m_IsTyping = false;
             }

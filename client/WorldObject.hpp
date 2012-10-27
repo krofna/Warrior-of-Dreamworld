@@ -19,14 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef WORLD_OBJECT_H
 #define WORLD_OBJECT_H
 
-#include "Loadable.hpp"
-#include "Globals.hpp"
-
+#include "shared/Defines.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 
 class WorldPacket;
 
-class WorldObject : public Loadable
+class WorldObject
 {
 public:
     WorldObject();

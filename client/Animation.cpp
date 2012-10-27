@@ -17,7 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Animation.hpp"
-#include "Globals.hpp"
+#include "ObjectMgr.hpp"
+#include "GameState.hpp"
 #include <cmath>
  
 Animation::Animation() :
@@ -33,7 +34,7 @@ uint32 Animation::GetID() const
     return ID;
 }
 
-void Animation::Load(WorldPacket Argv)
+void Animation::Load(WorldPacket& Argv)
 {
     sf::Vector2f Position;
     Argv.ReadSkip<uint16>(); // Effect

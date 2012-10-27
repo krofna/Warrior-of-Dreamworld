@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 
 #define MESSAGE_POS_X 10
-#define MESSAGE_POS_Y (WindowHeight / 6) * 5
+#define MESSAGE_POS_Y (Window->getSize().y / 6) * 5
 
 class MessageChatArea
 {

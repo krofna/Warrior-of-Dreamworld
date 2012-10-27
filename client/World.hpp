@@ -22,8 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "GameState.hpp"
 #include "WorldObject.hpp"
 #include "Animation.hpp"
-#include <boost/thread.hpp>
-#include <boost/shared_ptr.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <map>
 #include <list>
 
 class GameState;
@@ -31,7 +32,7 @@ class WorldObject;
 class Inventory;
 class MessageChatArea;
 
-typedef boost::shared_ptr<MessageChatArea> MessageChatAreaPtr;
+typedef boost::scoped_ptr<MessageChatArea> MessageChatAreaPtr;
 
 enum TypeEmote
 {
@@ -94,7 +95,6 @@ private:
     const uint64 MeID;
 
     sf::Clock m_UpdateClock;
-    boost::mutex DrawingMutex;
 };
 
 #endif

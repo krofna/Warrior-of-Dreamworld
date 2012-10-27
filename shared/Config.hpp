@@ -38,7 +38,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /** ************************ GNU GCC Compiler stuff ************************ **/
     #elif defined( __GNUC__ )
-        #define GPROF
         #define WOD_DLL_DECL __attribute__((__visibility__("default"))) // FIXME: Check that !
 
         #if defined(__VARIADIC_TEMPLATES) || (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4) && defined(__GXX_EXPERIMENTAL_CXX0X__))

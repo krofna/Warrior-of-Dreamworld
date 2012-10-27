@@ -17,8 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Item.hpp"
-#include "Globals.hpp"
-#include "shared/Templates.hpp"
+#include "ObjectMgr.hpp"
 
 Item::Item()
 {
@@ -51,10 +50,10 @@ void Item::Use()
 {
     if (m_Template->InventoryType == INVTYPE_BAG)
     {
-        // TODO: Session->SendEquipRequest(m_GUID);
+        // TODO: WorldSession::GetInstance()->SendEquipRequest(m_GUID);
     }
     else if (m_Template->InventoryType == INVTYPE_NON_EQUIP)
     {
-        // TODO: Session->SendUseRequest(m_GUID);
+        // TODO: WorldSession::GetInstance()->SendUseRequest(m_GUID);
     }
 }

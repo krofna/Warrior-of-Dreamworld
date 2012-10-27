@@ -18,19 +18,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "Bag.hpp"
 #include "Item.hpp"
+#include "ObjectMgr.hpp"
+#include "GameState.hpp"
 
 // TODO: Write the good positions :D
 // Comment by krofna: What the hell is this?
-#define BAG_POS_Y ((WindowHeight / 6) * 5)
+#define BAG_POS_Y ((Window->getSize().y / 6) * 5)
 
 sf::Vector2f Bag::PositionsBag[4];
 
 void Bag::InitializePositionsBag()
 {
-    PositionsBag[0] = sf::Vector2f(WindowWidth - 200, BAG_POS_Y + 50);
-    PositionsBag[1] = sf::Vector2f(WindowWidth - 150, BAG_POS_Y + 50);
-    PositionsBag[2] = sf::Vector2f(WindowWidth - 100, BAG_POS_Y + 50);
-    PositionsBag[3] = sf::Vector2f(WindowWidth - 50, BAG_POS_Y + 50);
+    PositionsBag[0] = sf::Vector2f(Window->getSize().x - 200.f, (float)BAG_POS_Y + 50.f);
+    PositionsBag[1] = sf::Vector2f(Window->getSize().x - 150.f, (float)BAG_POS_Y + 50.f);
+    PositionsBag[2] = sf::Vector2f(Window->getSize().x - 100.f, (float)BAG_POS_Y + 50.f);
+    PositionsBag[3] = sf::Vector2f(Window->getSize().x - 50.f, (float)BAG_POS_Y + 50.f);
 }
 
 Bag::Bag(int idxBag, std::string const& FileNameIcon) : m_Capacity(0), m_IsCreated(false)
@@ -56,7 +58,7 @@ void Bag::Create(uint64 Entry)
 
 void Bag::Draw()
 {
-    sf::Vector2f baseSlotPos (BASE_SLOT_POS(m_IconSprite->getPosition().x, m_IconSprite->getPosition().y));
+    sf::Vector2f baseSlotPos(BASE_SLOT_POS(m_IconSprite->getPosition().x, m_IconSprite->getPosition().y));
     for (int i = 0 ; i < m_Capacity ; ++i)
     {
         if (m_Slots[i])
