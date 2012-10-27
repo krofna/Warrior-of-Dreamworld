@@ -28,9 +28,8 @@ WorldSession* WorldSession::pInstance;
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
-pWorld                    (nullptr),
 Resolver                  (io),
-Work                      (make_shared<boost::asio::io_service::work>(io))
+pWorld                    (nullptr)
 {
 }
 

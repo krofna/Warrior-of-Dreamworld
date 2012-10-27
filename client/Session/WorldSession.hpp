@@ -90,7 +90,6 @@ private:
     void HandleSend(const boost::system::error_code& Error);
 
     WorldPacket Packet;
-    boost::shared_ptr<boost::asio::io_service::work> Work;
     TCPSocket Socket;
     TCPResolver Resolver;
 
