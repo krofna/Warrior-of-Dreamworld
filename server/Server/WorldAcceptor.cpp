@@ -44,14 +44,10 @@ void WorldAcceptor::HandleAccept(WorldSessionPtr Session, const boost::system::e
     #endif
 
     if(!error)
-    {
         Session->Start();
-    }
     #if defined(DEBUG_CONNECTION)
     else
-    {
         sLog.Write("Connection refused (%s)", error.message());
-    }
     #endif
     Accept();
 }
