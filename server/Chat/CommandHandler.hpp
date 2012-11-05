@@ -40,7 +40,7 @@ enum
 class CommandHandler
 {
 public:
-    CommandHandler(std::string& Msg) : Console(true), Tokenizer(Msg), TokIter(Tokenizer.begin()) { }
+    CommandHandler(std::string& Msg) : Console(true), Tokenizer(Msg), TokIter(Tokenizer.begin()), pPlayer(nullptr) { }
     CommandHandler(Player* pPlayer, std::string Msg) : pPlayer(pPlayer), Console(false), Tokenizer(Msg), TokIter(Tokenizer.begin()) { }
 
     // @return: true if command was executed

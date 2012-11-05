@@ -22,8 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "GameState.hpp"
 #include <boost/asio/io_service.hpp>
 #include <stack>
+#include <boost/utility.hpp>
 
-class Game
+class Game : public boost::nocopyable
 {
 public:
     static Game& GetInstance();

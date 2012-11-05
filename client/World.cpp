@@ -38,7 +38,8 @@ CameraTop     (WorldView.getCenter().y - Window->getSize().y / 2),
 CameraRight   (Window->getSize().x),
 CameraBottom  (Window->getSize().y),
 MeID          (MeID),
-m_PointMode   (false)
+m_PointMode   (false),
+pInventory    (nullptr)
 {
 }
 

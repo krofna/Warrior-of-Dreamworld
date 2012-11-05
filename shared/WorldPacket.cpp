@@ -20,7 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Opcodes.hpp"
 
 WorldPacket::WorldPacket() :
-ByteBuffer              (HEADER_SIZE)
+ByteBuffer              (HEADER_SIZE) //,
+// CorruptionState      (false)
 {
     ResetReadPos();
     UpdateWritePos();

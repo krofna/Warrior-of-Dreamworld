@@ -49,6 +49,7 @@ public:
     void UpdateWritePos();
     void ResetReadPos();
     bool EndOfPacket();
+    // bool IsCorrupted() const { return CorruptionState; }
 
     template<class T> void ReadSkip();
 
@@ -90,6 +91,8 @@ private:
     //|   - -   |   - -   | - - - -...
     //|  Size   | Opcode  | Data   ...
     std::vector<char> ByteBuffer;
+
+    // bool CorruptionState;
 };
 
 template<class T> void WorldPacket::ReadSkip()
@@ -112,7 +115,10 @@ template<class T> T WorldPacket::Read()
     // Packet should be dropped instead of crashing
     // server
     // [/TODO]
-    assert(ReadPos + sizeof(T) <= ByteBuffer.size());
+    assert(ReadPos + sizeof(T) <= ByteBuffer.size()); // [Comment by FullMetal-Alchimist: Why not make something like: CorruptionState = true; and make a test, if it is, drop the packet]
+    // [??]
+    // CorruptionState = true;
+    // [/??]
     T data = *((T*)&ByteBuffer[ReadPos]);
     ReadPos += sizeof(T);
     return data;

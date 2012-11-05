@@ -22,13 +22,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldAcceptor.hpp"
 #include <boost/chrono.hpp>
 #include <boost/asio/deadline_timer.hpp>
+#include <boost/utility.hpp>
 
 class AIFactory;
 class Map;
 
 typedef boost::chrono::milliseconds ms;
 
-class World
+class World : private boost::nocopyable
 {
 public:
     World(boost::asio::io_service& io);

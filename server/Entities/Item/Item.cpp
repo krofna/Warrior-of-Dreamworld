@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Player.hpp"
 #include "shared/Log.hpp"
 
-Item::Item()
+Item::Item() : m_Container(nullptr), m_uState(ITEM_UNCHANGED), m_cState(NONE), m_Template(nullptr)
 {
 
 }

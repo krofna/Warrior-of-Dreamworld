@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include "shared/Vector2.hpp"
 #include <SFML/Graphics.hpp>
+#include <boost/utility.hpp>
 
 #define MAX_BAG_SIZE 36
 
@@ -30,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Item;
 
-class Bag
+class Bag : private boost::nocopyable
 {
 public:
     Bag(int idxBag, std::string const& FileNameIcon);

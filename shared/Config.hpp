@@ -28,34 +28,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
         #define MSVC
         #define secure_vsnprintf vsnprintf_s
         #pragma warning(disable : 4251)
-
-        #if(_MSC_VER == 1500)
-            #define SMART_PTR_TR1
-        #else
-            #define USE_BOOST
-        #endif
     #endif
 
 /** ************************ GNU GCC Compiler stuff ************************ **/
     #elif defined( __GNUC__ )
         #define WOD_DLL_DECL __attribute__((__visibility__("default"))) // FIXME: Check that !
-
-        #if defined(__VARIADIC_TEMPLATES) || (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 4) && defined(__GXX_EXPERIMENTAL_CXX0X__))
-            #define HAVE_VARIADIC_TEMPLATES
-            #include "Utils.hpp"
-        #else
-            #define secure_vsnprintf vsprintf // FIXME: Implement a secure vsprintf for replace all others "secure_vsprintf"
-        #endif
-
-        #if ((__GNUC_ == 4) &&(__GNUC_MINOR__ >= 1 && __GNU_MINOR < 3))
-            #define SMART_PTR_TR1_INCLUDE
-        #elif (__GNUC__ > 4 || (__GNUC__ == 4) && (__GNUC_MINOR >= 3))
-            #define SMART_PTR
-        #else
-            #define USE_BOOST
-        #endif
     #else
         #define WOD_DLL_DECL export
     #endif
+
+/** ************************ Generic stuff (Thanks to Boost.Config) ************************ **/
+    #ifndef BOOST_NO_VARIADIC_TEMPLATES
+        #define HAVE_VARIADIC_TEMPLATES
+        #include "Utils.hpp"
+    #endif
+
+    #ifdef BOOST_NO_NULLPTR
+        #define nullptr NULL
+    #endif
+    
+    // Boost.TR1 autorecognize Standard TR1 and use it. (ref: http://www.boost.org/doc/libs/1_51_0/doc/html/boost_tr1/config.html)a
+    #define BOOST_HAS_TR1
 
 #endif // CONFIG_H
