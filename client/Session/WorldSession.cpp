@@ -264,6 +264,9 @@ void WorldSession::HandleEquipItemOpcode()
 
 void WorldSession::HandleInventoryDataOpcode()
 {
+    // Trololol?
+    return;
+    
     for (uint8 i = 0 ; i < 4 ; ++i)
     {
         uint8 bagStatus;
