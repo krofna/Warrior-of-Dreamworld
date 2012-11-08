@@ -158,6 +158,13 @@ void WorldSession::HandleLoginOpcode()
     uint32 MapID;
     uint64 MeID;
     Packet >> MapID >> MeID;
+    
+    World* pWorld = new World(MeID);
+    this->pWorld = pWorld;
+    WorldPacket Argv;
+    Argv << MapID;
+    pWorld->Load(Argv);
+    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleAddObjectOpcode()
