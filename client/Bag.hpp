@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class Item;
 
-class Bag : private boost::nocopyable
+class Bag : private boost::noncopyable
 {
 public:
     Bag(int idxBag, std::string const& FileNameIcon);
@@ -60,7 +60,7 @@ public:
 private:
     bool m_IsCreated;
     uint8 m_Capacity;
-    static_template_array<Item*, MAX_BAG_SIZE> m_Slots;
+    boost::array<Item*, MAX_BAG_SIZE> m_Slots;
 
     // GUI Stuff
     sf::Sprite* m_IconSprite;

@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 typedef boost::asio::ip::tcp::endpoint TCPEndpoint;
 typedef boost::asio::ip::tcp::acceptor TCPAcceptor;
 
-class WorldAcceptor : private boost::nocopyable
+class WorldAcceptor : private boost::noncopyable
 {
 public:
     WorldAcceptor(boost::asio::io_service& io);

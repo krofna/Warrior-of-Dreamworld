@@ -29,7 +29,7 @@ class Map;
 
 typedef boost::chrono::milliseconds ms;
 
-class World : private boost::nocopyable
+class World : private boost::noncopyable
 {
 public:
     World(boost::asio::io_service& io);

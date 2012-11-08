@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <stack>
 #include <boost/utility.hpp>
 
-class Game : public boost::nocopyable
+class Game : public boost::noncopyable
 {
 public:
     static Game& GetInstance();
