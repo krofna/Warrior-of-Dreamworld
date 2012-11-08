@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Opcodes.hpp"
 #include "Game.hpp"
 #include "Login.hpp"
-#include "Inventory.hpp"
 #include "shared/Log.hpp"
 #include <boost/bind.hpp>
 
@@ -159,31 +158,18 @@ void WorldSession::HandleLoginOpcode()
     uint32 MapID;
     uint64 MeID;
     Packet >> MapID >> MeID;
-
-    World* pWorld = new World(MeID);
-    this->pWorld = pWorld;
-    WorldPacket Argv;
-    Argv << MapID;
-    pWorld->Load(Argv);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleAddObjectOpcode()
 {
     uint64 ObjID;
     Packet >> ObjID;
-    WorldObject* pNewObject = new WorldObject;
-    WorldPacket Packet = this->Packet;
-    pNewObject->Load(Packet);
-    pWorld->AddObject(pNewObject, ObjID);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleRemoveObjectOpcode()
 {
     uint64 ObjID;
     Packet >> ObjID;
-    pWorld->RemoveObject(ObjID);
 }
 
 void WorldSession::HandleMoveObjectOpcode()
@@ -191,31 +177,16 @@ void WorldSession::HandleMoveObjectOpcode()
     uint64 ObjID;
     uint16 x, y;
     Packet >> ObjID >> x >> y;
-
-    pWorld->WorldObjectMap[ObjID]->UpdateCoordinates(x, y);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleCastSpellOpcode()
 {
-    // I dont even...
-    uint64 CasterID;
-    Packet >> CasterID;
-    Packet.UpdateWritePos();
-    WorldObject* pCaster = pWorld->WorldObjectMap[CasterID];
-    Packet << pCaster->GetPosition().x << pCaster->GetPosition().y;
-    Animation* pAnim = new Animation;
-    WorldPacket Packet = this->Packet;
-    pAnim->Load(Packet);
-    pWorld->AddAnimation(pAnim);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleRemoveSpellOpcode()
 {
     uint32 SpellBoxID;
     Packet >> SpellBoxID;
-    pWorld->RemoveAnimation(SpellBoxID);
 }
 
 void WorldSession::HandleLogOutOpcode()
@@ -238,27 +209,18 @@ void WorldSession::HandleChatMessageOpcode()
     std::string Message;
 
     Packet >> ObjID >> Message;
-
-    pWorld->ReceiveNewMessage(ObjID, Message);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleCommandReponseOpcode()
 {
     std::string Message;
     Packet >> Message;
-
-    pWorld->ReceiveCommandReponse(Message);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleNotificationMessageOpcode()
 {
     std::string Message;
     Packet >> Message;
-
-    pWorld->ReceiveNotification(Message);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleTextEmoteOpcode()
@@ -268,25 +230,18 @@ void WorldSession::HandleTextEmoteOpcode()
 
     Packet >> ObjectID;
     Packet >> Message;
-
-    pWorld->ReceiveEmote(TEXT_EMOTE, ObjectID, Message);
-    sLog.Write("Packet is good!");
 }
 
 void WorldSession::HandleSwapItemOpcode()
 {
     uint8 srcbag, dstbag, srcslot, dstslot;
     Packet >> srcbag >> dstbag >> srcslot >> dstslot;
-
-    pWorld->GetInventory()->Swap(srcbag, dstbag, srcslot, dstslot);
 }
 
 void WorldSession::HandleDeleteItemOpcode()
 {
     uint8 srcslot, count;
     Packet >> srcslot >> count;
-
-    pWorld->GetInventory()->Destroy(srcslot, count);
 }
 
 void WorldSession::HandleCreateItemOpcode()
@@ -295,8 +250,6 @@ void WorldSession::HandleCreateItemOpcode()
     uint64 entry;
 
     Packet >> dstslot >> dstbag >> entry;
-
-    pWorld->GetInventory()->Create(dstbag, dstslot, entry);
 }
 
 void WorldSession::HandleUseItemOpcode()
@@ -315,24 +268,24 @@ void WorldSession::HandleInventoryDataOpcode()
     {
         uint8 bagStatus;
         Packet >> bagStatus;
-        if (bagStatus != BAG_USED)
-            continue;
+        //if (bagStatus != BAG_USED)
+            //continue;
 
         uint64 bagEntry;
         uint8 bagSlots;
         Packet >> bagEntry >> bagSlots;
 
-        pWorld->GetInventory()->Create(i, bagEntry);
+        //pWorld->GetInventory()->Create(i, bagEntry);
         for (uint8 k = 0 ; k < bagSlots ; ++k)
         {
             uint8 itemStatus;
-            if (itemStatus != ITEM_USED)
-                continue;
+            //if (itemStatus != ITEM_USED)
+                //continue;
 
             uint64 itemEntry;
             Packet >> itemEntry;
 
-            pWorld->GetInventory()->Create(i, k, itemEntry);
+            //pWorld->GetInventory()->Create(i, k, itemEntry);
         }
     }
 }
@@ -341,8 +294,6 @@ void WorldSession::HandleNpcInteractOpcode()
 {
     uint64 Entry;
     Packet >> Entry;
-    // TODO: construct GUI
-    //sGame->AddToLoadQueue(/*gui*/, Packet);
 }
 
 void WorldSession::SendMovementRequest(uint8 Direction)

@@ -20,19 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define MAP_H
 
 #include "GameState.hpp"
-#include "WorldObject.hpp"
-#include "Animation.hpp"
-#include <SFML/Graphics/VertexArray.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <map>
-#include <list>
+#include "shared/Defines.hpp"
+#include <SFML/Graphics.hpp>
 
 class GameState;
-class WorldObject;
-class Inventory;
-class MessageChatArea;
-
-typedef boost::scoped_ptr<MessageChatArea> MessageChatAreaPtr;
 
 enum TypeEmote
 {
@@ -52,22 +43,7 @@ public:
     void Draw();
     void HandleEvent(sf::Event Event);
 
-    void AddObject(WorldObject* pWorldObject, uint64 ObjectID);
-    void RemoveObject(uint64 ObjectID);
-
-    void AddAnimation(Animation* pAnimation);
-    void RemoveAnimation(uint32 ID);
-
-    Inventory* GetInventory();
-
-protected:
-    void ReceiveNewMessage(uint64 ObjID, std::string const& Message);
-    void ReceiveCommandReponse(std::string const& Message);
-    void ReceiveNotification(std::string const& Message);
-    void ReceiveEmote(TypeEmote type, uint64 ObjID, std::string const& Message);
-
 private:
-    MessageChatAreaPtr m_MessageArea;
 
     // TODO: Map?
     std::string TilesetFileName;
@@ -84,14 +60,9 @@ private:
     int CameraRight;
     int CameraBottom;
     // END TODO
-    
-    // Inventory
-    Inventory* pInventory;
 
     // Debug purpose (For stopping voodoo)
     bool m_PointMode;
-    std::map<uint64, WorldObject*> WorldObjectMap;
-    std::list<Animation*> Animations; // TODO; Only for spells SpellAnimations w/e
     const uint64 MeID;
 
     sf::Clock m_UpdateClock;

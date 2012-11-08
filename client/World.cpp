@@ -19,9 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "World.hpp"
 #include "Game.hpp"
 #include "WorldSession.hpp"
-#include "MessageChatArea.hpp"
-#include "Inventory.hpp"
-#include "Bag.hpp"
 #include "shared/Math.hpp"
 #include "shared/Utils.hpp"
 #include "ObjectMgr.hpp"
@@ -29,7 +26,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <cassert>
 
 World::World  (uint64 MeID) :
-m_MessageArea (new MessageChatArea),
 TileMap       (sf::PrimitiveType::Quads),
 WorldView     (sf::FloatRect(0, 0, Window->getSize().x, Window->getSize().y)),
 MoveWorldView (MOVE_STOP),
@@ -38,16 +34,12 @@ CameraTop     (WorldView.getCenter().y - Window->getSize().y / 2),
 CameraRight   (Window->getSize().x),
 CameraBottom  (Window->getSize().y),
 MeID          (MeID),
-m_PointMode   (false),
-pInventory    (nullptr)
+m_PointMode   (false)
 {
 }
 
 World::~World()
 {
-    std::for_each(WorldObjectMap.begin(), WorldObjectMap.end(), MapDeleter());
-    std::for_each(Animations.begin(), Animations.end(), Deleter());
-    delete pInventory;
 }
 
 void World::Load(WorldPacket Argv)
@@ -88,10 +80,6 @@ void World::Load(WorldPacket Argv)
 
         index += 4;
     }
-
-
-    Bag::InitializePositionsBag();
-    pInventory = new Inventory("data/icons/bag.png");
 
     Game::GetInstance().PopState();
     Game::GetInstance().PushState(this);
@@ -134,29 +122,10 @@ void World::Draw()
     
     // Draw tile map
     Window->draw(TileMap, MapStates);
-
-    // Draw static objects
-    for(auto i = WorldObjectMap.begin(); i != WorldObjectMap.end(); ++i)
-        (*i).second->Draw();
-
-    // Update animations
-    for(auto i = Animations.begin(); i != Animations.end(); ++i)
-    {
-        (*i)->Update();
-    }
-
-    // Draw Inventory
-    pInventory->Draw();
-
-    // Draw chat GUI
-    m_MessageArea->Draw(m_UpdateClock.restart().asMilliseconds());
 }
 
 void World::HandleEvent(sf::Event Event)
 {
-    if (m_MessageArea->HandleTyping(Event) || pInventory->HandleEvent(Event))
-        return;
-
     switch(Event.type)
     {
     case sf::Event::KeyPressed:
@@ -217,93 +186,9 @@ void World::HandleEvent(sf::Event Event)
         break;
 
     case sf::Event::MouseButtonPressed:
-        // PH
-        if (m_PointMode)
-            std::cout << Event.mouseButton.x << ";" << Event.mouseButton.y << std::endl;
-        else
-            WorldSession::GetInstance()->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
-        break;
+        // ...
         
     default:
         break;
     }
-}
-
-void World::AddObject(WorldObject* pWorldObject, uint64 ObjectID)
-{
-    this->WorldObjectMap[ObjectID] = pWorldObject;
-}
-
-void World::RemoveObject(uint64 ObjectID)
-{
-    auto Iter = WorldObjectMap.find(ObjectID);
-    if(Iter == WorldObjectMap.end())
-        return;
-
-    delete Iter->second;
-    WorldObjectMap.erase(Iter);
-}
-
-void World::ReceiveNewMessage(uint64 ObjectID, std::string const& Text)
-{
-    auto Iter = WorldObjectMap.find(ObjectID);
-    if (Iter == WorldObjectMap.end())
-        return;
-
-    m_MessageArea->AddMessage(Iter->second->GetObjectName(), Text);
-}
-
-void World::ReceiveCommandReponse(std::string const& Text)
-{
-    m_MessageArea->AddServerMessage(Text, sf::Color::Blue);
-}
-
-void World::ReceiveNotification(std::string const& Text)
-{
-    m_MessageArea->AddServerMessage(Text, sf::Color::Red);
-}
-
-void World::ReceiveEmote(TypeEmote type, uint64 ObjectID, std::string const& Text)
-{
-    if (type == VOICE_EMOTE)
-    {
-//        PlayVoice(Text); // Text = Path
-        return;
-    }
-
-    sf::Color color;
-
-    if (type == TEXT_EMOTE)
-        color = sf::Color::Magenta;
-
-    auto Iter = WorldObjectMap.find(ObjectID);
-    if (Iter == WorldObjectMap.end())
-        return;
-
-    std::string Msg = Iter->second->GetObjectName() + Text;
-
-    m_MessageArea->AddRawMessage(Msg, color);
-}
-
-void World::AddAnimation(Animation* pAnimation)
-{
-    Animations.push_back(pAnimation);
-}
-
-void World::RemoveAnimation(uint32 ID)
-{
-    for(auto iter = Animations.begin(); iter != Animations.end(); ++iter)
-    {
-        if((*iter)->GetID() == ID)
-        {
-            delete *iter;
-            Animations.erase(iter);
-            return;
-        }
-    }
-}
-
-Inventory* World::GetInventory() 
-{
-    return pInventory;
 }
