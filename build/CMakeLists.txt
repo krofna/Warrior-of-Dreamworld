@@ -19,6 +19,10 @@ if (CMAKE_COMPILER_IS_GNUCXX AND PROFILE_MODE)
     set (CMAKE_BUILD_TYPE Debug)
 endif()
 
+if (HANDLER_TRACKING)
+    add_definitions(-DBOOST_ASIO_ENABLE_HANDLER_TRACKING)
+endif()
+
 if (CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-std=gnu++0x)
 endif()

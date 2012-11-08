@@ -9,28 +9,30 @@ How to compile Warrior-of-Dreamworld:
     Now, clone Warrior-of-Dreamworld's repositorie
     type in a terminal: git clone git://github.com/krofna/Warrior-of-Dreamworld
 
-    Now, go in repositorie folder
+    Now, go in repository folder
     type in a terminal: cd yourrepofolder (Default: Warrior-of-Dreamworld)
     type in a terminal: cd build && cmake . -DCMAKE_BUILD_TYPE=Debug && make
     This will build Client, Server and WorldEdit in Debug mode.
 
         For profiling code using gprof:
-        (Assume you're in repofolder)
-        type in a terminal: cd build
-        type in a terminal: cmake . -DCMAKE_BUILD_TYPE=Debug -DPROFILE_MODE=TRUE && make
-        Run Client or Server or WorldEdit, and your gmon.out will be in executable folder.
+            (Assume you're in repofolder)
+            type in a terminal: cd build
+            type in a terminal: cmake . -DCMAKE_BUILD_TYPE=Debug -DPROFILE_MODE=TRUE && make
+            Run Client or Server or WorldEdit, and your gmon.out will be in executable folder.
+
+        For debugging asio handler:
+            Add -DHANDLER_TRACKING=TRUE option
 
 How to import SQL database of Warrior-of-Dreamworld:
     First, you need to have installed mysql-server packet.
     So, now go to repo folder and type in terminal:
     cd sql && mysql -u root -p
     He will asks for your root password (for MySQL, not system account)
-    type in MySQL prompt: CREATE DATABASE world;
-                          USE world;
-                          source world_structure.sql
-                          source test_db_full.sql
+    Type in MySQL prompt: CREATE DATABASE wod_test_db;
+    Exit from MySQL prompt (Ctrl+D)
+    Type in terminal: ./ImportSQL_Database root
+    Type your password twice times.
     You have imported SQL Database needed for Warrior-of-Dreamworld
-    (For exit from prompt, type exit :) )
 
 How to configure and run Warrior-of-Dreamworld server:
     First, you need to have compiled server and imported SQL database.
@@ -42,7 +44,7 @@ How to configure and run Warrior-of-Dreamworld server:
     tcp://<address_of_mysql_server>:<port_of_mysql_server>/ (Default: tcp://127.0.0.1:3306/)
     <mysql_user_name> (Default: root)
     <mysql_password_name>
-    <database_where_you_have_imported_test_db_full.sql> (Default: world)
+    <database_where_you_have_imported_test_db_full.sql> (Default: wod_test_db)
 
     Now, you can launch Server by typing: "./Server" in terminal
 

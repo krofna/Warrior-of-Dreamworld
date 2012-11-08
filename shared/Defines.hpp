@@ -53,43 +53,15 @@ class WorldSession;
 
 #include "Config.hpp"
 
-#ifdef USE_BOOST
-        #include <boost/shared_ptr.hpp>
-        #include <boost/array.hpp>
-        #include <boost/enable_shared_from_this.hpp>
-        #include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/array.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/make_shared.hpp>
         
-        typedef boost::shared_ptr<WorldSession> WorldSessionPtr;
-        using boost::enable_shared_from_this;
-        using boost::make_shared;
-        using boost::array;
-
-        #define static_template_array boost::array
-#else
-        #ifndef SMART_PTR_TR1_INCLUDE
-            #include <memory>
-            #include <array>
-        #else
-            #include <tr1/memory>
-        #endif 
-
-        #ifdef SMART_PTR_TR1
-            typedef std::tr1::shared_ptr<WorldSession> WorldSessionPtr;
-            using std::tr1::enable_shared_from_this;
-            using std::tr1::make_shared;
-            using std::tr1::array;
-
-            #define static_template_array std::tr1::array;
-        #else
-            typedef std::shared_ptr<WorldSession> WorldSessionPtr;
-            using std::enable_shared_from_this;
-            using std::make_shared;
-            using std::array;
-
-            #define static_template_array std::array
-       #endif
-
-#endif
+typedef boost::shared_ptr<WorldSession> WorldSessionPtr;
+using boost::enable_shared_from_this;
+using boost::make_shared;
+using boost::array;
 
 #define TILE_SIZE 32
 

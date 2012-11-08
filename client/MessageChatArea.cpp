@@ -21,7 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 
 MessageChatArea::MessageChatArea() :
-m_IsTyping                      (false)
+m_IsTyping                      (false),
+m_StartCharacter                (true)
 {
     if (!m_DefaultFont.loadFromFile("data/fonts/arial.ttf"))
         throw std::runtime_error("Impossible to load arial.ttf font");
