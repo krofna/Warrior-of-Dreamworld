@@ -35,8 +35,7 @@ int main()
         Game::Create(io);
         WorldSession::Create(io);
 
-        sObjectMgr = new ObjectMgr("data/tileset", "data/database/templates_info.dbc");
-        sObjectMgr->Initialize();
+        ObjectMgr::GetInstance()->Initialize("data/tileset", "data/database/templates_info.dbc");
 
         Game::GetInstance().PushState(new Login());
 
@@ -44,7 +43,6 @@ int main()
         io.run();
 
         WorldSession::Destroy();
-        delete sObjectMgr;
     }
     catch(std::exception const& e)
     {

@@ -1,76 +1,42 @@
-#ifndef SINGLETON_DEFINED
-#define SINGLETON_DEFINED
+#ifndef SINGLETON_DEFINED_HPP
+#define SINGLETON_DEFINED_HPP
 
-#include "Config.hpp"
+#include <memory>
+#include <mutex>
 
-// TODO: Make Singleton<Class> thread safe.
+// Thread-Safe version using :
+// Lambda
+// std::once_flag
+// std::unique_ptr
 
-template<class Class>
-class Singleton
-{
-    static Class* GetInstance() // AUTO MAGICALLY CREATE THE INSTANCE OF CLASS !
-    {
-        if (sInstance == nullptr)
-            sInstance = new Class;
-
-        return sInstance;
-    }
-    static void DestroyInstance()
-    {
-        if (sInstance)
-            delete sInstance;
-    }
-
-    protected:
-    Singleton() { }
-    ~Singleton() { }
-
-    private:
-    static Class* sInstance;
-};
-
-template<class Class>
-static Class* Singleton<Class>::sInstance = nullptr;
-
-#ifdef HAVE_VARIADIC_TEMPLATE
-template<class Class, typename... Args>
+template<class T>
 class Singleton
 {
     public:
-    static Class* GetInstance() // NEVER CREATE AUTOMAGICALLY THE INSTANCE OF CLASS !
-    {
-        return sInstance;
-    }
-
-    static void CreateInstance(bool recreate, Args const && ... args)
-    {
-        if (sInstance != nullptr)
+        virtual ~Singleton() { m_instance.reset(nullptr); }
+        static T* GetInstance()
         {
-            if (recreate)
-                DestroyInstance();
-            else
-                return;
+            std::call_once(m_onceFlag, []()
+            {
+                m_instance.reset(new T);
+            });
+
+            return m_instance.get();
         }
 
-        sInstance = new Class(std::forward<Args>(args)...);
-    }
-    static void DestroyInstance()
-    {
-        if (sInstance)
-            delete sInstance;
-    }
-
-    protected:
-    Singleton() { }
-    ~Singleton() { }
-
     private:
-    static Class* sInstance;
-};
+        static std::unique_ptr<T> m_instance;
+        static std::once_flag m_onceFlag;
 
-template<class Class, typename... Args>
-static Class* Singleton<Class, Args>::sInstance = nullptr;
+        Singleton(const Singleton& src) = default;
+        Singleton& operator=(const Singleton& rhs) = default;
+    protected:
+        Singleton() = default;
+   };
 
-#endif
+template<class T>
+std::unique_ptr<T> Singleton<T>::m_instance = nullptr;
+template<class T>
+std::once_flag Singleton<T>::m_onceFlag;
 
 #endif

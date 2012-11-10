@@ -64,7 +64,7 @@ void World::Load(WorldPacket Argv)
     TileMap.resize(MapWidth * MapHeight * 4);
     MapWidth *= TILE_SIZE;
     MapHeight *= TILE_SIZE;
-    MapStates.texture = sObjectMgr->GetTileset(TilesetFileName);
+    MapStates.texture = ObjectMgr::GetInstance()->GetTileset(TilesetFileName);
 
     while (File >> x >> y >> tx >> ty)
     {

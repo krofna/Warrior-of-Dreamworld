@@ -19,14 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef OBJECT_MGR_DEFINED
 #define OBJECT_MGR_DEFINED
 
-#include <map>
 #include <SFML/Graphics/Texture.hpp>
-#include "shared/Defines.hpp"
-#include "shared/Templates.hpp"
+#include <map>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+
+#include "shared/Defines.hpp"
+#include "shared/Templates.hpp"
+#include "shared/Singleton.hpp"
+
 
 // Data are stored in
 /**
@@ -37,13 +40,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
 **/
 
-class ObjectMgr
+class ObjectMgr : public Singleton<ObjectMgr>
 {
+    friend class Singleton<ObjectMgr>;
 public:
-    ObjectMgr(std::string const& TilesetDataFolder, std::string const& TemplatesFilePath);
     ~ObjectMgr();
 
-    void Initialize();
+    void Initialize(std::string const& TilesetDataFolder, std::string const& TemplatesFilePath);
 
     void LoadTileset(std::string const& TilesetName);
 
@@ -75,7 +78,5 @@ private:
     std::string m_TilesetPath;
     std::string m_TemplatesFilePath;
 };
-
-extern ObjectMgr* sObjectMgr;
 
 #endif

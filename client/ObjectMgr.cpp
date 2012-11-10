@@ -22,12 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ObjectMgr* sObjectMgr;
 
-ObjectMgr::ObjectMgr(std::string const& TilesetPath, std::string const& TemplatesFilePath) :
-m_TilesetPath       (TilesetPath),
-m_TemplatesFilePath (TemplatesFilePath)
-{
-}
-
 ObjectMgr::~ObjectMgr()
 {
     std::for_each(m_ItemTemplates.begin(), m_ItemTemplates.end(), MapDeleter());
@@ -36,8 +30,10 @@ ObjectMgr::~ObjectMgr()
     std::for_each(m_Textures.begin(), m_Textures.end(), MapDeleter());
 }
 
-void ObjectMgr::Initialize()
+void ObjectMgr::Initialize(std::string const& TilesetDataFolder, std::string const& TemplatesFilePath)
 {
+    m_TilesetPath = TilesetDataFolder;
+    m_TemplatesFilePath = TemplatesFilePath;
     LoadTemplates();
 }
 
