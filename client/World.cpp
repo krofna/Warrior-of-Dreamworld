@@ -21,18 +21,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "WorldSession.hpp"
 #include "shared/Math.hpp"
 #include "shared/Utils.hpp"
+#include "shared/WorldPacket.hpp"
 #include "ObjectMgr.hpp"
 #include <fstream>
 #include <cassert>
 
 World::World  (uint64 MeID) :
 TileMap       (sf::PrimitiveType::Quads),
-WorldView     (sf::FloatRect(0, 0, Window->getSize().x, Window->getSize().y)),
+WorldView     (sf::FloatRect(0, 0, Game::GetInstance()->GetRenderWindow()->getSize().x, Game::GetInstance()->GetRenderWindow()->getSize().y)),
 MoveWorldView (MOVE_STOP),
-CameraLeft    (WorldView.getCenter().x - Window->getSize().x / 2),
-CameraTop     (WorldView.getCenter().y - Window->getSize().y / 2),
-CameraRight   (Window->getSize().x),
-CameraBottom  (Window->getSize().y),
+CameraLeft    (WorldView.getCenter().x - Game::GetInstance()->GetRenderWindow()->getSize().x / 2),
+CameraTop     (WorldView.getCenter().y - Game::GetInstance()->GetRenderWindow()->getSize().y / 2),
+CameraRight   (Game::GetInstance()->GetRenderWindow()->getSize().x),
+CameraBottom  (Game::GetInstance()->GetRenderWindow()->getSize().y),
 MeID          (MeID),
 m_PointMode   (false)
 {
@@ -42,9 +43,9 @@ World::~World()
 {
 }
 
-void World::Load(WorldPacket Argv)
+void World::Load(WorldPacket&& Argv)
 {
-    Window->setView(WorldView);
+    Game::GetInstance()->GetRenderWindow()->setView(WorldView);
 
     uint32 MapID;
     Argv >> MapID;
@@ -81,8 +82,8 @@ void World::Load(WorldPacket Argv)
         index += 4;
     }
 
-    Game::GetInstance().PopState();
-    Game::GetInstance().PushState(this);
+    Game::GetInstance()->PopState();
+    Game::GetInstance()->PushState(this);
 }
 
 void World::Draw()
@@ -117,14 +118,14 @@ void World::Draw()
             WorldView.move(-TILE_SIZE, 0);
         }
 
-        Window->setView(WorldView);
+        Game::GetInstance()->GetRenderWindow()->setView(WorldView);
     }
     
     // Draw tile map
-    Window->draw(TileMap, MapStates);
+    Game::GetInstance()->GetRenderWindow()->draw(TileMap, MapStates);
 }
 
-void World::HandleEvent(sf::Event Event)
+void World::HandleEvent(sf::Event const& Event)
 {
     switch(Event.type)
     {
@@ -171,16 +172,16 @@ void World::HandleEvent(sf::Event Event)
     case sf::Event::MouseMoved:
         MoveWorldView = MOVE_STOP;
 
-        if(sf::Mouse::getPosition(*Window).x >= Window->getSize().x - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Game::GetInstance()->GetRenderWindow()).x >= Game::GetInstance()->GetRenderWindow()->getSize().x - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_RIGHT;
 
-        else if(sf::Mouse::getPosition(*Window).x < TILE_SIZE / 2)
+        else if(sf::Mouse::getPosition(*Game::GetInstance()->GetRenderWindow()).x < TILE_SIZE / 2)
             MoveWorldView |= MOVE_LEFT;
 
-        if(sf::Mouse::getPosition(*Window).y > Window->getSize().y - (TILE_SIZE / 2))
+        if(sf::Mouse::getPosition(*Game::GetInstance()->GetRenderWindow()).y > Game::GetInstance()->GetRenderWindow()->getSize().y - (TILE_SIZE / 2))
             MoveWorldView |= MOVE_DOWN;
 
-        else if(sf::Mouse::getPosition(*Window).y < TILE_SIZE / 2)
+        else if(sf::Mouse::getPosition(*Game::GetInstance()->GetRenderWindow()).y < TILE_SIZE / 2)
             MoveWorldView |= MOVE_UP;
 
         break;

@@ -37,7 +37,7 @@ public:
     Login();
     ~Login();
 
-    void HandleEvent(sf::Event Event);
+    void HandleEvent(sf::Event const& Event);
     void Draw();
     void Update();
 

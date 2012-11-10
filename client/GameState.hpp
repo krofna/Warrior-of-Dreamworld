@@ -23,17 +23,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFGUI/SFGUI.hpp>
 
-extern sfg::SFGUI* sSFGUI;
-extern sfg::Desktop* sDesktop;
-extern sf::RenderWindow* Window;
-
-class WorldPacket;
-
 class GameState
 {
 public:
     virtual ~GameState() {}
-    virtual void HandleEvent(sf::Event Event) = 0;
+    virtual void HandleEvent(sf::Event const& Event) = 0;
     virtual void Update() = 0;
     virtual void Draw() = 0;
 };

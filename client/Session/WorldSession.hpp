@@ -20,7 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define WORLD_SESSION_H
 
 #include "shared/WorldPacket.hpp"
-#include "World.hpp"
+#include "shared/Singleton.hpp"
+
 #include <boost/asio.hpp>
 #include <queue>
 
@@ -29,12 +30,10 @@ class World;
 typedef boost::asio::ip::tcp::socket TCPSocket;
 typedef boost::asio::ip::tcp::resolver TCPResolver;
 
-class WorldSession
+class WorldSession : public Singleton<WorldSession>
 {
+    friend class Singleton<WorldSession>;
 public:
-    static WorldSession* GetInstance();
-    static void Create(boost::asio::io_service& io);
-    static void Destroy();
     ~WorldSession();
 
     void Connect(std::string Ip, std::string Port);
@@ -81,8 +80,7 @@ public:
     void GoToLoginScreen();
 
 private:
-    WorldSession(boost::asio::io_service& io);
-    static WorldSession* pInstance;
+    WorldSession();
 
     void Start();
     void HandleReceive(const boost::system::error_code& Error);

@@ -23,34 +23,34 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Login::Login() : m_CurrentFocus(None)
 {
-    Window->resetGLStates();
+    Game::GetInstance()->GetRenderWindow()->resetGLStates();
     Create();
 }
 
 Login::~Login()
 {
-    sDesktop->Remove(m_LoginWindow);
+    Game::GetInstance()->GetDesktop()->Remove(m_LoginWindow);
 }
 
-void Login::HandleEvent(sf::Event Event)
+void Login::HandleEvent(sf::Event const& Event)
 {
-    sDesktop->HandleEvent(Event);
+    Game::GetInstance()->GetDesktop()->HandleEvent(Event);
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Tab)
         GrabNextFocus();
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Return)
         onConnectButtonPressed();
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Escape)
-        Window->close();
+        Game::GetInstance()->GetRenderWindow()->close();
 }
 
 void Login::Draw()
 {
-    sSFGUI->Display(*Window);
+    Game::GetInstance()->GetSFGUI()->Display(*(Game::GetInstance()->GetRenderWindow()));
 }
 
 void Login::Update()
 {
-    sDesktop->Update(updateClock.restart().asSeconds());
+    Game::GetInstance()->GetDesktop()->Update(updateClock.restart().asSeconds());
 }
 
 void Login::Create()
@@ -106,9 +106,9 @@ void Login::Create()
     Global->SetSpacing(5.f);
 
     m_LoginWindow->Add(Global);
-    m_LoginWindow->SetPosition(sf::Vector2f(Window->getSize().x / 2, Window->getSize().y / 2));
+    m_LoginWindow->SetPosition(sf::Vector2f(Game::GetInstance()->GetRenderWindow()->getSize().x / 2, Game::GetInstance()->GetRenderWindow()->getSize().y / 2));
 
-    sDesktop->Add(m_LoginWindow);
+    Game::GetInstance()->GetDesktop()->Add(m_LoginWindow);
 }
 
 void Login::onConnectButtonPressed()

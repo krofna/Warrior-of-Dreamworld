@@ -19,39 +19,52 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "Game.hpp"
 #include <boost/bind.hpp>
 
-sf::RenderWindow* Window;
-sfg::SFGUI* sSFGUI;
-sfg::Desktop* sDesktop;
+boost::asio::io_service* Game::sIO = nullptr;
 
-Game& Game::GetInstance()
+void Game::Initialize(boost::asio::io_service* io)
 {
-    static Game instance;
-    return instance;
-}
+    sIO = io;
 
-void Game::Create(boost::asio::io_service& io)
-{
-    GetInstance().io = &io;
-    Window = new sf::RenderWindow();
-    sSFGUI = new sfg::SFGUI();
-    sDesktop = new sfg::Desktop();
-    Window->create(*sf::VideoMode::getFullscreenModes().begin(), "Warrior of Dreamworld", sf::Style::Close);
-    Window->setFramerateLimit(60);
+    Game* pInstance = GetInstance();
+
+    pInstance->Window.reset(new sf::RenderWindow);
+    pInstance->SFGUI.reset(new sfg::SFGUI);
+    pInstance->Desktop.reset(new sfg::Desktop);
+
+    pInstance->GetRenderWindow()->create(*sf::VideoMode::getFullscreenModes().begin(), "Warrior of Dreamworld", sf::Style::Close);
+    pInstance->GetRenderWindow()->setFramerateLimit(60);
 }
 
 Game::~Game()
 {
-    PopAllStates();
-    delete Window;
-    delete sSFGUI;
-    delete sDesktop;
+
+}
+
+boost::asio::io_service* Game::GetIO()
+{
+    return sIO;
+}
+
+sf::RenderWindow* Game::GetRenderWindow()
+{
+    return Window.get();
+}
+
+sfg::SFGUI* Game::GetSFGUI()
+{
+    return SFGUI.get();
+}
+
+sfg::Desktop* Game::GetDesktop()
+{
+    return Desktop.get();
 }
 
 void Game::Update()
 {
     if(!Window->isOpen())
     {
-        io->stop();
+        sIO->stop();
         return;
     }
 
@@ -64,27 +77,22 @@ void Game::Update()
     Window->display();
     StateStack.top()->Update();
 
-    io->post(boost::bind(&Game::Update, this));
+    sIO->post(boost::bind(&Game::Update, this));
 }
 
 void Game::PushState(GameState* pState)
 {
-    StateStack.push(pState);
+    StateStack.push(std::unique_ptr<GameState>(pState));
 }
 
 void Game::PopState()
 {
     if(!StateStack.empty())
-    {
-        delete StateStack.top();
         StateStack.pop();
-    }
 }
 
 void Game::PopAllStates()
 {
     while(!StateStack.empty())
-    {
         PopState();
-    }
 }

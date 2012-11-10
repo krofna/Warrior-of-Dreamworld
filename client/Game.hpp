@@ -19,17 +19,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef GAME_H
 #define GAME_H
 
-#include "GameState.hpp"
-#include <boost/asio/io_service.hpp>
 #include <stack>
-#include <boost/utility.hpp>
 
-class Game : public boost::noncopyable
+#include <boost/asio/io_service.hpp>
+
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFGUI/SFGUI.hpp>
+
+#include "GameState.hpp"
+#include "shared/Singleton.hpp"
+
+class Game : public Singleton<Game>
 {
+    friend class Singleton<Game>;
 public:
-    static Game& GetInstance();
-    static void Create(boost::asio::io_service& io);
-    ~Game();
+    virtual ~Game();
+
+    static void Initialize(boost::asio::io_service* io);
+
+    boost::asio::io_service* GetIO();
+    sf::RenderWindow* GetRenderWindow();
+    sfg::SFGUI* GetSFGUI();
+    sfg::Desktop* GetDesktop();
 
     void Update();
 
@@ -39,8 +50,13 @@ public:
 
 private:
     sf::Event Event;
-    std::stack<GameState*> StateStack;
-    boost::asio::io_service* io;
+    std::stack<std::unique_ptr<GameState>> StateStack;
+
+    std::unique_ptr<sf::RenderWindow> Window;
+    std::unique_ptr<sfg::SFGUI> SFGUI;
+    std::unique_ptr<sfg::Desktop> Desktop;
+
+    static boost::asio::io_service* sIO;
 };
 
 #endif

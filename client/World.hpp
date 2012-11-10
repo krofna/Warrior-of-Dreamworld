@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Defines.hpp"
 #include <SFML/Graphics.hpp>
 
-class GameState;
+class WorldPacket;
 
 enum TypeEmote
 {
@@ -38,10 +38,10 @@ public:
     World(uint64 MeID);
     ~World();
 
-    virtual void Load(WorldPacket Argv);
+    virtual void Load(WorldPacket&& Argv);
     void Update() {}
     void Draw();
-    void HandleEvent(sf::Event Event);
+    void HandleEvent(sf::Event const& Event);
 
 private:
 
@@ -63,6 +63,7 @@ private:
 
     // Debug purpose (For stopping voodoo)
     bool m_PointMode;
+
     const uint64 MeID;
 
     sf::Clock m_UpdateClock;

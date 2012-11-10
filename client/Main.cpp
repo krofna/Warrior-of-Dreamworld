@@ -31,18 +31,14 @@ int main()
     try
     {
         boost::asio::io_service io;
-
-        Game::Create(io);
-        WorldSession::Create(io);
+        Game::Initialize(&io);
 
         ObjectMgr::GetInstance()->Initialize("data/tileset", "data/database/templates_info.dbc");
 
-        Game::GetInstance().PushState(new Login());
+        Game::GetInstance()->PushState(new Login());
 
-        io.post(boost::bind(&Game::Update, boost::ref(Game::GetInstance())));
+        io.post(boost::bind(&Game::Update, Game::GetInstance()));
         io.run();
-
-        WorldSession::Destroy();
     }
     catch(std::exception const& e)
     {

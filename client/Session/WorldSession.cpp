@@ -17,38 +17,25 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #include "WorldSession.hpp"
+
 #include "shared/Opcodes.hpp"
+#include "shared/Log.hpp"
+
 #include "Game.hpp"
 #include "Login.hpp"
-#include "shared/Log.hpp"
+#include "World.hpp"
+
 #include <boost/bind.hpp>
 
-WorldSession* WorldSession::pInstance;
-
-WorldSession::WorldSession(boost::asio::io_service& io) :
-Socket                    (io),
-Resolver                  (io),
+WorldSession::WorldSession() :
+Socket                    (*Game::GetInstance()->GetIO()),
+Resolver                  (*Game::GetInstance()->GetIO()),
 pWorld                    (nullptr)
 {
 }
 
 WorldSession::~WorldSession()
 {
-}
-
-WorldSession* WorldSession::GetInstance()
-{
-    return pInstance;
-}
-
-void WorldSession::Create(boost::asio::io_service& io)
-{
-    pInstance = new WorldSession(io);
-}
-
-void WorldSession::Destroy()
-{
-    delete pInstance;
 }
 
 void WorldSession::Connect(std::string Ip, std::string Port)
@@ -163,7 +150,7 @@ void WorldSession::HandleLoginOpcode()
     this->pWorld = pWorld;
     WorldPacket Argv;
     Argv << MapID;
-    pWorld->Load(Argv);
+    pWorld->Load(std::move(Argv));
     sLog.Write("Packet is good!");
 }
 
@@ -349,7 +336,7 @@ void WorldSession::SendChatMessage(std::string const& Message)
 
 void WorldSession::GoToLoginScreen()
 {
-    Game::GetInstance().PopAllStates();
-    Game::GetInstance().PushState(new Login());
-    Window->setView(Window->getDefaultView());
+    Game::GetInstance()->PopAllStates();
+    Game::GetInstance()->PushState(new Login());
+    Game::GetInstance()->GetRenderWindow()->setView(Game::GetInstance()->GetRenderWindow()->getDefaultView());
 }
