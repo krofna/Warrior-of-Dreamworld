@@ -38,9 +38,9 @@ public:
     static void Initialize(boost::asio::io_service* io);
 
     boost::asio::io_service* GetIO();
-    sf::RenderWindow* GetRenderWindow();
-    sfg::SFGUI* GetSFGUI();
-    sfg::Desktop* GetDesktop();
+    std::shared_ptr<sf::RenderWindow> GetRenderWindow();
+    std::shared_ptr<sfg::SFGUI> GetSFGUI();
+    std::shared_ptr<sfg::Desktop> GetDesktop();
 
     void Update();
 
@@ -52,9 +52,9 @@ private:
     sf::Event Event;
     std::stack<std::unique_ptr<GameState>> StateStack;
 
-    std::unique_ptr<sf::RenderWindow> Window;
-    std::unique_ptr<sfg::SFGUI> SFGUI;
-    std::unique_ptr<sfg::Desktop> Desktop;
+    std::shared_ptr<sf::RenderWindow> Window;
+    std::shared_ptr<sfg::SFGUI> SFGUI;
+    std::shared_ptr<sfg::Desktop> Desktop;
 
     static boost::asio::io_service* sIO;
 };

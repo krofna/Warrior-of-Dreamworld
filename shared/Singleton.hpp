@@ -13,7 +13,7 @@ template<class T>
 class Singleton
 {
     public:
-        virtual ~Singleton() { m_instance.reset(nullptr); }
+        virtual ~Singleton() { }
         static T* GetInstance()
         {
             std::call_once(m_onceFlag, []()

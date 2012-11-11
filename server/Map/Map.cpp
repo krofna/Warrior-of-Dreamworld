@@ -167,7 +167,7 @@ void Map::SendToPlayers(WorldPacket& Packet)
 
 void Map::RemovePlayer(Player* pPlayer)
 {
-    WorldPacket Packet((uint16)MSG_REMOVE_OBJECT);
+    WorldPacket Packet((uint16)SMSG_REMOVE_OBJECT);
     Packet << pPlayer->GetObjectID();
     
     for(auto PlayerIterator = Players.begin(); PlayerIterator != Players.end();)

@@ -34,7 +34,7 @@ class WorldSession : public Singleton<WorldSession>
 {
     friend class Singleton<WorldSession>;
 public:
-    ~WorldSession();
+    virtual ~WorldSession();
 
     void Connect(std::string Ip, std::string Port);
     void Send(WorldPacket& Packet);
@@ -57,7 +57,6 @@ public:
     void HandleChatMessageOpcode();
     void HandleCommandReponseOpcode();
     void HandleNotificationMessageOpcode();
-    void HandleTextEmoteOpcode();
 
     void HandleSwapItemOpcode();
     void HandleDeleteItemOpcode();

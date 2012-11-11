@@ -16,15 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-#include "WorldSession.hpp"
-#include "shared/Opcodes.hpp"
-#include "Map.hpp"
-#include "Player.hpp"
 #include <boost/bind.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/asio/read.hpp>
 #include <boost/asio/placeholders.hpp>
+
+#include "WorldSession.hpp"
+
+#include "shared/Opcodes.hpp"
 #include "shared/Log.hpp"
+
+#include "Map.hpp"
+#include "Player.hpp"
 
 WorldSession::WorldSession(boost::asio::io_service& io) :
 Socket                    (io),
@@ -140,7 +143,7 @@ void WorldSession::SendLoginFailPacket(uint16 Reason)
 
 void WorldSession::SendChatMessage(uint64 FromID, std::string const& Message)
 {
-    WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
+    WorldPacket Packet((uint16)MSG_CHAT_MSG);
     Packet << FromID << Message;
     Send(Packet);
 }
@@ -392,7 +395,7 @@ void WorldSession::SendLogOutPacket()
 
 void WorldSession::SendNotification(std::string const& NotificationMessage)
 {
-    WorldPacket Packet((uint16)MSG_SYSTEM_MESSAGE);
+    WorldPacket Packet((uint16)SMSG_SYSTEM_MSG);
 
     Packet << NotificationMessage;
     Send(Packet);

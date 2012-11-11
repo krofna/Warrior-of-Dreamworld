@@ -76,7 +76,7 @@ void Player::LoadFromDB()
 
 void Player::SendInventoryData()
 {
-    WorldPacket Packet((uint16)MSG_INVENTORY_DATA);
+    WorldPacket Packet((uint16)SMSG_INVENTORY_DATA);
 
     // Writing bags data
     for (int i = 0 ; i < 4 ; ++i)
@@ -129,7 +129,7 @@ void Player::SaveToDB()
 
 WorldPacket Player::PackData()
 {
-    WorldPacket Packet((uint16)MSG_ADD_OBJECT);
+    WorldPacket Packet((uint16)SMSG_ADD_OBJECT);
     Packet  << GetObjectID() << Tileset << Username << GetX() << GetY() << tx << ty;
     return Packet;
 }
@@ -444,39 +444,12 @@ void Player::DestroyItem(uint8 SrcBag, uint8 SrcSlot)
     m_Bags[SrcBag]->Destroy(SrcSlot);
 }
 
-std::string Player::GetEmote(const char* Text)
-{
-    // TODO: Handle also others emotes
-    
-    std::string EmoteText = Text;
-
-    EmoteText.erase(EmoteText.begin(), EmoteText.begin() + 3); // Erase /me 
-
-    return EmoteText;
-}
-
-bool Player::IsNotEmote(const char* Text)
-{
-    return (Text[0] != '/');
-}
-
 void Player::Say(const char* Text)
 {
     OnChat(Text);
 
-    if (IsNotEmote(Text) && Text[0] != '.') // Not a command or a emote
-    {
+    if (Text[0] != '.') // Not a command
         Unit::Say(Text);
-    }
-    else if (Text[0] != '.') // Not a command so a emote
-    {
-        WorldPacket TextEmotePacket((uint16)MSG_TEXT_EMOTE);
-        std::string TextEmote = GetEmote(Text);
-        TextEmotePacket << GetObjectID();
-        TextEmotePacket << TextEmote;
-
-        pMap->SendToPlayers(TextEmotePacket);
-    }
 }
 
 void Player::OnChat(const char* Text)
@@ -490,27 +463,25 @@ void Player::OnChat(const char* Text)
         {
             CommandHandler handler(this, Msg);
             if (!handler.ExecuteCommand())
-            {
                 SendNotification("Unknown command !");
-            }
         }
         catch(CommandHandler::BadCommand const& /*e*/)
         {
-            SendNotification("Unknown command !");
+            SendNotification("Bad command !");
         }
     }
 }
 
 void Player::SendCommandReponse(std::string const& Msg)
 {
-    WorldPacket ReponsePacket((uint16)MSG_COMMAND_REPONSE);
+    WorldPacket ReponsePacket((uint16)SMSG_COMMAND_REPONSE_MSG);
     ReponsePacket << Msg;
     SendPacket(ReponsePacket);
 }
 
 void Player::SendNotification(std::string const& Msg)
 {
-    WorldPacket NotificationPacket((uint16)MSG_NOTIFICATION_MSG);
+    WorldPacket NotificationPacket((uint16)SMSG_NOTIFICATION_MSG);
     NotificationPacket << Msg;
     SendPacket(NotificationPacket);
 }

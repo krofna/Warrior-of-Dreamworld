@@ -37,7 +37,8 @@ void Game::Initialize(boost::asio::io_service* io)
 
 Game::~Game()
 {
-
+    // 1. We need to pop all states, after let RenderWindow, SFGUI and Desktop objects destroy by themself
+    PopAllStates();
 }
 
 boost::asio::io_service* Game::GetIO()
@@ -45,19 +46,19 @@ boost::asio::io_service* Game::GetIO()
     return sIO;
 }
 
-sf::RenderWindow* Game::GetRenderWindow()
+std::shared_ptr<sf::RenderWindow> Game::GetRenderWindow()
 {
-    return Window.get();
+    return Window;
 }
 
-sfg::SFGUI* Game::GetSFGUI()
+std::shared_ptr<sfg::SFGUI> Game::GetSFGUI()
 {
-    return SFGUI.get();
+    return SFGUI;
 }
 
-sfg::Desktop* Game::GetDesktop()
+std::shared_ptr<sfg::Desktop> Game::GetDesktop()
 {
-    return Desktop.get();
+    return Desktop;
 }
 
 void Game::Update()
@@ -94,5 +95,5 @@ void Game::PopState()
 void Game::PopAllStates()
 {
     while(!StateStack.empty())
-        PopState();
+        StateStack.pop();
 }

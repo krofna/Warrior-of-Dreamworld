@@ -155,9 +155,6 @@ void World::HandleEvent(sf::Event const& Event)
             WorldSession::GetInstance()->SendLogOutRequest();
             WorldSession::GetInstance()->GoToLoginScreen();
             return;
-        case sf::Keyboard::P:
-            m_PointMode = !m_PointMode;
-            return;
 
         case sf::Keyboard::LControl:
         case sf::Keyboard::RControl:
@@ -169,7 +166,7 @@ void World::HandleEvent(sf::Event const& Event)
         }
         break;
 
-    case sf::Event::MouseMoved:
+    case sf::Event::MouseMoved: // Why don't we remove that ?
         MoveWorldView = MOVE_STOP;
 
         if(sf::Mouse::getPosition(*Game::GetInstance()->GetRenderWindow()).x >= Game::GetInstance()->GetRenderWindow()->getSize().x - (TILE_SIZE / 2))
@@ -187,8 +184,7 @@ void World::HandleEvent(sf::Event const& Event)
         break;
 
     case sf::Event::MouseButtonPressed:
-        // ...
-        
+       // ... 
     default:
         break;
     }

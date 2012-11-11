@@ -26,27 +26,31 @@ OpcodeHandler OpcodeTable[MSG_COUNT] =
 {
     { "MSG_NULL",             &WorldSession::HandleNULL },
     { "MSG_LOGIN",            &WorldSession::HandleLoginOpcode },
-    { "MSG_ADD_OBJECT",       &WorldSession::HandleNULL }, // SMSG
-    { "MSG_REMOVE_OBJECT",    &WorldSession::HandleNULL }, // SMSG
-    { "MSG_MOVE_OBJECT",      &WorldSession::HandleMoveObjectOpcode },
     { "MSG_LOG_OUT",          &WorldSession::HandleLogOutOpcode },
-    { "MSG_SYSTEM_MESSAGE",   &WorldSession::HandleNULL }, // SMSG
-    { "MSG_CHAT_MESSAGE",     &WorldSession::HandleChatMessageOpcode },
-    { "MSG_COMMAND_REPONSE",  &WorldSession::HandleNULL }, // SMSG
-    { "MSG_NOTIFICATION_MSG", &WorldSession::HandleNULL }, // SMSG
-    { "MSG_TEXT_EMOTE",       &WorldSession::HandleNULL }, // SMSG
-    { "MSG_MELEE_ATTACK",     &WorldSession::HandleMeleeAttackOpcode }, // CMSG
+
+    { "SMSG_ADD_OBJECT",       &WorldSession::HandleNULL },
+    { "SMSG_REMOVE_OBJECT",    &WorldSession::HandleNULL },
+    { "MSG_MOVE_OBJECT",      &WorldSession::HandleMoveObjectOpcode },
+
+    { "SMSG_SYSTEM_MSG",   &WorldSession::HandleNULL },
+    { "SMSG_NOTIFICATION_MSG", &WorldSession::HandleNULL },
+    { "SMSG_COMMAND_REPONSE_MSG",  &WorldSession::HandleNULL },
+    { "MSG_CHAT_MSG",     &WorldSession::HandleChatMessageOpcode },
+
+    { "CMSG_MELEE_ATTACK",     &WorldSession::HandleMeleeAttackOpcode },
     { "MSG_CAST_SPELL",       &WorldSession::HandleCastSpellOpcode },
-    { "MSG_REMOVE_SPELL",     &WorldSession::HandleNULL }, // SMSG
-    { "MSG_AUTO_EQUIP_ITEM",  &WorldSession::HandleAutoEquipItemOpcode }, // CMSG
+    { "SMSG_REMOVE_SPELL",     &WorldSession::HandleNULL },
+
+    { "CMSG_AUTO_EQUIP_ITEM",  &WorldSession::HandleAutoEquipItemOpcode },
     { "MSG_USE_ITEM",         &WorldSession::HandleUseItemOpcode },
     { "MSG_EQUIP_ITEM",       &WorldSession::HandleEquipItemOpcode },
     { "MSG_SWAP_ITEM",        &WorldSession::HandleSwapItemOpcode },
     { "MSG_DELETE_ITEM",      &WorldSession::HandleDeleteItemOpcode },
-    { "MSG_CREATE_ITEM",      &WorldSession::HandleNULL }, // SMSG
-    { "MSG_INVENTORY_DATA",   &WorldSession::HandleNULL }, // SMSG
-    { "MSG_NPC_INTERACT",     &WorldSession::HandleNULL }, // SMSG
-    { "MSG_BUY_ITEM",         &WorldSession::HandleBuyItemOpcode }, // CMSG
-    { "MSG_SELL_ITEM",        &WorldSession::HandleSellItemOpcode }, // CMSG
-    { "MSG_ACCEPT_QUEST",     &WorldSession::HandleAcceptQuestOpcode } // CMSG
+    { "SMSG_CREATE_ITEM",      &WorldSession::HandleNULL },
+    { "SMSG_INVENTORY_DATA",   &WorldSession::HandleNULL },
+
+    { "SMSG_NPC_INTERACT",     &WorldSession::HandleNULL },
+    { "CMSG_BUY_ITEM",         &WorldSession::HandleBuyItemOpcode },
+    { "CMSG_SELL_ITEM",        &WorldSession::HandleSellItemOpcode },
+    { "CMSG_ACCEPT_QUEST",     &WorldSession::HandleAcceptQuestOpcode }
 };

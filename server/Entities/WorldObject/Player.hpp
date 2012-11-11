@@ -83,10 +83,6 @@ public:
 
     void SendNotification(std::string const& Msg);
     void SendCommandReponse(std::string const& Msg);
-    void SendTextEmote(std::string const& Msg);
-
-    std::string GetEmote(const char* Text);
-    bool IsNotEmote(const char* Text);
 
     void Say(const char* Text);
 

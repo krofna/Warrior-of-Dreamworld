@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "shared/Log.hpp"
 #include "shared/Opcodes.hpp"
 
-Login::Login() : m_CurrentFocus(None)
+Login::Login() : m_CurrentFocus(None), m_Desktop(Game::GetInstance()->GetDesktop())
 {
     Game::GetInstance()->GetRenderWindow()->resetGLStates();
     Create();
@@ -29,12 +29,12 @@ Login::Login() : m_CurrentFocus(None)
 
 Login::~Login()
 {
-    Game::GetInstance()->GetDesktop()->Remove(m_LoginWindow);
+    m_Desktop->Remove(m_LoginWindow);
 }
 
 void Login::HandleEvent(sf::Event const& Event)
 {
-    Game::GetInstance()->GetDesktop()->HandleEvent(Event);
+    m_Desktop->HandleEvent(Event);
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Tab)
         GrabNextFocus();
     if (Event.type == sf::Event::KeyPressed && Event.key.code == sf::Keyboard::Return)
@@ -50,7 +50,7 @@ void Login::Draw()
 
 void Login::Update()
 {
-    Game::GetInstance()->GetDesktop()->Update(updateClock.restart().asSeconds());
+    m_Desktop->Update(updateClock.restart().asSeconds());
 }
 
 void Login::Create()
@@ -108,7 +108,7 @@ void Login::Create()
     m_LoginWindow->Add(Global);
     m_LoginWindow->SetPosition(sf::Vector2f(Game::GetInstance()->GetRenderWindow()->getSize().x / 2, Game::GetInstance()->GetRenderWindow()->getSize().y / 2));
 
-    Game::GetInstance()->GetDesktop()->Add(m_LoginWindow);
+    m_Desktop->Add(m_LoginWindow);
 }
 
 void Login::onConnectButtonPressed()

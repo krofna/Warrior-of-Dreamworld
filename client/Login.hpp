@@ -59,6 +59,8 @@ private:
     EFocus m_CurrentFocus;
 
     sf::Clock updateClock;
+
+    std::shared_ptr<sfg::Desktop> m_Desktop;
 };
 
 #endif

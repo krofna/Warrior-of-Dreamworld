@@ -217,15 +217,6 @@ void WorldSession::HandleNotificationMessageOpcode()
     Packet >> Message;
 }
 
-void WorldSession::HandleTextEmoteOpcode()
-{
-    std::string Message;
-    uint64 ObjectID;
-
-    Packet >> ObjectID;
-    Packet >> Message;
-}
-
 void WorldSession::HandleSwapItemOpcode()
 {
     uint8 srcbag, dstbag, srcslot, dstslot;
@@ -316,7 +307,7 @@ void WorldSession::SendCastSpellRequest(uint16 SpellID, float Angle)
 
 void WorldSession::SendAttackRequest()
 {
-    WorldPacket Packet((uint16)MSG_MELEE_ATTACK);
+    WorldPacket Packet((uint16)CMSG_MELEE_ATTACK);
     Send(Packet);
 }
 
@@ -329,7 +320,7 @@ void WorldSession::SendLogOutRequest()
 
 void WorldSession::SendChatMessage(std::string const& Message)
 {
-    WorldPacket Packet((uint16)MSG_CHAT_MESSAGE);
+    WorldPacket Packet((uint16)MSG_CHAT_MSG);
     Packet << Message;
     Send(Packet);
 }

@@ -44,7 +44,7 @@ Unit* Unit::GetUnitByObjectID(uint64 ObjID)
 
 void Unit::SpellHit(SpellBox* pSpellBox)
 {
-    WorldPacket Packet((uint16)MSG_REMOVE_SPELL);
+    WorldPacket Packet((uint16)SMSG_REMOVE_SPELL);
     Packet << pSpellBox->SpellBoxID;
     pMap->SendToPlayers(Packet);
     TakeDamage(pSpellBox->pSpellTemplate->Value, pSpellBox->pCaster);
@@ -62,7 +62,7 @@ void Unit::CastSpell(SpellTemplate* pSpell, float Angle)
 void Unit::Say(const char* Text)
 {
     OnChat(Text);
-    WorldPacket SayPacket((uint16)MSG_CHAT_MESSAGE);
+    WorldPacket SayPacket((uint16)MSG_CHAT_MSG);
     SayPacket << GetObjectID() << std::string(Text);
     pMap->SendToPlayers(SayPacket);
 }

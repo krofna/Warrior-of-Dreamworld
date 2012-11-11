@@ -25,11 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class WorldPacket;
 
-enum TypeEmote
-{
-    TEXT_EMOTE,
-    VOICE_EMOTE
-};
+// Why don't remove scrolling system by mouse, and what about a scrolling by moving, using positions. #wod-dev for more
+// informations !
 
 class World : public GameState
 {

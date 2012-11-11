@@ -57,7 +57,7 @@ void Creature::Update(int64 diff)
 
 WorldPacket Creature::PackData()
 {
-    WorldPacket Packet((uint16)MSG_ADD_OBJECT);
+    WorldPacket Packet((uint16)SMSG_ADD_OBJECT);
     Packet << ObjID << pTemplate->Tileset << pTemplate->Name << GetX() << GetY() << pTemplate->tx << pTemplate->ty;
     return Packet;
 }
@@ -99,7 +99,7 @@ void Creature::UpdatePosition(Vector2i const& Position)
 
 void Creature::OnInteract(Player* pWho)
 {
-    WorldPacket Packet((uint16)MSG_NPC_INTERACT);
+    WorldPacket Packet((uint16)SMSG_NPC_INTERACT);
     Packet << pTemplate->Entry;
     
     if(pTemplate->npcflag & NPC_CHAT)
