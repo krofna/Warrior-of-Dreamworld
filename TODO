@@ -1,6 +1,6 @@
 The most important issue to deal with is to :
-1) Fix all current issues.
-2) Close some branches & clean our repo
+1) Repair Windows Compilation for MSVC >= 10
+2) Fix all current issues.
 3) Clean old codes.
 4) Make some tests with 2+ players connected ?
 5) And a lot of thing before starting stat system & unit interaction.
