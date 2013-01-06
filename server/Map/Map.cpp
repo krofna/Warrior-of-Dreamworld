@@ -118,7 +118,7 @@ void Map::AddToTileGrid(WorldObject* pWho)
     TileGrid[pWho->GetY()][pWho->GetX()] = pWho;
 }
 
-void Map::SummonCreature(uint64 Entry, Unit* pSummoner)
+Creature* Map::SummonCreature(uint64 Entry, Unit* pSummoner)
 {
     Creature* pCreature = new Creature(sDatabase.Generate64BitsGUID(), this, pSummoner->GetX(), pSummoner->GetY(), sObjectMgr.GetCreatureTemplate(Entry));
     Creatures.push_back(pCreature);
