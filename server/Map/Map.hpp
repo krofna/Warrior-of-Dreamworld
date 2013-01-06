@@ -49,6 +49,7 @@ public:
     void RemovePlayer(Player* pPlayer);
     void AddPlayer(Player* pPlayer);
     void AddSpell(Unit* pCaster, SpellTemplate* pSpell, float Angle);
+    Creature* SummonCreature(uint64 Entry, Unit* pSummoner);
 
     virtual void Update(int64 diff);
     void UnitUpdate(Unit* pVictim, int64 diff);
