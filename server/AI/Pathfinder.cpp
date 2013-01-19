@@ -160,7 +160,7 @@ void Pathfinder::GeneratePath()
         }
 
         // Lower
-        if(pCurrent->Position.y != pTileGrid->size())
+        if(pCurrent->Position.y != pTileGrid->size()-1)
         {
             CheckNode(pCurrent, 0, 1, 10);
         }

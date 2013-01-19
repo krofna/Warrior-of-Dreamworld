@@ -169,32 +169,41 @@ bool Player::UpdateCoordinates(uint8 Direction)
     LastDirection = Direction;
     if (pMap->CheckOutside(Position.x, Position.y, Direction))
         return false;
+    
+    Vector2i OldPos = Position;
+    bool Retval = true;
 
     switch(Direction)
     {
     case MOVE_UP:
         if(pMap->TryInteract(this, Position.x, Position.y-1))
-            return false;
+            Retval = false;
         Position.y--;
         break;
     case MOVE_DOWN:
         if(pMap->TryInteract(this, Position.x, Position.y+1))
-            return false;
+            Retval = false;
         Position.y++;
         break;
     case MOVE_LEFT:
         if(pMap->TryInteract(this, Position.x-1, Position.y))
-            return false;
+            Retval = false;
         Position.x--;
         break;
     case MOVE_RIGHT:
         if(pMap->TryInteract(this, Position.x+1, Position.y))
-            return false;
+            Retval = false;
         Position.x++;
         break;
     }
+    
+    if (!Retval)
+    {
+        pMap->RemoveFromTileGrid(OldPos.x, OldPos.y);
+        pMap->AddToTileGrid(this);
+    }
 
-    return true;
+    return Retval;
 }
 
 bool Player::CanSpeak() const

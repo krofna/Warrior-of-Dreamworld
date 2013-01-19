@@ -90,13 +90,6 @@ void Creature::TakeDamage(int32 Damage, Unit* pAttacker)
         pAI->JustDied(pAttacker);
 }
 
-void Creature::UpdatePosition(Vector2i const& Position)
-{
-    pMap->RemoveFromTileGrid(Position.x, Position.y);
-    WorldObject::UpdatePosition(Position);
-    pMap->AddToTileGrid(this);
-}
-
 void Creature::OnInteract(Player* pWho)
 {
     WorldPacket Packet((uint16)MSG_NPC_INTERACT);

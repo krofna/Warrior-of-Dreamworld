@@ -52,6 +52,7 @@ public:
     void re_insert(PathfinderNode* what)
     {
         this->c.erase(std::find(this->c.begin(), this->c.end(), what));
+        std::make_heap(this->c.begin(), this->c.end(), CompareNode());
         this->push(what);
     }
 

@@ -36,6 +36,7 @@ public:
     virtual WorldPacket PackData() = 0;
 
     virtual void UpdatePosition(Vector2i const& Position);
+    void SendPositionUpdateToMap();
     // Called when some a Player collides with *this
     virtual void OnInteract(Player* pWho) = 0;
 

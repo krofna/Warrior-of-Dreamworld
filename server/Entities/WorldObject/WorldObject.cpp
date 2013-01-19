@@ -55,10 +55,17 @@ Vector2i WorldObject::GetPosition() const
     return Position;
 }
 
-void WorldObject::UpdatePosition(Vector2i const& Position)
+void WorldObject::SendPositionUpdateToMap()
 {
-    this->Position = Position;
     WorldPacket Packet((uint16)MSG_MOVE_OBJECT);
     Packet << ObjID << GetX() << GetY();
     pMap->SendToPlayers(Packet);
+}
+
+void WorldObject::UpdatePosition(Vector2i const& Position)
+{
+    pMap->RemoveFromTileGrid(Position.x, Position.y);
+    this->Position = Position;
+    pMap->AddToTileGrid(this);
+    SendPositionUpdateToMap();
 }

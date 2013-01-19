@@ -221,7 +221,7 @@ void World::HandleEvent(sf::Event Event)
         if (m_PointMode)
             std::cout << Event.mouseButton.x << ";" << Event.mouseButton.y << std::endl;
         else
-            WorldSession::GetInstance()->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->convertCoords(sf::Mouse::getPosition())));
+            WorldSession::GetInstance()->SendCastSpellRequest(1, math::GetAngle(WorldObjectMap[MeID]->GetPosition(), Window->mapPixelToCoords(sf::Mouse::getPosition())));
         break;
         
     default:

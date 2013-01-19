@@ -201,16 +201,14 @@ void WorldSession::HandleMoveObjectOpcode()
     uint8 Direction;
     Packet >> Direction;
 
-    sLog.Write("Packet is good!");
-
     // If player colided, return
     if(!pPlayer->UpdateCoordinates(Direction))
         return;
+    
+    sLog.Write("Packet is good!");
 
     // Send movement update to all players in the map
-    WorldPacket Packet((uint16)MSG_MOVE_OBJECT);
-    Packet << pPlayer->GetObjectID() << pPlayer->GetX() << pPlayer->GetY();
-    pPlayer->GetMap()->SendToPlayers(Packet);
+    pPlayer->SendPositionUpdateToMap();
 }
 
 void WorldSession::HandleCastSpellOpcode()
