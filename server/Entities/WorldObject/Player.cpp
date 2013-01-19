@@ -197,7 +197,7 @@ bool Player::UpdateCoordinates(uint8 Direction)
         break;
     }
     
-    if (!Retval)
+    if (Retval)
     {
         pMap->RemoveFromTileGrid(OldPos.x, OldPos.y);
         pMap->AddToTileGrid(this);
