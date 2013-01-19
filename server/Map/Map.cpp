@@ -115,6 +115,7 @@ void Map::UnitUpdate(Unit* pUnit, int64 diff)
 
 void Map::AddToTileGrid(WorldObject* pWho)
 {
+    sLog.Write("Object guid %ull has moved to X: %u, Y: %u", pWho->GetObjectID(), pWho->GetX(), pWho->GetY());
     TileGrid[pWho->GetY()][pWho->GetX()] = pWho;
 }
 

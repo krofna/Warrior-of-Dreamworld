@@ -28,7 +28,7 @@ Unit::Unit         (uint64 ObjID) :
 WorldObject        (ObjID),
 MeeleAttackCooldown(0),
 pVictim            (nullptr),
-Health             (1000) // Placeholder to fix pathfinder
+Health             (10000) // Placeholder to fix pathfinder
 {
     sUnits[GetObjectID()] = this;
 }

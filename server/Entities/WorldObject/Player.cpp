@@ -178,22 +178,26 @@ bool Player::UpdateCoordinates(uint8 Direction)
     case MOVE_UP:
         if(pMap->TryInteract(this, Position.x, Position.y-1))
             Retval = false;
-        Position.y--;
+        else
+            Position.y--;
         break;
     case MOVE_DOWN:
         if(pMap->TryInteract(this, Position.x, Position.y+1))
             Retval = false;
-        Position.y++;
+        else
+            Position.y++;
         break;
     case MOVE_LEFT:
         if(pMap->TryInteract(this, Position.x-1, Position.y))
             Retval = false;
-        Position.x--;
+        else
+            Position.x--;
         break;
     case MOVE_RIGHT:
         if(pMap->TryInteract(this, Position.x+1, Position.y))
             Retval = false;
-        Position.x++;
+        else
+            Position.x++;
         break;
     }
     
